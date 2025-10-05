@@ -1,0 +1,31 @@
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection, APP_INITIALIZER } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ApiService } from 'shared';
+import { environment } from '../environments/environment';
+
+import { routes } from './app.routes';
+
+// Factory para inicializar ApiService con la configuración del environment
+export function initializeApiService(apiService: ApiService): () => void {
+  return () => {
+    apiService.setBaseUrl(environment.apiUrl);
+  };
+}
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
+    provideAnimations(), // Habilitar animaciones Material
+    provideHttpClient(withInterceptorsFromDi()), // Configurar HttpClient
+    provideRouter(routes),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApiService,
+      deps: [ApiService],
+      multi: true
+    }
+  ]
+};

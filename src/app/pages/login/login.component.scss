@@ -1,0 +1,351 @@
+@use 'sass:color';
+@use '../../../styles/variables' as *;
+
+// =============================================================================
+// LOGIN PAGE STYLES
+// =============================================================================
+
+.login-page {
+  min-height: 100vh;
+  background-color: $roadit-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4;
+  position: relative;
+
+  // Patrón de fondo sutil (opcional)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 25% 25%, rgba(199, 217, 68, 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 75% 75%, rgba(199, 217, 68, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-card {
+  background-color: $bg-paper;
+  border-radius: $border-radius-large;
+  box-shadow: $elevation-8;
+  padding: $spacing-8;
+  text-align: center;
+
+  &__header {
+    margin-bottom: $spacing-8;
+  }
+
+  &__logo {
+    height: 48px;
+    width: auto;
+    max-width: 200px;
+  }
+}
+
+// =============================================================================
+// LOGIN FORM
+// =============================================================================
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+
+  &__options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: $spacing-2 0;
+  }
+}
+
+// =============================================================================
+// INPUT FIELDS (Login specific styles)
+// =============================================================================
+
+.input-field {
+  position: relative;
+  text-align: left;
+
+  &__input {
+    width: 100%;
+    padding: $spacing-4;
+    border: 1px solid $border-light;
+    border-radius: $border-radius-medium;
+    font-size: $font-size-body1;
+    font-family: $font-family-primary;
+    color: $text-primary;
+    background-color: $bg-paper;
+    transition: $transition-all;
+
+    &::placeholder {
+      color: $text-hint;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 2px rgba(45, 61, 50, 0.1);
+    }
+
+    &:hover:not(:focus) {
+      border-color: $border-medium;
+    }
+
+    &--error {
+      border-color: $error;
+      
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.1);
+      }
+    }
+  }
+
+  &__error-message {
+    display: block;
+    font-size: $font-size-caption;
+    color: $error;
+    margin-top: $spacing-1;
+    text-align: left;
+  }
+}
+
+// =============================================================================
+// PASSWORD FIELD
+// =============================================================================
+
+.password-field {
+  position: relative;
+
+  &__input {
+    padding-right: $spacing-12 !important;
+  }
+
+  &__toggle {
+    position: absolute;
+    right: $spacing-3;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: $text-hint;
+    cursor: pointer;
+    padding: $spacing-2;
+    border-radius: $border-radius-small;
+    transition: $transition-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: $text-secondary;
+    }
+
+    &:focus {
+      outline: 2px solid $primary;
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// =============================================================================
+// CHECKBOX FIELD
+// =============================================================================
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  cursor: pointer;
+  font-size: $font-size-body2;
+  color: $text-secondary;
+
+  &__input {
+    width: 16px;
+    height: 16px;
+    border: 2px solid $border-medium;
+    border-radius: $border-radius-small;
+    background-color: $bg-paper;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+
+    &:checked {
+      background-color: $primary;
+      border-color: $primary;
+    }
+
+    &:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $white;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    &:focus {
+      outline: 2px solid $primary;
+      outline-offset: 2px;
+    }
+  }
+
+  &__label {
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+// =============================================================================
+// LINK BUTTON
+// =============================================================================
+
+.link-button {
+  background: none;
+  border: none;
+  color: $roadit-accent;
+  font-size: $font-size-body2;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  text-decoration: none;
+  transition: $transition-color;
+
+  &:hover {
+    color: color.adjust($roadit-accent, $lightness: -10%);
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+    border-radius: $border-radius-small;
+  }
+}
+
+// =============================================================================
+// BUTTON MODIFICATIONS FOR LOGIN
+// =============================================================================
+
+.btn {
+  &--full-width {
+    width: 100%;
+  }
+
+  &--primary {
+    background-color: $roadit-accent;
+    color: $white;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: $spacing-4 $spacing-6;
+    border-radius: $border-radius-medium;
+    border: none;
+    cursor: pointer;
+    transition: $transition-all;
+    font-size: $font-size-button;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-2;
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust($roadit-accent, $lightness: -8%);
+      box-shadow: $elevation-4;
+    }
+
+    &:active {
+      box-shadow: $elevation-2;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    &:focus {
+      outline: 2px solid $primary;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// =============================================================================
+// LOADING SPINNER
+// =============================================================================
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// =============================================================================
+// RESPONSIVE DESIGN
+// =============================================================================
+
+@media (max-width: $breakpoint-sm) {
+  .login-page {
+    padding: $spacing-4 $spacing-2;
+  }
+
+  .login-card {
+    padding: $spacing-6;
+    border-radius: $border-radius-medium;
+
+    &__logo {
+      height: 40px;
+    }
+  }
+
+  .login-form {
+    gap: $spacing-5;
+
+    &__options {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-3;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .login-card {
+    padding: $spacing-4;
+  }
+
+  .input-field__input {
+    padding: $spacing-3;
+  }
+
+  .btn--primary {
+    padding: $spacing-3 $spacing-4;
+    min-height: 44px;
+  }
+}

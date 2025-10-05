@@ -1,0 +1,40 @@
+{
+  "common": {
+    "email": "Email",
+    "password": "Contraseña",
+    "login": "LOGIN",
+    "remember_me": "Recuérdame",
+    "forgot_password": "¿Olvidaste contraseña?",
+    "loading": "Cargando..."
+  },
+  "login": {
+    "title": "Iniciar Sesión",
+    "email_required": "El email es requerido",
+    "email_invalid": "Formato de email inválido",
+    "password_required": "La contraseña es requerida",
+    "password_min": "La contraseña debe tener al menos 6 caracteres",
+    "signing_in": "Iniciando sesión...",
+    "show_password": "Mostrar contraseña",
+    "hide_password": "Ocultar contraseña"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "users": "Usuarios",
+    "clients": "Clientes",
+    "client_group": "Grupo de clientes",
+    "clients_list": "Clientes",
+    "client_entity_users": "Usuarios cliente/entid.",
+    "drivers": "Conductores",
+    "transports": "Transportes",
+    "create_transport": "Crear transporte",
+    "transport_assignment": "Asignación transportes",
+    "transport_history": "Historial transportes",
+    "quality_info_management": "Gestión info calidad",
+    "drivers_incidents": "Conductores e incidencias",
+    "driver_regularizations": "Regularizaciones a conductores",
+    "additional_expenses": "Gastos adicionales",
+    "driver_invoice_emission": "Emisión de facturas a conductores",
+    "driver_invoices": "Facturas conductores",
+    "client_invoices": "Facturas clientes"
+  }
+}

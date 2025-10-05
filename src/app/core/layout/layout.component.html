@@ -1,0 +1,34 @@
+<!-- Layout principal usando componentes modularizados -->
+<div class="layout-container">
+  
+  <!-- Sidebar Component -->
+  <app-sidebar 
+    [isCollapsed]="isMenuCollapsed"
+    (toggleMenu)="onToggleMenu()">
+  </app-sidebar>
+
+  <!-- Contenido principal -->
+  <div class="main-content" [class.menu-collapsed]="isMenuCollapsed">
+    
+    <!-- Header Component -->
+    <app-header 
+      [currentUser]="currentUser"
+      [currentLanguage]="currentLanguage"
+      (logout)="onLogout()"
+      (toggleMenu)="onToggleMenu()"
+      (changeLanguage)="onChangeLanguage($event)">
+    </app-header>
+
+    <!-- Área de contenido -->
+    <main class="content">
+      <router-outlet />
+    </main>
+
+    <!-- Footer Component -->
+    <app-footer 
+      appVersion="1.0.0"
+      companyName="Roadit SL">
+    </app-footer>
+    
+  </div>
+</div>

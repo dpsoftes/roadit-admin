@@ -1,0 +1,35 @@
+Contexto conversacional con IA:
+
+Solo lee y analiza, no modifiques nada hasta que te lo pida explícitamente
+Pregúntame antes de asumir cualquier estructura de código
+Verifica todo antes de proceder
+Solicita permiso para cada archivo que quieras modificar
+
+El proyecto es un proyecto Angular 20, tiene dos proyectos:
+
+Proyecto principal Admin:
+    - Tipo back-office que realiza la administración interna de una aplicación de transportes.
+    - Tiene una pantalla inicial de login y recuperación de contraseña, estas pantallas son limpias.
+    - Una vez logueado se entra en un panel de administración con cuatro zonas:
+        - lateral con el menu de opciones
+        - Header con selector de idioma, usuario, avatar y menú desplegable de usuario.
+        - Footer, tradicional con los enlaces legales
+        - Zona central que debe ser la que contenga el route-outlet
+    - Debe tener un theme css con la definición de los colores, tipos de letra y demás.
+    - El tema está basado en Free Material Design 2 UI Kit
+
+Proyecto Shared:
+    - Proyecto compartido que contiene:
+        Dtos (son clases no interfaces)
+        Enums (usado en los dtos)
+        Servicios (para llamadas a api)
+        Store (basado en signals)
+        el contexto de ia del proyecto shared está en el archivo {workspace}/shared/copilot.txt para mas información.
+
+
+Integración con figma
+    Los diseños están en figma, y se accede a ellos mediante las indicaciones incluidas en {workspace}/admin/documentation/FIGMA-INTEGRATION-GUIDE.md
+    Se está usando material design
+
+
+     

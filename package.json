@@ -1,0 +1,61 @@
+{
+  "name": "admin",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "npm run build:shared && ng serve",
+    "start:dev": "npm run build:shared && ng serve --configuration=development",
+    "start:prod": "npm run build:shared && ng serve --configuration=production",
+    "build": "npm run build:shared && ng build",
+    "build:dev": "npm run build:shared && ng build --configuration=development",
+    "build:prod": "npm run build:shared && ng build --configuration=production",
+    "build:shared": "cd ../shared && npm run build",
+    "build:shared:win": "cd /d \"../shared\" && npm run build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "20.3.3",
+    "@angular/cdk": "^20.2.7",
+    "@angular/common": "20.3.3",
+    "@angular/compiler": "20.3.3",
+    "@angular/core": "20.3.3",
+    "@angular/forms": "20.3.3",
+    "@angular/material": "^20.2.7",
+    "@angular/platform-browser": "20.3.3",
+    "@angular/router": "20.3.3",
+    "@ngrx/signals": "20.0.1",
+    "@roadit/shared": "file:../shared/dist/shared",
+    "rxjs": "7.8.1",
+    "tslib": "2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "20.3.3",
+    "@angular/cli": "20.3.3",
+    "@angular/compiler-cli": "20.3.3",
+    "@types/jasmine": "5.1.0",
+    "autoprefixer": "10.4.21",
+    "jasmine-core": "5.0.1",
+    "karma": "6.4.4",
+    "karma-chrome-launcher": "3.2.0",
+    "karma-coverage": "2.2.1",
+    "karma-jasmine": "5.1.0",
+    "karma-jasmine-html-reporter": "2.1.0",
+    "postcss": "8.5.6",
+    "tailwindcss": "3.4.18",
+    "typescript": "^5.9.3"
+  }
+}

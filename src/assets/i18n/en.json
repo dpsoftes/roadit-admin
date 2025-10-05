@@ -1,0 +1,40 @@
+{
+  "common": {
+    "email": "Email",
+    "password": "Password",
+    "login": "LOGIN",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password?",
+    "loading": "Loading..."
+  },
+  "login": {
+    "title": "Sign In",
+    "email_required": "Email is required",
+    "email_invalid": "Invalid email format",
+    "password_required": "Password is required",
+    "password_min": "Password must be at least 6 characters",
+    "signing_in": "Signing in...",
+    "show_password": "Show password",
+    "hide_password": "Hide password"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "clients": "Clients",
+    "client_group": "Client group",
+    "clients_list": "Clients",
+    "client_entity_users": "Client/entity users",
+    "drivers": "Drivers",
+    "transports": "Transports",
+    "create_transport": "Create transport",
+    "transport_assignment": "Transport assignment",
+    "transport_history": "Transport history",
+    "quality_info_management": "Quality info management",
+    "drivers_incidents": "Drivers and incidents",
+    "driver_regularizations": "Driver regularizations",
+    "additional_expenses": "Additional expenses",
+    "driver_invoice_emission": "Driver invoice emission",
+    "driver_invoices": "Driver invoices",
+    "client_invoices": "Client invoices"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Chrome Development Mode",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "ng: serve development",
+      "runtimeArgs": ["--remote-debugging-port=9222"],
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:/*": "${workspaceFolder}/*",
+        "/./*": "${workspaceFolder}/*",
+        "/src/*": "${workspaceFolder}/src/*",
+        "/*": "*",
+        "/./~/*": "${workspaceFolder}/node_modules/*",
+        "@roadit/shared/*": "${workspaceFolder}/../shared/src/lib/*",
+        "ng:///@roadit/shared/*": "${workspaceFolder}/../shared/src/lib/*"
+      },
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**",
+        "${workspaceFolder}/dist/**"
+      ]
+    }
+  ]
+}
