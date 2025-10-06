@@ -6,17 +6,12 @@
     "outDir": "./out-tsc/app",
     "types": [],
     "baseUrl": "./",
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
     "paths": {
-      "shared": ["../shared/dist/shared"],
-      "@roadit/shared": ["../shared/dist/shared"],
-      "@roadit/shared/*": ["../shared/src/lib/*"]
+      "shared": ["../shared/dist/shared"]
     }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "src/**/*.spec.ts"

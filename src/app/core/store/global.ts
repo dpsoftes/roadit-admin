@@ -108,14 +108,12 @@ export const GlobalStore = signalStore(
 
     // Método que usa copyWith para actualizaciones complejas
     updateState: (updates: Partial<GlobalStateData>) => {
-      const currentState = new GlobalStateData({
-        user: store.user(),
-        language: store.language(),
-        userFull: store.userFull(),
-        menuCollapsed: store.menuCollapsed()
-      });
-      const newState = currentState.copyWith(updates);
-      patchState(store, newState);
+      var newStore : GlobalStateData = new GlobalStateData();
+      newStore.language = updates.language || store.language();
+      newStore.menuCollapsed = updates.menuCollapsed !== undefined ? updates.menuCollapsed : store.menuCollapsed();
+      newStore.user = updates.user || store.user();
+      newStore.userFull = updates.userFull || store.userFull();
+      patchState(store, newStore);
     },
 
     // Método para inicializar desde localStorage

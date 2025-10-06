@@ -3,14 +3,9 @@ import { authGuard, noAuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'login',
-    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
-    canActivate: [noAuthGuard] // Solo accesible si NO está logueado
-  },
-  {
-    path: 'app',
+    path: '',
     loadComponent: () => import('./core/layout/layout.component').then(m => m.LayoutComponent),
-    canActivate: [authGuard], // Solo accesible si está logueado
+    canActivate: [authGuard],
     children: [
       {
         path: 'pruebas',
@@ -24,12 +19,12 @@ export const routes: Routes = [
     ]
   },
   {
-    path: '',
-    redirectTo: '/login', // Redirige por defecto al login (sin guard)
-    pathMatch: 'full'
+    path: 'login',
+    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
+    canActivate: [noAuthGuard]
   },
   {
     path: '**',
-    redirectTo: '/login'
+    redirectTo: 'login'
   }
 ];
