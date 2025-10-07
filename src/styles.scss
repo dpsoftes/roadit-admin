@@ -1,15 +1,11 @@
 /* =============================================================================
    ROADIT ADMIN - MAIN STYLES v2.0
-   Modern Material Design 2 + RoadIt Brand Integration + Tailwind CSS
+  Modern Material Design 2 + RoadIt Brand Integration
    ============================================================================= */
 
 // 1. Variables first (required for @use syntax)
 @use 'styles/variables' as vars;
 
-// 2. Tailwind CSS directives
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 // 3. Material Design Theme (using our custom colors)
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
@@ -30,7 +26,6 @@
 html {
   font-size: 16px;
   line-height: 1.5;
-  -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -183,6 +178,10 @@ h6, .mat-headline-6 {
   max-width: vars.$container-max-width;
   margin: 0 auto;
   padding: 0 vars.$container-padding;
+}
+.roadit-content{
+  background-color: vars.$roadit-content-bg;
+  
 }
 
 .roadit-app {

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { TranslatePipe } from '../../core/i18n/translate.pipe';
-import { EnvironmentService } from '../../core/services/environment.service';
-import { ApiService, EndPoints, LoginRequestDto, LoginResponseDto } from 'shared';
-import { GlobalStore } from '../../core/store/global';
+import { I18nService } from '@i18n/i18n.service';
+import { TranslatePipe } from '@i18n//translate.pipe';
+import { EnvironmentService } from '@services/environment.service';
+import { ApiService, EndPoints } from '@services';
+import { LoginRequestDto, LoginResponseDto } from '@dtos';
+import { GlobalStore } from '@store/global';
 
 @Component({
   selector: 'app-login',
@@ -78,7 +79,7 @@ export class LoginComponent {
         // pero agregamos un fallback por si hay problemas de timing
         setTimeout(() => {
           if (this.globalStore.isAuthenticated()) {
-            this.router.navigate(['/app']);
+            this.router.navigate(['']);
           }
         }, 50);
         

@@ -1,0 +1,56 @@
+// Mixins reutilizables para componentes compartidos
+
+@use 'sass:color';
+@use 'variables' as *;
+
+// Mixin para botones
+@mixin button-variant($bg-color, $border-color: $bg-color, $text-color: #ffffff) {
+  background-color: $bg-color;
+  border-color: $border-color;
+  color: $text-color;
+  
+  &:hover:not(:disabled) {
+    background-color: color.adjust($bg-color, $lightness: -10%);
+    border-color: color.adjust($border-color, $lightness: -10%);
+  }
+  
+  &:active:not(:disabled) {
+    background-color: color.adjust($bg-color, $lightness: -15%);
+    border-color: color.adjust($border-color, $lightness: -15%);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Mixin para componentes con elevación
+@mixin elevation($level: 1) {
+  @if $level == 1 {
+    box-shadow: $box-shadow;
+  } @else if $level == 2 {
+    box-shadow: $box-shadow-lg;
+  } @else {
+    box-shadow: none;
+  }
+}
+
+// Mixin para transiciones suaves
+@mixin smooth-transition($properties: all) {
+  transition: $properties $transition-duration $transition-easing;
+}
+
+// Mixin para texto truncado
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Mixin para centrado flexbox
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

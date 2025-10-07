@@ -1,0 +1,280 @@
+@use 'sass:color';
+@use 'variables' as *;
+@use 'mixins' as *;
+$primary-color: #007bff !default;
+$primary-hover: #0056b3 !default;
+$primary-active: #004085 !default;
+
+// Colores secundarios
+$secondary-color: #6c757d !default;
+$secondary-hover: #5a6268 !default;
+$secondary-active: #495057 !default;
+
+// Colores de estado
+$success-color: #28a745 !default;
+$danger-color: #dc3545 !default;
+$warning-color: #ffc107 !default;
+$info-color: #17a2b8 !default;
+
+// Colores de fondo y texto
+$background-color: #ffffff !default;
+$text-color: #212529 !default;
+$text-muted: #6c757d !default;
+
+// Espaciado
+$spacing-xs: 4px !default;
+$spacing-sm: 8px !default;
+$spacing-md: 16px !default;
+$spacing-lg: 24px !default;
+$spacing-xl: 32px !default;
+
+// Bordes y radios
+$border-radius: 4px !default;
+$border-radius-lg: 8px !default;
+$border-width: 1px !default;
+$border-color: #dee2e6 !default;
+
+// Tipografía
+$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !default;
+$font-size-base: 14px !default;
+$font-size-sm: 12px !default;
+$font-size-lg: 16px !default;
+$line-height: 1.5 !default;
+
+// Sombras
+$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !default;
+$box-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.15) !default;
+
+// Transiciones
+$transition-duration: 0.2s !default;
+$transition-easing: ease-in-out !default;
+.db-grid-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: $background-color;
+  border: $border-width solid $border-color;
+  border-radius: $border-radius;
+  overflow: hidden;
+  font-family: $font-family;
+
+  // Header del grid
+  .db-grid-header {
+    background: color.adjust($secondary-color, $lightness: 45%);
+    border-bottom: $border-width solid $border-color;
+    flex-shrink: 0;
+
+    .db-grid-row {
+      display: flex;
+      width: 100%;
+
+      .header-cell {
+        font-weight: 600;
+        color: $secondary-color;
+        background: color.adjust($secondary-color, $lightness: 45%);
+        cursor: pointer;
+        @include smooth-transition();
+        
+        &:hover {
+          background: color.adjust($secondary-color, $lightness: 40%);
+        }
+        
+        &:not(:last-child) {
+          border-right: $border-width solid $border-color;
+        }
+      }
+    }
+  }
+
+  // Body del grid (scrolleable)
+  .db-grid-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .db-grid-row {
+      display: flex;
+      width: 100%;
+      border-bottom: 1px solid color.adjust($border-color, $lightness: 10%);
+      @include smooth-transition();
+
+      &.data-row {
+        cursor: pointer;
+
+        &:hover {
+          background: color.adjust($primary-color, $lightness: 47%);
+        }
+
+        &.selected {
+          background: color.adjust($primary-color, $lightness: 40%);
+          color: color.adjust($primary-color, $lightness: -20%);
+          font-weight: 500;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      .data-cell {
+        &:not(:last-child) {
+          border-right: $border-width solid color.adjust($border-color, $lightness: 15%);
+        }
+      }
+    }
+
+    // Mensaje sin datos
+    .db-grid-no-data {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      
+      .no-data-message {
+        color: $text-muted;
+        font-style: italic;
+        font-size: $font-size-lg;
+      }
+    }
+  }
+
+  // Celdas generales
+  .db-grid-cell {
+    padding: $spacing-sm $spacing-md;
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+    // Checkbox especial
+    .checkbox-cell {
+      font-size: 18px;
+      color: $success-color;
+      font-weight: bold;
+    }
+  }
+
+  // Footer del grid
+  .db-grid-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-md;
+    background: color.adjust($background-color, $lightness: -3%);
+    border-top: $border-width solid $border-color;
+    flex-shrink: 0;
+
+    .pagination-info {
+      color: $text-muted;
+      font-size: $font-size-sm;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      .pagination-btn {
+        min-width: 32px;
+        height: 32px;
+        border: $border-width solid $border-color;
+        background: $background-color;
+        color: $text-color;
+        border-radius: $border-radius;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $font-size-sm;
+        @include smooth-transition();
+
+        &:hover:not(:disabled) {
+          background: color.adjust($primary-color, $lightness: 45%);
+          border-color: $primary-color;
+        }
+
+        &.active {
+          background: $primary-color;
+          color: white;
+          border-color: $primary-color;
+          font-weight: 600;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          background: color.adjust($background-color, $lightness: -5%);
+        }
+      }
+
+      .pagination-dots {
+        padding: 0 $spacing-xs;
+        color: $text-muted;
+      }
+    }
+  }
+}
+
+// Clases de alineamiento
+.text-align-left {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.text-align-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.text-align-center {
+  justify-content: center;
+  text-align: center;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .db-grid-container {
+    .db-grid-footer {
+      flex-direction: column;
+      gap: $spacing-sm;
+      
+      .pagination-info {
+        font-size: 12px;
+      }
+
+      .pagination-controls .pagination-btn {
+        min-width: 28px;
+        height: 28px;
+        font-size: 12px;
+      }
+    }
+
+    .db-grid-cell {
+      padding: $spacing-xs $spacing-sm;
+      font-size: 13px;
+    }
+  }
+}
+
+// Scrollbar personalizada
+.db-grid-body {
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: color.adjust($background-color, $lightness: -5%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 4px;
+
+    &:hover {
+      background: color.adjust($border-color, $lightness: -10%);
+    }
+  }
+}

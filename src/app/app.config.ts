@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessC
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ApiService } from 'shared';
+import { ApiService } from '@services/api.service';
 import { environment } from '../environments/environment';
 
 import { routes } from './app.routes';
@@ -18,7 +18,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideAnimations(), // Habilitar animaciones Material
     provideHttpClient(withInterceptorsFromDi()), // Configurar HttpClient
     provideRouter(routes),
     {

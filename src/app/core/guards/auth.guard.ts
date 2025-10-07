@@ -8,14 +8,13 @@ import { StoreService } from '../store/store.service';
  * Protege rutas verificando si el usuario está logueado
  */
 export const authGuard: CanActivateFn = (route, state) => {
+  console.log("entra");
   const router = inject(Router);
-  
-  // Usar el singleton del StoreService
-  const storeService = StoreService.global;
-  
+  // Inyectar el servicio normalmente para asegurar inicialización
+  const storeService = inject(StoreService);
+  console.log(storeService.global.isAuthenticated());
   // Verificar si el usuario está autenticado usando el computed del store
   const isAuthenticated = storeService.global.isAuthenticated();
-  
   if (isAuthenticated) {
     return true;
   } else {
@@ -33,7 +32,7 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   
   // Usar el singleton del StoreService
-  const storeService = StoreService.global;
+  const storeService = inject(StoreService);
   
   // Verificar si el usuario está autenticado
   const isAuthenticated = storeService.global.isAuthenticated();

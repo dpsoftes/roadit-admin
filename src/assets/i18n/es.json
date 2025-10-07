@@ -36,5 +36,11 @@
     "driver_invoice_emission": "Emisión de facturas a conductores",
     "driver_invoices": "Facturas conductores",
     "client_invoices": "Facturas clientes"
+  },
+  "users": {
+    "title": "Usuarios"
+  },
+  "construction": {
+    "title": "Página en construcción"
   }
 }

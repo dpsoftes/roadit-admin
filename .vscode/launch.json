@@ -1,29 +1,37 @@
 {
   "version": "0.2.0",
   "configurations": [
+    // 1. CONFIGURACIÓN DEL SERVIDOR (Node) - YA ESTÁS USANDO ESTA
     {
-      "name": "Launch Chrome Development Mode",
-      "type": "chrome",
+      "type": "node",
+      "request": "attach",
+      "name": "Node: Attach to ng serve",
+      "port": 9229,
+      "address": "localhost",
+      // ... otros parámetros
+    },
+    
+    // 2. CONFIGURACIÓN DEL CLIENTE (Navegador) - NECESITAS USAR ESTA
+    {
+      "type": "chrome", // O "chrome" si usas Google Chrome
       "request": "launch",
-      "url": "http://localhost:4200",
+      "name": "Angular: Launch Browser Debug",
+      "url": "http://localhost:4200", // Asegúrate de que el puerto sea el correcto
       "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "ng: serve development",
-      "runtimeArgs": ["--remote-debugging-port=9222"],
-      "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "webpack:/*": "${workspaceFolder}/*",
-        "/./*": "${workspaceFolder}/*",
-        "/src/*": "${workspaceFolder}/src/*",
-        "/*": "*",
-        "/./~/*": "${workspaceFolder}/node_modules/*",
-        "@roadit/shared/*": "${workspaceFolder}/../shared/src/lib/*",
-        "ng:///@roadit/shared/*": "${workspaceFolder}/../shared/src/lib/*"
-      },
-      "smartStep": true,
-      "skipFiles": [
-        "<node_internals>/**",
-        "${workspaceFolder}/node_modules/**",
-        "${workspaceFolder}/dist/**"
+      "sourceMaps": true, // Es crucial que esto esté activado
+       "sourceMapPathOverrides": {
+        "webpack:///./*": "${webRoot}/*" // Asegura el mapeo correcto
+      }
+    }
+  ],
+  
+  // 3. CONFIGURACIÓN COMPUESTA (Compound)
+  "compounds": [
+    {
+      "name": "Full Stack Debug (Compound)",
+      "configurations": [
+        "Node: Attach to ng serve",
+        "Angular: Launch Browser Debug"
       ]
     }
   ]

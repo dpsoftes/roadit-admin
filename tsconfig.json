@@ -3,6 +3,10 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+  "allowSyntheticDefaultImports": true,
+  "resolveJsonModule": true,
+  "moduleResolution": "node",
+  "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -13,7 +17,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve",
+  "module": "ES2022",
     "lib": ["ES2022", "DOM"]
   },
   "angularCompilerOptions": {

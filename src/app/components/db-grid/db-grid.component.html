@@ -1,0 +1,94 @@
+<div class="db-grid-container">
+  <!-- Header de la tabla -->
+  <div class="db-grid-header">
+    <div class="db-grid-row">
+      @for (column of columns(); track column.field(); let i = $index) {
+        <div 
+          class="db-grid-cell header-cell"
+          [class]="getAlignClass(column.align())"
+          [style.width]="column.width()"
+          [style.font-size]="rowFontSize()"
+          (click)="onHeaderClick(column, i)">
+          {{ column.header() }}
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Body de la tabla -->
+  <div class="db-grid-body">
+    @for (item of displayedData(); track $index; let rowIndex = $index) {
+      <div 
+        class="db-grid-row data-row"
+        [class.selected]="selectedRowIndex() === rowIndex"
+        [style.height]="rowHeight()"
+        [style.font-size]="rowFontSize()"
+        (click)="onRowClick(item, rowIndex)">
+        
+        @for (column of columns(); track column.field(); let colIndex = $index) {
+          <div 
+            class="db-grid-cell data-cell"
+            [class]="getAlignClass(column.align())"
+            [style.width]="column.width()"
+            (click)="onCellClick(item, column, rowIndex, colIndex)">
+            
+            @if (column.format() === 'CHECK') {
+              <span class="checkbox-cell" [innerHTML]="getCellContent(item, column, rowIndex, colIndex)"></span>
+            } @else {
+              <span [innerHTML]="getCellContent(item, column, rowIndex, colIndex)"></span>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Mensaje cuando no hay datos -->
+    @if (displayedData().length === 0) {
+      <div class="db-grid-no-data">
+        <div class="no-data-message">No hay datos para mostrar</div>
+      </div>
+    }
+  </div>
+
+  <!-- Footer con paginación -->
+  @if (hasFooter() && paginationInfo().totalPages > 1) {
+    <div class="db-grid-footer">
+      <div class="pagination-info">
+        Mostrando {{ paginationInfo().startRow }} - {{ paginationInfo().endRow }} 
+        de {{ paginationInfo().totalRows }} registros
+      </div>
+      
+      <div class="pagination-controls">
+        <!-- Botón Anterior -->
+        <button 
+          class="pagination-btn"
+          [disabled]="!paginationInfo().hasPrevious"
+          (click)="previousPage()">
+          ‹
+        </button>
+
+        <!-- Números de página -->
+        @for (page of visiblePages(); track page) {
+          @if (page === '...') {
+            <span class="pagination-dots">...</span>
+          } @else {
+            <button 
+              class="pagination-btn"
+              [class.active]="page === paginationInfo().currentPage"
+              (click)="goToPage(+page)">
+              {{ page }}
+            </button>
+          }
+        }
+
+        <!-- Botón Siguiente -->
+        <button 
+          class="pagination-btn"
+          [disabled]="!paginationInfo().hasNext"
+          (click)="nextPage()">
+          ›
+        </button>
+      </div>
+    </div>
+  }
+</div>

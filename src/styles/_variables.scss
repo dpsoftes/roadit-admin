@@ -7,7 +7,7 @@
 $roadit-primary: #2D3D32;      // layoutBackGroundColor - Dark Green
 $roadit-accent: #C7D944;       // layoutIconColor - Lime Green
 $roadit-text-on-dark: rgba(255, 255, 255, 0.87); // Dark-Text-Primary
-
+$roadit-content-bg: #EAF0E5 ; // layoutContentBackgroundColor - Light Gray
 // =============================================================================
 // MATERIAL DESIGN 2 COLOR PALETTE
 // =============================================================================
@@ -252,6 +252,8 @@ $container-padding: $spacing-4; // 16px
 $transition-duration-fast: 150ms;
 $transition-duration-normal: 300ms;
 $transition-duration-slow: 500ms;
+$transition-duration: 0.2s !default;
+$transition-easing: ease-in-out !default;
 
 $transition-easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
 $transition-easing-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);

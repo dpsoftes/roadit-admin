@@ -1,6 +1,7 @@
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
 import { computed } from '@angular/core';
-import { LoginResponseDto, UserFullDto, Helpers } from 'shared';
+import { LoginResponseDto, UserFullDto } from '@dtos';
+import { Helpers } from '@utils/helpers';
 import { GlobalStateData } from './global.state';
 import { DevToolsHelper } from './devtools.helper';
 
@@ -22,7 +23,13 @@ export const GlobalStore = signalStore(
   
   // Computed values
   withComputed((state) => ({
-    isAuthenticated: computed(() => !!state.user?.token)
+    isAuthenticated: computed(() => 
+    {
+      if(state.user && state.user().token != "") return true;
+      return false;
+
+    }
+      )
   })),
   
   // Métodos para actualizar el estado

@@ -1,1 +1,7 @@
+@if(!store.global.isAuthenticated()){
+<app-login />
+}
+@else{
 <router-outlet />
+}
+

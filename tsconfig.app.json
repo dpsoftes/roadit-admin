@@ -3,11 +3,27 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
+  "moduleResolution": "node",
+  "forceConsistentCasingInFileNames": true,
+  "outDir": "./out-tsc/app",
+  "module": "ES2022",
     "types": [],
     "baseUrl": "./",
     "paths": {
-      "shared": ["../shared/dist/shared"]
+      "@components/*": ["src/app/components/*"],
+      "@components": ["src/app/components/index.ts"],
+      "@enums/*": ["src/app/core/enums/*"],
+      "@models/*": ["src/app/core/models/*"],
+      "@utils/*": ["src/app/core/utils/*"],
+      "@services/*": ["src/app/core/services/*"],
+      "@services": ["src/app/core/services/index.ts"],
+      "@pipes/*": ["src/app/core/pipes/*"],
+      "@dtos/*": ["src/app/core/dtos/*"],
+      "@dtos": ["src/app/core/dtos/index.ts"],
+      "@store/*": ["src/app/core/store/*"],
+      "@i18n/*": ["src/app/core/i18n/*"],
+      "@assets/*": ["src/assets/*"],
+
     }
   },
   "include": [

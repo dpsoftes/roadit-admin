@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '../../../styles/variables' as *;
+@use 'variables' as *;
 
 // =============================================================================
 // LOGIN PAGE STYLES
@@ -209,8 +209,9 @@
   }
 
   &__label {
-    cursor: pointer;
-    user-select: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
   }
 }
 

@@ -10,12 +10,7 @@ export class StoreService {
   private static _instance: StoreService | null = null;
   
   // Propiedad estática global para acceso desde cualquier lugar
-  static get global(): StoreService {
-    if (!StoreService._instance) {
-      throw new Error('StoreService not initialized yet. Make sure to inject it first.');
-    }
-    return StoreService._instance;
-  }
+
   
   // Store global de la aplicación
   readonly global = inject(GlobalStore);

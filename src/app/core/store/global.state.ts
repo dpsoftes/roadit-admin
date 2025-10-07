@@ -1,4 +1,4 @@
-import { LoginResponseDto, UserFullDto } from "shared";
+import { LoginResponseDto, UserFullDto } from '@dtos';
 
 export class GlobalStateData {
     user: LoginResponseDto = new LoginResponseDto();

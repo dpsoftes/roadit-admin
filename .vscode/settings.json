@@ -1,9 +1,0 @@
-{
-  "npm.packageManager": "npm",
-  "typescript.preferences.useAliasesForRenames": false,
-  "typescript.preferences.includePackageJsonAutoImports": "auto",
-  "typescript.reportStyleChecksAsWarnings": true,
-  "typescript.validate.enable": true,
-  "typescript.suggest.autoImports": true,
-  "typescript.suggest.enabled": true
-}

@@ -36,5 +36,11 @@
     "driver_invoice_emission": "Driver invoice emission",
     "driver_invoices": "Driver invoices",
     "client_invoices": "Client invoices"
+  },
+  "users": {
+    "title": "Users"
+  },
+  "construction": {
+    "title": "Page under construction"
   }
 }

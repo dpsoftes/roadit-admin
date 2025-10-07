@@ -4,17 +4,20 @@ import { authGuard, noAuthGuard } from './core/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./core/layout/layout.component').then(m => m.LayoutComponent),
+    loadComponent: () => import('./pages/layout/layout.component').then(m => m.LayoutComponent),
     canActivate: [authGuard],
     children: [
       {
-        path: 'pruebas',
-        loadComponent: () => import('./pages/pruebas/pruebas.component').then(m => m.PruebasComponent)
+        path: 'Dashboard',
+        loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard)
       },
       {
-        path: '',
-        redirectTo: 'pruebas',
-        pathMatch: 'full'
+        path: 'users',
+        loadComponent: () => import('./pages/users/users').then(m => m.Users)
+      },
+      {
+       path: '**', 
+        loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
       }
     ]
   },
@@ -24,7 +27,7 @@ export const routes: Routes = [
     canActivate: [noAuthGuard]
   },
   {
-    path: '**',
-    redirectTo: 'login'
+    path: '**', 
+    loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
   }
 ];

@@ -2,7 +2,8 @@ import { Pipe, PipeTransform, inject } from '@angular/core';
 import { I18nService } from './i18n.service';
 
 @Pipe({
-  name: 'translate'
+  name: 'translate',
+  pure: false
 })
 export class TranslatePipe implements PipeTransform {
   private i18nService = inject(I18nService);
