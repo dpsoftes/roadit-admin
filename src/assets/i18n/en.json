@@ -38,7 +38,56 @@
     "client_invoices": "Client invoices"
   },
   "users": {
-    "title": "Users"
+    "title": "Users",
+    "profileTittle": "User Profile",
+    "profile": {
+      "upload-photo": "UPLOAD PHOTO",
+      "delete": "DELETE",
+      "photo-upload-explanation": "Allows JPG, GIF or PNG. Max size 800Kb",
+      "name": "Name",
+      "lastname": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "gen-pass": "GENERAR CONTRASEÑA SEGURA",
+      "role": "Role",
+      "status": "Status",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "PENDING": "Pending",
+      "SUSPENDED": "Suspended",
+      "department": "Department",
+      "USER": "User",
+      "ADMIN": "Admin",
+      "CLIENT_USER": "Client",
+      "DRIVER": "Driver",
+      "save-changes": "SAVE CHANGES",
+      "cancel": "CANCEL"
+    },
+    "list": {
+      "photo": "Photo",
+      "name": "Name",
+      "lastname": "Last Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "department": "Department",
+      "actions": "Actions",
+      "searchPlaceholder": "Search Name and Last Name",
+      "filter": "Filters",
+      "filters": "Filters",
+      "create-user": "CREATE NEW USER",
+      "advancedFilters": "Advanced Filters",
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive",
+      "admin": "Administration",
+      "hr": "Human Resources",
+      "finance": "Finance",
+      "dateFrom": "Date from",
+      "dateTo": "Date to",
+      "clearFilters": "Clear filters",
+      "applyFilters": "Apply filters"
+    }
   },
   "construction": {
     "title": "Page under construction"

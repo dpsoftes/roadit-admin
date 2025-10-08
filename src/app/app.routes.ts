@@ -16,9 +16,13 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/users/users').then(m => m.Users)
       },
       {
-       path: '**', 
-        loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
-      }
+        path: 'users/profile',
+        loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
+      },
+      // {
+      //  path: '**', 
+      //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
+      // }
     ]
   },
   {
@@ -26,8 +30,8 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
     canActivate: [noAuthGuard]
   },
-  {
-    path: '**', 
-    loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
-  }
+  // {
+  //   path: '**', 
+  //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
+  // }
 ];

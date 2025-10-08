@@ -1,0 +1,69 @@
+<h1>{{'users.profileTittle' | translate}}</h1>
+<mat-card>
+    <mat-card-header>
+        <img class="user_logo" [src]="user().img" alt="">
+        <div class="actions">
+            <button class="upload_photo_btn" matButton="filled">{{'users.profile.upload-photo' | translate}}</button>
+            <button class="delete_photo_btn" matButton="outlined">{{'users.profile.delete' | translate}}</button>
+            <p class="upload_photo_p">{{'users.profile.photo-upload-explanation' | translate}}</p>
+        </div>
+    </mat-card-header>
+    <mat-card-content >
+        <mat-form-field appearance="outline" class="half_field">
+            <mat-label>{{'users.profile.name' | translate}}</mat-label>
+            <input matInput [value]="user().name">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="half_field">
+            <mat-label>{{'users.profile.lastname' | translate}}</mat-label>
+            <input matInput [value]="user().lastname">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="half_field">
+            <mat-label>{{'users.profile.email' | translate}}</mat-label>
+            <input matInput [value]="user().email">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="quarter_field">
+            <mat-label>{{'users.profile.password' | translate}}</mat-label>
+            <input matInput [type]="showPassword() ? 'text' : 'password'" [value]="user()?.password ?? ''">
+            <button class="pass_icon" mat-icon-button matSuffix type="button" (click)="togglePassword()" 
+                    [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            <mat-icon >{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+        </mat-form-field>
+        <button class="gen_password_btn" matButton="filled">{{'users.profile.gen-pass' | translate}}</button>
+        <mat-form-field class="third_field" appearance="outline">
+            <mat-label>{{'users.profile.role' | translate}}</mat-label>
+
+            <mat-select [value]="user().roles" multiple (selectionChange)="onRolesChange($event.value)">
+                <mat-select-trigger>
+                    <div class="selected-values">
+                        <span class="selected-chip" *ngFor="let r of (user()?.roles ?? [])">{{ 'users.profile.'+r | translate}}</span>
+                    </div>
+                </mat-select-trigger>
+
+                <mat-option *ngFor="let role of roles()" [value]="role">{{ 'users.profile.'+role | translate}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="third_field" appearance="outline">
+            <mat-label>{{'users.profile.status' | translate}}</mat-label>
+            <mat-select [value]="user().status" (selectionChange)="onStatusChange($event.value)">
+                <mat-option *ngFor="let s of  statuses()" [value]="s">{{ 'users.profile.'+s |translate }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="third_field" appearance="outline" multiple>
+            <mat-label>{{'users.profile.department' | translate}}</mat-label>
+            <mat-select [value]="user().departments" multiple (selectionChange)="onDepartmentsChange($event.value)">
+                <mat-select-trigger>
+                    <div class="selected-values">
+                        <span class="selected-chip" *ngFor="let d of (user()?.departments ?? [])">{{ d }}</span>
+                    </div>
+                </mat-select-trigger>
+
+                <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-card-content>
+    <mat-card-footer>
+        <button class="save_btn" matButton="filled">{{'users.profile.save-changes' | translate}}</button>
+        <button class="cancel_btn" matButton="outlined">{{'users.profile.cancel' | translate}}</button>
+    </mat-card-footer>
+</mat-card>
