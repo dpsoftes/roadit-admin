@@ -1,0 +1,255 @@
+@use '../../../styles/variables' as vars;
+
+mat-card-header {
+  display: flex;
+  justify-content: flex-start;
+  
+  .search_input {
+    width: 20%;
+    height: fit-content;
+    
+    ::ng-deep .mat-mdc-form-field-infix {
+      min-height: 40px !important;
+      padding: 8px 0 !important;
+    }
+    
+    input {
+      height: 24px !important;
+      font-size: 14px;
+    }
+  }
+  
+  .filter_button {
+    margin-left: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    color: #333;
+    font-weight: 500;
+    padding: 0 12px;
+    flex-direction: row;
+  }
+  
+  .create_btn {
+    display: flex;
+    margin-left: 50%;
+    background-color: vars.$roadit-accent;
+    color: vars.$roadit-primary;
+    width: 25%;
+    border-radius: 10px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: vars.$font-family-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.filters_panel {
+  margin-top: 16px;
+  padding: 16px;
+//   background-color: vars.$gray-100;
+  border-radius: 8px;
+  border-top: 1px solid vars.$gray-300;
+  
+  .filters_content {
+    display: flex;
+    gap: 16px;
+    
+    .filter_field {
+      min-width: 200px;
+    }
+    
+    .filter_field:first-child {
+      margin-left: 0;
+    }
+}
+}
+
+.filter_button .mat-icon {
+  order: 2 !important;
+}
+
+
+mat-card-content {
+  table {
+    width: 100%;
+    
+    th {
+      font-size: 14px;
+      font-family: vars.$font-family-primary;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: vars.$text-primary;
+      background-color: vars.$gray-100;
+      position: relative;
+      
+      &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 20%;
+        bottom: 20%;
+        width: 1px;
+        background-color: vars.$gray-300;
+      }
+    }
+    
+    mat-icon {
+      font-size: 20px;
+      color: vars.$text-primary;
+    }
+    
+    .edit_icon {
+      color: vars.$warning;
+    }
+    
+    .delete_icon {
+      color: vars.$error;
+    }
+    
+    .actions-container {
+      display: flex;
+      gap: 4px;
+      
+      .action-button {
+        transition: vars.$transition-color;
+        
+        &.action-primary {
+          color: vars.$primary !important;
+          
+          mat-icon {
+            color: vars.$primary !important;
+          }
+          
+          &:hover {
+            color: vars.$primary-dark !important;
+            background-color: rgba(vars.$primary, 0.04) !important;
+            
+            mat-icon {
+              color: vars.$primary-dark !important;
+            }
+          }
+        }
+        
+        &.action-accent {
+          color: vars.$secondary !important;
+          
+          mat-icon {
+            color: vars.$secondary !important;
+          }
+          
+          &:hover {
+            color: vars.$secondary-dark !important;
+            background-color: rgba(vars.$secondary, 0.04) !important;
+            
+            mat-icon {
+              color: vars.$secondary-dark !important;
+            }
+          }
+        }
+        
+        &.action-warn {
+          color: vars.$warning !important;
+          
+          mat-icon {
+            color: vars.$warning !important;
+          }
+          
+          &:hover {
+            color: vars.$warning-dark !important;
+            background-color: rgba(vars.$warning, 0.04) !important;
+            
+            mat-icon {
+              color: vars.$warning-dark !important;
+            }
+          }
+        }
+        
+        &.action-error {
+          color: vars.$error !important;
+          
+          mat-icon {
+            color: vars.$error !important;
+          }
+          
+          &:hover {
+            color: vars.$error-dark !important;
+            background-color: rgba(vars.$error, 0.04) !important;
+            
+            mat-icon {
+              color: vars.$error-dark !important;
+            }
+          }
+        }
+        
+        &:disabled {
+          color: vars.$text-disabled !important;
+          background-color: transparent !important;
+          
+          mat-icon {
+            color: vars.$text-disabled !important;
+          }
+        }
+      }
+    }
+  }
+
+  // Chip styles
+  ::ng-deep .role-chip {
+    font-size: 12px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+  }
+  
+  ::ng-deep .department-chip {
+    font-size: 12px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+  }
+  
+  ::ng-deep .status-chip {
+    font-size: 12px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    
+    &.active {
+      background-color: vars.$success-light !important;
+      
+      .mdc-evolution-chip__text-label {
+        color: vars.$success-dark !important;
+      }
+    }
+    
+    &.inactive {
+      background-color: vars.$error-light !important;
+      
+      .mdc-evolution-chip__text-label {
+        color: vars.$error-dark !important;
+      }
+    }
+    
+    &.pending {
+      background-color: vars.$warning-light !important;
+      
+      .mdc-evolution-chip__text-label {
+        color: vars.$warning-dark !important;
+      }
+    }
+    
+    &.suspended {
+      background-color: vars.$gray-500 !important;
+      
+      .mdc-evolution-chip__text-label {
+        color: vars.$text-primary !important;
+      }
+    }
+  }
+}

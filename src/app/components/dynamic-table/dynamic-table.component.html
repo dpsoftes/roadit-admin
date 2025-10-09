@@ -1,0 +1,128 @@
+<mat-card>
+  <mat-card-header>
+      <mat-form-field *ngIf="config.searchable" appearance="outline" class="search_input">
+        <input 
+          matInput 
+          [placeholder]="(config.searchPlaceholder || 'users.list.searchPlaceholder') | translate" 
+          [value]="searchTerm()"
+          (input)="onSearchChange($event.target.value)">
+      </mat-form-field>
+
+    <button 
+      *ngIf="config.filterable && config.filters" 
+      mat-button 
+      class="filter_button" 
+      (click)="toggleFilters()">
+      {{ 'users.list.filters' | translate }}
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+
+    <button 
+      *ngIf="config.actions?.create" 
+      mat-icon-button 
+      [routerLink]="config.actions?.create?.route || ''"
+      (click)="onCreateClick()"
+      class="create_btn">
+      {{ (config.actions?.create?.label || '') | translate }}
+    </button>
+  </mat-card-header>
+
+  <!-- Filters Panel -->
+  <div *ngIf="showFilters() && config.filterable && config.filters" class="filters_panel">
+    <div class="filters_content">
+      <mat-form-field 
+        *ngFor="let filter of config.filters" 
+        appearance="outline" 
+        class="filter_field">
+        <mat-label>{{ filter.label | translate }}</mat-label>
+        <mat-select 
+          [value]="filters()[filter.key] || ''"
+          (selectionChange)="onFilterChange(filter.key, $event.value)">
+          <mat-option value="">{{ 'users.list.all' | translate }}</mat-option>
+          <mat-option 
+            *ngFor="let option of filter.options" 
+            [value]="option.value">
+            {{ option.label | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-card-content>
+    <table mat-table [dataSource]="config.data" class="mat-elevation-z1" role="table">
+      
+      <ng-container *ngIf="config.selectable" matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            color="primary"
+            (change)="masterToggle()"
+            [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            color="primary"
+            (click)="$event.stopPropagation()"
+            (change)="selection.toggle(row)"
+            [checked]="selection.isSelected(row)"
+            [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container *ngFor="let column of config.columns" [matColumnDef]="column.key">
+        <th mat-header-cell *matHeaderCellDef>{{ column.label | translate }}</th>
+        <td mat-cell *matCellDef="let element">
+          
+          <span *ngIf="column.type === 'text'">
+            {{ getCellValue(element, column) }}
+          </span>
+
+          <img 
+            *ngIf="column.type === 'image'"
+            [src]="getCellValue(element, column)"
+            [width]="column.imageConfig?.width || '40'"
+            [height]="column.imageConfig?.height || '40'"
+            [alt]="column.imageConfig?.alt || ''"
+            (error)="$event.target.src = column.imageConfig?.fallback || 'assets/images/sample_user_icon.png'">
+
+          <mat-chip 
+            *ngIf="column.type === 'chip'"
+            [class]="getChipClass(column.chipConfig || {}, getCellValue(element, column))">
+            {{ getChipText(column.chipConfig || {}, getCellValue(element, column)) | translate }}
+          </mat-chip>
+
+          <div *ngIf="column.type === 'actions'" class="actions-container">
+            <button 
+              *ngFor="let action of column.actionConfig?.actions"
+              mat-icon-button 
+              [class]="getActionButtonClass(action.color)"
+              (click)="onActionClick(action.action, element)"
+              [disabled]="!shouldShowAction(action, element)"
+              [title]="action.label">
+              <mat-icon [fontSet]="action.icon.includes('material-symbols') ? 'material-symbols-outlined' : ''">
+                {{ action.icon.replace('material-symbols-outlined/', '') }}
+              </mat-icon>
+            </button>
+          </div>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator 
+      *ngIf="config.pagination"
+      [length]="config.data.length" 
+      [pageSize]="config.pageSize || 10" 
+      [pageSizeOptions]="config.pageSizeOptions || [10, 20, 50]"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+
+  </mat-card-content>
+</mat-card>

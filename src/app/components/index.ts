@@ -8,3 +8,8 @@ export * from './db-grid/db-grid.component';
 export * from './db-grid/db-grid.interfaces';
 export * from './db-grid/grid-formatter.service';
 
+export * from './dynamic-table/dynamic-table.component';
+export * from './dynamic-table/dynamic-table.interfaces';
+
+export * from './user-form/user-form';
+

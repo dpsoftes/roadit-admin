@@ -38,7 +38,57 @@
     "client_invoices": "Facturas clientes"
   },
   "users": {
-    "title": "Usuarios"
+    "title": "Usuarios",
+    "profileTittle": "Perfil de Usuario",
+    "create-user": "Crear Nuevo usuario",
+    "profile": {
+      "upload-photo": "SUBIR FOTO",
+      "delete": "ELIMINAR",
+      "photo-upload-explanation": "Permite JPG, GIF o PNG. Tamaño max. 800Kb",
+      "name": "Nombre",
+      "lastname": "Apellidos",
+      "email": "Email",
+      "password": "Contraseña",
+      "gen-pass":"GENERAR CONTRASEÑA SEGURA",
+      "role": "Rol",
+      "status": "Estado",
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo",
+      "PENDING": "Pendiente",
+      "SUSPENDED": "Suspendido",
+      "department": "Departamento",
+      "USER": "Usuario",
+      "ADMIN": "Administrador",
+      "CLIENT_USER": "Cliente",
+      "DRIVER": "Conductor",
+      "save-changes": "GUARDAR CAMBIOS",
+      "cancel": "CANCELAR"
+    },
+    "list": {
+      "photo": "Foto",
+      "name": "Nombre",
+      "lastname": "Apellidos",
+      "email": "Email",
+      "role": "Rol",
+      "status": "Estado",
+      "department": "Departamento",
+      "actions": "Acciones",
+      "searchPlaceholder": "Buscar Nombre y Apellidos",
+      "filter": "Filtros",
+      "filters": "Filtros",
+      "create-user": "CREAR NUEVO USUARIO",
+      "advancedFilters": "Filtros Avanzados",
+      "all": "Todos",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "admin": "Administración",
+      "hr": "Recursos Humanos",
+      "finance": "Finanzas",
+      "dateFrom": "Fecha desde",
+      "dateTo": "Fecha hasta",
+      "clearFilters": "Limpiar filtros",
+      "applyFilters": "Aplicar filtros"
+    }
   },
   "construction": {
     "title": "Página en construcción"

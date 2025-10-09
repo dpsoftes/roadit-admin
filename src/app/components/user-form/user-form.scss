@@ -1,0 +1,125 @@
+@use '../../../styles/variables' as vars;
+
+mat-card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+    
+    .photo-section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+    }
+}
+
+.user_logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.actions {
+    button {
+        margin-top: 20px;
+        &.upload_photo_btn {
+            background-color: vars.$roadit-accent;
+            color: vars.$roadit-primary;
+        }
+        &.delete_photo_btn {
+            margin-left: 20px;
+            background-color: transparent;
+            color: vars.$error;
+            border: 1px solid vars.$error;
+        }
+    }
+    .upload_photo_p {
+        font-size: 12px;
+        color: vars.$text-secondary;
+        margin-top: 10px;
+    }
+}
+
+mat-card-content {
+    width: 100%;
+    padding: 20px;
+    
+    mat-form-field {
+        border-radius: 50%;
+    }
+    
+    mat-form-field.half_field {
+        width: 50%;
+        padding: 0px 10px;
+    }
+    
+    mat-form-field.full_field {
+        width: 100%;
+        padding: 0px 10px;
+    }
+    
+    mat-form-field.quarter_field {
+        width: 25%;
+        padding: 0px 10px;
+    }
+    
+    mat-form-field.third_field {
+        width: 33.33%;
+        padding: 0px 10px;
+
+        .selected-values {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+            min-height: 28px;
+        }
+
+        .selected-chip {
+            background-color: vars.$gray-300;
+            color: vars.$text-primary;
+            border-radius: 16px;
+            height: 28px;
+            line-height: 28px;
+            padding: 0 8px;
+            font-size: 13px;
+        }
+    }
+    
+    .gen_password_btn {
+        width: 24%;
+        font-size: 14px;
+        background-color: vars.$gray-500;
+        color: vars.$white;
+    }
+    
+    .pass_icon {
+        color: vars.$text-secondary;
+        background-color: vars.$white;
+        cursor: pointer;
+        border: none;
+        margin-right: 10px;
+    }
+}
+
+mat-card-footer {
+    display: flex;
+    justify-content: flex-start;
+    padding: 20px;
+    
+    button {
+        &.save_btn {
+            background-color: vars.$roadit-accent;
+            color: vars.$roadit-primary;
+            margin-left: 10px;
+        }
+        &.cancel_btn {
+            margin-left: 10px;
+            background-color: transparent;
+            color: vars.$text-secondary;
+            border: 1px solid vars.$text-secondary;
+        }
+    }
+}
