@@ -5,7 +5,7 @@ mat-card-header {
   justify-content: flex-start;
   
   .search_input {
-    width: 20%;
+    width: 30%;
     height: fit-content;
     
     ::ng-deep .mat-mdc-form-field-infix {
@@ -20,6 +20,7 @@ mat-card-header {
   }
   
   .filter_button {
+    width: 10%;
     margin-left: 10px;
     height: 40px;
     display: flex;
@@ -34,9 +35,37 @@ mat-card-header {
     flex-direction: row;
   }
   
+  .export_button {
+    width: 20%;
+    margin-left: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: transparent;
+    border: none;
+    color: #333;
+    font-weight: 500;
+    padding: 0 12px;
+    flex-direction: row;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: vars.$primary;
+    }
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+  
   .create_btn {
     display: flex;
-    margin-left: 50%;
+    margin-left: 35%;
     background-color: vars.$roadit-accent;
     color: vars.$roadit-primary;
     width: 25%;

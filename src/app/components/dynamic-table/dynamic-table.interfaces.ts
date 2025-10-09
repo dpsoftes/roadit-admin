@@ -45,6 +45,7 @@ export interface TableConfig {
   searchPlaceholder?: string;
   filterable?: boolean;
   filters?: FilterConfig[];
+  exportable?: boolean;
   actions?: TableActions;
 }
 
@@ -73,7 +74,7 @@ export interface TableActions {
 }
 
 export interface TableEvent {
-  type: 'select' | 'action' | 'filter' | 'search' | 'page';
+  type: 'select' | 'action' | 'filter' | 'search' | 'page' | 'export';
   data?: any;
   action?: string;
   filters?: any;

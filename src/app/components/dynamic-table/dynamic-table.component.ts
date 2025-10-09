@@ -180,6 +180,11 @@ export class DynamicTableComponent implements OnInit {
     this.emitEvent('action', { action: 'create' });
   }
 
+  // Export CSV action
+  onExportCSV() {
+    this.emitEvent('export', { data: this.config.data });
+  }
+
   private emitEvent(type: TableEvent['type'], data?: any) {
     this.tableEvent.emit({ type, data });
   }

@@ -87,7 +87,8 @@
       "dateFrom": "Date from",
       "dateTo": "Date to",
       "clearFilters": "Clear filters",
-      "applyFilters": "Apply filters"
+      "applyFilters": "Apply filters",
+      "exportCSV": "Export CSV"
     }
   },
   "construction": {

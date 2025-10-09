@@ -18,6 +18,15 @@
     </button>
 
     <button 
+      *ngIf="config.exportable" 
+      mat-button 
+      class="export_button" 
+      (click)="onExportCSV()">
+      <mat-icon>download</mat-icon>
+      {{ 'users.list.exportCSV' | translate }}
+    </button>
+
+    <button 
       *ngIf="config.actions?.create" 
       mat-icon-button 
       [routerLink]="config.actions?.create?.route || ''"
