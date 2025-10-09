@@ -1,5 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { GlobalStore } from './global';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class StoreService {
   
   // Store global de la aplicación
   readonly global = inject(GlobalStore);
+  get isDebug() {
+    return !environment.production;
+  }
 
   constructor() {
     // Establecer la instancia singleton

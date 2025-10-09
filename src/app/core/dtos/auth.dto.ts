@@ -8,17 +8,17 @@ import { User } from './user.dto';
  * LoginRequestDto - Input para login
  */
 export class LoginRequestDto {
-    username: string;
+    email: string;
     password: string;
 
     constructor(data: any = {}) {
-        this.username = data.username || '';
+        this.email = data.email || '';
         this.password = data.password || '';
     }
 
     toJson(): any {
         return {
-            username: this.username,
+            email: this.email,
             password: this.password
         };
     }

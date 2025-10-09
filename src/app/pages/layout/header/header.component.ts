@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { EnvironmentService } from '../../../core/services/environment.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 
+
 export interface User {
   name?: string;
   email?: string;

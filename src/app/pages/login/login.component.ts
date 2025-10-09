@@ -9,6 +9,7 @@ import { EnvironmentService } from '@services/environment.service';
 import { ApiService, EndPoints } from '@services';
 import { LoginRequestDto, LoginResponseDto } from '@dtos';
 import { GlobalStore } from '@store/global';
+import { StoreService } from '@store/store.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent {
   isLoading = signal(false);
   
   private globalStore = inject(GlobalStore);
-  
+  private store = inject(StoreService);
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -32,8 +33,8 @@ export class LoginComponent {
     private apiService: ApiService
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, this.emailOrUsernameValidator]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      email: [this.store.isDebug ? 'admintest@example.com' : '', [Validators.required, this.emailOrUsernameValidator]],
+      password: [this.store.isDebug ? '12345Ab.' : '', [Validators.required, Validators.minLength(6)]],
       rememberMe: [false]
     });
 
@@ -59,7 +60,7 @@ export class LoginComponent {
       try {
         // Crear el DTO de request
         const loginRequest = new LoginRequestDto({
-          username: this.loginForm.get('email')?.value,
+          email: this.loginForm.get('email')?.value,
           password: this.loginForm.get('password')?.value
         });
 
