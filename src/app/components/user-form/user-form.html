@@ -1,0 +1,76 @@
+<mat-card>
+    <mat-card-header *ngIf="showPhotoSection">
+        <div class="photo-section">
+            <img class="user_logo" [src]="userData().img || 'assets/images/sample_user_icon.png'" alt="">
+            <div class="actions">
+                <button class="upload_photo_btn" matButton="filled" (click)="onPhotoChanged('')">{{'users.profile.upload-photo' | translate}}</button>
+                <button class="delete_photo_btn" matButton="outlined" (click)="onPhotoDeleted('')">{{'users.profile.delete' | translate}}</button>
+                <p class="upload_photo_p">{{'users.profile.photo-upload-explanation' | translate}}</p>
+            </div>
+        </div>
+    </mat-card-header>
+    
+    <mat-card-content>
+        <mat-form-field appearance="outline" class="half_field">
+            <mat-label>{{'users.profile.name' | translate}}</mat-label>
+            <input matInput [value]="isCreating ? '' : userData().name" (input)="updateUserData({name: $event.target.value})">
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="half_field">
+            <mat-label>{{'users.profile.lastname' | translate}}</mat-label>
+            <input matInput [value]="isCreating ? '' : userData().lastname" (input)="updateUserData({lastname: $event.target.value})">
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="half_field">
+            <mat-label>{{'users.profile.email' | translate}}</mat-label>
+            <input matInput [value]="isCreating ? '' : userData().email" (input)="updateUserData({email: $event.target.value})">
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="quarter_field" *ngIf="showPasswordField">
+            <mat-label>{{'users.profile.password' | translate}}</mat-label>
+            <input matInput [type]="showPassword() ? 'text' : 'password'" [value]="isCreating ? '' : userData().password" (input)="updateUserData({password: $event.target.value})">
+            <button class="pass_icon" mat-icon-button matSuffix type="button" (click)="togglePassword()" 
+                    [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+        </mat-form-field>
+        
+        <button class="gen_password_btn" matButton="filled" *ngIf="showPasswordField">{{'users.profile.gen-pass' | translate}}</button>
+        
+        <mat-form-field class="third_field" appearance="outline">
+            <mat-label>{{'users.profile.role' | translate}}</mat-label>
+            <mat-select [value]="isCreating ? [] : userData().roles" multiple (selectionChange)="onRolesChange($event.value)">
+                <mat-select-trigger>
+                    <div class="selected-values">
+                        <span class="selected-chip" *ngFor="let r of (isCreating ? [] : userData().roles)">{{ 'users.profile.'+r | translate}}</span>
+                    </div>
+                </mat-select-trigger>
+                <mat-option *ngFor="let role of roles()" [value]="role">{{ 'users.profile.'+role | translate}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field class="third_field" appearance="outline">
+            <mat-label>{{'users.profile.status' | translate}}</mat-label>
+            <mat-select [value]="isCreating ? 'ACTIVE' : userData().status" (selectionChange)="onStatusChange($event.value)">
+                <mat-option *ngFor="let s of statuses()" [value]="s">{{ 'users.profile.'+s | translate }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field class="third_field" appearance="outline" multiple>
+            <mat-label>{{'users.profile.department' | translate}}</mat-label>
+            <mat-select [value]="isCreating ? [] : userData().departments" multiple (selectionChange)="onDepartmentsChange($event.value)">
+                <mat-select-trigger>
+                    <div class="selected-values">
+                        <span class="selected-chip" *ngFor="let d of (isCreating ? [] : userData().departments)">{{ d }}</span>
+                    </div>
+                </mat-select-trigger>
+                <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-card-content>
+    
+    <mat-card-footer *ngIf="showFooterButtons">
+        <button class="save_btn" matButton="filled" (click)="onSave()">{{'users.profile.save-changes' | translate}}</button>
+        <button class="cancel_btn" matButton="outlined" (click)="onCancel()">{{'users.profile.cancel' | translate}}</button>
+    </mat-card-footer>
+</mat-card>

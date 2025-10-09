@@ -40,6 +40,7 @@
   "users": {
     "title": "Usuarios",
     "profileTittle": "Perfil de Usuario",
+    "create-user": "Crear Nuevo usuario",
     "profile": {
       "upload-photo": "SUBIR FOTO",
       "delete": "ELIMINAR",

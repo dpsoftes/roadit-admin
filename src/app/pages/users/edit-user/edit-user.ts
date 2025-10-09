@@ -1,52 +1,47 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { UserForm, UserFormData } from '@components/user-form/user-form';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-edit-user',
   imports: [
     CommonModule,
     TranslatePipe,
     UserForm
   ],
-  templateUrl: './profile.html',
-  styleUrls: ['./profile.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './edit-user.html',
+  styleUrl: './edit-user.scss'
 })
-export class Profile {
+export class EditUser {
   userData = signal<UserFormData>({
-    name: 'John',
-    lastname: 'Doe',
-    email: 'john@doe.com',
+    name: 'Luis',
+    lastname: 'Garcia',
+    email: 'luis@gmail.com',
     img: 'assets/images/sample_user_icon.png',
-    password: 'password',
-    roles: ['USER'],
+    password: '123456',
+    roles: ['ADMIN'],
     status: 'ACTIVE',
-    departments: ['Comercial', 'Marketing']
+    departments: ['IT']
   });
 
-  departments = ['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH'];
+  constructor(private router: Router) {}
 
   onUserDataChange(userData: UserFormData): void {
     this.userData.set(userData);
   }
-
   onSave(userData: UserFormData): void {
     console.log('Guardando usuario:', userData);
-    // Aquí implementarías la lógica de guardado
   }
-
   onCancel(): void {
     console.log('Cancelando cambios');
-    // Aquí implementarías la lógica de cancelación
   }
-
   onPhotoChanged(photo: string): void {
     console.log('Foto cambiada:', photo);
   }
-
   onPhotoDeleted(photo: string): void {
     console.log('Foto eliminada:', photo);
   }
+
 }

@@ -1,7 +1,7 @@
-<h1>{{'users.profileTittle' | translate}}</h1>
+<h1>{{'users.edit-user' | translate}}</h1>
 <app-user-form 
     [userData]="userData"
-    [departments]="departments"
+    [departments]="userData().departments"
     [showPhotoSection]="true"
     [showPasswordField]="true"
     [showFooterButtons]="true"

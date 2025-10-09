@@ -1,29 +1,29 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { UserForm, UserFormData } from '@components/user-form/user-form';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-create-user',
   imports: [
     CommonModule,
     TranslatePipe,
     UserForm
   ],
-  templateUrl: './profile.html',
-  styleUrls: ['./profile.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './create-user.html',
+  styleUrl: './create-user.scss'
 })
-export class Profile {
+export class CreateUser {
+
   userData = signal<UserFormData>({
-    name: 'John',
-    lastname: 'Doe',
-    email: 'john@doe.com',
+    name: '',
+    lastname: '',
+    email: '',
     img: 'assets/images/sample_user_icon.png',
-    password: 'password',
-    roles: ['USER'],
+    password: '',
+    roles: [],
     status: 'ACTIVE',
-    departments: ['Comercial', 'Marketing']
+    departments: []
   });
 
   departments = ['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH'];
@@ -33,13 +33,11 @@ export class Profile {
   }
 
   onSave(userData: UserFormData): void {
-    console.log('Guardando usuario:', userData);
-    // Aquí implementarías la lógica de guardado
+    console.log('Creando usuario:', userData);
   }
 
   onCancel(): void {
-    console.log('Cancelando cambios');
-    // Aquí implementarías la lógica de cancelación
+    console.log('Cancelando creación');
   }
 
   onPhotoChanged(photo: string): void {
