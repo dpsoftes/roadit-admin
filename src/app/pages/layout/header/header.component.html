@@ -32,17 +32,17 @@
     </div>
 
     <!-- Información del usuario -->
-    <div class="user-info">
-      @if (currentUser()?.name) {
-        <span class="user-name">{{ currentUser()?.name }}</span>
+    <div class="user-info" (click)="onProfile()" >
+      @if (currentUser().name) {
+        <span class="user-name">{{ currentUser().name }}</span>
       } @else {
         <span class="user-name">Nombre de usuario</span>
       }
       
       <!-- Avatar del usuario -->
       <div class="user-avatar">
-        @if (currentUser()?.avatar) {
-          <img [src]="currentUser()?.avatar" [alt]="currentUser()?.name || 'Avatar'" class="avatar-image" />
+        @if (currentUser().image) {
+          <img [src]="currentUser().image" [alt]="currentUser().image || 'Avatar'" class="avatar-image" />
         } @else {
           <div class="avatar-placeholder">
             <span class="material-icons">person</span>

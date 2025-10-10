@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { I18nService } from '@i18n/i18n.service';
 import { TranslatePipe } from '@i18n//translate.pipe';
 import { EnvironmentService } from '@services/environment.service';
-import { ApiService, EndPoints } from '@services';
+import { ApiService, EndPoints, HttpMethod } from '@services';
 import { LoginRequestDto, LoginResponseDto } from '@dtos';
 import { GlobalStore } from '@store/global';
 import { StoreService } from '@store/store.service';
@@ -38,15 +38,7 @@ export class LoginComponent {
       rememberMe: [false]
     });
 
-    // Ejemplo de uso del environment service
-    if (this.envService.isDevelopment) {
-      console.log('🔧 Modo desarrollo activado');
-      console.log('API URL:', this.envService.apiUrl);
-      console.log('Environment info:', this.envService.getEnvironmentInfo());
-      
-      // Verificar que ApiService está configurado correctamente
-      console.log('🌐 ApiService Base URL:', this.apiService.getBaseUrl());
-    }
+
   }
 
   togglePasswordVisibility(): void {
@@ -65,10 +57,7 @@ export class LoginComponent {
         });
 
         // Llamar al API
-        const loginResponse = await this.apiService.post<LoginResponseDto>(
-          EndPoints.login,
-          loginRequest.toJson()
-        );
+        const loginResponse = await this.apiService.call<LoginResponseDto>(HttpMethod.POST, {url: EndPoints.login, body: loginRequest.toJson()});
 
         // Convertir la respuesta a DTO
         const loginDto = LoginResponseDto.fromJson(loginResponse);

@@ -30,7 +30,20 @@ export const GlobalStore = signalStore(
       return false;
 
     }
-      )
+      ),
+      token: computed(() => {
+      if (state.user && state.user().token != "") {
+        const expiration = Helpers.getStorage('roadit_token_expiration');
+        if (expiration) {
+          const expDate = new Date(expiration);
+          const now = new Date();
+          if (now < expDate) {
+            return state.user().token;
+          }
+        }
+      }
+      return "expired";
+    })
   })),
   
   // Métodos para actualizar el estado

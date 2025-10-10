@@ -23,6 +23,7 @@
       "@store/*": ["src/app/core/store/*"],
       "@i18n/*": ["src/app/core/i18n/*"],
       "@assets/*": ["src/assets/*"],
+      "@providers": ["src/app/core/providers/index.ts"],
 
     }
   },

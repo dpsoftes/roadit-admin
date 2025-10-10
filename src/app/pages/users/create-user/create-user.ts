@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { UserForm, UserFormData } from '@components/user-form/user-form';
+import { UserForm} from '@components/user-form/user-form';
 
 @Component({
   selector: 'app-create-user',
@@ -15,20 +15,9 @@ import { UserForm, UserFormData } from '@components/user-form/user-form';
 })
 export class CreateUser {
 
-  userData = signal<UserFormData>({
-    name: '',
-    lastname: '',
-    email: '',
-    img: 'assets/images/sample_user_icon.png',
-    password: '',
-    roles: [],
-    status: 'ACTIVE',
-    departments: []
-  });
-
   departments = ['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH'];
 
-  onUserDataChange(userData: UserFormData): void {
+/*   onUserDataChange(userData: UserFormData): void {
     this.userData.set(userData);
   }
 
@@ -36,7 +25,7 @@ export class CreateUser {
     console.log('Creando usuario:', userData);
   }
 
-  onCancel(): void {
+ */  onCancel(): void {
     console.log('Cancelando creación');
   }
 

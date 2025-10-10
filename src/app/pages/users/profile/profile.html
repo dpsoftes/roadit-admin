@@ -1,13 +1,10 @@
 <h1>{{'users.profileTittle' | translate}}</h1>
 <app-user-form 
-    [userData]="userData"
     [departments]="departments"
     [showPhotoSection]="true"
     [showPasswordField]="true"
     [showFooterButtons]="true"
     [isCreating]="false"
-    (userDataChange)="onUserDataChange($event)"
-    (save)="onSave($event)"
     (cancel)="onCancel()"
     (photoChanged)="onPhotoChanged($event)"
     (photoDeleted)="onPhotoDeleted($event)">

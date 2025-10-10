@@ -1,3 +1,4 @@
+
 /**
  * Servicio API principal para manejo de llamadas HTTP
  * Servicio singleton para todas las operaciones con el backend Django
@@ -6,13 +7,18 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { HttpMethod } from './EndPoints';
+import { EndPoints, HttpMethod } from './EndPoints';
+import { Helpers } from '@utils/helpers';
+import { GlobalStore } from '@store/global';
 
-export interface ApiCallConfig<T = any> {
-    type: HttpMethod;
-    endpoint: string;
-    params?: Record<string, any>;
-    body?: T;
+
+export interface ApiRequestOptions {
+    url: string;
+    queryParams?: Record<string, any>;
+    formParams?: Record<string, any>;
+    fileParams?: { [key: string]: File };
+    body?: any;
+    withoutAuth?: boolean;
 }
 
 @Injectable({
@@ -21,7 +27,7 @@ export interface ApiCallConfig<T = any> {
 export class ApiService {
     private readonly http = inject(HttpClient);
     private baseUrl = 'http://localhost:8000/api'; // URL base del backend Django
-
+    private globalStore = inject(GlobalStore);
     /**
      * Permite cambiar la URL base dinámicamente
      */
@@ -46,108 +52,89 @@ export class ApiService {
         return `${cleanBaseUrl}/${cleanEndpoint}`;
     }
 
-    /**
-     * Realiza una petición GET
-     */
-    async get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
+
+    async get<T>(options: ApiRequestOptions): Promise<T> {
         try {
-            const url = this.buildFullUrl(endpoint);
-            const httpParams = this.buildHttpParams(params);
+            const { headers, params, url } = await this.buildRequestOptions(options);
             const response = await firstValueFrom(
-                this.http.get<T>(url, { params: httpParams })
+                this.http.get<T>(url, { params, headers })
             );
             return response;
         } catch (error) {
-            this.handleError(error, HttpMethod.GET, endpoint);
+            this.handleError(error, HttpMethod.GET, options.url);
             throw error;
         }
     }
 
-    /**
-     * Realiza una petición POST
-     */
-    async post<T>(endpoint: string, body?: any, params?: Record<string, any>): Promise<T> {
+
+    async post<T>(options: ApiRequestOptions): Promise<T> {
         try {
-            const url = this.buildFullUrl(endpoint);
-            const httpParams = this.buildHttpParams(params);
+            const { headers, params, body, url } = await this.buildRequestOptions(options);
             const response = await firstValueFrom(
-                this.http.post<T>(url, body, { params: httpParams })
+                this.http.post<T>(url, body, { params, headers })
             );
             return response;
         } catch (error) {
-            this.handleError(error, HttpMethod.POST, endpoint);
+            this.handleError(error, HttpMethod.POST, options.url);
             throw error;
         }
     }
 
-    /**
-     * Realiza una petición PATCH
-     */
-    async patch<T>(endpoint: string, body?: any, params?: Record<string, any>): Promise<T> {
+
+    async patch<T>(options: ApiRequestOptions): Promise<T> {
         try {
-            const url = this.buildFullUrl(endpoint);
-            const httpParams = this.buildHttpParams(params);
+            const { headers, params, body, url } = await this.buildRequestOptions(options);
             const response = await firstValueFrom(
-                this.http.patch<T>(url, body, { params: httpParams })
+                this.http.patch<T>(url, body, { params, headers })
             );
             return response;
         } catch (error) {
-            this.handleError(error, HttpMethod.PATCH, endpoint);
+            this.handleError(error, HttpMethod.PATCH, options.url);
             throw error;
         }
     }
 
-    /**
-     * Realiza una petición PUT
-     */
-    async put<T>(endpoint: string, body?: any, params?: Record<string, any>): Promise<T> {
+
+    async put<T>(options: ApiRequestOptions): Promise<T> {
         try {
-            const url = this.buildFullUrl(endpoint);
-            const httpParams = this.buildHttpParams(params);
+            const { headers, params, body, url } = await this.buildRequestOptions(options);
             const response = await firstValueFrom(
-                this.http.put<T>(url, body, { params: httpParams })
+                this.http.put<T>(url, body, { params, headers })
             );
             return response;
         } catch (error) {
-            this.handleError(error, HttpMethod.PUT, endpoint);
+            this.handleError(error, HttpMethod.PUT, options.url);
             throw error;
         }
     }
 
-    /**
-     * Realiza una petición DELETE
-     */
-    async delete<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
+
+    async delete<T>(options: ApiRequestOptions): Promise<T> {
         try {
-            const url = this.buildFullUrl(endpoint);
-            const httpParams = this.buildHttpParams(params);
+            const { headers, params, url } = await this.buildRequestOptions(options);
             const response = await firstValueFrom(
-                this.http.delete<T>(url, { params: httpParams })
+                this.http.delete<T>(url, { params, headers })
             );
             return response;
         } catch (error) {
-            this.handleError(error, HttpMethod.DELETE, endpoint);
+            this.handleError(error, HttpMethod.DELETE, options.url);
             throw error;
         }
     }
 
-    /**
-     * Método universal que llama al método HTTP correspondiente
-     */
-    async call<T>(config: ApiCallConfig): Promise<T> {
-        const { type, endpoint, params, body } = config;
 
+    async call<T>(type: HttpMethod, options: ApiRequestOptions): Promise<T> {
         switch (type) {
             case HttpMethod.GET:
-                return this.get<T>(endpoint, params);
+                return this.get<T>(options);
             case HttpMethod.POST:
-                return this.post<T>(endpoint, body, params);
+                return this.post<T>(options);
             case HttpMethod.PATCH:
-                return this.patch<T>(endpoint, body, params);
+                return this.patch<T>(options);
             case HttpMethod.PUT:
-                return this.put<T>(endpoint, body, params);
+                return this.put<T>(options);
             case HttpMethod.DELETE:
-                return this.delete<T>(endpoint, params);
+                return this.delete<T>(options);
             default:
                 throw new Error(`Método HTTP no soportado: ${type}`);
         }
@@ -197,5 +184,75 @@ export class ApiService {
                     console.error(`Error HTTP ${error.status}: ${error.message}`);
             }
         }
+    }
+    async getHeader(): Promise<{ [header: string]: string }> {
+        
+        if (this.globalStore.isAuthenticated()) {
+            let token = this.globalStore.token();
+            if (token === "expired") {
+                // Obtener refresh token
+                const refreshToken = this.globalStore.user()['refresh-token'];
+                // Llamar a refresh endpoint usando el nuevo formato
+                const response = await this.post<{ token: string; ['refresh-token']: string }>({
+                    url: EndPoints.refreshToken,
+                    body: { refresh: refreshToken },
+                    withoutAuth: true
+                });
+                token = response.token;
+                // Actualizar token y refresh-token en global.user
+                const user = this.globalStore.user();
+                user.token = response.token;
+                user['refresh-token'] = response['refresh-token'];
+                this.globalStore.setUser(user); // Asume que existe setUser para actualizar el usuario
+                // Actualizar en storage
+                Helpers.setStorage('roadit_user', user);
+            }
+            return { Authorization: `Bearer ${token}` };
+        }
+        return {};
+    }
+    private async buildRequestOptions(options: ApiRequestOptions): Promise<{ headers: any; params: HttpParams; body: any; url: string }> {
+        let { url, queryParams, formParams, fileParams, body, withoutAuth } = options;
+        let headers: any = withoutAuth ? {} : await this.getHeader();
+        let requestBody: any = body;
+
+        // Substitute URL params from queryParams
+        const subst = this.substituteUrlParams(url, queryParams);
+        url = subst.url;
+        queryParams = subst.remainingQueryParams;
+
+        // Build full URL with baseUrl
+        url = this.buildFullUrl(url);
+        if (fileParams || formParams) {
+            const formData = new FormData();
+            if (formParams) {
+                Object.entries(formParams).forEach(([key, value]) => formData.append(key, value));
+            }
+            if (fileParams) {
+                Object.entries(fileParams).forEach(([key, file]) => formData.append(key, file));
+            }
+            requestBody = formData;
+            if (headers['Content-Type']) delete headers['Content-Type'];
+        } else if (body) {
+            headers['Content-Type'] = 'application/json';
+        }
+
+        const params = this.buildHttpParams(queryParams);
+        return { headers, params, body: requestBody, url };
+    }
+
+    // Substitute {key} in url with values from queryParams, return new url and remaining queryParams
+    private substituteUrlParams(url: string, queryParams?: Record<string, any>): { url: string; remainingQueryParams: Record<string, any> } {
+        if (!queryParams) return { url, remainingQueryParams: {} };
+        let newUrl = url;
+        const remainingQueryParams: Record<string, any> = { ...queryParams };
+        Object.keys(queryParams).forEach((key) => {
+            const regex = new RegExp(`{${key}}`, 'g');
+            if (regex.test(newUrl)) {
+                newUrl = newUrl.replace(regex, encodeURIComponent(queryParams[key]));
+                delete remainingQueryParams[key];
+            }
+        });
+        return { url: newUrl, remainingQueryParams };
     }
 }
