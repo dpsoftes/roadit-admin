@@ -8,7 +8,7 @@ import { I18nService } from './i18n.service';
 export class TranslatePipe implements PipeTransform {
   private i18nService = inject(I18nService);
 
-  transform(key: string, params?: Record<string, any>): string {
+  transform(key: any, params?: Record<string, any>): string {
     return this.i18nService.translate(key, params);
   }
 }

@@ -91,6 +91,63 @@
       "exportCSV": "Exportar CSV"
     }
   },
+  "clients": {
+    "title": "Clientes",
+    "create-group-title": "Creación Grupo Cliente",
+    "list": {
+      "clients_group": "Grupos de Clientes",
+      "clients_list": "Lista de Clientes",
+      "group_name": "Nombre del Grupo",
+      "logo": "Logotipo",
+      "name": "Nombre",
+      "group": "Grupo",
+      "cif": "CIF",
+      "registration_date": "Fecha Alta",
+      "department-name": "Departamento",
+      "country-name": "País",
+      "tags": "Tags",
+      "main_client": "Cliente Principal",
+      "actions": "Acciones",
+      "searchPlaceholder": "Buscar...",
+      "create-client": "CREAR NUEVO CLIENTE",
+      "group_filter": "Grupo",  
+      "cif_filter": "CIF",
+      "registration_date_filter": "Fecha de alta",
+      "department_filter": "Departamento",
+      "tags_filter": "Tags",
+      "main_client_filter": "Cliente Principal",
+      "subentity_filter": "Subentidad",
+      "users_assigned": "Usuarios Asignados",
+      "country_filter": "País",
+      "users_assigned_filter": "Usuarios asignados",
+      "country": {
+        "ES": "España",
+        "FR": "Francia",
+        "PT": "Portugal",
+        "IT": "Italia",
+        "DE": "Alemania",
+        "UK": "Reino Unido",
+        "NL": "Países Bajos",
+        "BE": "Bélgica",
+        "CH": "Suiza",
+        "AT": "Austria"
+      },
+      "department": {
+        "IT": "Tecnología",
+        "HR": "Recursos Humanos",
+        "Finance": "Finanzas",
+        "Operations": "Operaciones",
+        "Sales": "Ventas"
+      }
+    },
+    "create-group": {
+      "name": "Nombre del grupo cliente",
+      "country": "País",
+      "assigned-users": "Usuarios asignados",
+      "save": "Guardar cambios",
+      "cancel": "Cancelar"
+    }
+  },
   "construction": {
     "title": "Página en construcción"
   }

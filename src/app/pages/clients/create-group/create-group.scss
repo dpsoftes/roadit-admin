@@ -1,0 +1,161 @@
+@use '../../../../styles/variables' as vars;
+
+
+mat-card-content {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: flex-start;
+    
+    mat-form-field {
+        flex: 1;
+        padding: 0px;
+        height: 60px !important;
+        max-height: 60px !important;
+        min-height: 60px !important;
+
+        ::ng-deep .mat-mdc-form-field-infix {
+            min-height: 40px !important;
+            max-height: 68px !important;
+        }
+
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+        }
+
+        ::ng-deep .mat-mdc-text-field-wrapper {
+            height: 40px !important;
+        }
+
+        ::ng-deep input {
+            height: 40px !important;
+            line-height: 40px !important;
+        }
+    }
+
+    .users-field {
+        height: auto !important;
+        min-height: 56px !important;
+
+        ::ng-deep .mat-mdc-form-field-infix {
+            min-height: 40px !important;
+            height: auto !important;
+            padding: 8px 0 !important;
+        }
+
+        ::ng-deep .mat-mdc-text-field-wrapper {
+            min-height: 40px !important;
+            height: auto !important;
+        }
+
+        ::ng-deep .mat-mdc-form-field-flex {
+            min-height: 40px !important;
+            height: auto !important;
+        }
+
+        ::ng-deep .mat-mdc-form-field {
+            height: auto !important;
+            min-height: 56px !important;
+        }
+
+        ::ng-deep .mat-mdc-form-field-outline {
+            height: auto !important;
+            min-height: 56px !important;
+        }
+    }
+
+    .users-select {
+        ::ng-deep .mat-mdc-select-value {
+            display: none !important;
+        }
+        
+        ::ng-deep .mat-mdc-select-placeholder {
+            display: none !important;
+        }
+        
+        ::ng-deep .mat-mdc-select-arrow-wrapper {
+            position: absolute !important;
+            right: 8px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 2 !important;
+        }
+    }
+    
+    .chips-spacer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 8px;
+        min-height: 24px;
+        padding: 4px 0;
+        visibility: hidden;
+        
+        .chip-placeholder {
+            background-color: vars.$gray-300;
+            color: vars.$text-primary;
+            font-size: 12px;
+            height: 24px;
+            min-height: 24px;
+            padding: 0 8px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+    }
+
+    .chips-container {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        right: 32px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        z-index: 1;
+        pointer-events: none;
+        margin-top: 4px;
+        min-height: 24px;
+        padding-bottom: 8px;
+        
+        .user-chip {
+            pointer-events: auto;
+            background-color: vars.$gray-300;
+            color: vars.$text-primary;
+            font-size: 12px;
+            height: 24px;
+            min-height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            mat-icon {
+                color: vars.$text-primary;
+                font-size: 14px;
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
+}
+
+mat-card-footer {
+    display: flex;
+    justify-content: flex-start;
+    padding: 20px;
+    button {
+        text-transform: uppercase;
+        &.save_btn {
+            background-color: vars.$roadit-accent;
+            color: vars.$roadit-primary;
+        }
+        &.cancel_btn {
+            margin-left: 10px;
+            background-color: transparent;
+            color: vars.$text-secondary;
+            border: 1px solid vars.$text-secondary;
+        }
+    }
+}

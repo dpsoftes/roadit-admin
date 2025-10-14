@@ -1,0 +1,46 @@
+<h1>{{'clients.create-group-title' | translate}}</h1>
+
+<mat-card>
+    <mat-card-content>
+        <mat-form-field appearance="outline">
+            <mat-label>{{'clients.create-group.name' | translate}}</mat-label>
+            <input type="text" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>{{'clients.create-group.country' | translate}}</mat-label>
+            <input type="text" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="users-field">
+            <mat-label>{{'clients.create-group.assigned-users' | translate}}</mat-label>
+            <mat-select 
+                multiple 
+                [value]="selectedUserIds()" 
+                (selectionChange)="onUserSelectionChange($event.value)"
+                class="users-select">
+                @for (user of availableUsers(); track user.id) {
+                    <mat-option [value]="user.id">{{ user.name }} {{ user.lastname }}</mat-option>
+                }
+            </mat-select>
+            
+            @if (selectedUsers.length > 0) {
+                <div class="chips-spacer">
+                    @for (user of selectedUsers; track user.id) {
+                        <div class="chip-placeholder">{{ user.name }} {{ user.lastname }}</div>
+                    }
+                </div>
+                <div class="chips-container">
+                    @for (user of selectedUsers; track user.id) {
+                        <mat-chip (removed)="removeUser(user.id)" class="user-chip">
+                            {{ user.name }} {{ user.lastname }}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    }
+                </div>
+            }
+        </mat-form-field>
+    </mat-card-content>
+    <mat-card-footer>
+        <button matButton="filled" class="save_btn" (click)="onSave()">{{'clients.create-group.save' | translate}}</button>
+        <button matButton="outlined" class="cancel_btn" (click)="onCancel()">{{'clients.create-group.cancel' | translate}}</button>
+    </mat-card-footer>
+</mat-card>

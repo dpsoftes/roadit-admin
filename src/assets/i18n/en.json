@@ -91,6 +91,63 @@
       "exportCSV": "Export CSV"
     }
   },
+  "clients": {
+    "title": "Clients",
+    "create-group-title": "Create Client Group",
+    "list": {
+      "clients_group": "Client Groups",
+      "clients_list": "Client List",
+      "group_name": "Group Name",
+      "logo": "Logo",
+      "name": "Name",
+      "group": "Group",
+      "cif": "CIF",
+      "registration_date": "Registration Date",
+      "department-name": "Department",
+      "country-name": "Country",
+      "tags": "Tags",
+      "main_client": "Main Client",
+      "actions": "Actions",
+      "searchPlaceholder": "Search...",
+      "create-client": "CREATE NEW CLIENT",
+      "group_filter": "Group",
+      "cif_filter": "CIF",
+      "registration_date_filter": "Registration date",
+      "department_filter": "Department",
+      "tags_filter": "Tags",
+      "main_client_filter": "Main client",
+      "subentity_filter": "Subentity",
+      "users_assigned": "Users Assigned",
+      "country_filter": "Country",
+      "users_assigned_filter": "Users assigned",
+      "country": {
+        "ES": "Spain",
+        "FR": "France",
+        "PT": "Portugal",
+        "IT": "Italy",
+        "DE": "Germany",
+        "UK": "United Kingdom",
+        "NL": "Netherlands",
+        "BE": "Belgium",
+        "CH": "Switzerland",
+        "AT": "Austria"
+      },
+      "department": {
+        "IT": "Technology",
+        "HR": "Human Resources",
+        "Finance": "Finance",
+        "Operations": "Operations",
+        "Sales": "Sales"
+      }
+    },
+    "create-group": {
+      "name": "Client group name",
+      "country": "Country",
+      "assigned-users": "Assigned users",
+      "save": "Save changes",
+      "cancel": "Cancel"
+    }
+  },
   "construction": {
     "title": "Page under construction"
   }

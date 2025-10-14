@@ -25,8 +25,8 @@ export class Users implements OnInit {
         label: 'users.list.photo',
         type: 'image',
         imageConfig: {
-          width: '40',
-          height: '40',
+          width: '40px',
+          height: '40px',
           fallback: 'assets/images/sample_user_icon.png'
         }
       },
