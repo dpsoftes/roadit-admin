@@ -25,8 +25,8 @@ export class Users implements OnInit {
         label: 'users.list.photo',
         type: 'image',
         imageConfig: {
-          width: '40',
-          height: '40',
+          width: '40px',
+          height: '40px',
           fallback: 'assets/images/sample_user_icon.png'
         }
       },
@@ -136,6 +136,7 @@ export class Users implements OnInit {
         ]
       }
     ],
+    exportable: true,
     actions: {
       create: {
         label: 'users.list.create-user',
@@ -166,6 +167,9 @@ export class Users implements OnInit {
       case 'search':
         console.log('Search term:', event.data?.searchTerm);
         break;
+      case 'export':
+        this.exportToCSV(event.data?.data);
+        break;
     }
   }
 
@@ -175,6 +179,39 @@ export class Users implements OnInit {
 
   delete(element: any) {
     alert("Delete user: " + element.name);
+  }
+
+  exportToCSV(data: any[]) {
+    if (!data || data.length === 0) {
+      alert('No hay datos para exportar');
+      return;
+    }
+
+    const columns = ['name', 'lastname', 'email', 'role', 'status', 'department'];
+    const headers = ['Nombre', 'Apellidos', 'Email', 'Rol', 'Estado', 'Departamento'];
+
+    let csvContent = headers.join(',') + '\n';
+    
+    data.forEach(user => {
+      const row = columns.map(column => {
+        let value = user[column] || '';
+        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+          value = '"' + value.replace(/"/g, '""') + '"';
+        }
+        return value;
+      });
+      csvContent += row.join(',') + '\n';
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `usuarios_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   // clearFilters(): void {

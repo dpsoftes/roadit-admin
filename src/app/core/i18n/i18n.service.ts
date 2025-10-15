@@ -19,7 +19,12 @@ export class I18nService {
     // Ya no necesitamos cargar nada
   }
 
-  translate(key: string, params?: Record<string, any>): string {
+  translate(key: any, params?: Record<string, any>): string {
+    // Si key no es una cadena, devolver el valor tal como está
+    if (typeof key !== 'string') {
+      return String(key);
+    }
+    
     const keys = key.split('.');
     let value: any = this.translations[this.currentLanguage()];
     

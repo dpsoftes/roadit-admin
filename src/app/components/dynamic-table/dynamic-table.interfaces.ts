@@ -1,16 +1,20 @@
 export interface TableColumn {
   key: string;
   label: string;
-  type: 'text' | 'image' | 'chip' | 'actions' | 'checkbox';
+  type: 'text' | 'image' | 'chip' | 'chip-array' | 'actions' | 'checkbox';
   sortable?: boolean;
-  width?: string;
+  // Sistema de porcentajes para control preciso del ancho
+  width?: string | number; // Porcentaje (ej: '25%', 25) o valor fijo (ej: '200px', 200)
+  minWidth?: string | number;
+  maxWidth?: string | number;
+  flex?: string | number; // Para distribución proporcional del espacio restante
   chipConfig?: ChipConfig;
   actionConfig?: ActionConfig;
   imageConfig?: ImageConfig;
 }
 
 export interface ChipConfig {
-  type: 'role' | 'status' | 'department' | 'custom';
+  type: 'role' | 'status' | 'department' | 'custom' | 'tags';
   customClass?: string;
   translateKey?: string;
 }
@@ -20,7 +24,7 @@ export interface ActionConfig {
 }
 
 export interface ActionButton {
-  icon: string;
+  icon?: string;
   label: string;
   color?: 'primary' | 'accent' | 'warn' | 'error';
   action: string;
@@ -45,14 +49,17 @@ export interface TableConfig {
   searchPlaceholder?: string;
   filterable?: boolean;
   filters?: FilterConfig[];
+  exportable?: boolean;
   actions?: TableActions;
 }
 
 export interface FilterConfig {
   key: string;
   label: string;
-  type: 'select' | 'text' | 'date';
+  type: 'select' | 'text' | 'date' | 'chips';
   options?: FilterOption[];
+  multiple?: boolean; // Para filtros que permiten selección múltiple
+  width?: number; // Ancho del filtro en porcentaje (ej: 25 = 25%)
 }
 
 export interface FilterOption {
@@ -73,7 +80,7 @@ export interface TableActions {
 }
 
 export interface TableEvent {
-  type: 'select' | 'action' | 'filter' | 'search' | 'page';
+  type: 'select' | 'action' | 'filter' | 'search' | 'page' | 'export';
   data?: any;
   action?: string;
   filters?: any;

@@ -53,10 +53,16 @@ export class DynamicTableComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   showFilters = signal(false);
   searchTerm = signal('');
-  filters = signal<{[key: string]: string}>({});
+  filters = signal<{[key: string]: string | string[]}>({});
 
   ngOnInit() {
     this.initializeColumns();
+  }
+
+  hasFixedWidthColumns(): boolean {
+    return this.config.columns.some(column => 
+      column.width || column.minWidth || column.maxWidth || column.flex
+    );
   }
 
   private initializeColumns() {
@@ -110,6 +116,39 @@ export class DynamicTableComponent implements OnInit {
     this.emitEvent('filter', { filters: this.filters() });
   }
 
+  // Métodos para filtros de chips
+  onChipFilterChange(filterKey: string, values: string[]) {
+    this.filters.update(filters => ({
+      ...filters,
+      [filterKey]: values
+    }));
+    this.emitEvent('filter', { filters: this.filters() });
+  }
+
+  getChipFilterValues(filterKey: string): string[] {
+    const value = this.filters()[filterKey];
+    return Array.isArray(value) ? value : [];
+  }
+
+  getChipFilterLabel(filter: any, value: string): string {
+    const option = filter.options?.find((opt: any) => opt.value === value);
+    return option ? option.label : value;
+  }
+
+  removeChipFilter(filterKey: string, valueToRemove: string) {
+    const currentValues = this.getChipFilterValues(filterKey);
+    const newValues = currentValues.filter(value => value !== valueToRemove);
+    this.onChipFilterChange(filterKey, newValues);
+  }
+
+  // Método para obtener estilos de ancho de filtros
+  getFilterStyles(filter: any): string {
+    if (!filter.width) return '';
+    
+    // Todos los valores de width son números que representan porcentajes
+    return `width: ${filter.width}%`;
+  }
+
   // Search methods
   onSearchChange(searchTerm: string) {
     this.searchTerm.set(searchTerm);
@@ -130,6 +169,9 @@ export class DynamicTableComponent implements OnInit {
   }
 
   private getNestedValue(obj: any, path: string): any {
+    if (typeof path !== 'string') {
+      return obj[path];
+    }
     return path.split('.').reduce((current, key) => current?.[key], obj);
   }
 
@@ -137,8 +179,14 @@ export class DynamicTableComponent implements OnInit {
     if ('type' in chipConfig && chipConfig.type === 'custom' && chipConfig.customClass) {
       return chipConfig.customClass;
     }
+    if ('type' in chipConfig && chipConfig.type === 'tags') {
+      return `tags-chip ${value?.toString().toLowerCase()}`;
+    }
     if ('type' in chipConfig) {
       return `${chipConfig.type}-chip ${value?.toString().toLowerCase()}`;
+    }
+    if (value === 'nuevo' || value === 'en_riesgo' || value === 'seguro_propio') {
+      return `tag-${value?.toString().toLowerCase()}`;
     }
     return `chip ${value?.toString().toLowerCase()}`;
   }
@@ -147,15 +195,22 @@ export class DynamicTableComponent implements OnInit {
     if ('translateKey' in chipConfig && chipConfig.translateKey) {
       return `${chipConfig.translateKey}.${value}`;
     }
-    return value;
+    
+    const tagLabels: { [key: string]: string } = {
+      'nuevo': 'Nuevo',
+      'en_riesgo': 'En Riesgo',
+      'seguro_propio': 'Seguro Propio'
+    };
+    
+    return tagLabels[value] || value;
   }
 
   shouldShowAction(action: ActionButton, row: any): boolean {
     return !action.condition || action.condition(row);
   }
 
-  getActionButtonClass(color?: string): string {
-    const baseClass = 'action-button';
+  getActionButtonClass(color?: string, hasIcon?: boolean): string {
+    const baseClass = hasIcon ? 'action-button' : 'action-text-button';
     if (!color) return baseClass;
     
     switch (color) {
@@ -172,12 +227,69 @@ export class DynamicTableComponent implements OnInit {
     }
   }
 
-  // Create action
+  getColumnStyles(column: TableColumn): string {
+    const styles: string[] = [];
+    
+    if (column.width || column.minWidth || column.maxWidth || column.flex) {
+      if (column.width) {
+        let width: string;
+        if (typeof column.width === 'number') {
+          width = `${column.width}%`;
+        } else {
+          width = column.width;
+        }
+        styles.push(`width: ${width}`);
+      }
+      
+      if (column.minWidth) {
+        const minWidth = typeof column.minWidth === 'number' ? `${column.minWidth}px` : column.minWidth;
+        styles.push(`min-width: ${minWidth}`);
+      }
+      
+      if (column.maxWidth) {
+        const maxWidth = typeof column.maxWidth === 'number' ? `${column.maxWidth}px` : column.maxWidth;
+        styles.push(`max-width: ${maxWidth}`);
+      }
+      
+      if (column.flex) {
+        const flex = typeof column.flex === 'number' ? column.flex.toString() : column.flex;
+        styles.push(`flex: ${flex}`);
+      }
+      
+      return styles.join('; ');
+    }
+    
+    return '';
+  }
+
+  getCellClass(column: TableColumn): string {
+    const classes: string[] = [];
+    
+    switch (column.type) {
+      case 'text':
+        classes.push('text-cell');
+        break;
+      case 'actions':
+        classes.push('actions-cell');
+        break;
+      case 'chip':
+      case 'chip-array':
+        classes.push('chip-cell');
+        break;
+    }
+    
+    return classes.join(' ');
+  }
+
   onCreateClick() {
     if (this.config.actions?.create?.action) {
       this.config.actions.create.action();
     }
     this.emitEvent('action', { action: 'create' });
+  }
+
+  onExportCSV() {
+    this.emitEvent('export', { data: this.config.data });
   }
 
   private emitEvent(type: TableEvent['type'], data?: any) {

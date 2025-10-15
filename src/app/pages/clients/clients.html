@@ -1,0 +1,23 @@
+<h1>{{ 'clients.title' | translate }}</h1>
+
+<div class="buttons-container">
+  <button (click)="onClientsGroup()" mat-button class="button-primary" [class.active]="activeButton() === 'groups'">
+    {{ 'clients.list.clients_group' | translate }}
+  </button>
+  <button (click)="onClientsList()" mat-button class="button-primary" [class.active]="activeButton() === 'list'">
+    {{ 'clients.list.clients_list' | translate }}
+  </button>
+</div>
+
+
+<app-dynamic-table 
+  *ngIf="showGroupsTable()"
+  [config]="groupsTableConfig" 
+  (tableEvent)="onTableEvent($event)">
+</app-dynamic-table>
+
+<app-dynamic-table 
+  *ngIf="showListTable()"
+  [config]="listTableConfig" 
+  (tableEvent)="onTableEvent($event)">
+</app-dynamic-table>

@@ -27,6 +27,14 @@ export const routes: Routes = [
         path: 'users/edit-user/:id',
         loadComponent: () => import('./pages/users/edit-user/edit-user').then(m => m.EditUser)
       },
+      {
+        path: 'clients',
+        loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+      },
+      {
+        path: 'clients/create-group',
+        loadComponent: () => import('./pages/clients/create-group/create-group').then(m => m.CreateGroup)
+      },
       // {
       //  path: '**', 
       //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
