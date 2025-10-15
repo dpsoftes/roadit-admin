@@ -1,0 +1,166 @@
+/* ================================================= */
+/* input-multi-tag.component.scss (AJUSTE FINAL DE FUENTE FLOTANTE) */
+/* ================================================= */
+
+:host {
+  display: block;
+  --mat-primary-focus: #4460d0; 
+  --mat-secondary-text: #737373; 
+  --mat-border-color: rgba(0, 0, 0, 0.40);
+  --mat-chip-color: #E6E6E6; 
+  --mat-text-color: #333333; 
+  margin: 0 10px;
+  
+  font-family: inherit;
+}
+
+.custom-form-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--mat-border-color);
+  border-radius: 4px;
+  transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 50px; 
+  box-sizing: border-box;
+  width: 100%;
+  
+  padding: 0 10px; 
+  padding-top: 5px; 
+  padding-bottom: 5px; 
+  
+  &.focused {
+    border-color: var(--mat-primary-focus); 
+    border-width: 2px;
+    padding: 0 9px; 
+    padding-top: 4px; 
+    padding-bottom: 4px; 
+  }
+}
+
+/* ------------------------------------------- */
+/* ETIQUETA */
+/* ------------------------------------------- */
+
+.custom-label-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 10px; 
+  pointer-events: none;
+}
+
+.custom-label {
+  position: absolute;
+  top: 0;
+  left: 10px; 
+  font-size: 0.9rem; /* Tamaño de fuente en reposo */
+  line-height: 1.125; 
+  color: var(--mat-secondary-text);
+  background-color: transparent; 
+  padding: 0; 
+  
+  font-weight: 300; 
+  
+  transform: translateY(14px); /* Posición de reposo */
+  transform-origin: left top;
+  transition: color 0.15s, transform 0.15s, font-size 0.15s;
+}
+
+.custom-label.floating {
+    /* ¡CORREGIDO! Eliminamos scale(0.75) y mantenemos el font-size */
+    font-size: 0.8rem; 
+    font-weight: 300;
+    
+    /* El desplazamiento debe ser menor que en la versión escalada */
+    transform: translateY(-10px); 
+    
+    left: 10px;
+    padding: 0 4px; 
+    background-color: white; 
+}
+
+.custom-form-field.focused .custom-label {
+    font-weight: 400; 
+    color: var(--mat-primary-focus);
+}
+
+/* ------------------------------------------- */
+/* RESTO DE ESTILOS DE CHIPS E INPUT (sin cambios) */
+/* ------------------------------------------- */
+
+.custom-input-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.custom-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  min-height: 40px; 
+  width: 100%;
+}
+
+.custom-chip {
+  display: flex;
+  align-items: center;
+  background-color: var(--mat-chip-color);
+  border-radius: 4px; 
+  padding: 0 8px;
+  height: 28px; 
+  line-height: 28px;
+  font-size: 14px;
+  color: var(--mat-text-color);
+}
+
+.custom-chip-remove-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  color: var(--mat-secondary-text); 
+  transition: color 0.1s;
+}
+
+.material-icons {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.custom-chip-input {
+  flex-grow: 1; 
+  border: none;
+  outline: none;
+  padding: 0;
+  height: 32px;
+  min-width: 100px; 
+  margin: 0; 
+  font: inherit;
+  color: currentColor;
+  background: none;
+
+  &::placeholder {
+    color: transparent;
+  }
+}

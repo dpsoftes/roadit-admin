@@ -1,0 +1,37 @@
+<div class="custom-form-field" [class.focused]="isFocused">
+  
+  <div class="custom-label-container">
+    <label 
+      class="custom-label"
+      [class.floating]="shouldLabelFloat"> 
+      {{ label }}
+    </label>
+  </div>
+  
+  <div class="custom-input-container">
+    <div class="custom-chip-list">
+      
+      @for (chip of value; track chip) { 
+        <div class="custom-chip">
+          {{ chip }}
+          <button class="custom-chip-remove-button" (click)="removeChip(chip)">
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+      }
+      
+      <input 
+        #chipInput
+        [placeholder]="value.length === 0 && !isFocused ? 'Añadir nueva etiqueta...' : ''"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+        
+        (keydown)="handleKeydown($event)" 
+        
+        (input)="inputValue = chipInput.value"
+        [value]="inputValue"
+        class="custom-chip-input">
+        
+    </div>
+  </div>
+</div>

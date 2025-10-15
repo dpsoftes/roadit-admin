@@ -1,8 +1,11 @@
-import { Component, signal, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { UserForm } from '@components/user-form/user-form';
 import { StoreService } from '@store/store.service';
+import { UsersState } from '@store/users.state';
+import { GlobalStore } from '@store/global';
+import { AdminSignalsModel } from '@models/UsersSignalsModel';
 
 @Component({
   selector: 'app-profile',
@@ -15,13 +18,17 @@ import { StoreService } from '@store/store.service';
   styleUrls: ['./profile.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Profile {
+export class Profile implements OnInit {
   
-
-
+  private readonly userState = inject (UsersState);
+  private readonly globalState = inject(GlobalStore);
+  profile: AdminSignalsModel = new AdminSignalsModel();
 
   departments = ['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH'];
 
+  async ngOnInit() {
+       this.profile.copyFrom(await this.userState.getAdminProfile(this.globalState.user().user.id!) as AdminSignalsModel);
+  }
 
   onCancel(): void {
     console.log('Cancelando cambios');

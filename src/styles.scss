@@ -335,7 +335,12 @@ h6, .mat-headline-6 {
 .filters_panel .mat-mdc-form-field-subscript-wrapper {
   display: none !important;
 }
+/* 
+.custom-label {
+    transform: translateY(12px) !important; 
+}
 
-
-
-
+.custom-label.floating {
+    transform: translateY(-20px) scale(0.75) !important;
+    font-size: 0.75rem !important;
+} */
