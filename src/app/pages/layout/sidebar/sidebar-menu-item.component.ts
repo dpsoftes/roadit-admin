@@ -26,10 +26,15 @@ import { I18nService } from '@i18n/i18n.service';
       </span>
     </div>
     </RouterLink>
-    <div class="submenu-bullet" *ngIf="isSubitem">
-      <span class="bullet">•</span>
-      <span class="label">{{ translatedLabel }}</span>
+    @if(isSubitem){
+      <RouterLink [routerLink]="route" style="margin:0; padding: 0" >
+    <div class="sidebar-menu-item submenu-bullet" >
+          <span class="bullet">•</span>
+          <span class="label">{{ translatedLabel }}</span>
     </div>
+    </RouterLink>
+    }
+    
   `,
   styles: [`
     .sidebar-menu-item {
