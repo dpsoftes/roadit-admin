@@ -17,7 +17,7 @@ mat-card-header {
 .user_logo {
     width: 150px;
     height: 150px;
-    border-radius: 50%;
+    border-radius: 20%;
     object-fit: cover;
 }
 
@@ -45,54 +45,107 @@ mat-card-header {
 mat-card-content {
     width: 100%;
     padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
     
     mat-form-field {
         border-radius: 50%;
     }
     
-    mat-form-field.half_field {
+    .form-field.half_field {
         width: 50%;
         padding: 0px 10px;
     }
     
-    mat-form-field.full_field {
+    .form-field.full_field {
         width: 100%;
         padding: 0px 10px;
     }
     
-    mat-form-field.quarter_field {
+    .form-field.quarter_field {
         width: 25%;
         padding: 0px 10px;
     }
     
-    mat-form-field.third_field {
+    .form-field.third_field {
         width: 33.33%;
         padding: 0px 10px;
 
-        .selected-values {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            flex-wrap: wrap;
-            min-height: 28px;
-        }
+        .field-input {
+            .selected-values {
+                display: flex;
+                gap: 6px;
+                align-items: center;
+                flex-wrap: wrap;
+                min-height: 28px;
+            }
 
-        .selected-chip {
-            background-color: vars.$gray-300;
-            color: vars.$text-primary;
-            border-radius: 16px;
-            height: 28px;
-            line-height: 28px;
-            padding: 0 8px;
-            font-size: 13px;
+            .selected-chip {
+                background-color: vars.$primary-300;
+                color: vars.$black;
+                border-radius: 4px;
+                height: 24px;
+                line-height: 24px;
+                padding: 0 8px;
+                font-size: 12px;
+                font-weight: 400;
+            }
         }
     }
     
-    .gen_password_btn {
-        width: 24%;
-        font-size: 14px;
-        background-color: vars.$gray-500;
-        color: vars.$white;
+    .form-field.half_field,
+    .form-field.quarter_field {
+        .field-input {
+            .selected-values {
+                display: flex;
+                gap: 6px;
+                align-items: center;
+                flex-wrap: wrap;
+                min-height: 28px;
+            }
+
+            .selected-chip {
+                background-color: vars.$primary-300;
+                color: vars.$black;
+                border-radius: 4px;
+                height: 24px;
+                line-height: 24px;
+                padding: 0 8px;
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
+        
+        .placeholder-text {
+            font-size: 12px;
+            color: vars.$gray-500;
+            margin: 4px 0 0 0;
+            font-style: italic;
+        }
+    }
+    
+    .form-field.half_field {
+        .password-container {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            
+            .password-input {
+                flex: 1;
+            }
+            
+            .gen_password_btn {
+                flex-shrink: 0;
+                font-size: 12px;
+                background-color: vars.$black;
+                color: vars.$white;
+                height: 48px;
+                border-radius: 6px;
+                font-weight: 500;
+                padding: 0 16px;
+                white-space: nowrap;
+            }
+        }
     }
     
     .pass_icon {
@@ -101,6 +154,18 @@ mat-card-content {
         cursor: pointer;
         border: none;
         margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+        }
     }
 }
 
@@ -120,6 +185,69 @@ mat-card-footer {
             background-color: transparent;
             color: vars.$text-secondary;
             border: 1px solid vars.$text-secondary;
+        }
+    }
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    
+    .field-label {
+        font-weight: 600;
+        font-size: 14px;
+        color: vars.$gray-700;
+        margin: 0;
+        line-height: 1.2;
+    }
+    
+    .field-input {
+        width: 100%;
+        
+        ::ng-deep .mat-mdc-form-field {
+            height: 48px !important;
+            max-height: 48px !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-wrapper {
+            height: 48px !important;
+            max-height: 48px !important;
+            padding-bottom: 0 !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-infix {
+            min-height: 48px !important;
+            height: 48px !important;
+            max-height: 48px !important;
+            padding: 8px 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-outline {
+            border-radius: 8px;
+        }
+        
+        // Alineación vertical para selects
+        ::ng-deep .mat-mdc-select {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        // Alineación vertical para inputs
+        ::ng-deep .mat-mdc-input-element {
+            display: flex;
+            align-items: center;
+            height: 100%;
         }
     }
 }

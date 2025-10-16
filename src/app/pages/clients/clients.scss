@@ -7,20 +7,22 @@
 }
 
 .button-primary {
-  background-color: vars.$roadit-content-bg;
-  color: vars.$gray-500;
+  background-color: transparent;
+  color: vars.$black;
   border: none;
-  border-radius: 5px;
+  // border-radius: 5px;
   padding: 10px;
   font-size: 14px;
   font-family: vars.$font-family-primary;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   letter-spacing: 0.05em;
   transition: all 0.3s ease;
   
   
   &.active {
-    background-color: vars.$roadit-accent;
-    color: vars.$roadit-text-on-dark;
+    font-weight: 600;
+    border-bottom: 3px solid vars.$black;
+    // background-color: vars.$roadit-accent;
+    // color: vars.$roadit-text-on-dark;
   }
 }

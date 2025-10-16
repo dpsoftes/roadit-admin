@@ -1,39 +1,45 @@
 <mat-card>
   <mat-card-header>
-      <mat-form-field *ngIf="config.searchable" appearance="outline" class="search_input">
-        <input 
-          matInput 
-          [placeholder]="(config.searchPlaceholder || 'users.list.searchPlaceholder') | translate" 
-          [value]="searchTerm()"
-          (input)="onSearchChange($event.target.value)">
-      </mat-form-field>
+      @if (config.searchable) {
+        <mat-form-field appearance="outline" class="search_input">
+          <input 
+            matInput 
+            [placeholder]="(config.searchPlaceholder || 'users.list.searchPlaceholder') | translate" 
+            [value]="searchTerm()"
+            (input)="onSearchChange($event.target.value)">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      }
 
-    <button 
-      *ngIf="config.filterable && config.filters" 
-      mat-button 
-      class="filter_button" 
-      (click)="toggleFilters()">
-      {{ 'users.list.filters' | translate }}
-      <mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
+    @if (config.filterable && config.filters) {
+      <button 
+        mat-button 
+        class="filter_button" 
+        (click)="toggleFilters()">
+        {{ 'users.list.filters' | translate }}
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+    }
 
-    <button 
-      *ngIf="config.exportable" 
-      mat-button 
-      class="export_button" 
-      (click)="onExportCSV()">
-      <mat-icon>download</mat-icon>
-      {{ 'users.list.exportCSV' | translate }}
-    </button>
+    @if (config.exportable) {
+      <button 
+        mat-button 
+        class="export_button" 
+        (click)="onExportCSV()">
+        <mat-icon>download</mat-icon>
+        {{ 'users.list.exportCSV' | translate }}
+      </button>
+    }
 
-    <button 
-      *ngIf="config.actions?.create" 
-      mat-icon-button 
-      [routerLink]="config.actions?.create?.route || ''"
-      (click)="onCreateClick()"
-      class="create_btn">
-      {{ (config.actions?.create?.label || '') | translate }}
-    </button>
+    @if (config.actions?.create) {
+      <button 
+        mat-icon-button 
+        [routerLink]="config.actions?.create?.route || ''"
+        (click)="onCreateClick()"
+        class="create_btn">
+        {{ (config.actions?.create?.label || '') | translate }}
+      </button>
+    }
   </mat-card-header>
 
   <!-- Filters Panel -->
@@ -41,75 +47,79 @@
     <div class="filters_panel">
       <div class="filters_content">
         @for (filter of config.filters; track filter.key) {
-          <mat-form-field 
-            appearance="outline" 
-            class="filter_field"
-            [style]="getFilterStyles(filter)">
-            <mat-label>{{ filter.label | translate }}</mat-label>
+          <div class="filter_field" [style]="getFilterStyles(filter)">
+            <label class="filter_label">{{ filter.label | translate }}</label>
             
-            <!-- Filtro tipo select -->
-            @if (filter.type === 'select') {
-              <mat-select 
-                [value]="filters()[filter.key] || ''"
-                (selectionChange)="onFilterChange(filter.key, $event.value)">
-                <mat-option value="">{{ 'users.list.all' | translate }}</mat-option>
-                @for (option of filter.options; track option.value) {
-                  <mat-option [value]="option.value">
-                    {{ option.label | translate }}
-                  </mat-option>
-                }
-              </mat-select>
-            }
-            
-            <!-- Filtro tipo text -->
-            @if (filter.type === 'text') {
-              <input 
-                matInput 
-                [value]="filters()[filter.key] || ''"
-                (input)="onFilterChange(filter.key, $event.target.value)"
-                [placeholder]="filter.label | translate">
-            }
-            
-            <!-- Filtro tipo date -->
-            @if (filter.type === 'date') {
-              <input 
-                matInput 
-                type="date"
-                [value]="filters()[filter.key] || ''"
-                (change)="onFilterChange(filter.key, $event.target.value)">
-            }
-            
-            <!-- Filtro tipo chips (select múltiple) -->
-            @if (filter.type === 'chips') {
-              <mat-select 
-                [value]="getChipFilterValues(filter.key)"
-                (selectionChange)="onChipFilterChange(filter.key, $event.value)"
-                multiple
-                [placeholder]="filter.label | translate"
-                [class]="'chips-select' + (getChipFilterValues(filter.key).length > 0 ? ' has-selected-chips' : '')">
-                @for (option of filter.options; track option.value) {
-                  <mat-option [value]="option.value">
-                    {{ option.label | translate }}
-                  </mat-option>
-                }
-              </mat-select>
-              
-              <!-- Chips seleccionados para filtros de tipo chips -->
-              @if (getChipFilterValues(filter.key).length > 0) {
-                <div class="selected-chips">
-                  @for (selectedValue of getChipFilterValues(filter.key); track selectedValue) {
-                    <mat-chip 
-                      [removable]="true"
-                      (removed)="removeChipFilter(filter.key, selectedValue)">
-                      {{ getChipFilterLabel(filter, selectedValue) }}
-                      <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
+            <mat-form-field appearance="outline" class="filter_input">
+              <!-- Filtro tipo select -->
+              @if (filter.type === 'select') {
+                <mat-select 
+                  [value]="filters()[filter.key] || ''"
+                  (selectionChange)="onFilterChange(filter.key, $event.value)">
+                  <mat-option value="">{{ 'users.list.all' | translate }}</mat-option>
+                  @for (option of filter.options; track option.value) {
+                    <mat-option [value]="option.value">
+                      {{ option.label | translate }}
+                    </mat-option>
                   }
-                </div>
+                </mat-select>
               }
-            }
-            
-          </mat-form-field>
+              
+              <!-- Filtro tipo text -->
+              @if (filter.type === 'text') {
+                <input 
+                  matInput 
+                  [value]="filters()[filter.key] || ''"
+                  (input)="onFilterChange(filter.key, $event.target.value)"
+                  [placeholder]="filter.label | translate">
+              }
+              
+              <!-- Filtro tipo date -->
+              @if (filter.type === 'date') {
+                <input 
+                  matInput 
+                  type="date"
+                  [value]="filters()[filter.key] || ''"
+                  (change)="onFilterChange(filter.key, $event.target.value)">
+              }
+              @if (filter.type === 'date') {
+                <mat-icon matSuffix>calendar_today</mat-icon>
+              }
+              
+              <!-- Filtro tipo chips (select múltiple) -->
+              @if (filter.type === 'chips') {
+                <mat-select 
+                  [value]="getChipFilterValues(filter.key)"
+                  (selectionChange)="onChipFilterChange(filter.key, $event.value)"
+                  multiple
+                  [placeholder]="filter.label | translate"
+                  [class]="'chips-select' + (getChipFilterValues(filter.key).length > 0 ? ' has-selected-chips' : '')">
+                  
+                  <mat-select-trigger>
+                    @if (getChipFilterValues(filter.key).length > 0) {
+                      <div class="chip-display">
+                        <span class="chip-item {{ getChipFilterValues(filter.key)[0] }}">
+                          {{ getChipFilterLabel(filter, getChipFilterValues(filter.key)[0]) }}
+                        </span>
+                        @if (getChipFilterValues(filter.key).length > 1) {
+                          <span class="chip-count">+{{ getChipFilterValues(filter.key).length - 1 }}</span>
+                        }
+                      </div>
+                    } @else {
+                      <span class="placeholder-text">{{ filter.label | translate }}</span>
+                    }
+                  </mat-select-trigger>
+                  
+                  @for (option of filter.options; track option.value) {
+                    <mat-option [value]="option.value">
+                      {{ option.label | translate }}
+                    </mat-option>
+                  }
+                </mat-select>
+              }
+              
+            </mat-form-field>
+          </div>
         }
       </div>
     </div>
@@ -209,13 +219,14 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator 
-      *ngIf="config.pagination"
-      [length]="config.data.length" 
-      [pageSize]="config.pageSize || 10" 
-      [pageSizeOptions]="config.pageSizeOptions || [10, 20, 50]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
+    @if (config.pagination) {
+      <mat-paginator 
+        [length]="config.data.length" 
+        [pageSize]="config.pageSize || 10" 
+        [pageSizeOptions]="config.pageSizeOptions || [10, 20, 50]"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    }
 
   </mat-card-content>
 </mat-card>

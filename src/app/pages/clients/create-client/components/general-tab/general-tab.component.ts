@@ -21,7 +21,7 @@ import { TranslatePipe } from '@i18n/translate.pipe';
     MatCheckboxModule,
   ],
   templateUrl: './general-tab.component.html',
-  styleUrl: './general-tab.component.scss',
+  styleUrls: ['./general-tab.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class GeneralTabComponent {
@@ -84,5 +84,24 @@ export class GeneralTabComponent {
     this.CheckAtRisk.set(CheckAtRisk);
   }
 
+  sendFinalCustomer = signal<boolean>(false);
+  onSendFinalCustomerChange(sendFinalCustomer: boolean): void {
+    this.sendFinalCustomer.set(sendFinalCustomer);
+  }
 
+  departments = signal<string[]>(['IT', 'HR', 'Finance', 'Operations', 'Marketing']);
+  selectedDepartments = signal<string[]>([]);
+  onDepartmentsChange(departments: string[]): void {
+    this.selectedDepartments.set(departments);
+  }
+  clientTypes = signal<string[]>(['Type 1', 'Type 2']);
+  selectedClientType = signal<string>('');
+  onClientTypeChange(clientType: string): void {
+    this.selectedClientType.set(clientType);
+  }
+  clientOrigins = signal<string[]>(['Origin 1', 'Origin 2']);
+  selectedClientOrigin = signal<string>('');
+  onClientOriginChange(clientOrigin: string): void {
+    this.selectedClientOrigin.set(clientOrigin);
+  }
 }

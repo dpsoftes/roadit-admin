@@ -5,61 +5,165 @@
             <div class="logo-actions">
                 <div class="actions">
                     <button mat-button class="upload_photo_btn" (click)="onPhotoChanged('')">{{'clients.create-client.upload-logo' | translate}}</button>
-                    <button mat-button class="delete_photo_btn" (click)="onPhotoDeleted('')">{{'clients.create-client.delete-logo' | translate}}</button>
                 </div>
                 <p class="upload_photo_p">{{'clients.create-client.upload-logo-explanation' | translate}}</p>
             </div>
         </div>
         <div class="form">
-            <mat-form-field appearance="outline" class="third_field">
-                <mat-label>{{'clients.create-client.group' | translate}}</mat-label>
-                <mat-select [value]="selectedGroup()">
-                    @for (group of groups(); track group) {
-                    <mat-option [value]="group">{{ group }}</mat-option>
-                }
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="third_field">
-                <mat-label>{{'clients.create-client.name' | translate}}</mat-label>
-                <input type="text" matInput>
-            </mat-form-field>
-            <div class="third_field">
+
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.name' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput>
+                </mat-form-field>
+            </div>
+
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.group' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="selectedGroup()">
+                        @for (group of groups(); track group) {
+                        <mat-option [value]="group">{{ group }}</mat-option>
+                    }
+                    </mat-select>
+                </mat-form-field>
+                <p class="placeholder-text">Placeholder text</p>
+                
                 <mat-checkbox [checked]="isSubentity()">
                     {{'clients.create-client.subentity' | translate}}
                 </mat-checkbox>
-                <mat-form-field appearance="outline">
-                    <mat-label>{{'clients.create-client.client' | translate}}</mat-label>
+            </div>
+            
+            
+            
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.client' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
                     <mat-select [value]="selectedClient()">
                         @for (client of clients(); track client.id) {
                         <mat-option [value]="client">{{ client.name }}</mat-option>
                     }
                     </mat-select>
                 </mat-form-field>
+                <p class="placeholder-text">Placeholder text</p>
             </div>
-            <mat-form-field appearance="outline" class="half_field">
-                <mat-label>{{'clients.create-client.id-eurotransport' | translate}}</mat-label>
-                <input type="text" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="half_field">
-                <mat-label>{{'clients.create-client.id-revel' | translate}}</mat-label>
-                <input type="text" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="two_third_field">
-                <mat-label>{{'clients.create-client.billing-type' | translate}}</mat-label>
-                <mat-select [value]="selectedBillingType()">
-                    <mat-option value="1">{{'clients.create-client.billing-type-manual' | translate}}</mat-option>
-                    <mat-option value="2">{{'clients.create-client.billing-type-automatic' | translate}}</mat-option>
-                </mat-select>
-            </mat-form-field>
+            
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.id-eurotransport' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput>
+                </mat-form-field>
+            </div>
+            
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.id-revel' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput>
+                </mat-form-field>
+            </div>
+            
+            <div class="form-field two_third_field">
+                <label class="field-label">{{'clients.create-client.billing-type' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="selectedBillingType()">
+                        <mat-option value="1">{{'clients.create-client.billing-type-manual' | translate}}</mat-option>
+                        <mat-option value="2">{{'clients.create-client.billing-type-automatic' | translate}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p class="placeholder-text">Placeholder text</p>
+                <div class="checkboxes-container">
+                    <mat-checkbox [checked]="CheckOwnInsurance()">
+                        {{'clients.create-client.check-own-insurance' | translate}}
+                    </mat-checkbox>
+                    <mat-checkbox [checked]="CheckAtRisk()">
+                        {{'clients.create-client.check-at-risk' | translate}}
+                    </mat-checkbox>
+                </div>
+            </div>
+            
             <div class="forty_field">
-                <button mat-button class="primary_btn third_field">{{'clients.create-client.send-manual-invoice' | translate}}</button>
-                <mat-checkbox [checked]="CheckOwnInsurance()" class="third_field">
-                    {{'clients.create-client.check-own-insurance' | translate}}
-                </mat-checkbox>
-                <mat-checkbox [checked]="CheckAtRisk()" class="third_field">
-                    {{'clients.create-client.check-at-risk' | translate}}
-                </mat-checkbox>
+                <button mat-button class="primary_btn third_field">{{'clients.create-client.send-manual-invoice' | translate}}</button>                
+            </div>
 
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.appointment-time' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput>
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.appointment-time-between' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput>
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.department-incidences' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select multiple [value]="selectedDepartments()" (selectionChange)="onDepartmentsChange($event.value)">
+                        <mat-select-trigger>
+                            <div class="selected-values">
+                                @for(dept of selectedDepartments(); track dept) {
+                                    <span class="selected-chip">{{ 'clients.list.department.' + dept | translate }}</span>
+                                }
+                            </div>
+                        </mat-select-trigger>
+                        @for (dept of departments(); track dept) {
+                        <mat-option [value]="dept">
+                            {{ 'clients.list.department.' + dept | translate }}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field final_customer_field">
+                <mat-checkbox [checked]="sendFinalCustomer()">
+                    {{'clients.create-client.send-final-customer' | translate}}
+                </mat-checkbox>
+            </div>
+
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.client-type' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="selectedClientType()">
+                        <mat-option value="1">{{'clients.create-client.client-type-1' | translate}}</mat-option>
+                        <mat-option value="2">{{'clients.create-client.client-type-2' | translate}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p class="placeholder-text">Placeholder text</p>
+            </div>
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.client-origin' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="selectedClientOrigin()">
+                        <mat-option value="1">{{'clients.create-client.client-origin-1' | translate}}</mat-option>
+                        <mat-option value="2">{{'clients.create-client.client-origin-2' | translate}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p class="placeholder-text">Placeholder text</p>
+            </div>
+            <h1 class="main-contact-title">{{'clients.create-client.main-contact' | translate}} :</h1>
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.main-contact-name' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput>
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.main-contact-email' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="email" matInput>
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.main-contact-phone' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="tel" matInput>
+                </mat-form-field>
+            </div>
+            <div class="action-buttons-container">
+                <button mat-button class="primary_btn save_changes_btn">{{'clients.create-client.save-changes' | translate}}</button>
+                <button mat-button class="primary_btn cancel_btn">{{'clients.create-client.cancel' | translate}}</button>
             </div>
         </div>
     </mat-card-content>

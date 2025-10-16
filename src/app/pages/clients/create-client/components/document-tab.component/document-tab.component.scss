@@ -1,45 +1,5 @@
 @use '../../../../../../styles/variables' as vars;
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-    .logo-actions {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    .actions {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        .upload_photo_btn {
-            background-color: vars.$roadit-accent;
-            color: vars.$roadit-text-on-dark;
-            text-transform: uppercase;
-        }
-        
-        .delete_photo_btn {
-            background-color: transparent;
-            color: vars.$error;
-            border: 1px solid vars.$error;
-            text-transform: uppercase;
-        }
-    }
-    
-    .upload_photo_p {
-        font-size: 12px;
-        color: vars.$text-secondary;
-        margin: 0;
-    }
-}
-
 .form {
     display: flex;
     flex-direction: row;
@@ -92,7 +52,6 @@
                 border-radius: 8px;
             }
             
-            
             // Alineación vertical para selects
             ::ng-deep .mat-mdc-select {
                 display: flex;
@@ -112,6 +71,13 @@
     .form-field.third_field {
         width: 33.33%;
         padding: 0px 10px;
+        
+        .placeholder-text {
+            font-size: 12px;
+            color: vars.$gray-500;
+            margin: 4px 0 0 0;
+            font-style: italic;
+        }
     }
     
     .form-field.quarter_field {
@@ -160,7 +126,7 @@
     }
     
     .form-field.two_third_field {
-        width: 80%;
+        width: 60%;
         padding: 0px 10px;
         
         .placeholder-text {
@@ -170,68 +136,32 @@
             font-style: italic;
         }
     }
+    .form-field.twenty_field {
+        width: 23%;
+        padding: 0px 10px;
+        
+    }
+    .form-field.forty_field {
+        width: 46%;
+        padding: 0px 10px;
+    }
+    .form-field.eight_field {
+        width: 8%;
+        padding: 0px 10px;
+        button {
+            width: 100%;
+            font-size: 12px;
+            text-transform: uppercase;
+            background-color: vars.$roadit-accent;
+            color: vars.$black;
+            height: 48px;
+            border: none;
+            border-radius: 8px;
+            margin-top: 23px;
+        }
+    }
 }
 
-.form-field.third_field {
-    mat-checkbox {
-        margin-bottom: 8px;
-    }
-}
-.forty_field {
-    width: 20%;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: flex-start;
-    padding-top: 24px; 
-    button {
-        width: 100%;
-        font-size: 12px;
-        text-transform: uppercase;
-        background-color: vars.$black;
-        align-items: center;
-        height: 48px; 
-        margin-top: 2px;
-    }
-}
-
-.primary_btn {
-    background-color: vars.$gray-500;
-    color: vars.$white !important;
-    text-transform: uppercase;
-}
-mat-checkbox {
-    font-size: 12px;
-    align-items: center;
-}
-.final_customer_field {
- 
-    margin-top: 30px;
-}
-
-.main-contact-title {
-    width: 100%;
-}
-.action-buttons-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 24px;
-    padding: 10px;
-    .save_changes_btn {
-        background-color: vars.$roadit-accent;
-        color: vars.$black !important;
-        font-size: 12px;
-        padding: 10px;
-    }
-    .cancel_btn {
-        background-color: vars.$black;
-        color: vars.$white;
-        border: 1px solid vars.$black;
-        font-size: 12px;
-        padding: 10px;
-    }
+.table-card {
+    margin-top: 16px;
 }

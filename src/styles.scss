@@ -356,6 +356,13 @@ h6, .mat-headline-6 {
 .filters_panel .mat-mdc-form-field-subscript-wrapper {
   display: none !important;
 }
+
+// Ocultar aria-atomic divs en general-tab component
+app-general-tab-component .mat-mdc-form-field-subscript-wrapper,
+app-general-tab-component .mat-mdc-form-field-bottom-align,
+app-general-tab-component [aria-atomic="true"] {
+  display: none !important;
+}
 /* 
 .custom-label {
     transform: translateY(12px) !important; 

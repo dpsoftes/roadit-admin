@@ -78,16 +78,22 @@ export class Users implements OnInit {
         actionConfig: {
           actions: [
             {
-              icon: 'material-symbols-outlined/delete',
-              label: 'Eliminar',
-              color: 'error',
-              action: 'delete'
-            },
-            {
               icon: 'material-symbols-outlined/edit_square',
               label: 'Editar',
               color: 'warn',
               action: 'edit'
+            },
+            {
+              icon: 'material-symbols-outlined/visibility',
+              label: 'Ver',
+              color: 'primary',
+              action: 'view'
+            },
+            {
+              icon: 'material-symbols-outlined/delete',
+              label: 'Eliminar',
+              color: 'error',
+              action: 'delete'
             }
           ]
         }
@@ -127,7 +133,8 @@ export class Users implements OnInit {
       {
         key: 'department',
         label: 'users.list.department',
-        type: 'select',
+        type: 'chips',
+        multiple: false,
         options: [
           { value: 'IT', label: 'IT' },
           { value: 'Comercial', label: 'Comercial' },

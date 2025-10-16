@@ -16,7 +16,6 @@ import { UsersState } from '@store/users.state';
 import { GlobalStore } from '@store/global';
 import { AdminSignalsModel } from '@models/UsersSignalsModel';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
 
 
 
@@ -35,8 +34,7 @@ import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-
     TranslatePipe,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    FormsModule,
-    InputMultiTagComponent
+    FormsModule
 ],
   templateUrl: './user-form.html',
   styleUrls: ['./user-form.scss'],
@@ -81,6 +79,7 @@ throw new Error('Method not implemented.');
 
 
   showPassword = signal(false);
+  password = signal<string>('');
   async ngOnInit() {
   //  this.profile =  await this.userState.getAdminProfile(StoreService.instance?.global.user()?.user.id!) as AdminSignalsModel;
   }
