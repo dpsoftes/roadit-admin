@@ -35,6 +35,10 @@ export const routes: Routes = [
         path: 'clients/create-group',
         loadComponent: () => import('./pages/clients/create-group/create-group').then(m => m.CreateGroup)
       },
+      {
+        path: 'clients/create',
+        loadComponent: () => import('./pages/clients/create-client/create-client').then(m => m.CreateClient)
+      },
       // {
       //  path: '**', 
       //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),

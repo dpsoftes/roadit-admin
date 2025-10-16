@@ -1,0 +1,106 @@
+@use '../../../../../../styles/variables' as vars;
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .logo-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .actions {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        .upload_photo_btn {
+            background-color: vars.$roadit-accent;
+            color: vars.$roadit-text-on-dark;
+            text-transform: uppercase;
+        }
+        
+        .delete_photo_btn {
+            background-color: transparent;
+            color: vars.$error;
+            border: 1px solid vars.$error;
+            text-transform: uppercase;
+        }
+    }
+    
+    .upload_photo_p {
+        font-size: 12px;
+        color: vars.$text-secondary;
+        margin: 0;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    mat-form-field.third_field {
+        width: 33.33%;
+        padding-right: 10px;
+        margin-bottom: 20px;
+    }
+    mat-form-field.quarter_field {
+        width: 25%;
+        padding-right: 10px;
+        margin-bottom: 20px;
+    }
+    mat-form-field.half_field {
+        width: 50%;
+        padding-right: 10px;
+        margin-bottom: 20px;
+    }
+    mat-form-field.two_third_field {
+        width: 60%;
+        padding-right: 10px;
+        margin-bottom: 20px;
+    }
+}
+
+.third_field {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    width: 33.33%;
+    
+    mat-checkbox {
+        flex-shrink: 0;
+        margin-top: 8px;
+    }
+    
+    mat-form-field {
+        flex: 1;
+    }
+}
+.forty_field {
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-start;
+    padding-top: 8px;
+    button {
+        font-size: 12px;
+        text-transform: uppercase;
+        align-items: center;
+    }
+}
+
+.primary_btn {
+    background-color: vars.$gray-500;
+    color: vars.$white !important;
+    text-transform: uppercase;
+}
+mat-checkbox {
+    font-size: 12px;
+    align-items: center;
+}

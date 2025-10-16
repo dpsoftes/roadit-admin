@@ -1,0 +1,66 @@
+<mat-card>
+    <mat-card-content>
+        <div class="logo">
+            <img src="assets/images/sample_user_icon.png" alt="Client Logo">
+            <div class="logo-actions">
+                <div class="actions">
+                    <button mat-button class="upload_photo_btn" (click)="onPhotoChanged('')">{{'clients.create-client.upload-logo' | translate}}</button>
+                    <button mat-button class="delete_photo_btn" (click)="onPhotoDeleted('')">{{'clients.create-client.delete-logo' | translate}}</button>
+                </div>
+                <p class="upload_photo_p">{{'clients.create-client.upload-logo-explanation' | translate}}</p>
+            </div>
+        </div>
+        <div class="form">
+            <mat-form-field appearance="outline" class="third_field">
+                <mat-label>{{'clients.create-client.group' | translate}}</mat-label>
+                <mat-select [value]="selectedGroup()">
+                    @for (group of groups(); track group) {
+                    <mat-option [value]="group">{{ group }}</mat-option>
+                }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="third_field">
+                <mat-label>{{'clients.create-client.name' | translate}}</mat-label>
+                <input type="text" matInput>
+            </mat-form-field>
+            <div class="third_field">
+                <mat-checkbox [checked]="isSubentity()">
+                    {{'clients.create-client.subentity' | translate}}
+                </mat-checkbox>
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'clients.create-client.client' | translate}}</mat-label>
+                    <mat-select [value]="selectedClient()">
+                        @for (client of clients(); track client.id) {
+                        <mat-option [value]="client">{{ client.name }}</mat-option>
+                    }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline" class="half_field">
+                <mat-label>{{'clients.create-client.id-eurotransport' | translate}}</mat-label>
+                <input type="text" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="half_field">
+                <mat-label>{{'clients.create-client.id-revel' | translate}}</mat-label>
+                <input type="text" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="two_third_field">
+                <mat-label>{{'clients.create-client.billing-type' | translate}}</mat-label>
+                <mat-select [value]="selectedBillingType()">
+                    <mat-option value="1">{{'clients.create-client.billing-type-manual' | translate}}</mat-option>
+                    <mat-option value="2">{{'clients.create-client.billing-type-automatic' | translate}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="forty_field">
+                <button mat-button class="primary_btn third_field">{{'clients.create-client.send-manual-invoice' | translate}}</button>
+                <mat-checkbox [checked]="CheckOwnInsurance()" class="third_field">
+                    {{'clients.create-client.check-own-insurance' | translate}}
+                </mat-checkbox>
+                <mat-checkbox [checked]="CheckAtRisk()" class="third_field">
+                    {{'clients.create-client.check-at-risk' | translate}}
+                </mat-checkbox>
+
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

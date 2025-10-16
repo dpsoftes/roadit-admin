@@ -1,0 +1,23 @@
+@use '../../../../styles/variables' as vars;
+
+
+.tabs {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.tab-button {
+    text-transform: uppercase;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    font-family: vars.$font-family-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.tab-button.active {
+    background-color: vars.$roadit-accent;
+    color: vars.$roadit-text-on-dark;
+}

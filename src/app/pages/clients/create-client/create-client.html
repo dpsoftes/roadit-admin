@@ -1,0 +1,20 @@
+<h1>{{'clients.create-client-title' | translate}}</h1>
+
+
+<div class="tabs">
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'general'" (click)="onTabChange('general')">{{'clients.create-client.general' | translate}}</button>
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'protocol'" (click)="onTabChange('protocol')">{{'clients.create-client.protocol' | translate}}</button>
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'slogans'" (click)="onTabChange('slogans')">{{'clients.create-client.slogans' | translate}}</button>
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'documents'" (click)="onTabChange('documents')">{{'clients.create-client.documents' | translate}}</button>
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'extra-contact'" (click)="onTabChange('extra-contact')">{{'clients.create-client.extra-contact' | translate}}</button>
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'billing'" (click)="onTabChange('billing')">{{'clients.create-client.billing' | translate}}</button>
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'prices'" (click)="onTabChange('prices')">{{'clients.create-client.prices' | translate}}</button>
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'certs'" (click)="onTabChange('certs')">{{'clients.create-client.certs' | translate}}</button>
+    <button mat-button class="tab-button" [class.active]="activeTab() === 'additional-services'" (click)="onTabChange('additional-services')">{{'clients.create-client.additional-services' | translate}}</button>
+</div>
+
+<div class="tab-content">
+    @if (activeTab() === 'general') {
+        <app-general-tab-component></app-general-tab-component>
+    }
+</div>

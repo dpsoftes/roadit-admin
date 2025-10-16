@@ -94,6 +94,33 @@
   "clients": {
     "title": "Clientes",
     "create-group-title": "Creación Grupo Cliente",
+    "create-client-title": "Crear/Editar Cliente",
+    "create-client": {
+      "general": "General",
+      "protocol": "Protocolo",
+      "slogans": "Consignas conductor",
+      "documents": "Documentos",
+      "extra-contact": "Contacto Extra",
+      "billing": "Facturación",
+      "prices": "Precios",
+      "certs": "Certificados",
+      "additional-services": "Servicios Adicionales",
+      "upload-logo": "Subir Logo",
+      "delete-logo": "Eliminar",
+      "upload-logo-explanation": "Permite JPG, GIF o PNG. Máximo 800Kb",
+      "subentity": "Es subentidad",
+      "group": "Grupo de Cliente",
+      "name": "Nombre",
+      "client": "Cliente Principal",
+      "id-eurotransport": "Identificador Eurotransportcar",
+      "id-revel": "Identificador Revel",
+      "billing-type": "Tipo de facturación",
+      "billing-type-manual": "Manual",
+      "billing-type-automatic": "Automático",
+      "send-manual-invoice": "Emitir factura manual",
+      "check-own-insurance": "Seguro propio",
+      "check-at-risk": "En riesgo"
+    },
     "list": {
       "clients_group": "Grupos de Clientes",
       "clients_list": "Lista de Clientes",
@@ -145,7 +172,7 @@
       "country": "País",
       "assigned-users": "Usuarios asignados",
       "save": "Guardar cambios",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar"  
     }
   },
   "construction": {
