@@ -1,9 +1,10 @@
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed } from '@angular/core';
 import { LoginResponseDto, UserFullDto } from '@dtos';
 import { Helpers } from '@utils/helpers';
 import { GlobalStateData } from './global.state';
-import { DevToolsHelper } from './devtools.helper';
+//import { DevToolsHelper } from './devtools.helper';
 
 export const GlobalStore = signalStore(
   { 
@@ -17,7 +18,7 @@ export const GlobalStore = signalStore(
       }
     })
   },
-  
+  withDevtools('GlogalStore'),
   // Estado inicial usando directamente GlobalStateData
   withState(new GlobalStateData()),
   
@@ -29,13 +30,26 @@ export const GlobalStore = signalStore(
       return false;
 
     }
-      )
+      ),
+      token: computed(() => {
+      if (state.user && state.user().token != "") {
+        const expiration = Helpers.getStorage('roadit_token_expiration');
+        if (expiration) {
+          const expDate = new Date(expiration);
+          const now = new Date();
+          if (now < expDate) {
+            return state.user().token;
+          }
+        }
+      }
+      return "expired";
+    })
   })),
   
   // Métodos para actualizar el estado
   withMethods((store) => {
     // Inicializar DevTools
-    DevToolsHelper.initDevTools('RoadIt Global Store');
+   // DevToolsHelper.initDevTools('RoadIt Global Store');
     
     return {
     setUser: (user: LoginResponseDto) => {
@@ -43,13 +57,13 @@ export const GlobalStore = signalStore(
       patchState(store, { user });
       
       // Log para DevTools
-      DevToolsHelper.logAction('SET_USER', {
+    /*   DevToolsHelper.logAction('SET_USER', {
         user: store.user(),
         language: store.language(),
         userFull: store.userFull(),
         menuCollapsed: store.menuCollapsed()
       });
-      
+     */  
       // Guardar en localStorage usando el helper
       Helpers.setStorage('roadit_user', user);
       
@@ -66,32 +80,32 @@ export const GlobalStore = signalStore(
       patchState(store, { userFull });
       
       // Log para DevTools
-      DevToolsHelper.logAction('SET_USER_FULL', {
+    /*   DevToolsHelper.logAction('SET_USER_FULL', {
         user: store.user(),
         language: store.language(),
         userFull: store.userFull(),
         menuCollapsed: store.menuCollapsed()
       });
-      
+     */  
       // Guardar en localStorage usando el helper
       Helpers.setStorage('roadit_user_full', userFull);
     },
     
     setLanguage: (language: string) => {
       patchState(store, { language });
-      DevToolsHelper.logAction('SET_LANGUAGE', { language });
+      //DevToolsHelper.logAction('SET_LANGUAGE', { language });
     },
     
     toggleMenu: () => {
       patchState(store, (state) => ({ 
         menuCollapsed: !state.menuCollapsed 
       }));
-      DevToolsHelper.logAction('TOGGLE_MENU', { menuCollapsed: store.menuCollapsed() });
+    //  DevToolsHelper.logAction('TOGGLE_MENU', { menuCollapsed: store.menuCollapsed() });
     },
     
     setMenuCollapsed: (collapsed: boolean) => {
       patchState(store, { menuCollapsed: collapsed });
-      DevToolsHelper.logAction('SET_MENU_COLLAPSED', { menuCollapsed: collapsed });
+      //DevToolsHelper.logAction('SET_MENU_COLLAPSED', { menuCollapsed: collapsed });
     },
     
     logout: () => {
@@ -102,11 +116,11 @@ export const GlobalStore = signalStore(
       });
       
       // Log para DevTools
-      DevToolsHelper.logAction('LOGOUT', {
+/*       DevToolsHelper.logAction('LOGOUT', {
         user: store.user(),
         userFull: store.userFull()
       });
-      
+ */      
       // Limpiar localStorage
       Helpers.removeStorage('roadit_user');
       Helpers.removeStorage('roadit_token_expiration');

@@ -1,7 +1,11 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { UserForm, UserFormData } from '@components/user-form/user-form';
+import { UserForm } from '@components/user-form/user-form';
+import { StoreService } from '@store/store.service';
+import { UsersState } from '@store/users.state';
+import { GlobalStore } from '@store/global';
+import { AdminSignalsModel } from '@models/UsersSignalsModel';
 
 @Component({
   selector: 'app-profile',
@@ -14,27 +18,16 @@ import { UserForm, UserFormData } from '@components/user-form/user-form';
   styleUrls: ['./profile.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Profile {
-  userData = signal<UserFormData>({
-    name: 'John',
-    lastname: 'Doe',
-    email: 'john@doe.com',
-    img: 'assets/images/sample_user_icon.png',
-    password: 'password',
-    roles: ['USER'],
-    status: 'ACTIVE',
-    departments: ['Comercial', 'Marketing']
-  });
+export class Profile implements OnInit {
+  
+  private readonly userState = inject (UsersState);
+  private readonly globalState = inject(GlobalStore);
+  profile: AdminSignalsModel = new AdminSignalsModel();
 
   departments = ['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH'];
 
-  onUserDataChange(userData: UserFormData): void {
-    this.userData.set(userData);
-  }
-
-  onSave(userData: UserFormData): void {
-    console.log('Guardando usuario:', userData);
-    // Aquí implementarías la lógica de guardado
+  async ngOnInit() {
+       this.profile.copyFrom(await this.userState.getAdminProfile(this.globalState.user().user.id!) as AdminSignalsModel);
   }
 
   onCancel(): void {

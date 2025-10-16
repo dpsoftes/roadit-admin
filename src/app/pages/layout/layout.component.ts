@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router } from '@angular/router';
 import { StoreService } from '@store/store.service';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { HeaderComponent, User } from './header/header.component';
+import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
 @Component({
@@ -23,14 +23,6 @@ export class LayoutComponent {
   }
 
   // Getter para el usuario actual (adaptado para el HeaderComponent)
-  get currentUser(): User {
-    const user = this.globalStore.user();
-    return {
-      name: user.user?.name || user.user?.username || 'Usuario',
-      email: user.user?.email,
-      avatar: undefined // Se puede agregar después
-    };
-  }
 
   // Getter para el estado del menú
   get isMenuCollapsed() {

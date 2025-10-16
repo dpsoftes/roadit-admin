@@ -6,9 +6,9 @@ export const environment: Environment = {
   development: true,
   environment: 'development',
   
-  apiUrl: 'http://localhost:8000',
+  apiUrl: 'https://roadit-api.bluumi.net',
   apiVersion: 'v1',
-  baseUrl: 'http://localhost:4200',
+  baseUrl: 'http://localhost:3000',
   
   auth: {
     tokenKey: 'roadit_admin_token_dev',

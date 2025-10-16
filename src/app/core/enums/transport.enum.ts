@@ -11,6 +11,14 @@ export enum TransportPrincipalType {
     WITH_STOPOVER = 'WITH_STOPOVER'
 }
 
+export const transportPrincipalTypeDescriptions: Record<TransportPrincipalType, string> = {
+    [TransportPrincipalType.SIMPLE_MOVEMENT]: 'transportPrincipalType.SIMPLE_MOVEMENT',
+    [TransportPrincipalType.PICKUP_TO_FINAL_CUSTOMER]: 'transportPrincipalType.PICKUP_TO_FINAL_CUSTOMER',
+    [TransportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER]: 'transportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER',
+    [TransportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER]: 'transportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER',
+    [TransportPrincipalType.WITH_STOPOVER]: 'transportPrincipalType.WITH_STOPOVER'
+};
+
 export enum TransportStatus {
     PENDING = 'PENDING',
     PLANIFIED = 'PLANIFIED',
@@ -20,6 +28,16 @@ export enum TransportStatus {
     DELETED = 'DELETED',
     EXPIRED = 'EXPIRED'
 }
+
+export const transportStatusDescriptions: Record<TransportStatus, string> = {
+    [TransportStatus.PENDING]: 'transportStatus.PENDING',
+    [TransportStatus.PLANIFIED]: 'transportStatus.PLANIFIED',
+    [TransportStatus.IN_COURSE]: 'transportStatus.IN_COURSE',
+    [TransportStatus.FINISHED]: 'transportStatus.FINISHED',
+    [TransportStatus.CANCELLED]: 'transportStatus.CANCELLED',
+    [TransportStatus.DELETED]: 'transportStatus.DELETED',
+    [TransportStatus.EXPIRED]: 'transportStatus.EXPIRED'
+};
 
 export enum CancelledReason {
     VEHICLE_NOT_AVAILABLE = 'VEHICLE_NOT_AVAILABLE',
@@ -50,8 +68,43 @@ export enum CancelledReason {
     OTHER = 'OTHER'
 }
 
+export const cancelledReasonDescriptions: Record<CancelledReason, string> = {
+    [CancelledReason.VEHICLE_NOT_AVAILABLE]: 'cancelledReason.VEHICLE_NOT_AVAILABLE',
+    [CancelledReason.VEHICLE_NOT_READY_AT_DEPARTURE]: 'cancelledReason.VEHICLE_NOT_READY_AT_DEPARTURE',
+    [CancelledReason.VEHICLE_NOT_WORKING]: 'cancelledReason.VEHICLE_NOT_WORKING',
+    [CancelledReason.MISSING_MANDATORY_SAFETY_EQUIPMENT]: 'cancelledReason.MISSING_MANDATORY_SAFETY_EQUIPMENT',
+    [CancelledReason.INCORRECT_LICENSE_PLATE]: 'cancelledReason.INCORRECT_LICENSE_PLATE',
+    [CancelledReason.BREAKDOWN_DURING_TRANSPORT]: 'cancelledReason.BREAKDOWN_DURING_TRANSPORT',
+    [CancelledReason.ACCIDENT_DURING_TRANSPORT]: 'cancelledReason.ACCIDENT_DURING_TRANSPORT',
+    [CancelledReason.VEHICLE_REJECTED_AT_ARRIVAL]: 'cancelledReason.VEHICLE_REJECTED_AT_ARRIVAL',
+    [CancelledReason.VEHICLE_REJECTED_NO_APPOINTMENT_AT_DEPOT]: 'cancelledReason.VEHICLE_REJECTED_NO_APPOINTMENT_AT_DEPOT',
+    [CancelledReason.RETURN_REJECTED]: 'cancelledReason.RETURN_REJECTED',
+    [CancelledReason.END_CUSTOMER_REQUEST]: 'cancelledReason.END_CUSTOMER_REQUEST',
+    [CancelledReason.CUSTOMER_REQUEST]: 'cancelledReason.CUSTOMER_REQUEST',
+    [CancelledReason.CANCELLATION_DUE_TO_DRIVER_RESERVATION_CANCELLED]: 'cancelledReason.CANCELLATION_DUE_TO_DRIVER_RESERVATION_CANCELLED',
+    [CancelledReason.RETURN_CANCELLED_DUE_TO_OUTBOUND_CANCELLATION]: 'cancelledReason.RETURN_CANCELLED_DUE_TO_OUTBOUND_CANCELLATION',
+    [CancelledReason.CONTACT_ABSENT_AT_DEPARTURE]: 'cancelledReason.CONTACT_ABSENT_AT_DEPARTURE',
+    [CancelledReason.CONTACT_ABSENT_AT_ARRIVAL]: 'cancelledReason.CONTACT_ABSENT_AT_ARRIVAL',
+    [CancelledReason.UNREACHABLE_CONTACT_AT_START]: 'cancelledReason.UNREACHABLE_CONTACT_AT_START',
+    [CancelledReason.UNREACHABLE_CONTACT_AT_ARRIVAL]: 'cancelledReason.UNREACHABLE_CONTACT_AT_ARRIVAL',
+    [CancelledReason.NO_APPOINTMENT_POSSIBLE_WITH_END_CUSTOMER]: 'cancelledReason.NO_APPOINTMENT_POSSIBLE_WITH_END_CUSTOMER',
+    [CancelledReason.NO_APPOINTMENT_WITH_ARRIVAL_CONTACT]: 'cancelledReason.NO_APPOINTMENT_WITH_ARRIVAL_CONTACT',
+    [CancelledReason.DUPLICATE]: 'cancelledReason.DUPLICATE',
+    [CancelledReason.INCORRECT_PICKUP_ADDRESS]: 'cancelledReason.INCORRECT_PICKUP_ADDRESS',
+    [CancelledReason.INCORRECT_DELIVERY_ADDRESS]: 'cancelledReason.INCORRECT_DELIVERY_ADDRESS',
+    [CancelledReason.NON_COMPLIANT_TRANSPORT_REQUEST]: 'cancelledReason.NON_COMPLIANT_TRANSPORT_REQUEST',
+    [CancelledReason.CANCELLATION_DUE_TO_CAPACITY]: 'cancelledReason.CANCELLATION_DUE_TO_CAPACITY',
+    [CancelledReason.OTHER]: 'cancelledReason.OTHER'
+};
+
 export enum LegPointType {
     ORIGIN = 'ORIGIN',
     STOPOVER = 'STOPOVER',
     DESTINATION = 'DESTINATION'
 }
+
+export const legPointTypeDescriptions: Record<LegPointType, string> = {
+    [LegPointType.ORIGIN]: 'legPointType.ORIGIN',
+    [LegPointType.STOPOVER]: 'legPointType.STOPOVER',
+    [LegPointType.DESTINATION]: 'legPointType.DESTINATION'
+};

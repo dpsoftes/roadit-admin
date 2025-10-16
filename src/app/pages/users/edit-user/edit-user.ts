@@ -1,8 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { UserForm, UserFormData } from '@components/user-form/user-form';
+import { UserForm} from '@components/user-form/user-form';
 import { Router } from '@angular/router';
+import { UsersState } from '@store/users.state';
+import { GlobalStore } from '@store/global';
+import { AdminSignalsModel } from '@models/UsersSignalsModel';
 
 @Component({
   selector: 'app-edit-user',
@@ -14,26 +17,25 @@ import { Router } from '@angular/router';
   templateUrl: './edit-user.html',
   styleUrl: './edit-user.scss'
 })
-export class EditUser {
-  userData = signal<UserFormData>({
-    name: 'Luis',
-    lastname: 'Garcia',
-    email: 'luis@gmail.com',
-    img: 'assets/images/sample_user_icon.png',
-    password: '123456',
-    roles: ['ADMIN'],
-    status: 'ACTIVE',
-    departments: ['IT']
-  });
+export class EditUser implements OnInit{
 
-  constructor(private router: Router) {}
 
-  onUserDataChange(userData: UserFormData): void {
+  constructor(private router: Router)  {}
+
+    private readonly userState = inject (UsersState);
+  private readonly globalState = inject(GlobalStore);
+  profile: AdminSignalsModel = new AdminSignalsModel();
+
+/*   onUserDataChange(userData: UserFormData): void {
     this.userData.set(userData);
   }
   onSave(userData: UserFormData): void {
     console.log('Guardando usuario:', userData);
+  } */
+   async ngOnInit() {
+       this.profile =  await this.userState.getAdminProfile(this.globalState.user().user.id!) as AdminSignalsModel;
   }
+
   onCancel(): void {
     console.log('Cancelando cambios');
   }

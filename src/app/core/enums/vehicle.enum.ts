@@ -9,6 +9,12 @@ export enum VehicleSize {
     LARGE = 'LARGE'
 }
 
+export const vehicleSizeDescriptions: Record<VehicleSize, string> = {
+    [VehicleSize.SMALL]: 'vehicleSize.SMALL',
+    [VehicleSize.MEDIUM]: 'vehicleSize.MEDIUM',
+    [VehicleSize.LARGE]: 'vehicleSize.LARGE'
+};
+
 export enum FuelType {
     GASOLINE = 'GASOLINE',
     DIESEL = 'DIESEL',
@@ -18,3 +24,13 @@ export enum FuelType {
     LPG = 'LPG',
     CNG = 'CNG'
 }
+
+export const fuelTypeDescriptions: Record<FuelType, string> = {
+    [FuelType.GASOLINE]: 'fuelType.GASOLINE',
+    [FuelType.DIESEL]: 'fuelType.DIESEL',
+    [FuelType.ELECTRIC]: 'fuelType.ELECTRIC',
+    [FuelType.HYBRID]: 'fuelType.HYBRID',
+    [FuelType.PLUG_IN_HYBRID]: 'fuelType.PLUG_IN_HYBRID',
+    [FuelType.LPG]: 'fuelType.LPG',
+    [FuelType.CNG]: 'fuelType.CNG'
+};

@@ -1,7 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { UserForm, UserFormData } from '@components/user-form/user-form';
+import { UserForm} from '@components/user-form/user-form';
+import { UsersState } from '@store/users.state';
+import { GlobalStore } from '@store/global';
+import { AdminSignalsModel } from '@models/UsersSignalsModel';
 
 @Component({
   selector: 'app-create-user',
@@ -13,22 +16,15 @@ import { UserForm, UserFormData } from '@components/user-form/user-form';
   templateUrl: './create-user.html',
   styleUrl: './create-user.scss'
 })
-export class CreateUser {
-
-  userData = signal<UserFormData>({
-    name: '',
-    lastname: '',
-    email: '',
-    img: 'assets/images/sample_user_icon.png',
-    password: '',
-    roles: [],
-    status: 'ACTIVE',
-    departments: []
-  });
+export class CreateUser  implements OnInit {
 
   departments = ['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH'];
+      private readonly userState = inject (UsersState);
+  private readonly globalState = inject(GlobalStore);
+  profile: AdminSignalsModel = new AdminSignalsModel();
 
-  onUserDataChange(userData: UserFormData): void {
+
+/*   onUserDataChange(userData: UserFormData): void {
     this.userData.set(userData);
   }
 
@@ -36,6 +32,11 @@ export class CreateUser {
     console.log('Creando usuario:', userData);
   }
 
+
+ */
+   async ngOnInit() {
+       this.profile =  await this.userState.getAdminProfile(this.globalState.user().user.id!) as AdminSignalsModel;
+  }
   onCancel(): void {
     console.log('Cancelando creación');
   }

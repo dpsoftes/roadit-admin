@@ -25,6 +25,7 @@ El proyecto es un proyecto Angular 20
     Store (basado en signals)
     el contexto de ia del proyecto shared está en el archivo {workspace}/shared/copilot.txt para mas información.
     el sistema usa i18n
+    
 
 
 

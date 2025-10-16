@@ -16,7 +16,7 @@
       "type": "chrome", // O "chrome" si usas Google Chrome
       "request": "launch",
       "name": "Angular: Launch Browser Debug",
-      "url": "http://localhost:4200", // Asegúrate de que el puerto sea el correcto
+      "url": "http://localhost:3000", // Asegúrate de que el puerto sea el correcto
       "webRoot": "${workspaceFolder}",
       "sourceMaps": true, // Es crucial que esto esté activado
        "sourceMapPathOverrides": {

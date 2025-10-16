@@ -50,8 +50,8 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
     canActivate: [noAuthGuard]
   },
-  // {
-  //   path: '**', 
-  //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
-  // }
+  {
+    path: '**', 
+    loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
+  }
 ];

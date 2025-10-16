@@ -178,4 +178,370 @@
   "construction": {
     "title": "Page under construction"
   }
+  ,
+  "transportPrincipalType": {
+    "SIMPLE_MOVEMENT": "Simple movement",
+    "PICKUP_TO_FINAL_CUSTOMER": "Pickup to final customer",
+    "DELIVERY_TO_FINAL_CUSTOMER": "Delivery to final customer",
+    "PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER": "Pickup and delivery to final customer",
+    "WITH_STOPOVER": "With stopover"
+  },
+  "transportStatus": {
+    "PENDING": "Pending",
+    "PLANIFIED": "Planned",
+    "IN_COURSE": "In course",
+    "FINISHED": "Finished",
+    "CANCELLED": "Cancelled",
+    "DELETED": "Deleted",
+    "EXPIRED": "Expired"
+  },
+  "cancelledReason": {
+    "VEHICLE_NOT_AVAILABLE": "Vehicle not available",
+    "VEHICLE_NOT_READY_AT_DEPARTURE": "Vehicle not ready at departure",
+    "VEHICLE_NOT_WORKING": "Vehicle not working",
+    "MISSING_MANDATORY_SAFETY_EQUIPMENT": "Missing mandatory safety equipment",
+    "INCORRECT_LICENSE_PLATE": "Incorrect license plate",
+    "BREAKDOWN_DURING_TRANSPORT": "Breakdown during transport",
+    "ACCIDENT_DURING_TRANSPORT": "Accident during transport",
+    "VEHICLE_REJECTED_AT_ARRIVAL": "Vehicle rejected at arrival",
+    "VEHICLE_REJECTED_NO_APPOINTMENT_AT_DEPOT": "Vehicle rejected, no appointment at depot",
+    "RETURN_REJECTED": "Return rejected",
+    "END_CUSTOMER_REQUEST": "End customer request",
+    "CUSTOMER_REQUEST": "Customer request",
+    "CANCELLATION_DUE_TO_DRIVER_RESERVATION_CANCELLED": "Cancellation due to driver reservation cancelled",
+    "RETURN_CANCELLED_DUE_TO_OUTBOUND_CANCELLATION": "Return cancelled due to outbound cancellation",
+    "CONTACT_ABSENT_AT_DEPARTURE": "Contact absent at departure",
+    "CONTACT_ABSENT_AT_ARRIVAL": "Contact absent at arrival",
+    "UNREACHABLE_CONTACT_AT_START": "Unreachable contact at start",
+    "UNREACHABLE_CONTACT_AT_ARRIVAL": "Unreachable contact at arrival",
+    "NO_APPOINTMENT_POSSIBLE_WITH_END_CUSTOMER": "No appointment possible with end customer",
+    "NO_APPOINTMENT_WITH_ARRIVAL_CONTACT": "No appointment with arrival contact",
+    "DUPLICATE": "Duplicate",
+    "INCORRECT_PICKUP_ADDRESS": "Incorrect pickup address",
+    "INCORRECT_DELIVERY_ADDRESS": "Incorrect delivery address",
+    "NON_COMPLIANT_TRANSPORT_REQUEST": "Non-compliant transport request",
+    "CANCELLATION_DUE_TO_CAPACITY": "Cancellation due to capacity",
+    "OTHER": "Other"
+  },
+  "legPointType": {
+    "ORIGIN": "Origin",
+    "STOPOVER": "Stopover",
+    "DESTINATION": "Destination"
+  }
+  ,
+  "clientType": {
+    "DEALERSHIP": "Dealership",
+    "RENTING": "Renting",
+    "LEASING": "Leasing",
+    "CAR_RENTAL": "Car rental",
+    "CAR_TRADING": "Car trading",
+    "FLEET": "Fleet",
+    "COMPANY": "Company"
+  },
+  "billingType": {
+    "MANUAL": "Manual",
+    "AUTOMATIC": "Automatic"
+  },
+  "clientOrigin": {
+    "PROSPECTING": "Prospecting",
+    "REFERRAL": "Referral",
+    "MARKETING": "Marketing",
+    "INBOUND_REQUEST": "Inbound request",
+    "OTHERS": "Others",
+    "UNDEFINED": "Undefined",
+    "EVENT": "Event"
+  }
+  ,
+  "requestType": {
+    "TRANSPORT": "Transport",
+    "TOLL": "Toll",
+    "FUEL": "Fuel",
+    "MEALS": "Meals",
+    "LODGING": "Lodging",
+    "WAITING_TIME": "Waiting time",
+    "ELECTRIC_VEHICLE_CHARGING_TIME": "EV charging",
+    "OTHER": "Other"
+  },
+  "requestStatus": {
+    "NEW": "New",
+    "PENDING_TICKET_UPLOAD": "Pending ticket",
+    "PENDING_VALIDATION": "Pending validation",
+    "VALIDATED": "Validated",
+    "REQUEST_REJECTED": "Request rejected",
+    "TICKET_REJECTED": "Ticket rejected"
+  },
+  "pricingType": {
+    "FIXED": "Fixed",
+    "PER_KM": "Per km"
+  },
+  "adjustmentType": {
+    "BONUS": "Bonus",
+    "PENALTY": "Penalty"
+  },
+  "reasonType": {
+    "MISSING_DOCUMENT": "Missing document",
+    "FINE_MANAGEMENT": "Fine management",
+    "ACCIDENT_MANAGEMENT": "Accident management",
+    "ADDITIONAL_SERVICE": "Additional service",
+    "INAPPROPRIATE_BEHAVIOR": "Inappropriate behavior",
+    "UNPROFESSIONAL_DRESS": "Unprofessional dress",
+    "NOT_RESPECT_PROCESS": "Does not respect process",
+    "PUNCTUALITY_LESS_4H": "Punctuality <4h",
+    "PUNCTUALITY_MORE_4H": "Punctuality >4h",
+    "PUNCTUALITY_MORE_1D": "Punctuality >1d",
+    "FALSE_JUSTIFICATIONS": "False justifications",
+    "SERVICE_NOT_COMPLETED": "Service not completed",
+    "SERVICE_NOT_CERTIFIED": "Service not certified",
+    "OTHER": "Other"
+  },
+  "invoiceStatus": {
+    "PENDING_DRIVER": "Pending driver",
+    "PENDING_PAYMENT": "Pending payment",
+    "PAID": "Paid"
+  },
+  "anomalyType": {
+    "SCRATCH": "Scratch",
+    "DENT": "Dent",
+    "BREAK": "Break",
+    "CHIP": "Chip",
+    "MISSING_ITEM": "Missing item",
+    "POOR_CONDITION": "Poor condition",
+    "DIRTY": "Dirty",
+    "DESCRIPTION": "Description"
+  },
+  "anomalyCategory": {
+    "BODYWORK": "Bodywork",
+    "GLASS": "Glass",
+    "INTERIOR": "Interior",
+    "OTHER": "Other"
+  },
+  "incidenceType": {
+    "ALL": "All",
+    "PUNCTUALITY": "Punctuality",
+    "EXCESS_KILOMETERS": "Excess km",
+    "INVENTORY_MISSING": "Missing inventory",
+    "INVENTORY_INCOMPLETE": "Incomplete inventory",
+    "DRIVER_BEHAVIOR": "Driver behavior",
+    "DRIVER_APPEARANCE": "Driver appearance",
+    "DRIVER_CONGRATULATIONS": "Driver congratulations",
+    "OTHER": "Other",
+    "DOCUMENT_MISSING": "Missing document",
+    "DOCUMENT_BLURRED": "Blurred document",
+    "DOCUMENT_INCOMPLETE": "Incomplete document",
+    "DOCUMENT_INCORRECT": "Incorrect document",
+    "CLIENT_PROTOCOL_FUEL": "Client protocol: fuel",
+    "CLIENT_PROTOCOL_CUSTOMER_CONTACT": "Client protocol: contact",
+    "CLIENT_PROTOCOL_SC_ADDITIONAL_SERVICE": "Client protocol: add. service",
+    "CLIENT_PROTOCOL_SC_WASH": "Client protocol: wash",
+    "CLIENT_PROTOCOL_SC_VEHICLE_PRESENTATION": "Client protocol: presentation",
+    "CLIENT_PROTOCOL_OTHER": "Client protocol: other",
+    "INCIDENCE_OTHER_OR_MULTIPLE": "Other or multiple",
+    "INCIDENCE_THEFT_SUSPICION": "Theft suspicion",
+    "INCIDENCE_BODYWORK_DAMAGE": "Bodywork damage",
+    "INCIDENCE_GLASS_BREAKAGE": "Glass breakage",
+    "INCIDENCE_FLAT_TIRE": "Flat tire",
+    "INCIDENCE_WRONG_FUEL": "Wrong fuel",
+    "INCIDENCE_INTERIOR_DAMAGE": "Interior damage",
+    "FINE_OVERSPEED": "Fine: overspeed",
+    "FINE_TOLL": "Fine: toll",
+    "FINE_UNPAID_PARKING": "Fine: unpaid parking",
+    "FINE_OTHER": "Fine: other",
+    "FINE_TRAFFIC_CODE": "Fine: traffic code",
+    "BILLING_FAKE_RECEIPTS": "Fake receipts",
+    "INTERNAL_PROTOCOL_EMERGENCY_CONTACT": "Internal protocol: emergency",
+    "INTERNAL_PROTOCOL_WARNING_NOTE": "Internal protocol: warning",
+    "INTERNAL_PROTOCOL_30_MIN_WAIT": "Internal protocol: 30min wait",
+    "INTERNAL_PROTOCOL_UNREPORTED_CHANGES": "Internal protocol: unreported changes",
+    "INTERNAL_PROTOCOL_MISSION_NOT_COMPLETED": "Internal protocol: mission not completed",
+    "INTERNAL_PROTOCOL_OTHER": "Internal protocol: other"
+  },
+  "incidenceCreator": {
+    "ADMIN": "Admin",
+    "CLIENT": "Client"
+  },
+  "incidenceStatus": {
+    "NEW": "New",
+    "PENDING_DRIVER": "Pending driver",
+    "PENDING_CLIENT": "Pending client",
+    "PENDING_END_CUSTOMER": "Pending end customer",
+    "PENDING_INTERNAL_COLLABORATOR": "Pending internal collaborator",
+    "PENDING_WORKSHOP": "Pending workshop",
+    "PENDING_INSURANCE": "Pending insurance",
+    "FINISHED": "Finished"
+  },
+  "severity": {
+    "NONE": "None",
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High"
+  },
+  "responsibility": {
+    "DRIVER": "Driver",
+    "FORCE_MAJEURE": "Force majeure",
+    "CLIENT": "Client",
+    "END_CLIENT": "End client",
+    "INTERNAL_PROCESS": "Internal process",
+    "DUPLICATE": "Duplicate",
+    "TECHNICAL_ISSUE": "Technical issue",
+    "NOT_APPLICABLE": "Not applicable",
+    "THIRD_PARTY": "Third party"
+  },
+  "protocolType": {
+    "SINGLE_CHECK": "Single check",
+    "MULTI_CHECK": "Multi check",
+    "IMAGE": "Image"
+  },
+  "directionType": {
+    "ARRIVAL": "Arrival",
+    "DEPARTURE": "Departure",
+    "BOTH": "Both"
+  },
+  "transportEventType": {
+    "CREATED": "Created",
+    "UPDATED": "Updated",
+    "DRIVER_ASSIGNED": "Driver assigned",
+    "DRIVER_CHANGED": "Driver changed",
+    "CLIENT_CANCELED": "Canceled by client",
+    "DRIVER_CANCELED": "Canceled by driver",
+    "CLIENT_APPT_SELECTED": "Client appt. selected",
+    "DRIVER_DATETIME_SET": "Driver datetime set",
+    "PICKUP_DONE": "Pickup done",
+    "DOC_START_UPLOADED": "Doc. start uploaded",
+    "DOC_END_UPLOADED": "Doc. end uploaded",
+    "EXPENSE_TICKET_UPL": "Expense ticket uploaded",
+    "DELIVERY_DONE": "Delivery done",
+    "MISSION_FINISHED": "Mission finished"
+  },
+  "driverEventType": {
+    "ONBOARD_REGISTERED": "Onboard registered",
+    "DOC_UPLOADED": "Doc. uploaded",
+    "DOC_VALIDATED": "Doc. validated",
+    "DOC_REJECTED": "Doc. rejected",
+    "PROFILE_UPDATED": "Profile updated",
+    "QUOTE_SENT": "Quote sent",
+    "QUOTE_REJECTED": "Quote rejected",
+    "TRANSPORT_ASSIGNED": "Transport assigned",
+    "EXTRA_EXPENSE_REQUESTED": "Extra expense requested",
+    "EXTRA_EXPENSE_ACCEPTED": "Extra expense accepted",
+    "EXTRA_EXPENSE_REJECTED": "Extra expense rejected",
+    "TICKET_UPLOADED": "Ticket uploaded",
+    "TICKET_ACCEPTED": "Ticket accepted",
+    "TICKET_REJECTED": "Ticket rejected",
+    "QUALITY_ISSUE_REPORTED": "Quality issue reported"
+  },
+  "incidenceEventType": {
+    "OPENED": "Opened",
+    "COMMENT_ADDED": "Comment added",
+    "STATUS_CHANGED": "Status changed"
+  },
+  "documentType": {
+    "front_dni": "Front DNI",
+    "back_dni": "Back DNI",
+    "front_driving_license": "Front driving license",
+    "back_driving_license": "Back driving license",
+    "self_employment_registration_fee": "Self-employment reg. fee",
+    "bank_account_certificate": "Bank account cert.",
+    "criminal_record_certificate": "Criminal record cert.",
+    "driving_points_certificate": "Driving points cert.",
+    "self_employment_payment_certificate": "Self-employment payment cert.",
+    "tax_census_registration_certificate": "Tax census reg. cert.",
+    "form_036": "Form 036",
+    "reta_registration_resolution": "RETA reg. resolution",
+    "social_security_compliance_certificate": "Social security cert.",
+    "tax_debt_certificate": "Tax debt cert.",
+    "residence_permit_nie": "Residence permit NIE",
+    "work_permit_nie": "Work permit NIE"
+  },
+  "incidenceSeverity": {
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High",
+    "CRITICAL": "Critical"
+  },
+  "certificationStatus": {
+    "passed": "Passed",
+    "revoked": "Revoked",
+    "manual": "Manual"
+  },
+  "examQuestionType": {
+    "single": "Single answer",
+    "multiple": "Multiple answer",
+    "text": "Text",
+    "boolean": "Yes/No"
+  }
+  ,
+  "status": {
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive",
+    "PENDING": "Pending",
+    "COMPLETED": "Completed",
+    "CANCELLED": "Cancelled"
+  },
+  "priority": {
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High",
+    "URGENT": "Urgent"
+  },
+  "notificationType": {
+    "SUCCESS": "Success",
+    "ERROR": "Error",
+    "WARNING": "Warning",
+    "INFO": "Info"
+  },
+  "tagType": {
+    "CLIENT": "Client",
+    "DRIVER": "Driver",
+    "TRANSPORT": "Transport",
+    "INCIDENCE": "Incidence"
+  },
+  "sortOrder": {
+    "ASC": "Ascending",
+    "DESC": "Descending"
+  },
+  "actionType": {
+    "CREATE": "Create",
+    "READ": "Read",
+    "UPDATE": "Update",
+    "DELETE": "Delete"
+  }
+  ,
+  "vehicleSize": {
+    "SMALL": "Small",
+    "MEDIUM": "Medium",
+    "LARGE": "Large"
+  },
+  "fuelType": {
+    "GASOLINE": "Gasoline",
+    "DIESEL": "Diesel",
+    "ELECTRIC": "Electric",
+    "HYBRID": "Hybrid",
+    "PLUG_IN_HYBRID": "Plug-in hybrid",
+    "LPG": "LPG",
+    "CNG": "CNG"
+  },
+  "userRoles": {
+    "ADMIN": "Admin",
+    "USER": "User",
+    "CLIENT_USER": "Client user",
+    "DRIVER": "Driver"
+  },
+  "roleAdmin": {
+    "KAM": "KAM",
+    "SUPERADMIN": "Superadmin",
+    "OPERATIONS_MANAGER": "Operations manager",
+    "SALES_MANAGER": "Sales manager"
+  },
+  "userStatus": {
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive",
+    "PENDING": "Pending",
+    "SUSPENDED": "Suspended"
+  },
+  "driverStatus": {
+    "AVAILABLE": "Available",
+    "BUSY": "Busy",
+    "OFFLINE": "Offline",
+    "ON_BREAK": "On break"
+  }
 }

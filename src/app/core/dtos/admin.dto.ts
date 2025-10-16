@@ -1,4 +1,4 @@
-import { Role } from '../enums/user.enum';
+import { RoleAdmin } from '../enums/user.enum';
 
 export class AdminMiniDto {
     id: string; // UUID
@@ -6,7 +6,7 @@ export class AdminMiniDto {
     email: string;
     name: string;
     last_name: string;
-    roles: Role[];
+    roles: RoleAdmin[];
     departments: string[];
     created_date: string;
     modified_date: string;
@@ -61,7 +61,7 @@ export class AdminDto {
     last_name: string;
     image: string | null;
     is_active: boolean;
-    roles: Role[];
+    roles: RoleAdmin[];
     departments: string[];
     created_date: string;
     modified_date: string;
@@ -121,7 +121,7 @@ export class CreateAdminDto {
     last_name: string;
     image?: File | null;
     is_active?: boolean;
-    roles?: Role[];
+    roles?: RoleAdmin[];
     departments?: string[];
     password: string;
     password_confirmation: string;
@@ -176,7 +176,7 @@ export class UpdateAdminDto {
     last_name?: string;
     image?: File | null;
     is_active?: boolean;
-    roles?: Role[];
+    roles?: RoleAdmin[];
     departments?: string[];
     password?: string;
     password_confirmation?: string;

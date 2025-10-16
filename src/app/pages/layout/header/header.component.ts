@@ -3,24 +3,23 @@ import { Component, ChangeDetectionStrategy, input, output, computed, signal, in
 import { CommonModule } from '@angular/common';
 import { EnvironmentService } from '../../../core/services/environment.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { StoreService } from '@store/store.service';
+import { Router } from '@angular/router';
+import { UsersProvider } from '@providers';
+import { User } from '@dtos/user.dto';
 
-export interface User {
-  name?: string;
-  email?: string;
-  avatar?: string;
-}
+
 
 @Component({
   selector: 'app-header',
   imports: [CommonModule],
+  providers: [UsersProvider],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   // Inputs
-  currentUser = input<User>();
-  currentLanguage = input<string>('ES');
   
   // Outputs
   logout = output<void>();
@@ -30,7 +29,9 @@ export class HeaderComponent {
   // Idiomas disponibles
   readonly environmentService = inject(EnvironmentService);
   readonly i18nService = inject(I18nService);
-
+  readonly storeService = inject(StoreService)
+  readonly router = inject(Router); 
+  readonly usersProvider = inject(UsersProvider);
   // Array de idiomas soportados desde environment
   readonly languages = this.environmentService.appConfig.supportedLanguages.map(code => ({
     code,
@@ -39,6 +40,8 @@ export class HeaderComponent {
 
   // Signal para el idioma actual
   readonly currentLang = this.i18nService.currentLanguage;
+  currentUser = this.storeService.global.user.user;
+  currentLanguage = input<string>('ES');
 
   // Controla la visibilidad del desplegable de idiomas
   showLangs = signal(false);
@@ -67,5 +70,12 @@ export class HeaderComponent {
       return `${names[0][0]}${names[1][0]}`.toUpperCase();
     }
     return user.name[0].toUpperCase();
+  }
+  async onProfile() {
+    await this.usersProvider.getProfile();
+    this.router.navigate(['/users/profile']);
+
+
+    console.log('Ir al perfil del usuario');
   }
 }

@@ -6,9 +6,10 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { I18nService } from '@i18n/i18n.service';
 import { TranslatePipe } from '@i18n//translate.pipe';
 import { EnvironmentService } from '@services/environment.service';
-import { ApiService, EndPoints } from '@services';
+import { ApiService, EndPoints, HttpMethod } from '@services';
 import { LoginRequestDto, LoginResponseDto } from '@dtos';
 import { GlobalStore } from '@store/global';
+import { StoreService } from '@store/store.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent {
   isLoading = signal(false);
   
   private globalStore = inject(GlobalStore);
-  
+  private store = inject(StoreService);
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -32,20 +33,12 @@ export class LoginComponent {
     private apiService: ApiService
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, this.emailOrUsernameValidator]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      email: [this.store.isDebug ? 'admintest@example.com' : '', [Validators.required, this.emailOrUsernameValidator]],
+      password: [this.store.isDebug ? '12345Ab.' : '', [Validators.required, Validators.minLength(6)]],
       rememberMe: [false]
     });
 
-    // Ejemplo de uso del environment service
-    if (this.envService.isDevelopment) {
-      console.log('🔧 Modo desarrollo activado');
-      console.log('API URL:', this.envService.apiUrl);
-      console.log('Environment info:', this.envService.getEnvironmentInfo());
-      
-      // Verificar que ApiService está configurado correctamente
-      console.log('🌐 ApiService Base URL:', this.apiService.getBaseUrl());
-    }
+
   }
 
   togglePasswordVisibility(): void {
@@ -59,15 +52,12 @@ export class LoginComponent {
       try {
         // Crear el DTO de request
         const loginRequest = new LoginRequestDto({
-          username: this.loginForm.get('email')?.value,
+          email: this.loginForm.get('email')?.value,
           password: this.loginForm.get('password')?.value
         });
 
         // Llamar al API
-        const loginResponse = await this.apiService.post<LoginResponseDto>(
-          EndPoints.login,
-          loginRequest.toJson()
-        );
+        const loginResponse = await this.apiService.call<LoginResponseDto>(HttpMethod.POST, {url: EndPoints.login, body: loginRequest.toJson()});
 
         // Convertir la respuesta a DTO
         const loginDto = LoginResponseDto.fromJson(loginResponse);
