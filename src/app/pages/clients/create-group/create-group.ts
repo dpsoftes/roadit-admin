@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +14,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-create-group',
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     TranslatePipe,
     MatCardModule,
     MatFormFieldModule,
@@ -26,42 +28,44 @@ import { MatChipsModule } from '@angular/material/chips';
   styleUrl: './create-group.scss'
 })
 export class CreateGroup {
-  selectedUserIds = signal<number[]>([]);
+  // Input signals
+  availableAdmins = input<any[]>([]);
+  groupData = input< any| null>(null);
+  
+  // Output signals
+  groupCreated = output<any>();
+  groupCancelled = output<void>();
 
-  availableUsers = signal([
-    { id: 1, name: 'Luis', lastname: 'García', role: 'ADMIN' },
-    { id: 2, name: 'María', lastname: 'Fernández', role: 'ADMIN' },
-    { id: 3, name: 'Carlos', lastname: 'Ruiz', role: 'USER' },
-    { id: 4, name: 'Ana', lastname: 'Martín', role: 'ADMIN' },
-    { id: 5, name: 'Pedro', lastname: 'López', role: 'USER' },
-    { id: 6, name: 'Sofia', lastname: 'González', role: 'ADMIN' },
-    { id: 7, name: 'Miguel', lastname: 'Hernández', role: 'USER' },
-    { id: 8, name: 'Laura', lastname: 'Jiménez', role: 'ADMIN' },
-    { id: 9, name: 'David', lastname: 'Morales', role: 'USER' },
-    { id: 10, name: 'Carmen', lastname: 'Vargas', role: 'ADMIN' }
-  ]);
+  // Formulario reactivo
+  groupForm: FormGroup;
 
-  get selectedUsers() {
-    return this.availableUsers().filter(user =>
-      this.selectedUserIds().includes(user.id)
+  constructor(private fb: FormBuilder) {
+    this.groupForm = this.fb.group({
+      name: ['', Validators.required],
+      country: ['', Validators.required],
+      assigned_admins: [[]]
+    });
+  }
+
+  get selectedAdmins() {
+    const selectedIds = this.groupForm.get('assigned_admins')?.value || [];
+    return this.availableAdmins().filter(admin =>
+      selectedIds.includes(admin.id)
     );
   }
 
-  onUserSelectionChange(selectedIds: number[]) {
-    this.selectedUserIds.set(selectedIds);
-  }
-
-  removeUser(userId: number) {
-    const currentIds = this.selectedUserIds();
-    const updatedIds = currentIds.filter(id => id !== userId);
-    this.selectedUserIds.set(updatedIds);
-  }
-
   onSave() {
-    console.log('Saving group');
+    if (this.groupForm.valid) {
+      const formData = this.groupForm.value as any;
+      this.groupCreated.emit(formData);
+    } else {
+      console.log('Formulario inválido:', this.groupForm.errors);
+      this.groupForm.markAllAsTouched();
+    }
   }
 
   onCancel() {
-    console.log('Cancelling group creation');
+    this.groupForm.reset();
+    this.groupCancelled.emit();
   }
 }

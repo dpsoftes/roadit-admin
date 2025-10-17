@@ -1,4 +1,4 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, input } from '@angular/core';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '../../components/dynamic-table/dynamic-table.component';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './users.scss'
 })
 export class Users implements OnInit {
+  users = input<any[]>([]);
 
   constructor(private router: Router) {}
 
@@ -153,7 +154,7 @@ export class Users implements OnInit {
   };
 
   ngOnInit() {
-    this.tableConfig.data = this.usersArray();
+    this.tableConfig.data = this.users().length > 0 ? this.users() : this.sampleData;
   }
 
   onTableEvent(event: TableEvent) {
@@ -234,7 +235,8 @@ export class Users implements OnInit {
   //     department: this.selectedDepartment
   //   });
   // }
-  usersArray = signal([
+  // Datos de ejemplo - en producción vendrán del componente padre
+  private sampleData = [
     {
       id: 1,
       name: 'Luis',
@@ -335,5 +337,5 @@ export class Users implements OnInit {
       department: 'Calidad',
       photo: 'assets/images/sample_user_icon.png'
     }
-  ]);
+  ];
 }

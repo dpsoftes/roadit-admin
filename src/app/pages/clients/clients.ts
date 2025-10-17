@@ -1,8 +1,9 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { TableConfig, TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
+// import { ClientDto, ClientMiniDto, ClientGroupDto } from '@dtos'; // Temporalmente comentado
 
 @Component({
   selector: 'app-clients',
@@ -15,170 +16,13 @@ import { TableConfig, TableEvent } from '@components/dynamic-table/dynamic-table
   styleUrl: './clients.scss'
 })
 export class Clients implements OnInit {
+  // Input signals para recibir datos del backend
+  clientsData = input<any[]>([]);
+  groupsData = input<any[]>([]);
 
-  groupsArray = signal([
-    {
-      id: 1,
-      group_name: 'Grupo Empresarial Madrid',
-      country: 'España',
-      users_assigned: ['Juan Pérez', 'María García', 'Carlos López']
-    },
-    {
-      id: 2,
-      group_name: 'Corporación Barcelona',
-      country: 'España',
-      users_assigned: ['Ana Martín', 'Pedro Ruiz', 'Sofia González', 'Juan Pérez', 'María García', 'Carlos López']
-    },
-    {
-      id: 3,
-      group_name: 'Grupo Internacional París',
-      country: 'Francia',
-      users_assigned: ['Pierre Dubois', 'Marie Leclerc', 'Jean Martin']
-    },
-    {
-      id: 4,
-      group_name: 'Empresa Lisboa',
-      country: 'Portugal',
-      users_assigned: ['João Silva', 'Maria Santos', 'António Costa']
-    },
-    {
-      id: 5,
-      group_name: 'Corporación Roma',
-      country: 'Italia',
-      users_assigned: ['Marco Rossi', 'Giulia Bianchi', 'Francesco Ferrari']
-    },
-    {
-      id: 6,
-      group_name: 'Grupo Empresarial Berlín',
-      country: 'Alemania',
-      users_assigned: ['Hans Mueller', 'Anna Schmidt', 'Klaus Weber']
-    },
-    {
-      id: 7,
-      group_name: 'Empresa Londres',
-      country: 'Reino Unido',
-      users_assigned: ['John Smith', 'Emma Johnson', 'Michael Brown']
-    },
-    {
-      id: 8,
-      group_name: 'Corporación Amsterdam',
-      country: 'Países Bajos',
-      users_assigned: ['Jan de Vries', 'Lisa van der Berg', 'Tom Bakker']
-    }
-  ]);
+  groupsArray = signal<any[]>([]);
 
-  listArray = signal([
-    {
-      id: 1,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'TechCorp Solutions',
-      group: 'Grupo Empresarial Madrid',
-      cif: 'A12345678',
-      registration_date: '2023-01-15',
-      department: 'IT',
-      tags: ['nuevo', 'seguro_propio'],
-      main_client: 'Juan Pérez'
-    },
-    {
-      id: 2,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'InnovateLab',
-      group: 'Corporación Barcelona',
-      cif: 'B87654321',
-      registration_date: '2023-02-20',
-      department: 'Operations',
-      tags: ['nuevo'],
-      main_client: 'María García'
-    },
-    {
-      id: 3,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'GlobalTrade Ltd',
-      group: 'Grupo Internacional París',
-      cif: 'C11223344',
-      registration_date: '2023-03-10',
-      department: 'Sales',
-      tags: ['en_riesgo', 'seguro_propio'],
-      main_client: 'Pierre Dubois'
-    },
-    {
-      id: 4,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'FinancePro',
-      group: 'Empresa Lisboa',
-      cif: 'D55667788',
-      registration_date: '2023-04-05',
-      department: 'Finance',
-      tags: ['seguro_propio'],
-      main_client: 'João Silva'
-    },
-    {
-      id: 5,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'HR Solutions',
-      group: 'Corporación Roma',
-      cif: 'E99887766',
-      registration_date: '2023-05-12',
-      department: 'HR',
-      tags: ['en_riesgo'],
-      main_client: 'Marco Rossi'
-    },
-    {
-      id: 6,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'DataAnalytics Inc',
-      group: 'Grupo Empresarial Madrid',
-      cif: 'F44332211',
-      registration_date: '2023-06-18',
-      department: 'IT',
-      tags: ['nuevo', 'en_riesgo'],
-      main_client: 'Carlos López'
-    },
-    {
-      id: 7,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'LogisticsPro',
-      group: 'Corporación Barcelona',
-      cif: 'G77889900',
-      registration_date: '2023-07-22',
-      department: 'Operations',
-      tags: ['seguro_propio'],
-      main_client: 'Ana Martín'
-    },
-    {
-      id: 8,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'MarketingHub',
-      group: 'Grupo Internacional París',
-      cif: 'H00112233',
-      registration_date: '2023-08-30',
-      department: 'Sales',
-      tags: ['nuevo', 'seguro_propio'],
-      main_client: 'Marie Leclerc'
-    },
-    {
-      id: 9,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'CloudServices',
-      group: 'Empresa Lisboa',
-      cif: 'I44556677',
-      registration_date: '2023-09-14',
-      department: 'IT',
-      tags: ['en_riesgo', 'seguro_propio'],
-      main_client: 'Maria Santos'
-    },
-    {
-      id: 10,
-      logo: 'assets/images/sample_user_icon.png',
-      name: 'ConsultingGroup',
-      group: 'Corporación Roma',
-      cif: 'J88990011',
-      registration_date: '2023-10-08',
-      department: 'HR',
-      tags: ['nuevo'],
-      main_client: 'Giulia Bianchi'
-    }
-  ]);
+  listArray = signal<any[]>([]);
 
   showGroupsTable = signal(true);
   showListTable = signal(false);
@@ -187,7 +31,7 @@ export class Clients implements OnInit {
   groupsTableConfig: TableConfig = {
     columns: [
       {
-        key: 'group_name',
+        key: 'name',
         label: 'clients.list.group_name',
         type: 'text',
         width: 25
@@ -199,7 +43,7 @@ export class Clients implements OnInit {
         width: 25
       },
       {
-        key: 'users_assigned',
+        key: 'assigned_admins',
         label: 'clients.list.users_assigned',
         type: 'chip-array',
         width: 25,
@@ -271,7 +115,7 @@ export class Clients implements OnInit {
         ]
       },
       {
-        key: 'users_assigned',
+        key: 'assigned_admins',
         label: 'clients.list.users_assigned_filter',
         type: 'text',
         width: 30,
@@ -305,19 +149,19 @@ export class Clients implements OnInit {
         width: 12
       },
       {
-        key: 'group',
+        key: 'client_group',
         label: 'clients.list.group',
         type: 'text',
         width: 15
       },
       {
-        key: 'cif',
+        key: 'CIF',
         label: 'clients.list.cif',
         type: 'text',
         width: 10
       },
       {
-        key: 'registration_date',
+        key: 'created_at',
         label: 'clients.list.registration_date',
         type: 'text',
         width: 10
@@ -342,7 +186,7 @@ export class Clients implements OnInit {
         }
       },
       {
-        key: 'main_client',
+        key: 'contact_person_name',
         label: 'clients.list.main_client',
         type: 'text',
         width: 13
@@ -387,7 +231,7 @@ export class Clients implements OnInit {
     filterable: true,
     filters: [
       {
-        key: 'group',
+        key: 'client_group',
         label: 'clients.list.group_filter',
         type: 'select',
         width: 12,
@@ -400,13 +244,13 @@ export class Clients implements OnInit {
         ]
       },
       {
-        key: 'cif',
+        key: 'CIF',
         label: 'clients.list.cif_filter',
         type: 'text',
         width: 10
       },
       {
-        key: 'registration_date',
+        key: 'created_at',
         label: 'clients.list.registration_date_filter',
         type: 'date',
         width: 12
@@ -437,11 +281,11 @@ export class Clients implements OnInit {
         ]
       },
       {
-        key: 'main_client',
+        key: 'contact_person_name',
         label: 'clients.list.main_client_filter',
         type: 'select',
         width: 10,
-        options: this.listArray().map((item: any) => ({ value: item.main_client, label: item.main_client }))
+        options: this.listArray().map((item: any) => ({ value: item.contact_person_name || '', label: item.contact_person_name || '' }))
         
       },
       {
@@ -458,8 +302,12 @@ export class Clients implements OnInit {
   };
 
   ngOnInit() {
-    this.groupsTableConfig.data = this.groupsArray();
-    this.listTableConfig.data = this.listArray();
+    // Usar datos de input signals si están disponibles, sino usar datos mock
+    const clientsData = this.clientsData();
+    const groupsData = this.groupsData();
+    
+    this.groupsTableConfig.data = groupsData.length > 0 ? groupsData : this.groupsArray();
+    this.listTableConfig.data = clientsData.length > 0 ? clientsData : this.listArray();
   }
   onClientsGroup() {
     this.showGroupsTable.set(true);
@@ -528,18 +376,18 @@ export class Clients implements OnInit {
       return;
     }
 
-    const isGroupData = data[0]?.group_name !== undefined;
+    const isGroupData = data[0]?.name !== undefined;
     
     let columns: string[];
     let headers: string[];
     let filename: string;
 
     if (isGroupData) {
-      columns = ['group_name', 'country', 'users_assigned'];
+      columns = ['name', 'country', 'assigned_admins'];
       headers = ['Nombre del Grupo', 'País', 'Usuarios Asignados'];
       filename = `grupos_clientes_${new Date().toISOString().split('T')[0]}.csv`;
     } else {
-      columns = ['name', 'group', 'cif', 'registration_date', 'department', 'tags', 'main_client'];
+      columns = ['name', 'client_group', 'CIF', 'created_at', 'department', 'tags', 'contact_person_name'];
       headers = ['Nombre', 'Grupo', 'CIF', 'Fecha Alta', 'Departamento', 'Tags', 'Cliente Principal'];
       filename = `lista_clientes_${new Date().toISOString().split('T')[0]}.csv`;
     }

@@ -70,6 +70,8 @@ export class UserForm implements OnInit {
 
 
   showPassword = signal(false);
+  password = signal('');
+  
   async ngOnInit() {
   //  this.profile =  await this.userState.getAdminProfile(StoreService.instance?.global.user()?.user.id!) as AdminSignalsModel;
   }

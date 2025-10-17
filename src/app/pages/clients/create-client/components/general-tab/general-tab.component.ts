@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, ViewEncapsulation } from '@angular/core';
+import { Component, signal, ViewEncapsulation, input, output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +13,7 @@ import { TranslatePipe } from '@i18n/translate.pipe';
   selector: 'app-general-tab-component',
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatCardModule,
     MatButtonModule,
     TranslatePipe,
@@ -25,83 +27,64 @@ import { TranslatePipe } from '@i18n/translate.pipe';
   encapsulation: ViewEncapsulation.None
 })
 export class GeneralTabComponent {
+  // Input signals
+  clientData = input< any| null>(null);
+  clientGroups = input<any[]>([]);
+  managers = input<any[]>([]);
+  
+  // Output signals
+  formDataChange = output<any>();
 
+  // Formulario reactivo
+  clientForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.clientForm = this.fb.group({
+      name: ['', Validators.required],
+      CIF: ['', Validators.required],
+      client_group: [null],
+      department: [''],
+      parent: [null],
+      client_type: ['', Validators.required],
+      client_origin: ['', Validators.required],
+      billing_type: ['', Validators.required],
+      contact_person_name: [''],
+      contact_person_email: [''],
+      contact_person_phone: [''],
+      is_subentity: [false],
+      own_insurance: [false],
+      at_risk: [false],
+      managers: [[]],
+      sendFinalCustomer: [false]
+    });
+  }
 
   onPhotoChanged(photo: string): void {
     console.log('Photo changed:', photo);
   }
+  
   onPhotoDeleted(photo: string): void {
     console.log('Photo deleted:', photo);
   }
 
-  groups = signal<string[]>(['Group 1', 'Group 2', 'Group 3']);
-
-  selectedGroup = signal<string>('');
-  onGroupChange(group: string): void {
-    this.selectedGroup.set(group);
-  }
-  clients = signal<{ id: number, name: string }[]>(
-    [
-      {
-        id: 1,
-        name: 'Client 1'
-      },
-      {
-        id: 2,
-        name: 'Client 2'
-      },
-      {
-        id: 3,
-        name: 'Client 3'
-      }
-    ]
-  );
-  selectedClient = signal<string>('');
-  onClientChange(client: string): void {
-    this.selectedClient.set(client);
-  }
-  isSubentity = signal<boolean>(false);
-  onSubentityChange(isSubentity: boolean): void {
-    this.isSubentity.set(isSubentity);
+  // Método único para guardar - se ejecuta solo cuando se presiona el botón
+  onSave(): void {
+    if (this.clientForm.valid) {
+      const formData = this.clientForm.value as any;
+      this.formDataChange.emit(formData);
+    } else {
+      console.log('Formulario inválido:', this.clientForm.errors);
+      // Marcar todos los campos como tocados para mostrar errores
+      this.clientForm.markAllAsTouched();
+    }
   }
 
-  billingTypes = signal<string[]>(['Manual', 'Automatic']);
-  selectedBillingType = signal<string>('');
-  onBillingTypeChange(billingType: string): void {
-    this.selectedBillingType.set(billingType);
+  onCancel(): void {
+    this.clientForm.reset();
   }
 
-  sendManualInvoice = signal<boolean>(false);
-  onSendManualInvoiceChange(sendManualInvoice: boolean): void {
-    this.sendManualInvoice.set(sendManualInvoice);
-  }
-  CheckOwnInsurance = signal<boolean>(false);
-  onCheckOwnInsuranceChange(CheckOwnInsurance: boolean): void {
-    this.CheckOwnInsurance.set(CheckOwnInsurance);
-  }
-  CheckAtRisk = signal<boolean>(false);
-  onCheckAtRiskChange(CheckAtRisk: boolean): void {
-    this.CheckAtRisk.set(CheckAtRisk);
-  }
-
-  sendFinalCustomer = signal<boolean>(false);
-  onSendFinalCustomerChange(sendFinalCustomer: boolean): void {
-    this.sendFinalCustomer.set(sendFinalCustomer);
-  }
-
-  departments = signal<string[]>(['IT', 'HR', 'Finance', 'Operations', 'Marketing']);
-  selectedDepartments = signal<string[]>([]);
-  onDepartmentsChange(departments: string[]): void {
-    this.selectedDepartments.set(departments);
-  }
   clientTypes = signal<string[]>(['Type 1', 'Type 2']);
-  selectedClientType = signal<string>('');
-  onClientTypeChange(clientType: string): void {
-    this.selectedClientType.set(clientType);
-  }
   clientOrigins = signal<string[]>(['Origin 1', 'Origin 2']);
-  selectedClientOrigin = signal<string>('');
-  onClientOriginChange(clientOrigin: string): void {
-    this.selectedClientOrigin.set(clientOrigin);
-  }
+  billingTypes = signal<string[]>(['Manual', 'Automatic']);
+  departments = signal<string[]>(['IT', 'HR', 'Finance', 'Operations', 'Marketing']);
 }

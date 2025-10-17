@@ -9,27 +9,31 @@
                 <p class="upload_photo_p">{{'clients.create-client.upload-logo-explanation' | translate}}</p>
             </div>
         </div>
-        <div class="form">
+        <form [formGroup]="clientForm" (ngSubmit)="onSave()">
+            <div class="form">
 
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.name' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput formControlName="name">
+                    <mat-error *ngIf="clientForm.get('name')?.invalid && clientForm.get('name')?.touched">
+                        El nombre es requerido
+                    </mat-error>
                 </mat-form-field>
             </div>
 
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.group' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="selectedGroup()">
-                        @for (group of groups(); track group) {
-                        <mat-option [value]="group">{{ group }}</mat-option>
+                    <mat-select formControlName="client_group">
+                        @for (group of clientGroups(); track group.id) {
+                        <mat-option [value]="group.id">{{ group.name }}</mat-option>
                     }
                     </mat-select>
                 </mat-form-field>
                 <p class="placeholder-text">Placeholder text</p>
                 
-                <mat-checkbox [checked]="isSubentity()">
+                <mat-checkbox formControlName="is_subentity">
                     {{'clients.create-client.subentity' | translate}}
                 </mat-checkbox>
             </div>
@@ -39,9 +43,9 @@
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.client' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="selectedClient()">
-                        @for (client of clients(); track client.id) {
-                        <mat-option [value]="client">{{ client.name }}</mat-option>
+                    <mat-select formControlName="parent">
+                        @for (client of clientGroups(); track client.id) {
+                        <mat-option [value]="client.id">{{ client.name }}</mat-option>
                     }
                     </mat-select>
                 </mat-form-field>
@@ -49,33 +53,44 @@
             </div>
             
             <div class="form-field half_field">
-                <label class="field-label">{{'clients.create-client.id-eurotransport' | translate}}</label>
+                <label class="field-label">{{'clients.create-client.cif' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput formControlName="CIF">
+                    <mat-error *ngIf="clientForm.get('CIF')?.invalid && clientForm.get('CIF')?.touched">
+                        El CIF es requerido
+                    </mat-error>
                 </mat-form-field>
             </div>
             
             <div class="form-field half_field">
-                <label class="field-label">{{'clients.create-client.id-revel' | translate}}</label>
+                <label class="field-label">{{'clients.create-client.department' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <mat-select formControlName="department">
+                        @for (dept of departments(); track dept) {
+                        <mat-option [value]="dept">{{ dept }}</mat-option>
+                    }
+                    </mat-select>
                 </mat-form-field>
             </div>
             
             <div class="form-field two_third_field">
                 <label class="field-label">{{'clients.create-client.billing-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="selectedBillingType()">
-                        <mat-option value="1">{{'clients.create-client.billing-type-manual' | translate}}</mat-option>
-                        <mat-option value="2">{{'clients.create-client.billing-type-automatic' | translate}}</mat-option>
+                    <mat-select formControlName="billing_type">
+                        @for (billingType of billingTypes(); track billingType) {
+                        <mat-option [value]="billingType">{{ billingType }}</mat-option>
+                    }
                     </mat-select>
+                    <mat-error *ngIf="clientForm.get('billing_type')?.invalid && clientForm.get('billing_type')?.touched">
+                        El tipo de facturación es requerido
+                    </mat-error>
                 </mat-form-field>
                 <p class="placeholder-text">Placeholder text</p>
                 <div class="checkboxes-container">
-                    <mat-checkbox [checked]="CheckOwnInsurance()">
+                    <mat-checkbox formControlName="own_insurance">
                         {{'clients.create-client.check-own-insurance' | translate}}
                     </mat-checkbox>
-                    <mat-checkbox [checked]="CheckAtRisk()">
+                    <mat-checkbox formControlName="at_risk">
                         {{'clients.create-client.check-at-risk' | translate}}
                     </mat-checkbox>
                 </div>
@@ -100,14 +115,7 @@
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.department-incidences' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select multiple [value]="selectedDepartments()" (selectionChange)="onDepartmentsChange($event.value)">
-                        <mat-select-trigger>
-                            <div class="selected-values">
-                                @for(dept of selectedDepartments(); track dept) {
-                                    <span class="selected-chip">{{ 'clients.list.department.' + dept | translate }}</span>
-                                }
-                            </div>
-                        </mat-select-trigger>
+                    <mat-select multiple formControlName="managers">
                         @for (dept of departments(); track dept) {
                         <mat-option [value]="dept">
                             {{ 'clients.list.department.' + dept | translate }}
@@ -117,7 +125,7 @@
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field final_customer_field">
-                <mat-checkbox [checked]="sendFinalCustomer()">
+                <mat-checkbox formControlName="sendFinalCustomer">
                     {{'clients.create-client.send-final-customer' | translate}}
                 </mat-checkbox>
             </div>
@@ -125,20 +133,28 @@
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.client-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="selectedClientType()">
-                        <mat-option value="1">{{'clients.create-client.client-type-1' | translate}}</mat-option>
-                        <mat-option value="2">{{'clients.create-client.client-type-2' | translate}}</mat-option>
+                    <mat-select formControlName="client_type">
+                        @for (clientType of clientTypes(); track clientType) {
+                        <mat-option [value]="clientType">{{ clientType }}</mat-option>
+                    }
                     </mat-select>
+                    <mat-error *ngIf="clientForm.get('client_type')?.invalid && clientForm.get('client_type')?.touched">
+                        El tipo de cliente es requerido
+                    </mat-error>
                 </mat-form-field>
                 <p class="placeholder-text">Placeholder text</p>
             </div>
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.client-origin' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="selectedClientOrigin()">
-                        <mat-option value="1">{{'clients.create-client.client-origin-1' | translate}}</mat-option>
-                        <mat-option value="2">{{'clients.create-client.client-origin-2' | translate}}</mat-option>
+                    <mat-select formControlName="client_origin">
+                        @for (clientOrigin of clientOrigins(); track clientOrigin) {
+                        <mat-option [value]="clientOrigin">{{ clientOrigin }}</mat-option>
+                    }
                     </mat-select>
+                    <mat-error *ngIf="clientForm.get('client_origin')?.invalid && clientForm.get('client_origin')?.touched">
+                        El origen del cliente es requerido
+                    </mat-error>
                 </mat-form-field>
                 <p class="placeholder-text">Placeholder text</p>
             </div>
@@ -146,25 +162,30 @@
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.main-contact-name' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput formControlName="contact_person_name">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.main-contact-email' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="email" matInput>
+                    <input type="email" matInput formControlName="contact_person_email">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.main-contact-phone' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="tel" matInput>
+                    <input type="tel" matInput formControlName="contact_person_phone">
                 </mat-form-field>
             </div>
             <div class="action-buttons-container">
-                <button mat-button class="primary_btn save_changes_btn">{{'clients.create-client.save-changes' | translate}}</button>
-                <button mat-button class="primary_btn cancel_btn">{{'clients.create-client.cancel' | translate}}</button>
+                <button mat-button type="submit" class="primary_btn save_changes_btn" [disabled]="clientForm.invalid">
+                    {{'clients.create-client.save-changes' | translate}}
+                </button>
+                <button mat-button type="button" (click)="onCancel()" class="primary_btn cancel_btn">
+                    {{'clients.create-client.cancel' | translate}}
+                </button>
             </div>
         </div>
+        </form>
     </mat-card-content>
 </mat-card>
