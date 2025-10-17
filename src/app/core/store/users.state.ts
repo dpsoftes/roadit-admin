@@ -1,9 +1,10 @@
 import { inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
-import { AdminDto } from '@dtos/admin.dto';
-import { AdminSignalsModel } from '../models/UsersSignalsModel';
-import { BaseSignalsModel } from '../models/BaseSignalsModel';
-import { UserFullDto } from '@dtos/user.dto';
+import { AdminDto } from '@dtos/admins.dto';
+//import { AdminSignalsModel } from '../models/UsersSignalsModel';
+//import { BaseSignalsModel } from '../models/BaseSignalsModel';
+import { UserFullDto, AdminRequestDto } from '@dtos';
+import { AdminRequestSignal, AdminSignal } from '@entities/admins.entities';
 import { ApiService } from '@services/api.service';
 import { EndPoints, HttpMethod } from '@services/index';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
@@ -21,14 +22,14 @@ export const UsersState = signalStore(
   withDevtools('UsersStore'),
   withSignalStoreBase<UsersStateData>(),
   withMethods((store, apiService = inject(ApiService)) => ({
-    async getAdminProfile(id: number): Promise<AdminSignalsModel | null> {
+    async getAdminProfile(id: number): Promise<AdminSignal | null> {
       try {
         const profile = await apiService.call<AdminDto>(HttpMethod.GET, {
           url: EndPoints.getAdmin,
           queryParams: { adminId: id },
         });
         store.patch({ adminProfile: profile });
-        return AdminSignalsModel.fromJson(profile);
+        return AdminSignal.fromDto(profile);
       } catch (e) {
         store.patch({ adminProfile: null });
         return null;

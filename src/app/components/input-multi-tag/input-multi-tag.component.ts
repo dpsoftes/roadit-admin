@@ -1,12 +1,12 @@
 // input-multi-tag.component.ts
-import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'input-multi-tag', 
   templateUrl: './input-multi-tag.component.html',
   styleUrls: ['./input-multi-tag.component.scss']
 })
-export class InputMultiTagComponent implements OnInit {
+export class InputMultiTagComponent implements OnInit, OnChanges {
   @Input() label: string = 'Etiquetas';
   @Input() value: string[] = [];
   @Output() valueChange = new EventEmitter<string[]>(); 
@@ -17,8 +17,15 @@ export class InputMultiTagComponent implements OnInit {
   shouldLabelFloat: boolean = false; 
   inputValue: string = ''; 
 
+
   ngOnInit() {
     this.updateFloatingState();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['value']) {
+      this.updateFloatingState();
+    }
   }
 
   onFocus() {

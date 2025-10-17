@@ -1,11 +1,12 @@
 import { Component, signal, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { UserForm } from '@components/user-form/user-form';
+import { UserForm } from './user-form/user-form';
 import { StoreService } from '@store/store.service';
 import { UsersState } from '@store/users.state';
 import { GlobalStore } from '@store/global';
 import { AdminSignalsModel } from '@models/UsersSignalsModel';
+import { AdminSignal } from '@entities/admins.entities';
 
 @Component({
   selector: 'app-profile',
@@ -22,12 +23,12 @@ export class Profile implements OnInit {
   
   private readonly userState = inject (UsersState);
   private readonly globalState = inject(GlobalStore);
-  profile: AdminSignalsModel = new AdminSignalsModel();
+  profile: AdminSignal = new AdminSignal();
 
   departments = ['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH'];
 
   async ngOnInit() {
-       this.profile.copyFrom(await this.userState.getAdminProfile(this.globalState.user().user.id!) as AdminSignalsModel);
+       this.profile.copyFromDto( (await this.userState.getAdminProfile(this.globalState.user().user.id!) as AdminSignal).toDto());
   }
 
   onCancel(): void {

@@ -20,6 +20,7 @@
       "@pipes/*": ["src/app/core/pipes/*"],
       "@dtos/*": ["src/app/core/dtos/*"],
       "@dtos": ["src/app/core/dtos/index.ts"],
+      "@entities/*": ["src/app/core/entitySignal/*"],
       "@store/*": ["src/app/core/store/*"],
       "@i18n/*": ["src/app/core/i18n/*"],
       "@assets/*": ["src/assets/*"],
@@ -31,6 +32,12 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "src/**/*.spec.ts"
+    "src/**/*.spec.ts",
+  "src/app/core/dtos.old",
+  "src/app/core/dtos.old/**/*",
+  "src/app/deprecates",
+  "src/app/deprecates/**/*",
+  "src/app/pages/deprecates",
+  "src/app/pages/deprecates/**/*"
   ]
 }

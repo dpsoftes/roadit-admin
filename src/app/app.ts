@@ -10,6 +10,7 @@ import {
 } from '@components';
 import { StoreService } from '@store/store.service';
 import { LoginComponent } from './pages/login/login.component';
+import { Helpers } from '@utils/helpers';
 // Actualiza las importaciones según el tipo:
 // import { ApiService } from '@services/api.service';
 // import { LoginResponseDto } from '@dtos/loginResponse.dto';
@@ -26,7 +27,7 @@ export class App {
   // Datos mock simples (40 usuarios)
   store = inject(StoreService);
 
-  constructor() {
+  constructor(private readonly helper: Helpers) {
     
   }
 
