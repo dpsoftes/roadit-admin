@@ -232,7 +232,7 @@ export class ApiService {
                 Object.entries(fileParams).forEach(([key, file]) => formData.append(key, file));
             }
             requestBody = formData;
-            if (headers['Content-Type']) delete headers['Content-Type'];
+            //if (headers['Content-Type']) delete headers['Content-Type'];
         } else if (body) {
             headers['Content-Type'] = 'application/json';
         }

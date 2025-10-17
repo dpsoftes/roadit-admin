@@ -1,30 +1,41 @@
 @if(profile!=null){
 <mat-card>
-    <mat-card-header *ngIf="showPhotoSection">
+    @if(showPhotoSection()){
+    <mat-card-header>
         <div class="photo-section">
-            <img class="user_logo" [src]="profile.image()" alt="">
+                        <image-drop
+                            [src]="profile().image()"
+                            [width]="'120px'"
+                            [height]="'120px'"
+                            [formats]="['JPG','JPEG','GIF','PNG']"
+                            [maxWeight]="800"
+                            (imageAccepted)="onImageAccepted($event)"
+                        ></image-drop>
             <div class="actions">
-                <button class="upload_photo_btn" matButton="filled" (click)="onPhotoChanged('')">{{'users.profile.upload-photo' | translate}}</button>
+                <input type="file" accept=".jpg,.jpeg,.png,.gif" style="display:none" #fileInput (change)="onFileSelected($event)">
+                <button class="upload_photo_btn" matButton="filled" (click)="fileInput.click()">{{'users.profile.upload-photo' | translate}}</button>
+
+                
                 <button class="delete_photo_btn" matButton="outlined" (click)="onPhotoDeleted('')">{{'users.profile.delete' | translate}}</button>
                 <p class="upload_photo_p">{{'users.profile.photo-upload-explanation' | translate}}</p>
             </div>
         </div>
     </mat-card-header>
-    
+    }
     <mat-card-content>
         <mat-form-field appearance="outline" class="half_field">
             <mat-label>{{'users.profile.name' | translate}}</mat-label>
-            <input matInput [value]="profile.name()" (input)="profile.name.set($event.target.value)">
+            <input matInput [value]="profile().name()" (input)="profile().name.set($event.target.value)">
         </mat-form-field>
         
         <mat-form-field appearance="outline" class="half_field">
             <mat-label>{{'users.profile.lastname' | translate}}</mat-label>
-            <input matInput [value]="profile.last_name()" (input)="profile.last_name.set($event.target.value)">
+            <input matInput [value]="profile().last_name()" (input)="profile().last_name.set($event.target.value)">
         </mat-form-field>
         
         <mat-form-field appearance="outline" class="half_field">
             <mat-label>{{'users.profile.email' | translate}}</mat-label>
-            <input matInput [value]="profile.email()" (input)="profile.email.set($event.target.value)">
+            <input matInput [value]="profile().email()" (input)="profile().email.set($event.target.value)">
         </mat-form-field>
         
 <!--         <mat-form-field appearance="outline" class="quarter_field" *ngIf="showPasswordField">
@@ -40,10 +51,10 @@
         
         <mat-form-field class="third_field" appearance="outline">
             <mat-label>{{'users.profile.role' | translate}}</mat-label>
-            <mat-select [value]="profile.roles()" multiple (selectionChange)="profile.roles.set($event.value)">
+            <mat-select [value]="profile().roles()" multiple (selectionChange)="profile().roles.set($event.value)">
                 <mat-select-trigger>
                     <div class="selected-values">
-                        @for(r of (profile.roles()); track r) {
+                        @for(r of (profile().roles()); track r) {
                             <span class="selected-chip">{{ userRolesDescriptions[r] | translate}}</span>
                         }
 
@@ -60,7 +71,7 @@
         
         <mat-form-field class="third_field" appearance="outline">
             <mat-label>{{'users.profile.status' | translate}}</mat-label>
-            <mat-select [value]="profile.is_active()" (selectionChange)="profile.is_active.set($event.value)">
+            <mat-select [value]="profile().is_active()" (selectionChange)="profile().is_active.set($event.value)">
                     <mat-option [value]="true">{{ 'userStatus.ACTIVE' | translate }}</mat-option>
                     <mat-option [value]="false">{{ 'userStatus.INACTIVE' | translate }}</mat-option>
                     
@@ -69,8 +80,8 @@
         <div class="half_field ">
             <input-multi-tag 
             [label]="'users.profile.department' | translate" 
-            [value]="profile.departments()"
-            (valueChange)="profile.departments.set($event)" />
+            [value]="profile().departments()"
+            (valueChange)="profile().departments.set($event)" />
         </div>
 
     </mat-card-content>

@@ -33,8 +33,8 @@ export class LoginComponent {
     private apiService: ApiService
   ) {
     this.loginForm = this.fb.group({
-      email: [this.store.isDebug ? 'admintest@example.com' : '', [Validators.required, this.emailOrUsernameValidator]],
-      password: [this.store.isDebug ? '12345Ab.' : '', [Validators.required, Validators.minLength(6)]],
+      email: [this.store.isDebug ? 'admin1@example.com' : '', [Validators.required, this.emailOrUsernameValidator]],
+      password: [this.store.isDebug ? 'admin1password' : '', [Validators.required, Validators.minLength(6)]],
       rememberMe: [false]
     });
 

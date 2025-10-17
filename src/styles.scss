@@ -1,3 +1,5 @@
+
+
 /* =============================================================================
    ROADIT ADMIN - MAIN STYLES v2.0
   Modern Material Design 2 + RoadIt Brand Integration
@@ -334,6 +336,59 @@ h6, .mat-headline-6 {
 
 .filters_panel .mat-mdc-form-field-subscript-wrapper {
   display: none !important;
+}
+
+/* =============================================================================
+   SNACKBAR CUSTOM STYLES
+   ============================================================================= */
+
+.mat-mdc-snack-bar-container.snackbar-ok {
+  background-color: vars.$success !important;
+  color: #fff !important;
+}
+
+:root .mat-mdc-snack-bar-container.snackbar-error {
+  background-color: #f00 !important;
+  color: #fff !important;
+}
+.mat-mdc-snack-bar-container.snackbar-error,
+:root .mat-mdc-snack-bar-container.snackbar-error,
+body .mat-mdc-snack-bar-container.snackbar-error {
+  background-color: #f00 !important;
+  color: #fff !important;
+}
+
+// Forzar variables CSS internas de MDC para el snackbar de error
+::ng-deep .mat-mdc-snack-bar-container.snackbar-error {
+  --mdc-snackbar-container-color: #f00 !important;
+  --mdc-snackbar-supporting-text-color: #fff !important;
+  background-color: #f00 !important;
+  color: #fff !important;
+}
+::ng-deep .mat-mdc-snack-bar-container.snackbar-error {
+  background-color: #f00 !important;
+  color: #fff !important;
+}
+.mat-mdc-snack-bar-container.snackbar-alert {
+  background-color: vars.$warning !important;
+  color: #222 !important;
+}
+::ng-deep .mat-mdc-snack-bar-container.snackbar-error,
+::ng-deep .mat-mdc-snack-bar-container.snackbar-error .mdc-snackbar__surface {
+  background-color: #f00 !important;
+  color: #fff !important;
+}
+::ng-deep .mat-mdc-snack-bar-container.snackbar-error .mdc-snackbar__surface {
+  --mdc-snackbar-container-color: #f00 !important;
+  background-color: #f00 !important;
+  color: #fff !important;
+}
+::ng-deep .mat-mdc-snack-bar-container,
+::ng-deep .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  box-shadow: none !important;
+}
+::ng-deep .cdk-overlay-pane {
+  box-shadow: none !important;
 }
 /* 
 .custom-label {

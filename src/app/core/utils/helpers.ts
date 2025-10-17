@@ -2,7 +2,83 @@
  * Servicio estático con métodos helper utilitarios
  * Para funciones comunes que no requieren inyección de dependencias
  */
+
+import { inject, Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarCustomComponent } from '../../components/snackbar-custom.component';
+
+@Injectable({ providedIn: 'root' })
 export class Helpers {
+  /**
+   * Convierte un string base64 (dataURL) en un objeto File
+   * @param base64 Cadena base64 tipo dataURL
+   * @param filename Nombre del archivo resultante
+   * @returns File
+   */
+  static base64ToFile(base64: string, filename: string): File {
+    const arr = base64.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1] || '';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
+  /**
+   * Instancia singleton para acceso a dependencias
+   */
+  
+  private snackBar: MatSnackBar;
+  static Instance: Helpers;
+  constructor(snackBar: MatSnackBar) {
+    this.snackBar = snackBar;
+    Helpers.Instance = this;
+  }
+
+  /**
+   * Mostrar un mensaje tipo toast usando MatSnackBar
+   * @param message Mensaje a mostrar
+   * @param type Tipo de mensaje: 'OK' | 'ERROR' | 'ALERT'
+   * @param duration Duración en ms (opcional)
+   */
+  showToast(message: string, type: 'OK' | 'ERROR' | 'ALERT', duration: number = 3000): void {
+    this.snackBar.openFromComponent(SnackbarCustomComponent, {
+      data: { message, type },
+      duration
+    });
+  }
+
+  /**
+   * Valida un archivo según formato y tamaño máximopref
+   * @param file Archivo a validar
+   * @param allowedFormats Array de extensiones permitidas (ej: ["JPG", "PNG"])
+   * @param maxKb Tamaño máximo en KB
+   * @returns { valid: boolean, error?: string, base64?: string }
+   */
+  static async validateAndReadFile(file: File, allowedFormats: string[], maxKb: number): Promise<{ valid: boolean, error?: string, base64?: string }> {
+    const ext = file.name.split('.').pop()?.toUpperCase() || '';
+    if (!allowedFormats.includes(ext)) {
+      return { valid: false, error: `Formato no permitido (${ext}). Permitidos: ${allowedFormats.join(', ')}` };
+    }
+    const sizeKb = file.size / 1024;
+    if (sizeKb > maxKb) {
+      return { valid: false, error: `El archivo supera el tamaño máximo de ${maxKb} KB` };
+    }
+    // Leer como base64
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1];
+        resolve({ valid: true, base64 });
+      };
+      reader.onerror = () => {
+        resolve({ valid: false, error: 'Error leyendo el archivo' });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
   
   /**
    * Verificar si un valor está vacío (null, undefined, string vacío, array vacío, objeto vacío)

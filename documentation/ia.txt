@@ -20,9 +20,11 @@ El proyecto es un proyecto Angular 20
     - Debe tener un theme css con la definición de los colores, tipos de letra y demás.
     - El tema está basado en Free Material Design 2 UI Kit
     Dtos (son clases no interfaces)
+    Entites (son un duplicado de los dtos, pero sus propiedades son signals para usarse en las vistas)
     Enums (usado en los dtos)
     Servicios (para llamadas a api)
-    Store (basado en signals)
+    providers (son los servicios de actualización, obtención de datos de cada vista )
+    Store (basado en signals tiene el estado global)
     el contexto de ia del proyecto shared está en el archivo {workspace}/shared/copilot.txt para mas información.
     el sistema usa i18n
     

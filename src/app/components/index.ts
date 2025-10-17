@@ -11,5 +11,5 @@ export * from './db-grid/grid-formatter.service';
 export * from './dynamic-table/dynamic-table.component';
 export * from './dynamic-table/dynamic-table.interfaces';
 
-export * from './user-form/user-form';
+export * from './image-drop/image-drop.component';
 
