@@ -22,12 +22,12 @@ export const MENU_ITEMS: MenuItem[] = [
       {
         icon: 'groups',
         label: 'navigation.client_group',
-        route: '/clients/create-group'
+        route: '/clients/group'
       },
       {
         icon: 'groups',
         label: 'navigation.clients_list',
-        route: '/clients'
+        route: '/clients/list'
       }
     ]
   },

@@ -96,15 +96,7 @@
     "create-group-title": "Create Client Group",
     "create-client-title": "Create/Edit Client",
     "create-client": {
-      "general": "General Data",
-      "protocol": "Protocol",
-      "slogans": "Driver slogans",
-      "documents": "Documents",
-      "extra-contact": "Additional Contact",
-      "billing": "Billing",
-      "prices": "Prices",
-      "certs": "Certs",
-      "additional-services": "Additional Services",
+      
       "upload-logo": "Upload Logo",
       "delete-logo": "Delete",
       "upload-logo-explanation": "Allows JPG, GIF or PNG. Max size 800Kb",
@@ -136,6 +128,14 @@
       "main-contact-phone": "Phone",
       "save-changes": "Save changes",
       "cancel": "Cancel",
+      "errors": {
+        "name-required": "Name is required",
+        "id-eurotransport-required": "Eurotransportcar ID is required",
+        "id-revel-required": "Revel ID is required",
+        "billing-type-required": "Billing type is required",
+        "client-type-required": "Client type is required",
+        "client-origin-required": "Client origin is required"
+      },
       "movement-type": "Movement type",
       "movement-type-1": "Movement 1",
       "movement-type-2": "Movement 2",
@@ -174,7 +174,32 @@
       "tax-id-dni": "TAX ID OR DNI",
       "retention-percent": "RETENTION (%)",
       "actions": "ACTIONS",
-      "results-per-page": "Results per page"
+      "results-per-page": "Results per page",
+      "cif":"CIF",
+      "department":"Department",
+      "fuel": "Fuel",
+      "included-fuel": "Fuel included",
+      "client-price": "Client price % per Km",
+      "driver-price": "Driver price % per Km",
+      "ferry": "Ferry",
+      "ferry-price": "Ferry price",
+      "ev": "Electric vehicle",
+      "ev-client-price": "Client price per Km (EUR)",
+      "ev-driver-price": "Driver price per Km (EUR)",
+      "additional": "Additional",
+      "express-transport-percent": "Express transport price (%)",
+      "stage-discount-percent": "Per extra stage discount (%)",
+      "km-bands": "Kilometer bands",
+      "km-from": "From (Km)",
+      "km-to": "To (Km)",
+      "price-to-client": "Price to client",
+      "price-type": "Price type",
+      "standard-price-eur": "Standard price (EUR)",
+      "price-vu-lt-12": "Price VU < 12m3",
+      "price-vu-gt-12": "Price VU > 12m3",
+      "distance-interval": "Distance interval",
+      "validate-add":"Validate and add",
+      "doc-type": "Document type"
     },
     "list": {
       "clients_group": "Client Groups",
@@ -230,6 +255,19 @@
       "save": "Save changes",
       "cancel": "Cancel"
     }
+  },
+  "tabs": {
+    "groups": "Client Groups",
+    "list": "Clients List",
+    "general": "General Data",
+    "protocol": "Protocol",
+    "slogans": "Driver slogans",
+    "documents": "Documents",
+    "extra-contact": "Additional Contact",
+    "billing": "Billing",
+    "prices": "Prices",
+    "certs": "Certs",
+    "additional-services": "Additional Services"
   },
   "construction": {
     "title": "Page under construction"

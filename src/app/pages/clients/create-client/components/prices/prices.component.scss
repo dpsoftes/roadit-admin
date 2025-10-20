@@ -1,0 +1,54 @@
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+        box-sizing: border-box;
+
+        &.twenty_field {
+            width: 20%;
+            padding: 0px 10px;
+            padding-top: 24px; // compensar la altura del label sobre los inputs
+            mat-checkbox {
+                display: flex;
+                align-items: center;
+                height: 48px; // mismo alto que los mat-form-field
+                margin: 0;
+            }
+        }
+
+        &.forty_field {
+            width: 40%;
+            padding: 0px 10px;
+        }
+
+        &.quarter_field {
+            width: 25%;
+            padding: 0px 10px;
+        }
+
+        .field-input {
+            width: 100%;
+            ::ng-deep .mat-mdc-form-field { height: 48px !important; max-height: 48px !important; }
+            ::ng-deep .mat-mdc-form-field-wrapper { height: 48px !important; max-height: 48px !important; padding-bottom: 0 !important; }
+            ::ng-deep .mat-mdc-form-field-infix { min-height: 48px !important; height: 48px !important; max-height: 48px !important; padding: 8px 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; display: flex; align-items: center; }
+            ::ng-deep .mat-mdc-form-field-outline { border-radius: 8px; }
+        }
+        .field-label { font-weight: 600; font-size: 14px; }
+    }
+    h1, h2 {
+        width: 100%;
+    }
+    
+}
+app-dynamic-table {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+}

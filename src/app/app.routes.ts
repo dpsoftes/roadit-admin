@@ -20,16 +20,16 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
       },
       {
-        path: 'clients',
-        loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
-      },
-      {
         path: 'clients/create-group',
         loadComponent: () => import('./pages/clients/create-group/create-group').then(m => m.CreateGroup)
       },
       {
         path: 'clients/create',
         loadComponent: () => import('./pages/clients/create-client/create-client').then(m => m.CreateClient)
+      },
+      {
+        path: 'clients/:tab',
+        loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
       },
       // {
       //  path: '**', 

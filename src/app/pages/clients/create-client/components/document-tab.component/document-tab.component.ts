@@ -9,6 +9,7 @@ import { TableConfig } from '@components/dynamic-table/dynamic-table.interfaces'
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ButtonsComponent } from '@components/buttons.component/buttons.component';
 
 @Component({
   selector: 'app-document-tab',
@@ -22,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
     DynamicTableComponent,
     MatIconModule,
     MatButtonModule,
+    ButtonsComponent
   ],
   templateUrl: './document-tab.component.html',
   styleUrl: './document-tab.component.scss'

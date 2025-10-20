@@ -1,10 +1,17 @@
 <mat-card>
     <mat-card-content>
         <div class="logo">
-            <img src="assets/images/sample_user_icon.png" alt="Client Logo">
+            <image-drop
+                [src]="clientData()?.image?.()"
+                [width]="'120px'"
+                [height]="'120px'"
+                [formats]="['JPG','JPEG','GIF','PNG']"
+                [maxWeight]="800"
+                (imageAccepted)="onImageAccepted($event)"
+            ></image-drop>
             <div class="logo-actions">
                 <div class="actions">
-                    <button mat-button class="upload_photo_btn" (click)="onPhotoChanged('')">{{'clients.create-client.upload-logo' | translate}}</button>
+                     <app-buttons type="save-changes" text="clients.create-client.upload-logo" (onClick)="onPhotoChanged()"></app-buttons>
                 </div>
                 <p class="upload_photo_p">{{'clients.create-client.upload-logo-explanation' | translate}}</p>
             </div>
@@ -16,9 +23,11 @@
                 <label class="field-label">{{'clients.create-client.name' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <input type="text" matInput formControlName="name">
-                    <mat-error *ngIf="clientForm.get('name')?.invalid && clientForm.get('name')?.touched">
-                        El nombre es requerido
-                    </mat-error>
+                    @if (clientForm.get('name')?.invalid && clientForm.get('name')?.touched) {
+                        <mat-error>
+                            {{'clients.create-client.errors.name-required' | translate}}
+                        </mat-error>
+                    }
                 </mat-form-field>
             </div>
 
@@ -30,8 +39,8 @@
                         <mat-option [value]="group.id">{{ group.name }}</mat-option>
                     }
                     </mat-select>
+                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
                 </mat-form-field>
-                <p class="placeholder-text">Placeholder text</p>
                 
                 <mat-checkbox formControlName="is_subentity">
                     {{'clients.create-client.subentity' | translate}}
@@ -48,28 +57,31 @@
                         <mat-option [value]="client.id">{{ client.name }}</mat-option>
                     }
                     </mat-select>
-                </mat-form-field>
-                <p class="placeholder-text">Placeholder text</p>
-            </div>
-            
-            <div class="form-field half_field">
-                <label class="field-label">{{'clients.create-client.cif' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="CIF">
-                    <mat-error *ngIf="clientForm.get('CIF')?.invalid && clientForm.get('CIF')?.touched">
-                        El CIF es requerido
-                    </mat-error>
+                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
                 </mat-form-field>
             </div>
             
             <div class="form-field half_field">
-                <label class="field-label">{{'clients.create-client.department' | translate}}</label>
+                <label class="field-label">{{'clients.create-client.id-eurotransport' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select formControlName="department">
-                        @for (dept of departments(); track dept) {
-                        <mat-option [value]="dept">{{ dept }}</mat-option>
+                    <input type="text" matInput formControlName="id-eurotransport">
+                    @if (clientForm.get('id-eurotransport')?.invalid && clientForm.get('id-eurotransport')?.touched) {
+                        <mat-error>
+                            {{'clients.create-client.errors.id-eurotransport-required' | translate}}
+                        </mat-error>
                     }
-                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.id-revel' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="id-revel">
+                    @if (clientForm.get('id-revel')?.invalid && clientForm.get('id-revel')?.touched) {
+                        <mat-error>
+                            {{'clients.create-client.errors.id-revel-required' | translate}}
+                        </mat-error>
+                    }
                 </mat-form-field>
             </div>
             
@@ -81,11 +93,13 @@
                         <mat-option [value]="billingType">{{ billingType }}</mat-option>
                     }
                     </mat-select>
-                    <mat-error *ngIf="clientForm.get('billing_type')?.invalid && clientForm.get('billing_type')?.touched">
-                        El tipo de facturación es requerido
-                    </mat-error>
+                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
+                    @if (clientForm.get('billing_type')?.invalid && clientForm.get('billing_type')?.touched) {
+                        <mat-error>
+                            {{'clients.create-client.errors.billing-type-required' | translate}}
+                        </mat-error>
+                    }
                 </mat-form-field>
-                <p class="placeholder-text">Placeholder text</p>
                 <div class="checkboxes-container">
                     <mat-checkbox formControlName="own_insurance">
                         {{'clients.create-client.check-own-insurance' | translate}}
@@ -103,13 +117,13 @@
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.appointment-time' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput formControlName="appointment_time">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.appointment-time-between' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput formControlName="appointment_time_between">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
@@ -138,11 +152,13 @@
                         <mat-option [value]="clientType">{{ clientType }}</mat-option>
                     }
                     </mat-select>
-                    <mat-error *ngIf="clientForm.get('client_type')?.invalid && clientForm.get('client_type')?.touched">
-                        El tipo de cliente es requerido
-                    </mat-error>
+                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
+                    @if (clientForm.get('client_type')?.invalid && clientForm.get('client_type')?.touched) {
+                        <mat-error>
+                            {{'clients.create-client.errors.client-type-required' | translate}}
+                        </mat-error>
+                    }
                 </mat-form-field>
-                <p class="placeholder-text">Placeholder text</p>
             </div>
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.client-origin' | translate}}</label>
@@ -152,11 +168,13 @@
                         <mat-option [value]="clientOrigin">{{ clientOrigin }}</mat-option>
                     }
                     </mat-select>
-                    <mat-error *ngIf="clientForm.get('client_origin')?.invalid && clientForm.get('client_origin')?.touched">
-                        El origen del cliente es requerido
-                    </mat-error>
+                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
+                    @if (clientForm.get('client_origin')?.invalid && clientForm.get('client_origin')?.touched) {
+                        <mat-error>
+                            {{'clients.create-client.errors.client-origin-required' | translate}}
+                        </mat-error>
+                    }
                 </mat-form-field>
-                <p class="placeholder-text">Placeholder text</p>
             </div>
             <h1 class="main-contact-title">{{'clients.create-client.main-contact' | translate}} :</h1>
             <div class="form-field half_field">
@@ -178,12 +196,8 @@
                 </mat-form-field>
             </div>
             <div class="action-buttons-container">
-                <button mat-button type="submit" class="primary_btn save_changes_btn" [disabled]="clientForm.invalid">
-                    {{'clients.create-client.save-changes' | translate}}
-                </button>
-                <button mat-button type="button" (click)="onCancel()" class="primary_btn cancel_btn">
-                    {{'clients.create-client.cancel' | translate}}
-                </button>
+                <app-buttons type="save-changes" text="clients.create-client.save-changes" (onClick)="onSave()"></app-buttons>
+                <app-buttons type="cancel" text="clients.create-client.cancel" (onClick)="onCancel()"></app-buttons>
             </div>
         </div>
         </form>

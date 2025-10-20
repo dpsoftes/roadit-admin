@@ -6,6 +6,9 @@ import { GeneralTabComponent } from './components/general-tab/general-tab.compon
 import { MatCardModule } from '@angular/material/card';
 import { DocumentTabComponent } from './components/document-tab.component/document-tab.component';
 import { BillingComponent } from './components/billing.component/billing.component';
+import { TabsComponent } from '@components/tabs.component/tabs.component';
+import { DriverConsignsComponent } from './components/driver-consigns/driver-consigns.component';
+import { PricesComponent } from './components/prices/prices.component';
 // import { CreateClientDto, ClientDto } from '@dtos'; // Temporalmente comentado
 
 @Component({
@@ -17,18 +20,21 @@ import { BillingComponent } from './components/billing.component/billing.compone
     GeneralTabComponent,
     DocumentTabComponent,
     BillingComponent,
+    TabsComponent,
+    DriverConsignsComponent,
+    PricesComponent
     ],
   templateUrl: './create-client.html',
   styleUrl: './create-client.scss'
 })
 export class CreateClient {
-  // Input signals para recibir datos del backend
   clientData = input<any | null>(null);
   clientGroups = input<any[]>([]);
   managers = input<any[]>([]);
 
   activeTab = signal<string>('general');
   clientForm = signal<any>({});
+  tabs = ['general', 'protocol', 'slogans', 'documents', 'extra-contact', 'billing', 'prices', 'certs', 'additional-services']
 
   onTabChange(tab: string) {
     this.activeTab.set(tab);

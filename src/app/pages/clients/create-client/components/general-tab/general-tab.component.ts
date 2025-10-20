@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslatePipe } from '@i18n/translate.pipe';
+import { ImageDropComponent } from '@components/index';
+import { ButtonsComponent } from '@components/buttons.component/buttons.component';
 
 @Component({
   selector: 'app-general-tab-component',
@@ -21,6 +23,8 @@ import { TranslatePipe } from '@i18n/translate.pipe';
     MatInputModule,
     MatSelectModule,  
     MatCheckboxModule,
+    ImageDropComponent,
+    ButtonsComponent
   ],
   templateUrl: './general-tab.component.html',
   styleUrls: ['./general-tab.component.scss'],
@@ -41,7 +45,8 @@ export class GeneralTabComponent {
   constructor(private fb: FormBuilder) {
     this.clientForm = this.fb.group({
       name: ['', Validators.required],
-      CIF: ['', Validators.required],
+      'id-eurotransport': ['', Validators.required],
+      'id-revel': ['', Validators.required],
       client_group: [null],
       department: [''],
       parent: [null],
@@ -55,16 +60,19 @@ export class GeneralTabComponent {
       own_insurance: [false],
       at_risk: [false],
       managers: [[]],
-      sendFinalCustomer: [false]
+      sendFinalCustomer: [false],
+      appointment_time: [''],
+      appointment_time_between: ['']
     });
   }
 
-  onPhotoChanged(photo: string): void {
-    console.log('Photo changed:', photo);
+  onImageAccepted(event: { base64: string, file: File }): void {
+    if (this.clientData()?.image) {
+      this.clientData().image.set(event.file);
+    }
   }
-  
-  onPhotoDeleted(photo: string): void {
-    console.log('Photo deleted:', photo);
+  onPhotoChanged(){
+    
   }
 
   // Método único para guardar - se ejecuta solo cuando se presiona el botón
@@ -81,6 +89,7 @@ export class GeneralTabComponent {
 
   onCancel(): void {
     this.clientForm.reset();
+    console.log('cancel')
   }
 
   clientTypes = signal<string[]>(['Type 1', 'Type 2']);
