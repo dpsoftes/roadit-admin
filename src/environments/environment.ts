@@ -16,7 +16,10 @@ export const environment: Environment = {
     refreshTokenKey: 'roadit_admin_refresh_token_dev',
     sessionTimeout: 480
   },
-  
+  images: {
+    defaultAvatar: 'assets/images/sample_user_icon.png'
+  },
+
   logging: {
     level: 'debug',
     enableConsole: true,

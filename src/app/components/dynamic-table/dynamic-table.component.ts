@@ -23,6 +23,7 @@ import {
   ImageConfig,
   ExportConfig 
 } from './dynamic-table.interfaces';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -170,9 +171,22 @@ export class DynamicTableComponent implements OnInit {
 
   // Cell rendering methods
   getCellValue(row: any, column: TableColumn): any {
+    if(column.type === 'image'){
+      return this.getImageUrl(column, row);
+    }
     return this.getNestedValue(row, column.key);
   }
+  private getImageUrl(column: TableColumn, row: any): string {
+    var url = row[column.key] as string;
+    if (!url) {
+      return environment.images?.defaultAvatar || 'assets/images/sample_user_icon.png';
+    }
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
 
+    return environment.apiUrl + url;
+  }
   private getNestedValue(obj: any, path: string): any {
     if (typeof path !== 'string') {
       return obj[path];

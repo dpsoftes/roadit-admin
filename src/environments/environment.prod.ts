@@ -17,6 +17,10 @@ export const environment: Environment = {
     sessionTimeout: 240
   },
   
+  images: {
+    defaultAvatar: 'assets/images/sample_user_icon.png'
+  },
+  
   logging: {
     level: 'error',
     enableConsole: false,

@@ -16,7 +16,9 @@ export interface Environment {
   apiUrl: string;
   apiVersion: string;
   baseUrl: string;
-  
+  images: {
+    defaultAvatar?: string;
+  }
   // Configuración de autenticación
   auth: {
     tokenKey: string;
