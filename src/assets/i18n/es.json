@@ -198,7 +198,17 @@
       "price-vu-gt-12": "Precio VU > 12m3",
       "distance-interval": "Intervalo de distancia",
       "validate-add": "Validar y añadir",
-      "doc-type": "Tipo de documento"
+      "doc-type": "Tipo de documento",
+      "cert_list": "Lista de certificados",
+      "certs-created": "Lista de certificaciones creadas",
+      "certs-assigned": "Certificaciones asignadas",
+      "choose-certification": "Elegir certificación",
+      "cert-question": "Pregunta",
+      "answer": "Respuesta",
+      "config": "Configuración",
+      "attempts-per-week": "Intentos por semana",
+      "available-new-drivers": "Disponible para nuevos conductores",
+      "save-cert": "Guardar certificación"
       
     },
     "list": {

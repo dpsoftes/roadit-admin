@@ -199,7 +199,17 @@
       "price-vu-gt-12": "Price VU > 12m3",
       "distance-interval": "Distance interval",
       "validate-add":"Validate and add",
-      "doc-type": "Document type"
+      "doc-type": "Document type",
+      "cert_list": "Cert list",
+      "certs-created": "Certs created list",
+      "certs-assigned": "Certs assigned",
+      "choose-certification": "Choose certification",
+      "cert-question": "Question",
+      "answer": "Answer",
+      "config": "Config",
+      "attempts-per-week": "Attempts per week",
+      "available-new-drivers": "Available for new drivers",
+      "save-cert": "Save certification"
     },
     "list": {
       "clients_group": "Client Groups",
