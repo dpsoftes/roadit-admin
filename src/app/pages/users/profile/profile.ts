@@ -33,8 +33,8 @@ export class Profile implements OnInit {
     if (this.route.snapshot.paramMap.get('id')) {
       userId = Number(this.route.snapshot.paramMap.get('id'));
     }
-
-       this.profile.copyFromDto( (await this.userState.getAdminProfile(userId!) as AdminSignal).toDto());
+    const user = await this.userState.getAdminProfile(userId) as AdminSignal;
+       this.profile.copyFromDto( (user).toDto());
   }
 
   onCancel(): void {
