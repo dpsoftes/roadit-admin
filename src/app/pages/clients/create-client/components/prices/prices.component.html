@@ -1,0 +1,107 @@
+<mat-card>
+    <mat-card-content>
+        <h1>{{'clients.create-client.fuel' | translate}}</h1>
+        <form class="form" [formGroup]="form">
+            <div class="form-field twenty_field">
+                <mat-checkbox formControlName="included-fuel">
+                    {{'clients.create-client.included-fuel' | translate}}
+                </mat-checkbox>
+            </div>
+            <div class="form-field forty_field">
+                <label class="field-label">{{'clients.create-client.client-price' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="client-price">
+                </mat-form-field>
+            </div>
+            <div class="form-field forty_field">
+                <label class="field-label">{{'clients.create-client.driver-price' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="driver-price">
+                </mat-form-field>
+            </div>
+
+            <mat-divider></mat-divider>
+            <h1>{{'clients.create-client.ferry' | translate}}</h1>
+            <div class="form-field twenty_field">
+                <label class="field-label">{{'clients.create-client.ferry-price' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="ferry-price">
+                </mat-form-field>
+            </div>
+
+            <h1>{{'clients.create-client.ev' | translate}}</h1>
+            <div class="form-field forty_field">
+                <label class="field-label">{{'clients.create-client.ev-client-price' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="ev-client-price">
+                </mat-form-field>
+            </div>
+            <div class="form-field forty_field">
+                <label class="field-label">{{'clients.create-client.ev-driver-price' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="ev-driver-price">
+                </mat-form-field>
+            </div>
+
+            <mat-divider></mat-divider>
+            <h1>{{'clients.create-client.additional' | translate}}</h1>
+            <div class="form-field forty_field">
+                <label class="field-label">{{'clients.create-client.express-transport-percent' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="express-transport-percent">
+                </mat-form-field>
+            </div>
+            <div class="form-field forty_field">
+                <label class="field-label">{{'clients.create-client.stage-discount-percent' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="stage-discount-percent">
+                </mat-form-field>
+            </div>
+
+            <mat-divider></mat-divider>
+            <h1>{{'clients.create-client.km-bands' | translate}}</h1>
+            <h2>{{'clients.create-client.distance-interval' | translate}}</h2>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.km-from' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="km-from">
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.km-to' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="km-to">
+                </mat-form-field>
+            </div>
+
+            <mat-divider></mat-divider>
+            <h2>{{'clients.create-client.price-to-client' | translate}}</h2>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.price-type' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="price-type">
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.standard-price-eur' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="standard-price-eur">
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.price-vu-lt-12' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="price-vu-lt-12">
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.price-vu-gt-12' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput formControlName="price-vu-gt-12">
+                </mat-form-field>
+            </div>
+        </form>
+        <app-buttons type="save-changes" text="clients.create-client.validate-add" (onClick)="onSave()"></app-buttons>
+    </mat-card-content>
+</mat-card>
+<app-dynamic-table [config]="pricesTableConfig"></app-dynamic-table>

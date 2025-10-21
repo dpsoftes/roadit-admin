@@ -1,0 +1,29 @@
+@use '../../../styles/variables' as vars;
+
+.save_changes_btn {
+    background-color: vars.$roadit-accent;
+    color: vars.$black !important;
+    font-size: 12px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+.cancel_btn {
+    background-color: vars.$black;
+    color: vars.$white;
+    border: 1px solid vars.$black;
+    font-size: 12px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+.save-small{
+        width: 100%;
+        text-transform: uppercase;
+        font-size: 12px;
+        text-transform: uppercase;
+        background-color: vars.$roadit-accent;
+        color: vars.$black;
+        height: 48px;
+        border: none;
+        border-radius: 8px;
+        margin-top: 23px;
+}

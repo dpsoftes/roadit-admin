@@ -41,6 +41,12 @@ export interface ImageConfig {
   fallback?: string;
 }
 
+export interface ExportConfig {
+  columns: string[];
+  headers: string[];
+  filename: string;
+}
+
 export interface TableConfig {
   columns: TableColumn[];
   data: WritableSignal<any[]>;
@@ -53,6 +59,7 @@ export interface TableConfig {
   filterable?: boolean;
   filters?: FilterConfig[];
   exportable?: boolean;
+  exportConfig?: ExportConfig;
   actions?: TableActions;
 }
 

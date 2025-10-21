@@ -1,0 +1,5 @@
+<div class="tabs">
+    @for (tab of tabs(); track tab) {
+        <button mat-button class="tab-button" [class.active]="activeTab() === tab" (click)="onTabChange(tab)">{{ 'tabs.' + tab | translate }}</button>
+    }
+</div>

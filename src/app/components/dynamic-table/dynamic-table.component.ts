@@ -20,7 +20,8 @@ import {
   TableEvent, 
   ActionButton, 
   ChipConfig,
-  ImageConfig 
+  ImageConfig,
+  ExportConfig 
 } from './dynamic-table.interfaces';
 
 @Component({
@@ -293,7 +294,49 @@ export class DynamicTableComponent implements OnInit {
   }
 
   onExportCSV() {
-    this.emitEvent('export', { data: this.config.data });
+    if (!this.config.exportConfig) {
+      console.warn('No export configuration provided');
+      return;
+    }
+
+    const data = this.config.data;
+    const exportConfig = this.config.exportConfig;
+
+    if (!data || data.length === 0) {
+      alert('No hay datos para exportar');
+      return;
+    }
+
+    const { columns, headers, filename } = exportConfig;
+
+    let csvContent = headers.join(',') + '\n';
+    
+    data().forEach(item => {
+      const row = columns.map(column => {
+        let value = item[column] || '';
+        if (Array.isArray(value)) {
+          value = value.join('; ');
+        }
+        if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+          value = '"' + value.replace(/"/g, '""') + '"';
+        }
+        return value;
+      });
+      csvContent += row.join(',') + '\n';
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Emitir evento para notificar que la exportación se completó
+    this.emitEvent('export', { data: this.config.data, filename });
   }
 
   private emitEvent(type: TableEvent['type'], data?: any) {

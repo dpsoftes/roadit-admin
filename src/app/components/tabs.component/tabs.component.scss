@@ -1,0 +1,25 @@
+@use '../../../styles/variables' as vars;
+
+.tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 16px;
+  }
+  
+  .tab-button {
+    background-color: transparent;
+    color: vars.$black;
+    border: none;
+    border-radius: 0 !important;
+    padding: 10px;
+    font-size: 14px;
+    font-family: vars.$font-family-primary;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+    
+    
+    &.active {
+      font-weight: 600;
+      border-bottom: 3px solid vars.$black;
+    }
+  }

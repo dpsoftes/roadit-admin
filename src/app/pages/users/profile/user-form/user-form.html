@@ -38,36 +38,43 @@
             <input matInput [value]="profile().email()" (input)="profile().email.set($event.target.value)">
         </mat-form-field>
         
-<!--         <mat-form-field appearance="outline" class="quarter_field" *ngIf="showPasswordField">
-            <mat-label>{{'users.profile.password' | translate}}</mat-label>
-            <input matInput [type]="showPassword() ? 'text' : 'password'" [value]="isCreating ? '' : profile().password" (input)="updateUserData({password: $event.target.value})">
-            <button class="pass_icon" mat-icon-button matSuffix type="button" (click)="togglePassword()" 
-                    [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
-                <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-        </mat-form-field> -->
+        @if (showPasswordField()) {
+        <div class="form-field half_field">
+            <label class="field-label">{{'users.profile.password' | translate}}</label>
+            <div class="password-container">
+                <mat-form-field appearance="outline" class="field-input password-input">
+                    <input matInput [type]="showPassword() ? 'text' : 'password'" [value]="password()" (input)="password.set($event.target.value)" placeholder="Escriba aquí...">
+                    <button class="pass_icon" mat-icon-button matSuffix type="button" (click)="togglePassword()" 
+                            [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                        <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                </mat-form-field>
+                <button class="gen_password_btn" matButton="filled">{{'users.profile.gen-pass' | translate}}</button>
+            </div>
+            <p class="placeholder-text">Placeholder text</p>
+        </div>
+        }
         
-<!--         <button class="gen_password_btn" matButton="filled" *ngIf="showPasswordField">{{'users.profile.gen-pass' | translate}}</button> -->
-        
-        <mat-form-field class="third_field" appearance="outline">
-            <mat-label>{{'users.profile.role' | translate}}</mat-label>
-            <mat-select [value]="profile().roles()" multiple (selectionChange)="profile().roles.set($event.value)">
-                <mat-select-trigger>
-                    <div class="selected-values">
-                        @for(r of (profile().roles()); track r) {
-                            <span class="selected-chip">{{ userRolesDescriptions[r] | translate}}</span>
-                        }
-
-                    </div>
-                </mat-select-trigger>
-                @for (roleTuple of Object.entries(userRolesDescriptions); track roleTuple[0]) {
-                <mat-option [value]="roleTuple[0]">
-                    {{ roleTuple[1] | translate }}
-                </mat-option>
-                }
-                
-            </mat-select>
-        </mat-form-field>
+        <div class="form-field half_field">
+            <label class="field-label">{{'users.profile.role' | translate}}</label>
+            <mat-form-field appearance="outline" class="field-input">
+                <mat-select [value]="profile().roles()" multiple (selectionChange)="profile().roles.set($event.value)">
+                    <mat-select-trigger>
+                        <div class="selected-values">
+                            @for(r of (profile().roles()); track r) {
+                                <span class="selected-chip">{{ userRolesDescriptions[r] | translate}}</span>
+                            }
+                        </div>
+                    </mat-select-trigger>
+                    @for (roleTuple of Object.entries(userRolesDescriptions); track roleTuple[0]) {
+                    <mat-option [value]="roleTuple[0]">
+                        {{ roleTuple[1] | translate }}
+                    </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <p class="placeholder-text">Placeholder text</p>
+        </div>
         
         <mat-form-field class="third_field" appearance="outline">
             <mat-label>{{'users.profile.status' | translate}}</mat-label>

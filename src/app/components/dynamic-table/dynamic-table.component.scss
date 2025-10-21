@@ -26,25 +26,25 @@ mat-card-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: #f5f5f5;
+    background-color: vars.$black;
     border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    color: #333;
+    border-radius: 8px;
+    color: vars.$white;
     font-weight: 500;
     padding: 0 12px;
     flex-direction: row;
   }
   
   .export_button {
-    width: 20%;
+    width: 15%;
     margin-left: 10px;
     height: 40px;
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: transparent;
+    background-color: vars.$roadit-accent;
     border: none;
-    color: #333;
+    color: vars.$black;
     font-weight: 500;
     padding: 0 12px;
     flex-direction: row;
@@ -67,7 +67,7 @@ mat-card-header {
     display: flex;
     margin-left: 35%;
     background-color: vars.$roadit-accent;
-    color: vars.$white;
+    color: vars.$black;
     width: 25%;
     border-radius: 10px;
     height: 40px;
@@ -93,6 +93,85 @@ mat-card-header {
     .filter_field {
       min-width: 0;
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      
+      .filter_label {
+        font-weight: 600;
+        font-size: 14px;
+        color: vars.$gray-700;
+        margin: 0;
+        line-height: 1.2;
+      }
+      
+      .filter_input {
+        width: 100%;
+        
+        ::ng-deep .mat-mdc-form-field {
+          height: 48px !important;
+          max-height: 48px !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-wrapper {
+          height: 48px !important;
+          max-height: 48px !important;
+          padding-bottom: 0 !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-infix {
+          min-height: 48px !important;
+          height: 48px !important;
+          max-height: 48px !important;
+          padding: 8px 0 !important;
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+          display: flex;
+          align-items: center;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+          display: none !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-outline {
+          border-radius: 8px;
+        }
+        
+        // Alineación vertical para selects
+        ::ng-deep .mat-mdc-select {
+          display: flex;
+          align-items: center;
+          height: 100%;
+        }
+        
+        // Alineación vertical para inputs
+        ::ng-deep .mat-mdc-input-element {
+          display: flex;
+          align-items: center;
+          height: 100%;
+        }
+        
+        // Estilos para el icono de calendario en filtros de fecha
+        ::ng-deep .mat-mdc-form-field-suffix {
+          .mat-icon {
+            font-size: 18px !important;
+            width: 18px !important;
+            height: 18px !important;
+            margin-left: 8px !important;
+            color: vars.$gray-600 !important;
+          }
+        }
+        
+        // Estilos específicos para el icono de calendario
+        ::ng-deep mat-icon[matSuffix] {
+          font-size: 18px !important;
+          width: 18px !important;
+          height: 18px !important;
+          margin-left: 8px !important;
+          color: vars.$gray-600 !important;
+        }
+      }
     }
     
     .filter_field:first-child {
@@ -121,28 +200,47 @@ mat-card-header {
           font-size: 14px;
           width: 14px;
           height: 14px;
-        }
-        
-      }
+  }
+
+}
+
+
     }
     
     .chips-select {
-      ::ng-deep .mat-mdc-select-value {
-        display: none !important;
+      ::ng-deep .mat-mdc-form-field {
+        height: 48px !important;
+        max-height: 48px !important;
       }
       
-      ::ng-deep .mat-mdc-select-placeholder {
-        display: block !important;
-      }
-      
-      ::ng-deep .mat-mdc-select-trigger {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+      ::ng-deep .mat-mdc-form-field-wrapper {
+        height: 48px !important;
+        max-height: 48px !important;
+        padding-bottom: 0 !important;
       }
       
       ::ng-deep .mat-mdc-form-field-infix {
         padding-left: 0 !important;
         padding-right: 0 !important;
+        min-height: 48px !important;
+        height: 48px !important;
+        max-height: 48px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      
+      ::ng-deep .mat-mdc-select-trigger {
+        padding-left: 8px !important;
+        padding-right: 32px !important;
+        min-height: 48px !important;
+        height: 48px !important;
+        max-height: 48px !important;
+        display: flex;
+        align-items: center;
+      }
+      
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
       }
       
       ::ng-deep .mat-mdc-select-arrow {
@@ -151,6 +249,61 @@ mat-card-header {
         right: 8px;
         top: 50%;
         transform: translateY(-50%);
+      }
+      
+      // Estilos para el trigger personalizado
+      .chip-display {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        
+        .chip-item {
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 500;
+          white-space: nowrap;
+          display: inline-block;
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          line-height: 1.2;
+          color: vars.$black;
+          
+          // Colores específicos según el tipo de tag
+          &.nuevo {
+            background-color: vars.$info;
+          }
+          
+          &.en_riesgo {
+            background-color: vars.$warning-light;
+          }
+          
+          &.seguro_propio {
+            background-color: vars.$primary-300;
+          }
+          
+          // Color por defecto si no coincide con ningún tipo
+          &:not(.nuevo):not(.en_riesgo):not(.seguro_propio) {
+            background-color: vars.$primary-300;
+          }
+        }
+        
+        .chip-count {
+          background-color: #e8f5e8;
+          color: #2e7d32;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 1.2;
+        }
+      }
+      
+      .placeholder-text {
+        color: #999;
+        font-size: 14px;
       }
       
       &.has-selected-chips {
@@ -187,7 +340,7 @@ mat-card-content {
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: vars.$text-primary;
-      background-color: vars.$gray-100;
+      background-color: vars.$roadit-content-bg;
       position: relative;
       white-space: nowrap;
       overflow: hidden;
@@ -370,7 +523,7 @@ mat-card-content {
         
         &.action-accent {
           background-color: vars.$roadit-accent !important;
-          color: vars.$white !important;
+          color: vars.$black !important;
           
           &:hover {
             background-color: vars.$roadit-accent !important;
@@ -408,6 +561,13 @@ mat-card-content {
     font-size: 12px !important;
     height: 24px !important;
     min-height: 24px !important;
+    background-color: vars.$primary-300 !important;
+    border-radius: 4px !important;
+    
+    .mdc-evolution-chip__text-label {
+      color: vars.$black !important;
+      font-weight: 400;
+    }
   }
   
   
@@ -415,18 +575,26 @@ mat-card-content {
     font-size: 12px !important;
     height: 24px !important;
     min-height: 24px !important;
+    background-color: vars.$primary-300 !important;
+    border-radius: 4px !important;
+    
+    .mdc-evolution-chip__text-label {
+      color: vars.$black !important;
+      font-weight: 400;
+    }
   }
   
   ::ng-deep .status-chip {
     font-size: 12px !important;
     height: 24px !important;
     min-height: 24px !important;
+    border-radius: 4px !important;
     
     &.active {
       background-color: vars.$success-light !important;
       
       .mdc-evolution-chip__text-label {
-        color: vars.$success-dark !important;
+        color: vars.$black !important;
       }
     }
     
@@ -434,7 +602,7 @@ mat-card-content {
       background-color: vars.$error-light !important;
       
       .mdc-evolution-chip__text-label {
-        color: vars.$error-dark !important;
+        color: vars.$black !important;
       }
     }
     
@@ -442,7 +610,7 @@ mat-card-content {
       background-color: vars.$warning-light !important;
       
       .mdc-evolution-chip__text-label {
-        color: vars.$warning-dark !important;
+        color: vars.$black !important;
       }
     }
     
@@ -450,7 +618,7 @@ mat-card-content {
       background-color: vars.$gray-500 !important;
       
       .mdc-evolution-chip__text-label {
-        color: vars.$text-primary !important;
+        color: vars.$black !important;
       }
     }
   }
@@ -459,7 +627,8 @@ mat-card-content {
     font-size: 11px !important;
     height: 22px !important;
     min-height: 22px !important;
-    background-color: vars.$gray-300 !important;
+    border-radius: 4px !important;
+    background-color: vars.$primary-300 !important;
     
     .mdc-evolution-chip__text-label {
       color: vars.$primary-dark !important;
@@ -484,12 +653,13 @@ mat-card-content {
     font-size: 12px !important;
     height: 24px !important;
     min-height: 24px !important;
+    border-radius: 4px !important;
     
     &.nuevo {
-      background-color: vars.$success-light !important;
+      background-color: vars.$info !important;
       
       .mdc-evolution-chip__text-label {
-        color: vars.$success-dark !important;
+        color: vars.$black !important;
       }
     }
     
@@ -497,16 +667,52 @@ mat-card-content {
       background-color: vars.$warning-light !important;
       
       .mdc-evolution-chip__text-label {
-        color: vars.$warning-dark !important;
+        color: vars.$black !important;
       }
     }
     
     &.seguro_propio {
-      background-color: vars.$gray-300 !important;
+      background-color: vars.$primary-300 !important;
       
       .mdc-evolution-chip__text-label {
-        color: vars.$primary-dark !important;
+        color: vars.$black !important;
       }
     }
   }
+
+// Estilos para iconos de acciones (hacer que se vean como filled)
+.actions-container {
+  mat-icon {
+    font-weight: 900 !important;
+    font-variation-settings: 'FILL' 1 !important;
+  }
+}
+
+::ng-deep .mat-mdc-checkbox {
+  .mdc-checkbox {
+    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
+      background-color: vars.$roadit-accent !important;
+      border-color: vars.$roadit-accent !important;
+      box-shadow: inset 0 0 0 2px white !important;
+    }
+    
+    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
+      display: none !important;
+    }
+    
+    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark-path {
+      stroke: transparent !important;
+    }
+    
+    .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+      background-color: vars.$roadit-accent !important;
+      border-color: vars.$roadit-accent !important;
+      box-shadow: inset 0 0 0 2px white !important;
+    }
+    
+    .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
+      background-color: white !important;
+    }
+  }
+}
 
