@@ -37,6 +37,7 @@
   "src/app/core/dtos.old/**/*",
   "src/app/deprecates",
   "src/app/deprecates/**/*",
+  "src/app/components/dp-dynamic-table/**/*",
   "src/app/pages/deprecates",
   "src/app/pages/deprecates/**/*"
   ]

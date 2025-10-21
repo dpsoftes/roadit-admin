@@ -13,12 +13,22 @@ export const routes: Routes = [
       },
       {
         path: 'users',
-        loadComponent: () => import('./pages/users/users').then(m => m.Users)
+        children: [
+        {
+          path: '',
+          loadComponent: () => import('./pages/users/users').then(m => m.Users)
+        },
+          {
+            path: 'edit-user/:id',
+            loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
+          },
+          {
+          path: 'profile',
+          loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
+          },
+        ]
       },
-      {
-        path: 'users/profile',
-        loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
-      },
+      
       {
         path: 'clients',
         loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)

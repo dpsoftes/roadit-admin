@@ -86,7 +86,7 @@ export class DynamicTableComponent implements OnInit {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.selection.select(...this.config.data);
+      this.selection.select(...this.config.data());
     }
     this.emitEvent('select', { selected: this.selection.selected });
   }
@@ -99,7 +99,11 @@ export class DynamicTableComponent implements OnInit {
   }
 
   // Action methods
-  onActionClick(action: string, row: any) {
+  onActionClick(action: string, row: any, actionButton: ActionButton): void {
+    if (actionButton.onClick) {
+      actionButton.onClick(row);
+      return;
+    }
     this.emitEvent('action', { action, row });
   }
 

@@ -78,7 +78,7 @@ export class Clients implements OnInit {
         }
       }
     ],
-    data: [],
+    data:  signal([]),
     exportable: true,
     selectable: false,
     pagination: true,
@@ -212,7 +212,7 @@ export class Clients implements OnInit {
         }
       }
     ],
-    data: [],
+    data:signal([]),
     exportable: true,
     selectable: false,
     pagination: true,
@@ -291,8 +291,8 @@ export class Clients implements OnInit {
   };
 
   ngOnInit() {
-    this.groupsTableConfig.data = this.groupsArray();
-    this.listTableConfig.data = this.listArray();
+    this.groupsTableConfig.data.set(this.groupsArray());
+    this.listTableConfig.data.set(this.listArray());
   }
   onClientsGroup() {
     this.showGroupsTable.set(true);
