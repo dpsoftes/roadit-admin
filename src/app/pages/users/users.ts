@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '../../components/dynamic-table/dynamic-table.component';
 import { TableConfig, TableEvent } from '../../components/dynamic-table/dynamic-table.interfaces';
 import { Router } from '@angular/router';
+import { tableConfig } from './configTable';
+import { AdminProvider } from '@providers';
 @Component({
   selector: 'app-users',
   imports: [
@@ -17,144 +19,15 @@ import { Router } from '@angular/router';
 export class Users implements OnInit {
   users = input<any[]>([]);
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private adminProvider: AdminProvider) {}
 
-  tableConfig: TableConfig = {
-    columns: [
-      {
-        key: 'photo',
-        label: 'users.list.photo',
-        type: 'image',
-        imageConfig: {
-          width: '40px',
-          height: '40px',
-          fallback: 'assets/images/sample_user_icon.png'
-        }
-      },
-      {
-        key: 'name',
-        label: 'users.list.name',
-        type: 'text'
-      },
-      {
-        key: 'lastname',
-        label: 'users.list.lastname',
-        type: 'text'
-      },
-      {
-        key: 'email',
-        label: 'users.list.email',
-        type: 'text'
-      },
-      {
-        key: 'role',
-        label: 'users.list.role',
-        type: 'chip',
-        chipConfig: {
-          type: 'role',
-          translateKey: 'users.profile'
-        }
-      },
-      {
-        key: 'status',
-        label: 'users.list.status',
-        type: 'chip',
-        chipConfig: {
-          type: 'status',
-          translateKey: 'users.profile'
-        }
-      },
-      {
-        key: 'department',
-        label: 'users.list.department',
-        type: 'chip',
-        chipConfig: {
-          type: 'department'
-        }
-      },
-      {
-        key: 'actions',
-        label: 'users.list.actions',
-        type: 'actions',
-        actionConfig: {
-          actions: [
-            {
-              icon: 'material-symbols-outlined/edit_square',
-              label: 'Editar',
-              color: 'warn',
-              action: 'edit'
-            },
-            {
-              icon: 'material-symbols-outlined/visibility',
-              label: 'Ver',
-              color: 'primary',
-              action: 'view'
-            },
-            {
-              icon: 'material-symbols-outlined/delete',
-              label: 'Eliminar',
-              color: 'error',
-              action: 'delete'
-            }
-          ]
-        }
-      }
-    ],
-    data: [],
-    selectable: true,
-    pagination: true,
-    pageSize: 10,
-    pageSizeOptions: [10, 20, 50],
-    searchable: true,
-    searchPlaceholder: 'users.list.searchPlaceholder',
-    filterable: true,
-    filters: [
-      {
-        key: 'role',
-        label: 'users.profile.role',
-        type: 'select',
-        options: [
-          { value: 'ADMIN', label: 'users.profile.ADMIN' },
-          { value: 'USER', label: 'users.profile.USER' },
-          { value: 'CLIENT_USER', label: 'users.profile.CLIENT_USER' },
-          { value: 'DRIVER', label: 'users.profile.DRIVER' }
-        ]
-      },
-      {
-        key: 'status',
-        label: 'users.list.status',
-        type: 'select',
-        options: [
-          { value: 'ACTIVE', label: 'users.profile.ACTIVE' },
-          { value: 'INACTIVE', label: 'users.profile.INACTIVE' },
-          { value: 'PENDING', label: 'users.profile.PENDING' },
-          { value: 'SUSPENDED', label: 'users.profile.SUSPENDED' }
-        ]
-      },
-      {
-        key: 'department',
-        label: 'users.list.department',
-        type: 'chips',
-        multiple: false,
-        options: [
-          { value: 'IT', label: 'IT' },
-          { value: 'Comercial', label: 'Comercial' },
-          { value: 'Marketing', label: 'Marketing' },
-          { value: 'Operaciones España', label: 'Operaciones España' }
-        ]
-      }
-    ],
-    exportable: true,
-    actions: {
-      create: {
-        label: 'users.list.create-user',
-        route: '/users/new'
-      },
-    }
-  };
+  tableConfig: TableConfig = tableConfig;
 
-  ngOnInit() {
-    this.tableConfig.data = this.users().length > 0 ? this.users() : this.sampleData;
+  async ngOnInit() {
+    var data = await this.adminProvider.getAdmins();
+    
+
+    this.tableConfig.data.set(data?.results as any[]);
   }
 
   onTableEvent(event: TableEvent) {

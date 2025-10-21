@@ -1,3 +1,4 @@
+import { signal } from "@angular/core";
 import { TableConfig, ExportConfig } from "@components/dynamic-table/dynamic-table.interfaces";
 
 export const groupsTableConfig: TableConfig = {
@@ -58,7 +59,7 @@ export const groupsTableConfig: TableConfig = {
         }
       }
     ],
-    data: [],
+    data: signal([]),
     exportable: true,
     selectable: false,
     pagination: true,

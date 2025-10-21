@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { MatCardModule } from '@angular/material/card';
@@ -58,11 +58,11 @@ export class DocumentTabComponent {
         }
       }
     ],
-    data: [
+    data: signal([
       { doc_type: 'Doc Type 1', 'archive/link': 'Archive/Link 1' },
       { doc_type: 'Doc Type 2', 'archive/link': 'Archive/Link 2' },
       { doc_type: 'Doc Type 3', 'archive/link': 'Archive/Link 3' },
-    ],
+    ]),
     
   };  
 

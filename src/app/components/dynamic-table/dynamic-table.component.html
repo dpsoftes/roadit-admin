@@ -126,7 +126,7 @@
   }
 
   <mat-card-content>
-    <table mat-table [dataSource]="config.data" class="mat-elevation-z1" [class.fixed-layout]="hasFixedWidthColumns()" role="table">
+    <table mat-table [dataSource]="config.data()" class="mat-elevation-z1" [class.fixed-layout]="hasFixedWidthColumns()" role="table">
       
       @if (config.selectable) {
         <ng-container matColumnDef="select">
@@ -194,7 +194,7 @@
                     [attr.mat-icon-button]="action.icon ? '' : null"
                     [attr.mat-button]="!action.icon ? '' : null"
                     [class]="getActionButtonClass(action.color, !!action.icon)"
-                    (click)="onActionClick(action.action, element)"
+                    (click)="onActionClick(action.action, element, action)"
                     [disabled]="!shouldShowAction(action, element)"
                     [title]="action.label">
                     @if (action.icon) {
@@ -221,7 +221,7 @@
 
     @if (config.pagination) {
       <mat-paginator 
-        [length]="config.data.length" 
+        [length]="config.data().length" 
         [pageSize]="config.pageSize || 10" 
         [pageSizeOptions]="config.pageSizeOptions || [10, 20, 50]"
         (page)="onPageChange($event)">

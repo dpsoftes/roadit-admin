@@ -23,6 +23,7 @@ import {
   ImageConfig,
   ExportConfig 
 } from './dynamic-table.interfaces';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -87,7 +88,7 @@ export class DynamicTableComponent implements OnInit {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.selection.select(...this.config.data);
+      this.selection.select(...this.config.data());
     }
     this.emitEvent('select', { selected: this.selection.selected });
   }
@@ -100,7 +101,11 @@ export class DynamicTableComponent implements OnInit {
   }
 
   // Action methods
-  onActionClick(action: string, row: any) {
+  onActionClick(action: string, row: any, actionButton: ActionButton): void {
+    if (actionButton.onClick) {
+      actionButton.onClick(row);
+      return;
+    }
     this.emitEvent('action', { action, row });
   }
 
@@ -166,9 +171,22 @@ export class DynamicTableComponent implements OnInit {
 
   // Cell rendering methods
   getCellValue(row: any, column: TableColumn): any {
+    if(column.type === 'image'){
+      return this.getImageUrl(column, row);
+    }
     return this.getNestedValue(row, column.key);
   }
+  private getImageUrl(column: TableColumn, row: any): string {
+    var url = row[column.key] as string;
+    if (!url) {
+      return environment.images?.defaultAvatar || 'assets/images/sample_user_icon.png';
+    }
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
 
+    return environment.apiUrl + url;
+  }
   private getNestedValue(obj: any, path: string): any {
     if (typeof path !== 'string') {
       return obj[path];
@@ -307,7 +325,7 @@ export class DynamicTableComponent implements OnInit {
 
     let csvContent = headers.join(',') + '\n';
     
-    data.forEach(item => {
+    data().forEach(item => {
       const row = columns.map(column => {
         let value = item[column] || '';
         if (Array.isArray(value)) {

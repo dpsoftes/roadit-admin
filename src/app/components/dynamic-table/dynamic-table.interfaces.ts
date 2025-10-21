@@ -1,3 +1,5 @@
+import { WritableSignal } from "@angular/core";
+
 export interface TableColumn {
   key: string;
   label: string;
@@ -29,6 +31,7 @@ export interface ActionButton {
   color?: 'primary' | 'accent' | 'warn' | 'error';
   action: string;
   condition?: (row: any) => boolean;
+  onClick?: (row: any) => void;
 }
 
 export interface ImageConfig {
@@ -46,7 +49,7 @@ export interface ExportConfig {
 
 export interface TableConfig {
   columns: TableColumn[];
-  data: any[];
+  data: WritableSignal<any[]>;
   selectable?: boolean;
   pagination?: boolean;
   pageSize?: number;

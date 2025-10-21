@@ -55,7 +55,7 @@ export class Clients implements OnInit {
     const clientsData = this.clientsData();
     const groupsData = this.groupsData();
     
-    this.groupsTableConfig.data = groupsData.length > 0 ? groupsData : this.groupsArray();
+    this.groupsTableConfig.data.set(groupsData.length > 0 ? groupsData : this.groupsArray());
     
     // Crear configuración dinámica para la tabla de lista
     const listData = clientsData.length > 0 ? clientsData : this.listArray();

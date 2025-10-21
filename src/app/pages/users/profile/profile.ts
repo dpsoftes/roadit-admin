@@ -1,4 +1,5 @@
 import { Component, signal, ChangeDetectionStrategy, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { UserForm } from './user-form/user-form';
@@ -20,7 +21,7 @@ import { AdminSignal } from '@entities/admins.entities';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Profile implements OnInit {
-  
+  private readonly route = inject(ActivatedRoute);
   private readonly userState = inject (UsersState);
   private readonly globalState = inject(GlobalStore);
   profile: AdminSignal = new AdminSignal();
@@ -28,7 +29,12 @@ export class Profile implements OnInit {
   departments = ['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH'];
 
   async ngOnInit() {
-       this.profile.copyFromDto( (await this.userState.getAdminProfile(this.globalState.user().user.id!) as AdminSignal).toDto());
+    let userId = this.globalState.user().user.id!;
+    if (this.route.snapshot.paramMap.get('id')) {
+      userId = Number(this.route.snapshot.paramMap.get('id'));
+    }
+    const user = await this.userState.getAdminProfile(userId) as AdminSignal;
+       this.profile.copyFromDto( (user).toDto());
   }
 
   onCancel(): void {

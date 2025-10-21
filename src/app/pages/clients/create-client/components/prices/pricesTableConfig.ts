@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { TableConfig } from '@components/dynamic-table/dynamic-table.interfaces';
 
 export const pricesTableConfig: TableConfig = {
@@ -10,7 +11,7 @@ export const pricesTableConfig: TableConfig = {
     { key: 'priceVuGt12', label: 'clients.create-client.price-vu-gt-12', type: 'text', width: '20%' },
     { key: 'actions', label: 'clients.list.actions', type: 'actions', width: '10%' }
   ],
-  data: [],
+  data: signal([]),
   exportable: false,
   exportConfig: {
     columns: ['kmFrom','kmTo','priceType','clientPrice','priceVuLt12','priceVuGt12','actions'],
