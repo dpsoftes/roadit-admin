@@ -10,6 +10,7 @@ import { TabsComponent } from '@components/tabs.component/tabs.component';
 import { DriverConsignsComponent } from './components/driver-consigns/driver-consigns.component';
 import { PricesComponent } from './components/prices/prices.component';
 import { CertsComponent } from './components/certs/certs.component';
+import { ProtocolComponent } from './components/protocol/protocol.component';
 
 @Component({
   selector: 'app-create-client',
@@ -23,7 +24,8 @@ import { CertsComponent } from './components/certs/certs.component';
     TabsComponent,
     DriverConsignsComponent,
     PricesComponent,
-    CertsComponent
+    CertsComponent,
+    ProtocolComponent
     ],
   templateUrl: './create-client.html',
   styleUrl: './create-client.scss'

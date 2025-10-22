@@ -1,0 +1,52 @@
+<div class="tables">
+    <mat-card>
+        <h2>{{'clients.create-client.certs-created' | translate}}</h2>
+        <mat-label>{{'clients.create-client.intern-movement-type' | translate}}</mat-label>
+        <mat-form-field appearance="outline">
+            <mat-select>
+                <mat-option value="1">{{'clients.create-client.intern-movement-type-1' | translate}}</mat-option>
+                <mat-option value="2">{{'clients.create-client.intern-movement-type-2' | translate}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <app-dynamic-table [config]="protocolTableConfig"></app-dynamic-table>
+    </mat-card>
+    <mat-card>
+        <h2>{{'clients.create-client.protocols-assigned' | translate}}</h2>
+        <app-dynamic-table [config]="protocolAssignedTableConfig"></app-dynamic-table>
+    </mat-card>
+</div>
+
+<div class="card">
+    <mat-card>
+        <h3>{{'clients.create-client.action-title' | translate}}</h3>
+        <mat-form-field appearance="outline">
+            <input type="text" matInput placeholder="Título certificación">
+        </mat-form-field>
+        
+        <h3>{{'clients.create-client.type' | translate}}</h3>
+        <div class="type-section">
+            <mat-form-field appearance="outline">
+                <mat-select>
+                    <mat-option value="check-multiselection">{{'clients.create-client.check-multiselection' | translate}}</mat-option>
+                    <mat-option value="radio">{{'clients.create-client.radio' | translate}}</mat-option>
+                    <mat-option value="text">{{'clients.create-client.text' | translate}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <app-buttons (click)="openOptionModal()" type="save-changes" text="clients.create-client.edit-options"></app-buttons>
+        </div>
+        
+        <h3>{{'clients.create-client.application-moment' | translate}}</h3>
+        <mat-form-field appearance="outline">
+            <mat-select>
+                <mat-option value="both">{{'clients.create-client.both-departure-arrival' | translate}}</mat-option>
+                <mat-option value="departure">{{'clients.create-client.departure' | translate}}</mat-option>
+                <mat-option value="arrival">{{'clients.create-client.arrival' | translate}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <div class="action-buttons">
+            <app-buttons type="save-changes" text="clients.create-client.assign"></app-buttons>
+            <app-buttons type="cancel" text="clients.create-client.cancel"></app-buttons>
+        </div>
+    </mat-card>
+</div>

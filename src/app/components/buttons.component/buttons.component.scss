@@ -9,7 +9,7 @@
 }
 .cancel_btn {
     background-color: vars.$black;
-    color: vars.$white;
+    color: vars.$white !important;
     border: 1px solid vars.$black;
     font-size: 12px;
     padding: 10px;

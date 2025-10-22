@@ -1,0 +1,33 @@
+<div class="text-editor-wrapper" 
+     [style.min-height]="minHeight()" 
+     [style.max-height]="maxHeight()">
+  
+  <!-- Menú del editor -->
+  @if (showMenu() && isInitialized()) {
+    <div class="editor-menu">
+      <ngx-editor-menu [editor]="editor()!"></ngx-editor-menu>
+    </div>
+  }
+
+  <!-- Editor principal -->
+  @if (isInitialized()) {
+    <div class="editor-container">
+      <ngx-editor
+        [editor]="editor()!"
+        [ngModel]="currentContent()"
+        [disabled]="disabled()"
+        [placeholder]="placeholder()"
+        (ngModelChange)="onContentChange($event)"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+        class="ngx-editor">
+      </ngx-editor>
+    </div>
+  } @else {
+    <div class="editor-loading">
+      <div class="spinner"></div>
+      <p>Inicializando editor...</p>
+    </div>
+  }
+
+</div>

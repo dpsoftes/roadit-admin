@@ -208,7 +208,16 @@
       "config": "Configuración",
       "attempts-per-week": "Intentos por semana",
       "available-new-drivers": "Disponible para nuevos conductores",
-      "save-cert": "Guardar certificación"
+      "save-cert": "Guardar certificación",
+      "protocols-assigned": "Protocolos asignados",
+      "intern-movement-type": "Tipo de movimiento interno",
+      "schemas": "Plantillas",
+      "protocols": "Protocolos",
+      "type": "Tipo",
+      "action-title":"Título de acción",
+      "edit-options":"Editar opciones",
+      "assign":"Asignar",
+      "client-process":"Proceso de cliente"
       
     },
     "list": {
@@ -647,5 +656,13 @@
     "BUSY": "Ocupado",
     "OFFLINE": "Desconectado",
     "ON_BREAK": "En descanso"
+  },
+  "modals": {
+    "multiselection": {
+      "title": "Check multiselección",
+      "addNewOption": "+ AÑADIR NUEVA OPCIÓN",
+      "placeholder": "Escriba aquí...",
+      "save": "GUARDAR"
+    }
   }
 }

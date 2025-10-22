@@ -13,6 +13,9 @@
                 (formDataChange)="onFormDataChange($event)">
             </app-general-tab-component>
         }
+        @case ('protocol') {
+            <app-protocol></app-protocol>
+        }
         @case ('slogans'){
             <app-driver-consigns></app-driver-consigns>
         }

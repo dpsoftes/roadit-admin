@@ -1,4 +1,5 @@
 import { TableConfig } from '@components/dynamic-table/dynamic-table.interfaces';
+import { signal } from '@angular/core';
 
 export const certsAssignedTableConfig: TableConfig = {
     columns: [
@@ -21,11 +22,11 @@ export const certsAssignedTableConfig: TableConfig = {
         }
     }
     ],
-    data: [
+    data: signal([
         { cert_list: 'Cert 1' },
         { cert_list: 'Cert 2' },
         { cert_list: 'Cert 3' },
-    ],
+    ]),
     exportable: false,
     selectable: false,
     pagination: false,

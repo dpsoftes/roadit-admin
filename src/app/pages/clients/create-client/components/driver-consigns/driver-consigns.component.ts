@@ -1,8 +1,17 @@
 import { Component } from '@angular/core';
+import { TextEditorComponent } from '@components/text-editor/text-editor.component';
+import { MatCardModule } from '@angular/material/card';
+import { TranslatePipe } from '@i18n/translate.pipe';
+import { ButtonsComponent } from '@components/buttons.component/buttons.component';
 
 @Component({
   selector: 'app-driver-consigns',
-  imports: [],
+  imports: [
+    TextEditorComponent,
+    MatCardModule,
+    TranslatePipe,
+    ButtonsComponent
+  ],
   templateUrl: './driver-consigns.component.html',
   styleUrl: './driver-consigns.component.scss'
 })

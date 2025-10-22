@@ -1,0 +1,59 @@
+.modal-content {
+  padding: 20px 24px;
+}
+
+.modal-content app-buttons {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.option-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-label {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.option-input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.option-input:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: 12px;
+  color: #666;
+  pointer-events: none;
+}
+
+.modal-footer {
+  padding: 16px 24px 20px;
+  display: flex;
+  justify-content: flex-end;
+}

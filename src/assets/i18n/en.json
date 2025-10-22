@@ -209,7 +209,16 @@
       "config": "Config",
       "attempts-per-week": "Attempts per week",
       "available-new-drivers": "Available for new drivers",
-      "save-cert": "Save certification"
+      "save-cert": "Save certification",
+      "protocols-assigned": "Protocols assigned",
+      "intern-movement-type": "Intern movement type",
+      "schemas": "Schemas",
+      "protocols": "Protocols",
+      "type": "Type",
+      "action-title":"Action title",
+      "edit-options":"Edit options",
+      "assign":"Assign",
+      "client-process":"Client process"
     },
     "list": {
       "clients_group": "Client Groups",
@@ -647,5 +656,13 @@
     "BUSY": "Busy",
     "OFFLINE": "Offline",
     "ON_BREAK": "On break"
+  },
+  "modals": {
+    "multiselection": {
+      "title": "Multiselection Check",
+      "addNewOption": "+ ADD NEW OPTION",
+      "placeholder": "Type here...",
+      "save": "SAVE"
+    }
   }
 }
