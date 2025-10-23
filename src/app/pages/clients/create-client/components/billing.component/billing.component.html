@@ -1,20 +1,21 @@
 <mat-card>
     <mat-card-content>
+        <form (ngSubmit)="onSave()">
         <div class="form">
             <div class="form-field six_field">
                 <label class="field-label">{{'clients.create-client.entity-reference' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput placeholder="Escriba aquí...">
+                    <input type="text" matInput [value]="entity_number()" (input)="entity_number.set($event.target.value)" placeholder="Escriba aquí...">
                 </mat-form-field>
             </div>
 
             <div class="form-field six_field">
                 <label class="field-label">{{'clients.create-client.document-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select>
-                        <mat-option value="DNI">DNI</mat-option>
-                        <mat-option value="NIE">NIE</mat-option>
-                        <mat-option value="CIF">CIF</mat-option>
+                    <mat-select [value]="document_type()" (selectionChange)="document_type.set($event.value)">
+                        <mat-option value="dni">DNI</mat-option>
+                        <mat-option value="cif">CIF</mat-option>
+                        <mat-option value="other">{{'clients.create-client.other' | translate}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -22,96 +23,96 @@
             <div class="form-field six_field">
                 <label class="field-label">{{'clients.create-client.document-code' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="document()" (input)="document.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field six_field">
                 <label class="field-label">{{'clients.create-client.retention' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="irpf()" (input)="irpf.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field six_field">
                 <label class="field-label">{{'clients.create-client.company-name' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="business_name()" (input)="business_name.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field six_field">
                 <label class="field-label">{{'clients.create-client.vat-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="iva()" (input)="iva.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.billing-address' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="address()" (input)="address.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field small_field">
                 <label class="field-label">{{'clients.create-client.address-complement' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="address_complement()" (input)="address_complement.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field small_field">
                 <label class="field-label">{{'clients.create-client.postal-code' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="postal_code()" (input)="postal_code.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field small_field">
                 <label class="field-label">{{'clients.create-client.city' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="city()" (input)="city.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field small_field">
                 <label class="field-label">{{'clients.create-client.country' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="country()" (input)="country.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.eurotransportcar-identifier' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="state()" (input)="state.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.revel-identifier' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" matInput [value]="iban()" (input)="iban.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field third_field">
                 <label class="field-label">{{'clients.create-client.accounting-email' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="email" matInput>
+                    <input type="email" matInput [value]="email_send_invoice()" (input)="email_send_invoice.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field third_field">
                 <label class="field-label">{{'clients.create-client.accounting-phone' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="tel" matInput>
+                    <input type="tel" matInput [value]="phone()" (input)="phone.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field checkbox-field">
-                <mat-checkbox>
+                <mat-checkbox [checked]="is_favourite()" (change)="is_favourite.set($event.checked)">
                     {{'clients.create-client.mark-as-favorite' | translate}}
                 </mat-checkbox>
             </div>
@@ -119,7 +120,7 @@
             <div class="form-field full_field">
                 <label class="field-label">{{'clients.create-client.due-period' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select>
+                    <mat-select [value]="expire_period_days()" (selectionChange)="expire_period_days.set($event.value)">
                         <mat-option value="15">15 días</mat-option>
                         <mat-option value="30">30 días</mat-option>
                         <mat-option value="45">45 días</mat-option>
@@ -128,9 +129,10 @@
             </div>
 
             <div class="form-field button_field">
-                <button mat-button class="add-account-btn">{{'clients.create-client.add-account' | translate}}</button>
+                <button mat-button class="add-account-btn" type="submit">{{'clients.create-client.add-account' | translate}}</button>
             </div>
         </div>
+        </form>
     </mat-card-content>
 </mat-card>
 

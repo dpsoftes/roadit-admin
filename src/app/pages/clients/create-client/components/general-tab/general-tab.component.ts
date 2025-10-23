@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal, ViewEncapsulation, input, output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +14,6 @@ import { ButtonsComponent } from '@components/buttons.component/buttons.componen
   selector: 'app-general-tab-component',
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     MatCardModule,
     MatButtonModule,
     TranslatePipe,
@@ -34,37 +32,31 @@ export class GeneralTabComponent {
   // Input signals
   clientData = input< any| null>(null);
   clientGroups = input<any[]>([]);
-  managers = input<any[]>([]);
+  managersInput = input<any[]>([]);
   
   // Output signals
   formDataChange = output<any>();
 
-  // Formulario reactivo
-  clientForm: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.clientForm = this.fb.group({
-      name: ['', Validators.required],
-      'id-eurotransport': ['', Validators.required],
-      'id-revel': ['', Validators.required],
-      client_group: [null],
-      department: [''],
-      parent: [null],
-      client_type: ['', Validators.required],
-      client_origin: ['', Validators.required],
-      billing_type: ['', Validators.required],
-      contact_person_name: [''],
-      contact_person_email: [''],
-      contact_person_phone: [''],
-      is_subentity: [false],
-      own_insurance: [false],
-      at_risk: [false],
-      managers: [[]],
-      sendFinalCustomer: [false],
-      appointment_time: [''],
-      appointment_time_between: ['']
-    });
-  }
+  // Signals para el formulario
+  name = signal<string>('');
+  eurotransport_identifier = signal<string>('');
+  revel_identifier = signal<string>('');
+  client_group = signal<any>(null);
+  department = signal<string>('');
+  parent = signal<any>(null);
+  client_type = signal<string>('');
+  client_origin = signal<string>('');
+  billing_type = signal<string>('');
+  contact_person_name = signal<string>('');
+  contact_person_email = signal<string>('');
+  contact_person_phone = signal<string>('');
+  is_subentity = signal<boolean>(false);
+  own_insurance = signal<boolean>(false);
+  at_risk = signal<boolean>(false);
+  managers = signal<any[]>([]);
+  sendFinalCustomer = signal<boolean>(false);
+  invite_delay_minutes = signal<string>('');
+  reminder_interval_minutes = signal<string>('');
 
   onImageAccepted(event: { base64: string, file: File }): void {
     if (this.clientData()?.image) {
@@ -77,18 +69,52 @@ export class GeneralTabComponent {
 
   // Método único para guardar - se ejecuta solo cuando se presiona el botón
   onSave(): void {
-    if (this.clientForm.valid) {
-      const formData = this.clientForm.value as any;
-      this.formDataChange.emit(formData);
-    } else {
-      console.log('Formulario inválido:', this.clientForm.errors);
-      // Marcar todos los campos como tocados para mostrar errores
-      this.clientForm.markAllAsTouched();
-    }
+    const formData = {
+      name: this.name(),
+      eurotransport_identifier: this.eurotransport_identifier(),
+      revel_identifier: this.revel_identifier(),
+      client_group: this.client_group(),
+      department: this.department(),
+      parent: this.parent(),
+      client_type: this.client_type(),
+      client_origin: this.client_origin(),
+      billing_type: this.billing_type(),
+      contact_person_name: this.contact_person_name(),
+      contact_person_email: this.contact_person_email(),
+      contact_person_phone: this.contact_person_phone(),
+      is_subentity: this.is_subentity(),
+      own_insurance: this.own_insurance(),
+      at_risk: this.at_risk(),
+      managers: this.managers(),
+      sendFinalCustomer: this.sendFinalCustomer(),
+      invite_delay_minutes: this.invite_delay_minutes(),
+      reminder_interval_minutes: this.reminder_interval_minutes()
+    };
+    
+    this.formDataChange.emit(formData);
   }
 
   onCancel(): void {
-    this.clientForm.reset();
+    // Reset all signals to default values
+    this.name.set('');
+    this.eurotransport_identifier.set('');
+    this.revel_identifier.set('');
+    this.client_group.set(null);
+    this.department.set('');
+    this.parent.set(null);
+    this.client_type.set('');
+    this.client_origin.set('');
+    this.billing_type.set('');
+    this.contact_person_name.set('');
+    this.contact_person_email.set('');
+    this.contact_person_phone.set('');
+    this.is_subentity.set(false);
+    this.own_insurance.set(false);
+    this.at_risk.set(false);
+    this.managers.set([]);
+    this.sendFinalCustomer.set(false);
+    this.invite_delay_minutes.set('');
+    this.reminder_interval_minutes.set('');
     console.log('cancel')
   }
 

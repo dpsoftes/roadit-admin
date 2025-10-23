@@ -38,6 +38,54 @@ interface BillingAccount {
 export class BillingComponent {
   
   billingAccounts = signal<BillingAccount[]>([]);
+  
+  // Signals para el formulario
+  email_send_invoice = signal<string>('');
+  state = signal<string>('');
+  iban = signal<string>('');
+  iva = signal<string>('');
+  irpf = signal<string>('');
+  bic = signal<string>('');
+  is_favourite = signal<boolean>(false);
+  business_name = signal<string>('');
+  entity_number = signal<string>('');
+  document = signal<string>('');
+  document_type = signal<string>('');
+  address = signal<string>('');
+  address_complement = signal<string>('');
+  postal_code = signal<string>('');
+  country = signal<string>('');
+  city = signal<string>('');
+  phone = signal<string>('');
+  expire_period_days = signal<number>(0);
+  client = signal<number>(0);
+
+  onSave(): void {
+    const formData = {
+      email_send_invoice: this.email_send_invoice(),
+      state: this.state(),
+      iban: this.iban(),
+      iva: this.iva(),
+      irpf: this.irpf(),
+      bic: this.bic(),
+      is_favourite: this.is_favourite(),
+      business_name: this.business_name(),
+      entity_number: this.entity_number(),
+      document: this.document(),
+      document_type: this.document_type(),
+      address: this.address(),
+      address_complement: this.address_complement(),
+      postal_code: this.postal_code(),
+      country: this.country(),
+      city: this.city(),
+      phone: this.phone(),
+      expire_period_days: this.expire_period_days(),
+      client: this.client(),
+    };
+    
+    console.log('Form data:', formData);
+    // Aquí puedes agregar la lógica para guardar los datos
+  }
 
   onAddAccount(): void {
     console.log('Add account clicked');

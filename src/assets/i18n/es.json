@@ -217,7 +217,20 @@
       "action-title":"Título de acción",
       "edit-options":"Editar opciones",
       "assign":"Asignar",
-      "client-process":"Proceso de cliente"
+      "client-process":"Proceso de cliente",
+      "simple-movement": "Movimiento simple",
+      "pickup-to-final-customer": "Recogida a cliente final",
+      "delivery-to-final-customer": "Entrega a cliente final",
+      "pickup-and-delivery-to-final-customer": "Recogida y entrega a cliente final",
+      "with-stopover": "Con escala",
+      "single-check": "Chequeo único",
+      "multi-check": "Chequeo múltiple",
+      "image": "Imagen",
+      "both-departure-both": "Ambos (salida y llegada)",
+      "departure": "Salida",
+      "arrival": "Llegada",
+      "pricing-type-fixed": "Fijo",
+      "pricing-type-per-km": "Por kilómetro"
       
     },
     "list": {
