@@ -1,0 +1,137 @@
+.cert {
+  mat-card {
+    width: 100%;
+    padding: 20px;
+    
+    h3 {
+      color: #333;
+      font-size: 16px;
+      font-weight: 500;
+      margin: 0 0 4px 0;
+    }
+    
+    h2 {
+      color: #333;
+      font-size: 18px;
+      font-weight: 500;
+      margin: 20px 0 10px 0;
+    }
+    
+    mat-form-field {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    
+    .question-container {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+
+      .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        h3 {
+          margin: 0;
+          color: #333;
+          font-size: 16px;
+        }
+
+      }
+    }
+    
+    .answers-container {
+      .answer-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 8px;
+        
+        .answer-indicator {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          margin-top: 2px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          
+          &.correct {
+            background-color: #4caf50;
+            color: white;
+          }
+          
+          &.incorrect {
+            background-color: #f44336;
+            color: white;
+          }
+          
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+          }
+        }
+        
+        .answer-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          
+          .answer-label {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+          }
+          
+          .answer-input {
+            width: 100%;
+          }
+          
+        }
+      }
+      
+    }
+    
+    
+    .config-section {
+      margin: 20px 0;
+      
+      mat-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #333;
+        font-size: 14px;
+      }
+      
+      mat-form-field {
+        width: 100%;
+      }
+    }
+    
+    .checkbox-section {
+      margin: 15px 0;
+    }
+    
+    .save-button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      
+      mat-icon {
+        margin-right: 8px;
+        font-size: 18px;
+      }
+    }
+  }
+}
+

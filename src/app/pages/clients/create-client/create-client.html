@@ -9,7 +9,6 @@
             <app-general-tab-component 
                 [clientData]="clientData()"
                 [clientGroups]="clientGroups()"
-                [managers]="managers()"
                 (formDataChange)="onFormDataChange($event)">
             </app-general-tab-component>
         }
@@ -22,6 +21,9 @@
         @case ('documents') {
             <app-document-tab></app-document-tab>
         }
+        @case ('extra-contact') {
+            <app-extra-contact></app-extra-contact>
+        }
         @case ('billing') {
             <app-billing></app-billing>
         }
@@ -30,6 +32,9 @@
         }
         @case ('certs') {
             <app-certs></app-certs>
+        }
+        @case ('additional-services') {
+            <app-additional-services></app-additional-services>
         }
     }
 </div>

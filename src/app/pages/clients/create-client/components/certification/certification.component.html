@@ -1,0 +1,82 @@
+<div class="cert">
+    <mat-card>
+        <!-- Título de la certificación -->
+        <h3>{{'clients.create-client.choose-certification' | translate}}</h3>
+        <mat-form-field appearance="outline">
+            <input 
+                type="text" 
+                matInput 
+                [value]="certification.title"
+                (input)="updateTitle($event.target.value)"
+                [placeholder]="'clients.create-client.certification-title' | translate">
+        </mat-form-field>
+        
+        @for (question of certification.questions; track question.id; let i = $index) {
+            <div class="question-container">
+                <div class="question-header">
+                    <h3>{{'clients.create-client.cert-question' | translate}} {{i + 1}}</h3>
+                </div>
+                
+                <mat-form-field appearance="outline">
+                    <input 
+                        type="text" 
+                        matInput 
+                        [value]="question.text"
+                        (input)="updateQuestionText(question.id, $event.target.value)"
+                        [placeholder]="'clients.create-client.question-placeholder' | translate">
+                </mat-form-field>
+                
+                <div class="answers-container">
+                    @for (answer of question.answers; track answer.id) {
+                        <div class="answer-row">
+                            <div 
+                                class="answer-indicator" 
+                                [class.correct]="answer.isCorrect"
+                                [class.incorrect]="!answer.isCorrect"
+                                (click)="toggleCorrectAnswer(question.id, answer.id)">
+                                <mat-icon>{{answer.isCorrect ? 'check' : 'close'}}</mat-icon>
+                            </div>
+                            <div class="answer-content">
+                                <span class="answer-label">{{'clients.create-client.answer' | translate}} {{answer.id}}</span>
+                                <mat-form-field appearance="outline" class="answer-input">
+                                    <input 
+                                        type="text" 
+                                        matInput 
+                                        [value]="answer.text"
+                                        (input)="updateAnswerText(question.id, answer.id, $event.target.value)"
+                                        [placeholder]="'clients.create-client.answer-placeholder' | translate">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    }
+                    
+                </div>
+            </div>
+        }
+        
+
+        <h2>{{'clients.create-client.config' | translate}}</h2>
+        
+        <div class="config-section">
+            <mat-label>{{'clients.create-client.attempts-per-week' | translate}}</mat-label>
+            <mat-form-field appearance="outline">
+                <input 
+                    type="number" 
+                    matInput 
+                    [value]="certification.attemptsPerWeek"
+                    (input)="updateAttemptsPerWeek(+$event.target.value)"
+                    [placeholder]="'1'">
+            </mat-form-field>
+        </div>
+        
+        <div class="checkbox-section">
+            <mat-checkbox 
+                [checked]="certification.availableForNewDrivers"
+                (change)="updateAvailableForNewDrivers($event.checked)">
+                {{'clients.create-client.available-new-drivers' | translate}}
+            </mat-checkbox>
+        </div>
+        
+        <app-buttons type="save-changes" text="clients.create-client.save-cert" (click)="onSave()"></app-buttons>
+    </mat-card>
+</div>

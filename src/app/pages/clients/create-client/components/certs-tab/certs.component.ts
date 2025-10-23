@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ButtonsComponent } from '@components/buttons.component/buttons.component';
+import { CertificationComponent, Certification } from '../certification/certification.component';
 
 interface Cert {
   title: string;
@@ -28,7 +28,7 @@ interface Cert {
     MatInputModule,
     MatIconModule,
     MatCheckboxModule,
-    ButtonsComponent
+    CertificationComponent
   ],
   templateUrl: './certs.component.html',
   styleUrl: './certs.component.scss'
@@ -37,5 +37,33 @@ export class CertsComponent {
 
   certsCreatedTableConfig: TableConfig = certsCreatedTableConfig;
   certsAssignedTableConfig: TableConfig = certsAssignedTableConfig;
+
+  // Certificación actual
+  currentCertification: Certification = {
+    id: '',
+    title: '',
+    questions: [
+      {
+        id: '1',
+        text: '',
+        answers: [
+          { id: 'A', text: '', isCorrect: true },
+          { id: 'B', text: '', isCorrect: false },
+          { id: 'C', text: '', isCorrect: false }
+        ]
+      }
+    ],
+    attemptsPerWeek: 1,
+    availableForNewDrivers: false
+  };
+
+  onCertificationChange(certification: Certification): void {
+    this.currentCertification = certification;
+  }
+
+  onSaveCertification(certification: Certification): void {
+    console.log('Guardando certificación:', certification);
+    // Aquí se implementaría la lógica para guardar la certificación
+  }
 
 }

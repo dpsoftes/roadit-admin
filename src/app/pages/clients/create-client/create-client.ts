@@ -9,8 +9,10 @@ import { BillingComponent } from './components/billing.component/billing.compone
 import { TabsComponent } from '@components/tabs.component/tabs.component';
 import { DriverConsignsComponent } from './components/driver-consigns/driver-consigns.component';
 import { PricesComponent } from './components/prices/prices.component';
-import { CertsComponent } from './components/certs/certs.component';
+import { CertsComponent } from './components/certs-tab/certs.component';
 import { ProtocolComponent } from './components/protocol/protocol.component';
+import { ExtraContactComponent } from './components/extra-contact/extra-contact.component';
+import { AdditionalServicesComponent } from './components/additional-services/additional-services.component';
 
 @Component({
   selector: 'app-create-client',
@@ -25,7 +27,9 @@ import { ProtocolComponent } from './components/protocol/protocol.component';
     DriverConsignsComponent,
     PricesComponent,
     CertsComponent,
-    ProtocolComponent
+    ProtocolComponent,  
+    ExtraContactComponent,
+    AdditionalServicesComponent
     ],
   templateUrl: './create-client.html',
   styleUrl: './create-client.scss'
