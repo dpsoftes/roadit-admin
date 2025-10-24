@@ -28,7 +28,6 @@ export class ModalComponent<T = any> {
   private dialogRef = inject(MatDialogRef<ModalComponent<T>>);
   private data = inject<ModalData<T>>(MAT_DIALOG_DATA);
 
-  // signals para el estado
   title = signal(this.data.title);
   content = signal(this.data.content);
   component = signal(this.data.component);
@@ -43,5 +42,21 @@ export class ModalComponent<T = any> {
 
   onComponentEvent(event: any) {
     this.close(event);
+  }
+
+  onComponentCreated(component: any) {
+    if (component && component.save) {
+      component.save.subscribe((result: any) => {
+        this.close(result);
+      });
+    }
+    
+    if (component && component.certificationChange) {
+      component.certificationChange.subscribe((event: any) => {
+        if (event && event.type === 'save') {
+          this.close(event.certification);
+        }
+      });
+    }
   }
 }

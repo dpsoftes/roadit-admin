@@ -248,7 +248,8 @@
       "pricing-type-per-km": "Por kilómetro",
       "description": "Descripción",
       "additional-services": "Plantillas de servicios complementarios",
-      "additional-services-assigned": "Servicios complementarios asignados"
+      "additional-services-assigned": "Servicios complementarios asignados",
+      "other": "Otro"
       
     },
     "list": {

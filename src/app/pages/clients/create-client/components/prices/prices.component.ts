@@ -34,7 +34,6 @@ export class PricesComponent {
   pricesData = input<any | null>(null);
   pricesTableConfig: TableConfig = pricesTableConfig;
 
-  // Signals para el formulario basado en el objeto proporcionado
   id = signal<number>(0);
   client = signal<number>(0);
   transport = signal<number>(0);

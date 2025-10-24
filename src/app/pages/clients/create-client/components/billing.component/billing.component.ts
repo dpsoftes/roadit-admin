@@ -39,7 +39,6 @@ export class BillingComponent {
   
   billingAccounts = signal<BillingAccount[]>([]);
   
-  // Signals para el formulario
   email_send_invoice = signal<string>('');
   state = signal<string>('');
   iban = signal<string>('');
@@ -84,7 +83,6 @@ export class BillingComponent {
     };
     
     console.log('Form data:', formData);
-    // Aquí puedes agregar la lógica para guardar los datos
   }
 
   onAddAccount(): void {

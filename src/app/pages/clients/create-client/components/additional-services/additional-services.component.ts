@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { MatCardModule } from '@angular/material/card';
@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
 import { ButtonsComponent } from '@components/buttons.component/buttons.component';
 import { additionalServicesTableConfig } from './additionalServicesTableConfig';
 import { additionalServicesAssignedTableConfig } from './additionalServicesAssignedTableConfig';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from '@components/modal/modal.component';
+import { CertificationComponent, Certification } from '../certification/certification.component';
   
 export interface AdditionalService {
   id: string;
@@ -43,11 +46,11 @@ export interface AdditionalService {
   styleUrl: './additional-services.component.scss'
 })
 export class AdditionalServicesComponent {
+  private dialog = inject(MatDialog);
 
   additionalServicesTableConfig = additionalServicesTableConfig;
   additionalServicesAssignedTableConfig = additionalServicesAssignedTableConfig;
 
-  // Signals para el formulario
   service = signal<AdditionalService>({
     id: '',
     title: '',
@@ -61,14 +64,12 @@ export class AdditionalServicesComponent {
     requiresImageAndLocation: false
   });
 
-  // Opciones para el dropdown
   applicationMoments = signal([
     { value: 'departure', label: 'clients.create-client.departure' },
     { value: 'arrival', label: 'clients.create-client.arrival' },
     { value: 'both', label: 'clients.create-client.both' }
   ]);
 
-  // Métodos para actualizar el formulario
   updateTitle(title: string): void {
     this.service.update(service => ({ ...service, title }));
   }
@@ -107,16 +108,60 @@ export class AdditionalServicesComponent {
 
   onAssign(): void {
     console.log('Asignando servicio:', this.service());
-    // Aquí se implementaría la lógica para asignar el servicio
   }
 
   onCancel(): void {
     console.log('Cancelando');
-    // Aquí se implementaría la lógica para cancelar
   }
 
   onEditCertification(): void {
-    console.log('Editando certificación');
-    // Aquí se implementaría la lógica para editar la certificación
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '90vw',
+      maxWidth: '1200px',
+      height: '90vh',
+      data: {
+        title: 'clients.create-client.edit-certification',
+        component: CertificationComponent,
+        componentInputs: {
+          certification: this.getDefaultCertification()
+        },
+        showActions: false
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Certificación guardada:', result);
+      }
+    });
+  }
+
+  private getDefaultCertification(): Certification {
+    return {
+      id: '',
+      title: '',
+      questions: [
+        {
+          id: '1',
+          text: '',
+          answers: [
+            { id: 'A', text: '', isCorrect: true },
+            { id: 'B', text: '', isCorrect: false },
+            { id: 'C', text: '', isCorrect: false }
+          ]
+        },
+        {
+          id: '2',
+          text: '',
+          answers: [
+            { id: 'A', text: '', isCorrect: true },
+            { id: 'B', text: '', isCorrect: false },
+            { id: 'C', text: '', isCorrect: false }
+          ]
+        }
+      ],
+      attemptsPerWeek: 1,
+      availableForNewDrivers: false
+    };
   }
 }

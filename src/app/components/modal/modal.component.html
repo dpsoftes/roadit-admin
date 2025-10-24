@@ -11,7 +11,8 @@
   @if (component()) {
     <ng-container
       [ngComponentOutlet]="component()"
-      [ngComponentOutletInputs]="componentInputs()">
+      [ngComponentOutletInputs]="componentInputs()"
+      (ngComponentOutletCreated)="onComponentCreated($event)">
     </ng-container>
   } @else if (content()) {
     <p>{{ content() }}</p>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,9 +46,9 @@ export interface Certification {
   styleUrl: './certification.component.scss'
 })
 export class CertificationComponent {
-  @Input() certification: Certification = this.getDefaultCertification();
-  @Output() certificationChange = new EventEmitter<Certification>();
-  @Output() save = new EventEmitter<Certification>();
+  certification = input<Certification>(this.getDefaultCertification());
+  certificationChange = output<Certification>();
+  save = output<Certification>();
 
   getDefaultCertification(): Certification {
     return {
@@ -82,11 +82,11 @@ export class CertificationComponent {
 
 
   toggleCorrectAnswer(questionId: string, answerId: string): void {
-    const question = this.certification.questions.find(q => q.id === questionId);
+    const currentCert = this.certification();
+    const question = currentCert.questions.find(q => q.id === questionId);
     if (question) {
       const answer = question.answers.find(a => a.id === answerId);
       if (answer) {
-        // Solo permitir una respuesta correcta por pregunta
         question.answers.forEach(a => a.isCorrect = false);
         answer.isCorrect = true;
         this.emitChanges();
@@ -95,12 +95,14 @@ export class CertificationComponent {
   }
 
   updateTitle(title: string): void {
-    this.certification.title = title;
+    const currentCert = this.certification();
+    currentCert.title = title;
     this.emitChanges();
   }
 
   updateQuestionText(questionId: string, text: string): void {
-    const question = this.certification.questions.find(q => q.id === questionId);
+    const currentCert = this.certification();
+    const question = currentCert.questions.find(q => q.id === questionId);
     if (question) {
       question.text = text;
       this.emitChanges();
@@ -108,7 +110,8 @@ export class CertificationComponent {
   }
 
   updateAnswerText(questionId: string, answerId: string, text: string): void {
-    const question = this.certification.questions.find(q => q.id === questionId);
+    const currentCert = this.certification();
+    const question = currentCert.questions.find(q => q.id === questionId);
     if (question) {
       const answer = question.answers.find(a => a.id === answerId);
       if (answer) {
@@ -119,20 +122,26 @@ export class CertificationComponent {
   }
 
   updateAttemptsPerWeek(attempts: number): void {
-    this.certification.attemptsPerWeek = attempts;
+    const currentCert = this.certification();
+    currentCert.attemptsPerWeek = attempts;
     this.emitChanges();
   }
 
   updateAvailableForNewDrivers(available: boolean): void {
-    this.certification.availableForNewDrivers = available;
+    const currentCert = this.certification();
+    currentCert.availableForNewDrivers = available;
     this.emitChanges();
   }
 
   onSave(): void {
-    this.save.emit(this.certification);
+    this.save.emit(this.certification());
+    this.certificationChange.emit({
+      type: 'save',
+      certification: this.certification()
+    } as any);
   }
 
   private emitChanges(): void {
-    this.certificationChange.emit(this.certification);
+    this.certificationChange.emit(this.certification());
   }
 }

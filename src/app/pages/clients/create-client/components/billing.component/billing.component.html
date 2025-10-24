@@ -153,26 +153,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let account of billingAccounts()">
-                        <td>{{ account.idRef }}</td>
-                        <td>{{ account.taxId }}</td>
-                        <td>{{ account.companyName }}</td>
-                        <td>{{ account.city }}</td>
-                        <td>{{ account.email }}</td>
-                        <td>{{ account.retention }}</td>
-                        <td>{{ account.duePeriod }}</td>
-                        <td class="actions-cell">
-                            <button mat-icon-button class="action-btn edit-btn">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button class="action-btn view-btn">
-                                <mat-icon>visibility</mat-icon>
-                            </button>
-                            <button mat-icon-button class="action-btn delete-btn">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
+                    @for (account of billingAccounts(); track account.idRef) {
+                        <tr>
+                            <td>{{ account.idRef }}</td>
+                            <td>{{ account.taxId }}</td>
+                            <td>{{ account.companyName }}</td>
+                            <td>{{ account.city }}</td>
+                            <td>{{ account.email }}</td>
+                            <td>{{ account.retention }}</td>
+                            <td>{{ account.duePeriod }}</td>
+                            <td class="actions-cell">
+                                <button mat-icon-button class="action-btn edit-btn">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-icon-button class="action-btn view-btn">
+                                    <mat-icon>visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button class="action-btn delete-btn">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
             

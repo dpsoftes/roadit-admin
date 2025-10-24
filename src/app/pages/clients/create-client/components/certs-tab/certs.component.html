@@ -10,7 +10,7 @@
 </div>
 <div class="cert">
     <app-certification 
-        [certification]="currentCertification"
+        [certification]="currentCertification()"
         (certificationChange)="onCertificationChange($event)"
         (save)="onSaveCertification($event)">
     </app-certification>

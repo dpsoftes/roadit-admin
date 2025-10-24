@@ -249,7 +249,8 @@
       "pricing-type-per-km": "Per kilometer",
       "description": "Description",
       "additional-services": "Additional services templates",
-      "additional-services-assigned": "Additional services assigned"
+      "additional-services-assigned": "Additional services assigned",
+      "other": "Other"
     },
     "list": {
       "clients_group": "Client Groups",

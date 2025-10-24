@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { certsCreatedTableConfig } from './certsCreatedTableConfig';
 import { TableConfig } from '@components/dynamic-table/dynamic-table.interfaces';
@@ -38,8 +38,7 @@ export class CertsComponent {
   certsCreatedTableConfig: TableConfig = certsCreatedTableConfig;
   certsAssignedTableConfig: TableConfig = certsAssignedTableConfig;
 
-  // Certificación actual
-  currentCertification: Certification = {
+  currentCertification = signal<Certification>({
     id: '',
     title: '',
     questions: [
@@ -55,15 +54,14 @@ export class CertsComponent {
     ],
     attemptsPerWeek: 1,
     availableForNewDrivers: false
-  };
+  });
 
   onCertificationChange(certification: Certification): void {
-    this.currentCertification = certification;
+    this.currentCertification.set(certification);
   }
 
   onSaveCertification(certification: Certification): void {
     console.log('Guardando certificación:', certification);
-    // Aquí se implementaría la lógica para guardar la certificación
   }
 
 }

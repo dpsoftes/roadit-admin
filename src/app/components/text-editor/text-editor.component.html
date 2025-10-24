@@ -2,14 +2,12 @@
      [style.min-height]="minHeight()" 
      [style.max-height]="maxHeight()">
   
-  <!-- Menú del editor -->
   @if (showMenu() && isInitialized()) {
     <div class="editor-menu">
       <ngx-editor-menu [editor]="editor()!"></ngx-editor-menu>
     </div>
   }
 
-  <!-- Editor principal -->
   @if (isInitialized()) {
     <div class="editor-container">
       <ngx-editor

@@ -29,15 +29,12 @@ import { ButtonsComponent } from '@components/buttons.component/buttons.componen
   encapsulation: ViewEncapsulation.None
 })
 export class GeneralTabComponent {
-  // Input signals
   clientData = input< any| null>(null);
   clientGroups = input<any[]>([]);
   managersInput = input<any[]>([]);
   
-  // Output signals
   formDataChange = output<any>();
 
-  // Signals para el formulario
   name = signal<string>('');
   eurotransport_identifier = signal<string>('');
   revel_identifier = signal<string>('');
@@ -67,7 +64,6 @@ export class GeneralTabComponent {
     
   }
 
-  // Método único para guardar - se ejecuta solo cuando se presiona el botón
   onSave(): void {
     const formData = {
       name: this.name(),
@@ -95,7 +91,6 @@ export class GeneralTabComponent {
   }
 
   onCancel(): void {
-    // Reset all signals to default values
     this.name.set('');
     this.eurotransport_identifier.set('');
     this.revel_identifier.set('');
