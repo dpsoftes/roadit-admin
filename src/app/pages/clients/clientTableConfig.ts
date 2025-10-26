@@ -1,7 +1,7 @@
 import { signal } from "@angular/core";
 import { TableConfig, ExportConfig } from "@components/dynamic-table/dynamic-table.interfaces";
 
-export const createListTableConfig = (listArray: any[]): TableConfig => ({
+export const createClientTableConfig = (listArray: any[]): TableConfig => ({
     columns: [
       {
         key: 'logo',
@@ -22,19 +22,19 @@ export const createListTableConfig = (listArray: any[]): TableConfig => ({
         width: 12
       },
       {
-        key: 'client_group',
+        key: 'client_group_name',
         label: 'clients.list.group',
         type: 'text',
         width: 15
       },
       {
-        key: 'CIF',
+        key: 'cif',
         label: 'clients.list.cif',
         type: 'text',
         width: 10
       },
       {
-        key: 'created_at',
+        key: 'create_date',
         label: 'clients.list.registration_date',
         type: 'text',
         width: 10
@@ -59,7 +59,7 @@ export const createListTableConfig = (listArray: any[]): TableConfig => ({
         }
       },
       {
-        key: 'contact_person_name',
+        key: 'parent_name',
         label: 'clients.list.main_client',
         type: 'text',
         width: 13
@@ -117,13 +117,13 @@ export const createListTableConfig = (listArray: any[]): TableConfig => ({
         ]
       },
       {
-        key: 'CIF',
+        key: 'cif',
         label: 'clients.list.cif_filter',
         type: 'text',
         width: 10
       },
       {
-        key: 'created_at',
+        key: 'created_date',
         label: 'clients.list.registration_date_filter',
         type: 'date',
         width: 12

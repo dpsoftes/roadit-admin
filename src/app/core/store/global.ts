@@ -4,8 +4,9 @@ import { computed } from '@angular/core';
 import { LoginResponseDto, UserFullDto } from '@dtos';
 import { Helpers } from '@utils/helpers';
 import { GlobalStateData } from './global.state';
+import { Subject } from 'rxjs';
 //import { DevToolsHelper } from './devtools.helper';
-
+const userLoggedSubject = new Subject<boolean>();
 export const GlobalStore = signalStore(
   { 
     providedIn: 'root',
@@ -46,48 +47,37 @@ export const GlobalStore = signalStore(
     })
   })),
   
-  // Métodos para actualizar el estado
+
+
+
+
+
   withMethods((store) => {
-    // Inicializar DevTools
-   // DevToolsHelper.initDevTools('RoadIt Global Store');
-    
+   
     return {
-    setUser: (user: LoginResponseDto) => {
-      // Actualizar el estado
-      patchState(store, { user });
-      
-      // Log para DevTools
-    /*   DevToolsHelper.logAction('SET_USER', {
-        user: store.user(),
-        language: store.language(),
-        userFull: store.userFull(),
-        menuCollapsed: store.menuCollapsed()
-      });
-     */  
-      // Guardar en localStorage usando el helper
-      Helpers.setStorage('roadit_user', user);
-      
-      // Si hay token, guardar también la fecha de expiración
-      if (user.token) {
-        const expirationTime = new Date();
-        expirationTime.setHours(expirationTime.getHours() + 8); // 8 horas por defecto
-        Helpers.setStorage('roadit_token_expiration', expirationTime.toISOString());
-      }
+      getUserLoggedOutObservable: () => {
+        return userLoggedSubject.asObservable();
+      },
+      setUser: (user: LoginResponseDto, isFromInit: boolean = false) => {
+          // Actualizar el estado
+          patchState(store, { user });
+          
+          if(!isFromInit) {
+            // Guardar en localStorage usando el helper
+            Helpers.setStorage('roadit_user', user);
+            
+            // Si hay token, guardar también la fecha de expiración
+            if (user.token) {
+              const expirationTime = new Date();
+              expirationTime.setHours(expirationTime.getHours() + 8); // 8 horas por defecto
+              Helpers.setStorage('roadit_token_expiration', expirationTime.toISOString());
+            }
+          }
+          userLoggedSubject.next(true);
     },
     
     setUserFull: (userFull: UserFullDto) => {
-      // Actualizar el estado
       patchState(store, { userFull });
-      
-      // Log para DevTools
-    /*   DevToolsHelper.logAction('SET_USER_FULL', {
-        user: store.user(),
-        language: store.language(),
-        userFull: store.userFull(),
-        menuCollapsed: store.menuCollapsed()
-      });
-     */  
-      // Guardar en localStorage usando el helper
       Helpers.setStorage('roadit_user_full', userFull);
     },
     
@@ -100,40 +90,34 @@ export const GlobalStore = signalStore(
       patchState(store, (state) => ({ 
         menuCollapsed: !state.menuCollapsed 
       }));
-    //  DevToolsHelper.logAction('TOGGLE_MENU', { menuCollapsed: store.menuCollapsed() });
     },
-    
     setMenuCollapsed: (collapsed: boolean) => {
       patchState(store, { menuCollapsed: collapsed });
-      //DevToolsHelper.logAction('SET_MENU_COLLAPSED', { menuCollapsed: collapsed });
     },
-    
     logout: () => {
       // Limpiar el estado
       patchState(store, {
         user: new LoginResponseDto(),
         userFull: new UserFullDto()
       });
-      
-      // Log para DevTools
-/*       DevToolsHelper.logAction('LOGOUT', {
-        user: store.user(),
-        userFull: store.userFull()
-      });
- */      
+
       // Limpiar localStorage
       Helpers.removeStorage('roadit_user');
       Helpers.removeStorage('roadit_token_expiration');
       Helpers.removeStorage('roadit_user_full');
+      userLoggedSubject.next(false);
     },
+  }}),
 
-    // Método que usa copyWith para actualizaciones complejas
+  withMethods((store) => {
+    return {
     updateState: (updates: Partial<GlobalStateData>) => {
       var newStore : GlobalStateData = new GlobalStateData();
       newStore.language = updates.language || store.language();
       newStore.menuCollapsed = updates.menuCollapsed !== undefined ? updates.menuCollapsed : store.menuCollapsed();
       newStore.user = updates.user || store.user();
       newStore.userFull = updates.userFull || store.userFull();
+      newStore.tags = updates.tags || store.tags();
       patchState(store, newStore);
     },
 
@@ -158,13 +142,15 @@ export const GlobalStore = signalStore(
           Helpers.removeStorage('roadit_user');
           Helpers.removeStorage('roadit_token_expiration');
           Helpers.removeStorage('roadit_user_full');
+          userLoggedSubject.next(false);
           return;
         }
       }
 
       // Restaurar datos si existen
       if (savedUser) {
-        patchState(store, { user: savedUser });
+        store.setUser(savedUser, true);
+        //patchState(store, { user: savedUser });
       }
       
       if (savedUserFull) {

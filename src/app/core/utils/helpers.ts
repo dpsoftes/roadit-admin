@@ -6,6 +6,7 @@
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarCustomComponent } from '../../components/snackbar-custom.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class Helpers {
@@ -398,7 +399,21 @@ export class Helpers {
     }
     return false;
   }
-
+  static toSrc(source: string | File | null, def: string = "assets/images/sample_user_icon.png"): string {
+    if (!source) return def;
+    if (typeof source === 'string') {
+      if (source.startsWith('http') || source.startsWith('data:')) {
+        return source;
+      }else{
+        return environment.apiUrl + source;
+      }
+    }
+    if (source instanceof File) {
+      const blobUrl = URL.createObjectURL(source);
+      return blobUrl;
+    }
+    return def;
+  }
   /**
    * Obtener el entorno actual
    */

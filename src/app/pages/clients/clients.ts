@@ -1,12 +1,14 @@
-import { Component, signal, OnInit, input } from '@angular/core';
+import { Component, signal, OnInit, input, WritableSignal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { TableConfig, TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
+import {  TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
 import { groupsTableConfig } from './groupTableConfig';
-import { createListTableConfig } from './listTableConfig';
+import { createClientTableConfig } from './clientTableConfig';
 import { TabsComponent } from '@components/tabs.component/tabs.component';
 import { ActivatedRoute } from '@angular/router';
+import { ClientGroupSummary, ClientSummary } from '@dtos/clients.dto';
+import { ClientsProvider } from '@providers';
 // import { ClientDto, ClientMiniDto, ClientGroupDto } from '@dtos'; // Temporalmente comentado
 
 @Component({
@@ -22,20 +24,19 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class Clients implements OnInit {
   // Input signals para recibir datos del backend
-  clientsData = input<any[]>([]);
-  groupsData = input<any[]>([]);
+  clientsProvider = inject(ClientsProvider);
 
-  groupsArray = signal<any[]>([]);
+  groupsArray = signal<ClientGroupSummary[]>([]);
 
-  listArray = signal<any[]>([]);
+  listArray = signal<ClientSummary[]>([]);
 
   showGroupsTable = signal(true);
   showListTable = signal(false);
   activeTab = signal<'groups' | 'list'>('groups');
 
-  groupsTableConfig = groupsTableConfig;
+  groupsTableConfig = signal(groupsTableConfig);
 
-  listTableConfig!: TableConfig;
+  clientTableConfig = signal(createClientTableConfig([]));
 
   constructor(
     private route:ActivatedRoute
@@ -50,30 +51,68 @@ export class Clients implements OnInit {
 
   }  
 
-  ngOnInit() {
-    // Usar datos de input signals si están disponibles, sino usar datos mock
-    const clientsData = this.clientsData();
-    const groupsData = this.groupsData();
+  async ngOnInit() {
+    this.activeTab.set('groups');
+    await this.loadGroups();
     
-    this.groupsTableConfig.data.set(groupsData.length > 0 ? groupsData : this.groupsArray());
-    
-    // Crear configuración dinámica para la tabla de lista
-    const listData = clientsData.length > 0 ? clientsData : this.listArray();
-    this.listTableConfig = createListTableConfig(listData);
   }
+  async loadGroups(params?: TableEvent){
+    const options = {page: 1, page_size: 10, params: {} as any};
+    if(params){
+      if(params.type === 'page'){
+        options.page = params.page!;
+        options.page_size = params.pageSize!;
+      }
+      if(params.data){
+        if(params.data.searchTerm){
+        }
+      if(params.data.filters){
+          for(const filterKey of Object.keys(params.data.filters)){
+            options.params[filterKey] = params.data.filters[filterKey];
+          }
+        }
+      }
+    }
+    var data = await this.clientsProvider.getGroups(options);
+    this.groupsTableConfig().data.set(data?.map(item => ({ ...item, assigned_admins: item.assigned_admins.map(admin => admin.name).join(', ') })) as any[]);
+
+  }
+  async loadClients(params?: TableEvent){
+    const options = {page: 1, page_size: 10, params: {} as any};
+    if(params){
+      if(params.type === 'page'){
+        options.page = params.page!;
+        options.page_size = params.pageSize!;
+      }
+      if(params.data){
+        if(params.data.searchTerm){
+        }
+      if(params.data.filters){
+          for(const filterKey of Object.keys(params.data.filters)){
+            options.params[filterKey] = params.data.filters[filterKey];
+          }
+        }
+      }
+    }
+    var data = await this.clientsProvider.getClients(options);
+    this.clientTableConfig.set({...this.clientTableConfig(), data: signal(data as any[])});
+  }
+
   onTabChange(tab: string) {
     if (tab === 'groups') {
       this.showGroupsTable.set(true);
       this.showListTable.set(false);
       this.activeTab.set('groups');
+      this.loadGroups();
     } else if (tab === 'list') {
       this.showGroupsTable.set(false);
       this.showListTable.set(true);
       this.activeTab.set('list');
+      this.loadClients();
     }
   }
 
-  onTableEvent(event: TableEvent) {
+  async onTableEvent(event: TableEvent) {
     switch (event.type) {
       case 'action':
         if (event.data?.action === 'edit') {
@@ -92,17 +131,16 @@ export class Clients implements OnInit {
         console.log('Selected items:', event.data?.selected);
         break;
       case 'filter':
-        console.log('Filters applied:', event.data?.filters);
-        break;
       case 'search':
-        console.log('Search term:', event.data?.searchTerm);
+      case 'page':
+       this.activeTab() == 'groups' ? await this.loadGroups(event) : await this.loadClients(event);
         break;
       case 'export':
         console.log('Exportación completada:', event.data?.filename);
         break;
     }
   }
-
+  
   edit(element: any) {
     console.log('Edit client:', element);
   }

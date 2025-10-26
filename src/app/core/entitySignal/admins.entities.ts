@@ -65,7 +65,11 @@ export class AdminSignal {
     if ((this.phone() as any) !== (defaults.phone() as any)) (patch as any).phone = this.phone();
     if ((this.name() as any) !== (defaults.name() as any)) (patch as any).name = this.name();
     if ((this.last_name() as any) !== (defaults.last_name() as any)) (patch as any).last_name = this.last_name();
-    if ((this.image() as any) !== (defaults.image() as any)) (patch as any).image = this.image();
+    if(this.image() instanceof File){
+      (patch as any).image = this.image();
+    }
+      
+    //if ((this.image() as any) !== (defaults.image() as any)) (patch as any).image = this.image();
     if ((this.is_active() as any) !== (defaults.is_active() as any)) (patch as any).is_active = this.is_active();
     if (JSON.stringify(this.roles()) !== JSON.stringify(defaults.roles())) (patch as any).roles = this.roles();
     if (JSON.stringify(this.departments()) !== JSON.stringify(defaults.departments())) (patch as any).departments = this.departments();

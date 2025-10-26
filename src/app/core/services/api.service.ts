@@ -65,8 +65,6 @@ export class ApiService {
             throw error;
         }
     }
-
-
     async post<T>(options: ApiRequestOptions): Promise<T> {
         try {
             const { headers, params, body, url } = await this.buildRequestOptions(options);

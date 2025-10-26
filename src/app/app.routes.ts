@@ -18,6 +18,11 @@ export const routes: Routes = [
           path: '',
           loadComponent: () => import('./pages/users/users').then(m => m.Users)
         },
+        
+          {
+            path: 'new',
+            loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
+          },
           {
             path: 'edit-user/:id',
             loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
@@ -30,17 +35,23 @@ export const routes: Routes = [
       },
       
       {
-        path: 'clients/create-group',
-        loadComponent: () => import('./pages/clients/create-group/create-group').then(m => m.CreateGroup)
-      },
-      {
-        path: 'clients/create',
-        loadComponent: () => import('./pages/clients/create-client/create-client').then(m => m.CreateClient)
-      },
-      {
-        path: 'clients/:tab',
-        loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
-      },
+        path: 'clients',
+        
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+          },
+            {
+              path: 'create-group',
+              loadComponent: () => import('./pages/clients/create-group/create-group').then(m => m.CreateGroup)
+            },
+            {
+              path: 'create',
+              loadComponent: () => import('./pages/clients/create-client/create-client').then(m => m.CreateClient)
+            },
+          ]
+        },
       // {
       //  path: '**', 
       //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
