@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, input } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, ViewEncapsulation, input, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { ButtonsComponent } from '@components/buttons.component/buttons.component';
@@ -16,11 +16,11 @@ import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.c
   selector: 'app-prices',
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     TranslatePipe,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatDividerModule,
     MatCheckbox,
     ButtonsComponent,
@@ -32,34 +32,59 @@ import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.c
 })
 export class PricesComponent {
   pricesData = input<any | null>(null);
-
-  form: FormGroup;
   pricesTableConfig: TableConfig = pricesTableConfig;
 
-  constructor(private readonly formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({
-      'included-fuel': [false],
-      'client-price': [''],
-      'driver-price': [''],
-      // Ferry
-      'ferry-price': [''],
-      // Vehículo eléctrico
-      'ev-client-price': [''],
-      'ev-driver-price': [''],
-      // Adicionales
-      'express-transport-percent': [''],
-      'stage-discount-percent': [''],
-      // Franjas de kilómetros
-      'km-from': [''],
-      'km-to': [''],
-      // Precio al cliente
-      'price-type': [''],
-      'standard-price-eur': [''],
-      'price-vu-lt-12': [''],
-      'price-vu-gt-12': ['']
-    });
+  id = signal<number>(0);
+  client = signal<number>(0);
+  transport = signal<number>(0);
+  ferry_fixed_cost = signal<number>(0);
+  express_surcharge_percentage = signal<number>(0);
+  stage_discount_percentage = signal<number>(0);
+  charging_requires_ticket = signal<boolean>(true);
+  client_charging_price = signal<number>(0);
+  driver_charging_price = signal<number>(0);
+  is_fuel_included = signal<boolean>(true);
+  client_fuel_price = signal<number>(0);
+  driver_fuel_price = signal<number>(0);
+  
+  distance_brackets = signal<any[]>([{
+    id: 0,
+    min_km: 0,
+    max_km: 0,
+    pricing_type: 'FIXED',
+    standard_price: 0,
+    small_vehicule_price: 0,
+    big_vehicule_price: 0,
+    created_date: new Date().toISOString(),
+    modified_date: new Date().toISOString()
+  }]);
+
+  updateDistanceBracket(field: string, value: any) {
+    const currentBrackets = this.distance_brackets();
+    const updatedBrackets = [...currentBrackets];
+    updatedBrackets[0] = { ...updatedBrackets[0], [field]: value };
+    this.distance_brackets.set(updatedBrackets);
   }
+
   onSave() {
-    console.log('Saving prices:', this.form.value);
+    const formData = {
+      id: this.id(),
+      client: this.client(),
+      transport: this.transport(),
+      ferry_fixed_cost: this.ferry_fixed_cost(),
+      express_surcharge_percentage: this.express_surcharge_percentage(),
+      stage_discount_percentage: this.stage_discount_percentage(),
+      charging_requires_ticket: this.charging_requires_ticket(),
+      client_charging_price: this.client_charging_price(),
+      driver_charging_price: this.driver_charging_price(),
+      is_fuel_included: this.is_fuel_included(),
+      client_fuel_price: this.client_fuel_price(),
+      driver_fuel_price: this.driver_fuel_price(),
+      distance_brackets: this.distance_brackets(),
+      created_date: new Date().toISOString(),
+      modified_date: new Date().toISOString()
+    };
+    
+    console.log('Saving prices:', formData);
   }
 }

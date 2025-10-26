@@ -1,0 +1,17 @@
+<div class="tables">
+    <mat-card>
+            <h2>{{'clients.create-client.certs-created' | translate}}</h2>
+            <app-dynamic-table [config]="certsCreatedTableConfig"></app-dynamic-table>
+    </mat-card>
+    <mat-card>
+            <h2>{{'clients.create-client.certs-assigned' | translate}}</h2>
+            <app-dynamic-table [config]="certsAssignedTableConfig"></app-dynamic-table>
+    </mat-card>
+</div>
+<div class="cert">
+    <app-certification 
+        [certification]="currentCertification()"
+        (certificationChange)="onCertificationChange($event)"
+        (save)="onSaveCertification($event)">
+    </app-certification>
+</div>

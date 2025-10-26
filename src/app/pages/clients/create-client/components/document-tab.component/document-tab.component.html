@@ -5,26 +5,27 @@
                 <label class="field-label">{{'clients.create-client.movement-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <mat-select>
-                        <mat-option value="1">{{'clients.create-client.movement-type-1' | translate}}</mat-option>
-                        <mat-option value="2">{{'clients.create-client.movement-type-2' | translate}}</mat-option>
+                        <mat-option value="SIMPLE_MOVEMENT">{{'clients.create-client.simple-movement' | translate}}</mat-option>
+                        <mat-option value="PICKUP_TO_FINAL_CUSTOMER">{{'clients.create-client.pickup-to-final-customer' | translate}}</mat-option>
+                        <mat-option value="DELIVERY_TO_FINAL_CUSTOMER">{{'clients.create-client.delivery-to-final-customer' | translate}}</mat-option>
+                        <mat-option value="PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER">{{'clients.create-client.pickup-and-delivery-to-final-customer' | translate}}</mat-option>
+                        <mat-option value="WITH_STOPOVER">{{'clients.create-client.with-stopover' | translate}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div class="form-field twenty_field">
                 <label class="field-label">{{'clients.create-client.adjunt-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select>
-                        <mat-option value="1">{{'clients.create-client.adjunt-type-1' | translate}}</mat-option>
-                        <mat-option value="2">{{'clients.create-client.adjunt-type-2' | translate}}</mat-option>
-                    </mat-select>
+                    <input type="text" matInput>
                 </mat-form-field>
             </div>
             <div class="form-field twenty_field">
                 <label class="field-label">{{'clients.create-client.application-moment' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <mat-select>
-                        <mat-option value="1">{{'clients.create-client.application-moment-1' | translate}}</mat-option>
-                        <mat-option value="2">{{'clients.create-client.application-moment-2' | translate}}</mat-option>
+                        <mat-option value="BOTH">{{'clients.create-client.both-departure-both' | translate}}</mat-option>
+                        <mat-option value="DEPARTURE">{{'clients.create-client.departure' | translate}}</mat-option>
+                        <mat-option value="ARRIVAL">{{'clients.create-client.arrival' | translate}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -49,19 +50,27 @@
             <div class="form-field twenty_field">
                 <label class="field-label">{{'clients.create-client.adjunt-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput>
+                </mat-form-field>
+            </div>
+            <div class="form-field twenty_field">
+                <label class="field-label">{{'clients.create-client.application-moment' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
                     <mat-select>
-                        <mat-option value="1">{{'clients.create-client.adjunt-type-1' | translate}}</mat-option>
-                        <mat-option value="2">{{'clients.create-client.adjunt-type-2' | translate}}</mat-option>
+                        <mat-option value="BOTH">{{'clients.create-client.both-departure-both' | translate}}</mat-option>
+                        <mat-option value="DEPARTURE">{{'clients.create-client.departure' | translate}}</mat-option>
+                        <mat-option value="ARRIVAL">{{'clients.create-client.arrival' | translate}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="form-field forty_field">
+
+            <div class="form-field twenty_field">
                 <label class="field-label">{{'clients.create-client.url' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <input type="text" matInput>
                 </mat-form-field>
             </div>
-            <div class="form-field eight_field">
+            <div class="form-field eight_field button-field">
                 <app-buttons type="save-small" text="clients.create-client.save" ></app-buttons>
             </div>
 

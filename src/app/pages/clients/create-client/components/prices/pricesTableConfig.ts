@@ -14,14 +14,15 @@ export const pricesTableConfig: TableConfig = {
   data: signal([]),
   exportable: false,
   exportConfig: {
-    columns: ['kmFrom','kmTo','priceType','clientPrice','priceVuLt12','priceVuGt12'],
+    columns: ['kmFrom','kmTo','priceType','clientPrice','priceVuLt12','priceVuGt12','actions'],
     headers: [
       'clients.create-client.km-from',
       'clients.create-client.km-to',
       'clients.create-client.price-type',
       'clients.create-client.standard-price-eur',
       'clients.create-client.price-vu-lt-12',
-      'clients.create-client.price-vu-gt-12'
+      'clients.create-client.price-vu-gt-12',
+      'clients.list.actions'
     ],
     filename: 'clients-prices'
   },

@@ -9,7 +9,7 @@
 }
 .cancel_btn {
     background-color: vars.$black;
-    color: vars.$white;
+    color: vars.$white !important;
     border: 1px solid vars.$black;
     font-size: 12px;
     padding: 10px;
@@ -26,4 +26,15 @@
         border: none;
         border-radius: 8px;
         margin-top: 23px;
+}
+.cancel-small{
+        width: 100%;
+        text-transform: uppercase;
+        font-size: 12px;
+        text-transform: uppercase;
+        background-color: vars.$black;
+        color: vars.$white !important;
+        height: 48px;
+        border: none;
+        border-radius: 8px;
 }

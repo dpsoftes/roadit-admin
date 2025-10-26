@@ -9,9 +9,11 @@
             <app-general-tab-component 
                 [clientData]="clientData()"
                 [clientGroups]="clientGroups()"
-                [managers]="managers()"
                 (formDataChange)="onFormDataChange($event)">
             </app-general-tab-component>
+        }
+        @case ('protocol') {
+            <app-protocol></app-protocol>
         }
         @case ('slogans'){
             <app-driver-consigns></app-driver-consigns>
@@ -19,11 +21,20 @@
         @case ('documents') {
             <app-document-tab></app-document-tab>
         }
+        @case ('extra-contact') {
+            <app-extra-contact></app-extra-contact>
+        }
         @case ('billing') {
             <app-billing></app-billing>
         }
         @case ('prices') {
             <app-prices></app-prices>
+        }
+        @case ('certs') {
+            <app-certs></app-certs>
+        }
+        @case ('additional-services') {
+            <app-additional-services></app-additional-services>
         }
     }
 </div>

@@ -1,0 +1,18 @@
+<mat-card>
+    <mat-card-content>
+        <div class="editors">
+            <div class="editor">
+                <h3>{{'clients.create-client.description' | translate}}</h3>
+                <app-text-editor [content]="extra_contact_content()" (contentChange)="extra_contact_content.set($event)"></app-text-editor>
+            </div>
+            <div class="editor">
+                <h3>{{'clients.create-client.description' | translate}}</h3>
+                <app-text-editor [content]="extra_contact_content()" (contentChange)="extra_contact_content.set($event)"></app-text-editor>
+            </div>
+        </div>
+        <div class="buttons">
+            <app-buttons type="save-changes" text="clients.create-client.save-changes"></app-buttons>
+            <app-buttons type="cancel" text="clients.create-client.cancel"></app-buttons>
+        </div>
+    </mat-card-content>
+</mat-card>

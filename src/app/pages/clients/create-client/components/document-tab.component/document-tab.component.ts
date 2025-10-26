@@ -31,6 +31,9 @@ import { ButtonsComponent } from '@components/buttons.component/buttons.componen
 export class DocumentTabComponent {
 
 
+  
+
+
   tableConfig: TableConfig = {
     columns: [
       { key: 'doc_type', label: 'clients.create-client.doc_type', type: 'text' },

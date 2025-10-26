@@ -10,5 +10,9 @@
 }
 
 @if (type() == 'save-small'){
-    <button mat-button class="primary_btn save-small">{{'clients.create-client.save' | translate}}</button>
-}   
+    <button mat-button class="primary_btn save-small" (click)="onClick.emit()">{{text() | translate}}</button>
+}
+
+@if (type() == 'cancel-small'){
+    <button mat-button class="primary_btn cancel-small" (click)="onClick.emit()">{{text() | translate}}</button>
+}

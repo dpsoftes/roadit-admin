@@ -1,22 +1,22 @@
 <mat-card>
     <mat-card-content>
         <h1>{{'clients.create-client.fuel' | translate}}</h1>
-        <form class="form" [formGroup]="form">
+        <form class="form" (ngSubmit)="onSave()">
             <div class="form-field twenty_field">
-                <mat-checkbox formControlName="included-fuel">
+                <mat-checkbox [checked]="is_fuel_included()" (change)="is_fuel_included.set($event.checked)">
                     {{'clients.create-client.included-fuel' | translate}}
                 </mat-checkbox>
             </div>
             <div class="form-field forty_field">
                 <label class="field-label">{{'clients.create-client.client-price' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="client-price">
+                    <input type="number" matInput [value]="client_fuel_price()" (input)="client_fuel_price.set(+$event.target.value)">
                 </mat-form-field>
             </div>
             <div class="form-field forty_field">
                 <label class="field-label">{{'clients.create-client.driver-price' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="driver-price">
+                    <input type="number" matInput [value]="driver_fuel_price()" (input)="driver_fuel_price.set(+$event.target.value)">
                 </mat-form-field>
             </div>
 
@@ -25,7 +25,7 @@
             <div class="form-field twenty_field">
                 <label class="field-label">{{'clients.create-client.ferry-price' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="ferry-price">
+                    <input type="number" matInput [value]="ferry_fixed_cost()" (input)="ferry_fixed_cost.set(+$event.target.value)">
                 </mat-form-field>
             </div>
 
@@ -33,13 +33,13 @@
             <div class="form-field forty_field">
                 <label class="field-label">{{'clients.create-client.ev-client-price' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="ev-client-price">
+                    <input type="number" matInput [value]="client_charging_price()" (input)="client_charging_price.set(+$event.target.value)">
                 </mat-form-field>
             </div>
             <div class="form-field forty_field">
                 <label class="field-label">{{'clients.create-client.ev-driver-price' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="ev-driver-price">
+                    <input type="number" matInput [value]="driver_charging_price()" (input)="driver_charging_price.set(+$event.target.value)">
                 </mat-form-field>
             </div>
 
@@ -48,13 +48,13 @@
             <div class="form-field forty_field">
                 <label class="field-label">{{'clients.create-client.express-transport-percent' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="express-transport-percent">
+                    <input type="number" matInput [value]="express_surcharge_percentage()" (input)="express_surcharge_percentage.set(+$event.target.value)">
                 </mat-form-field>
             </div>
             <div class="form-field forty_field">
                 <label class="field-label">{{'clients.create-client.stage-discount-percent' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="stage-discount-percent">
+                    <input type="number" matInput [value]="stage_discount_percentage()" (input)="stage_discount_percentage.set(+$event.target.value)">
                 </mat-form-field>
             </div>
 
@@ -64,13 +64,13 @@
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.km-from' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="km-from">
+                    <input type="number" matInput [value]="distance_brackets()[0].min_km" (input)="updateDistanceBracket('min_km', +$event.target.value)">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.km-to' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="km-to">
+                    <input type="number" matInput [value]="distance_brackets()[0].max_km" (input)="updateDistanceBracket('max_km', +$event.target.value)">
                 </mat-form-field>
             </div>
 
@@ -79,25 +79,28 @@
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.price-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="price-type">
+                    <mat-select [value]="distance_brackets()[0].pricing_type" (selectionChange)="updateDistanceBracket('pricing_type', $event.value)">
+                        <mat-option value="FIXED">{{'clients.create-client.pricing-type-fixed' | translate}}</mat-option>
+                        <mat-option value="PER_KM">{{'clients.create-client.pricing-type-per-km' | translate}}</mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.standard-price-eur' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="standard-price-eur">
+                    <input type="number" matInput [value]="distance_brackets()[0].standard_price" (input)="updateDistanceBracket('standard_price', +$event.target.value)">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.price-vu-lt-12' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="price-vu-lt-12">
+                    <input type="number" matInput [value]="distance_brackets()[0].small_vehicule_price" (input)="updateDistanceBracket('small_vehicule_price', +$event.target.value)">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.price-vu-gt-12' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput formControlName="price-vu-gt-12">
+                    <input type="number" matInput [value]="distance_brackets()[0].big_vehicule_price" (input)="updateDistanceBracket('big_vehicule_price', +$event.target.value)">
                 </mat-form-field>
             </div>
         </form>

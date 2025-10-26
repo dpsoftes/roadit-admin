@@ -1,0 +1,37 @@
+<div mat-dialog-title class="modal-header">
+  @if (title()) {
+    <h2 class="modal-title">{{ title() | translate }}</h2>
+  }
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  @if (component()) {
+    <ng-container
+      [ngComponentOutlet]="component()"
+      [ngComponentOutletInputs]="componentInputs()"
+      (ngComponentOutletCreated)="onComponentCreated($event)">
+    </ng-container>
+  } @else if (content()) {
+    <p>{{ content() }}</p>
+  } @else {
+    <p>Sin contenido.</p>
+  }
+</mat-dialog-content>
+
+@if (showActions()) {
+  <mat-dialog-actions align="end">
+    @if (cancelText()) {
+      <button mat-button (click)="close(false)">
+        {{ cancelText() | translate }}
+      </button>
+    }
+    @if (confirmText()) {
+      <button mat-raised-button color="primary" (click)="close(true)">
+        {{ confirmText() | translate }}
+      </button>
+    }
+  </mat-dialog-actions>
+}

@@ -1,0 +1,39 @@
+@use '../../../../../../styles/variables' as vars;
+
+:host {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: 100%;
+}
+
+.tables {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 40%;
+    mat-card {
+        width: 100%;
+        padding: 10px 16px;
+        app-dynamic-table {
+            width: 100%;
+            ::ng-deep mat-card {
+                padding: 0 !important;
+            }
+            ::ng-deep .mat-mdc-card-content {
+                padding: 0 !important;
+            }
+            ::ng-deep .mat-mdc-card-header {
+                padding: 0 !important;
+            }
+        }
+    }
+}
+.cert {
+    width: 60%;
+    
+    app-certification {
+        width: 100%;
+        display: block;
+    }
+}

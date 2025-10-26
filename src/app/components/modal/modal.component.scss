@@ -1,0 +1,32 @@
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  color: #333;
+  flex: 1;
+  text-align: left;
+}
+
+.close-button {
+  color: #666;
+  margin-left: auto;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+}
+
+mat-dialog-content {
+  overflow-y: auto;
+  max-height: calc(90vh - 120px);
+  padding: 0 24px;
+}

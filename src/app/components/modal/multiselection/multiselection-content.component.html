@@ -1,0 +1,31 @@
+<div class="modal-content">
+  <app-buttons 
+    type="cancel" 
+    text="modals.multiselection.addNewOption"
+    (onClick)="addNewOption()">
+  </app-buttons>
+
+  <div class="options-container">
+    @for (option of options(); track option.id) {
+      <div class="option-item">
+        <label class="option-label">{{ option.label }}</label>
+        <div class="input-container">
+          <input 
+            matInput 
+            [(ngModel)]="option.value"
+            placeholder="{{ 'modals.multiselection.placeholder' | translate }}"
+            class="option-input">
+          <mat-icon class="dropdown-icon">keyboard_arrow_down</mat-icon>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="modal-footer">
+  <app-buttons 
+    type="save-small" 
+    text="modals.multiselection.save"
+    (onClick)="save()">
+  </app-buttons>
+</div>
