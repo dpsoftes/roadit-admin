@@ -6,7 +6,7 @@ import { UsersState } from './users.state';
 import { ApiService } from '@services/api.service';
 import { EndPoints } from '@services/EndPoints';
 import { UserRole } from '@enums/user.enum';
-import { AdminProvider } from '@providers';
+import { AdminProvider, ClientsProvider } from '@providers';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,7 @@ export class StoreService {
   readonly users = inject(UsersState);
   readonly api = inject(ApiService);
   readonly adminProvider = inject(AdminProvider);
+  readonly clientProvider = inject(ClientsProvider);
   get isDebug() {
     return !environment.production;
   }
@@ -48,6 +49,12 @@ export class StoreService {
         if(adminsList && adminsList.results && adminsList.results.length > 0){
           this.global.updateState({ usersAdmin: adminsList.results.map(admin => {
             return { id: admin.id!, name: admin.name + ' ' + admin.last_name, otherData: admin };
+          }) });
+        }
+        const groups = await this.clientProvider.getGroups({});
+        if(groups && groups.length > 0){
+          this.global.updateState({ groups: groups.map(group => {
+            return { id: group.id!, name: group.name };
           }) });
         }
       }

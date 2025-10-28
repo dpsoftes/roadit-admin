@@ -13,6 +13,7 @@ export class GlobalStateData {
     tags: Tag[] = [];
     menuCollapsed: boolean = false;
     usersAdmin: SimpleDataDto[] = [];
+    groups: SimpleDataDto[] = [];
 }
 
 
@@ -76,6 +77,7 @@ export const GlobalStore = signalStore(
       newStore.userFull = updates.userFull || store.userFull();
       newStore.tags = updates.tags || store.tags();
       newStore.usersAdmin = updates.usersAdmin || store.usersAdmin();
+      newStore.groups = updates.groups || store.groups();
       patchState(store, newStore);
       saveGlobalStoreToStorage(newStore);
     }};}),

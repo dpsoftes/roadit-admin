@@ -7,7 +7,6 @@
     @switch (activeTab()) {
         @case ('general') {
             <app-general-tab-component 
-                [clientData]="clientData()"
                 [clientGroups]="clientGroups()"
                 (formDataChange)="onFormDataChange($event)">
             </app-general-tab-component>

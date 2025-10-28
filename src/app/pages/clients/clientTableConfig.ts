@@ -175,6 +175,6 @@ export const createClientTableConfig = (listArray: any[]): TableConfig => ({
       filename: `lista_clientes_${new Date().toISOString().split('T')[0]}.csv`
     },
     actions: {
-      create: { label: 'clients.list.create-client', route: '/clients/create' }
+      create: { label: 'clients.list.create-client', route: '/clients/create-client' }
     }
   });

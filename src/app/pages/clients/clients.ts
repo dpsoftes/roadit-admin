@@ -146,7 +146,7 @@ export class Clients implements OnInit {
     if(type === 'groups'){
         this.router.navigate(['/clients/edit-group', element.id]);
     }else{
-
+        this.router.navigate(['/clients/edit-client', element.id]);
     }
     
   }

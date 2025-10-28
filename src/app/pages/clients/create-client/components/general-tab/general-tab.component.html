@@ -2,7 +2,7 @@
     <mat-card-content>
         <div class="logo">
             <image-drop
-                [src]="clientData()?.image?.()"
+                [src]="logoUrl()"
                 [width]="'120px'"
                 [height]="'120px'"
                 [formats]="['JPG','JPEG','GIF','PNG']"
@@ -22,76 +22,76 @@
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.name' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="name()" (input)="name.set($event.target.value)">
+                    <input type="text" matInput [value]="client.name()" (input)="client.name.set($event.target.value)">
                 </mat-form-field>
             </div>
 
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.group' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="client_group()" (selectionChange)="client_group.set($event.value)">
-                        @for (group of clientGroups(); track group.id) {
+                    <mat-select [value]="client.client_group()" (selectionChange)="onGroupChage($event.value)">
+                        @for (group of groups(); track group.id) {
                         <mat-option [value]="group.id">{{ group.name }}</mat-option>
                     }
                     </mat-select>
-                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
+                    
                 </mat-form-field>
                 
-                <mat-checkbox [checked]="is_subentity()" (change)="is_subentity.set($event.checked)">
+                <mat-checkbox [checked]="client.is_subentity()" (change)="client.is_subentity.set($event.checked);loadClientsByGroup()"> 
                     {{'clients.create-client.subentity' | translate}}
                 </mat-checkbox>
             </div>
             
             
-            
+        @if(client.is_subentity()) {
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.client' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="parent()" (selectionChange)="parent.set($event.value)">
-                        @for (client of clientGroups(); track client.id) {
+                    <mat-select [value]="client.parent()" (selectionChange)="client.parent.set($event.value)">
+                        @for (client of clients(); track client.id) {
                         <mat-option [value]="client.id">{{ client.name }}</mat-option>
                     }
                     </mat-select>
-                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
+                    
                 </mat-form-field>
             </div>
-            
+        }
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.department' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="department()" (input)="department.set($event.target.value)">
+                    <input type="text" matInput [value]="client.department()" (input)="client.department.set($event.target.value)">
                 </mat-form-field>
             </div>
             
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.id-eurotransport' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="eurotransport_identifier()" (input)="eurotransport_identifier.set($event.target.value)">
+                    <input type="text" matInput [value]="client.eurotransport_identifier()" (input)="client.eurotransport_identifier.set($event.target.value)">
                 </mat-form-field>
             </div>
             
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.id-revel' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="revel_identifier()" (input)="revel_identifier.set($event.target.value)">
+                    <input type="text" matInput [value]="client.revel_identifier()" (input)="client.revel_identifier.set($event.target.value)">
                 </mat-form-field>
             </div>
             
             <div class="form-field two_third_field">
                 <label class="field-label">{{'clients.create-client.billing-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="billing_type()" (selectionChange)="billing_type.set($event.value)">
-                        @for (billingType of billingTypes(); track billingType) {
-                        <mat-option [value]="billingType">{{ billingType }}</mat-option>
+                    <mat-select [value]="client.billing_type()" (selectionChange)="client.billing_type.set($event.value)">
+                        @for (billingType of billingTypeArray; track billingType) {
+                        <mat-option [value]="billingType.key">{{ billingType.value | translate}}</mat-option>
                     }
                     </mat-select>
-                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
+                    
                 </mat-form-field>
                 <div class="checkboxes-container">
-                    <mat-checkbox [checked]="own_insurance()" (change)="own_insurance.set($event.checked)">
+                    <mat-checkbox [checked]="client.own_insurance()" (change)="client.own_insurance.set($event.checked)">
                         {{'clients.create-client.check-own-insurance' | translate}}
                     </mat-checkbox>
-                    <mat-checkbox [checked]="at_risk()" (change)="at_risk.set($event.checked)">
+                    <mat-checkbox [checked]="client.at_risk()" (change)="client.at_risk.set($event.checked)">
                         {{'clients.create-client.check-at-risk' | translate}}
                     </mat-checkbox>
                 </div>
@@ -104,19 +104,19 @@
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.invite-delay-minutes' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="number" matInput [value]="invite_delay_minutes()" (input)="invite_delay_minutes.set($event.target.value)">
+                    <input type="number" matInput [value]="client.invite_delay_minutes()" (input)="client.invite_delay_minutes.set(parseInt($event.target.value))">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.reminder-interval-minutes' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="number" matInput [value]="reminder_interval_minutes()" (input)="reminder_interval_minutes.set($event.target.value)">
+                    <input type="number" matInput [value]="client.reminder_interval_minutes()" (input)="client.reminder_interval_minutes.set(parseInt($event.target.value))">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.department-incidences' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select multiple [value]="managers()" (selectionChange)="managers.set($event.value)">
+                    <mat-select multiple [value]="client.managers()" (selectionChange)="client.managers.set($event.value)">
                         @for (dept of departments(); track dept) {
                         <mat-option [value]="dept">
                             {{ 'clients.list.department.' + dept | translate }}
@@ -126,7 +126,7 @@
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field final_customer_field">
-                <mat-checkbox [checked]="sendFinalCustomer()" (change)="sendFinalCustomer.set($event.checked)">
+                <mat-checkbox [checked]="client.send_survey()" (change)="client.send_survey.set($event.checked)">
                     {{'clients.create-client.send-final-customer' | translate}}
                 </mat-checkbox>
             </div>
@@ -134,42 +134,42 @@
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.client-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="client_type()" (selectionChange)="client_type.set($event.value)">
-                        @for (clientType of clientTypes(); track clientType) {
-                        <mat-option [value]="clientType">{{ clientType }}</mat-option>
+                    <mat-select [value]="client.client_type()" (selectionChange)="client.client_type.set($event.value)">
+                        @for (clientType of clientsTypeArray; track clientType) {
+                        <mat-option [value]="clientType.key">{{ clientType.value | translate }}</mat-option>
                     }
                     </mat-select>
-                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
+                    
                 </mat-form-field>
             </div>
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.client-origin' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="client_origin()" (selectionChange)="client_origin.set($event.value)">
-                        @for (clientOrigin of clientOrigins(); track clientOrigin) {
-                        <mat-option [value]="clientOrigin">{{ clientOrigin }}</mat-option>
+                    <mat-select [value]="client.client_origin()" (selectionChange)="client.client_origin.set($event.value)">
+                        @for (clientOrigin of originsArray; track clientOrigin) {
+                        <mat-option [value]="clientOrigin.key">{{ clientOrigin.value | translate }}</mat-option>
                     }
                     </mat-select>
-                    <mat-hint class="placeholder-text">Placeholder text</mat-hint>
+                    
                 </mat-form-field>
             </div>
             <h1 class="main-contact-title">{{'clients.create-client.main-contact' | translate}} :</h1>
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.main-contact-name' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="contact_person_name()" (input)="contact_person_name.set($event.target.value)">
+                    <input type="text" matInput [value]="client.contact_person_name()" (input)="client.contact_person_name.set($event.target.value)">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.main-contact-email' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="email" matInput [value]="contact_person_email()" (input)="contact_person_email.set($event.target.value)">
+                    <input type="email" matInput [value]="client.contact_person_email()" (input)="client.contact_person_email.set($event.target.value)">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.main-contact-phone' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="tel" matInput [value]="contact_person_phone()" (input)="contact_person_phone.set($event.target.value)">
+                    <input type="tel" matInput [value]="client.contact_person_phone()" (input)="client.contact_person_phone.set($event.target.value)">
                 </mat-form-field>
             </div>
             <div class="action-buttons-container">

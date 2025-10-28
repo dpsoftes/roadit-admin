@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import {  ApiService } from '@services/api.service';
 import { EndPoints } from '@services/EndPoints';
 
-import { ClientGroupSummary, ClientSummary, GroupsQueryParams, ClientsQueryParams } from '@dtos/clients/clients.dto';
+import { ClientGroupSummary, ClientSummary, GroupsQueryParams, ClientsQueryParams, ClientDto } from '@dtos/clients/clients.dto';
 import { ClientsGroupEntity } from '@entities/clients.entities';
 
 @Injectable({ providedIn: 'root' })
@@ -64,6 +64,16 @@ export class ClientsProvider {
             return null;
         }
     }
+
+    async getClientGralData(id: number | string): Promise<ClientDto | null> {
+        try {
+            return await this.api.get<ClientDto>({ url: EndPoints.getClient.replace("{clientId}", id.toString()) });
+        } catch (error) {
+            console.error('Error al obtener admins:', error);
+            return null;
+        }
+    }
+
 
 
 

@@ -51,8 +51,12 @@ export const routes: Routes = [
               loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
             },
             {
-              path: 'create',
-              loadComponent: () => import('./pages/clients/create-client/create-client').then(m => m.CreateClient)
+              path: 'edit-client/:id',
+              loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
+            },
+            {
+              path: 'create-client',
+              loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
             },
           ]
         },
