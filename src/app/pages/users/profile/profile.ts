@@ -1,17 +1,13 @@
-import { Component, signal, ChangeDetectionStrategy, inject, OnInit, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, OnInit, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { UserForm } from './user-form/user-form';
-import { StoreService } from '@store/store.service';
 import { UsersState } from '@store/users.state';
-import { GlobalStore } from '@store/global';
-import { AdminSignalsModel } from '@models/UsersSignalsModel';
+import { GlobalStore } from '@store/global.state';
 import { AdminSignal } from '@entities/admins.entities';
 import { Helpers } from '@utils/helpers';
 import { AdminProvider } from '@providers';
-import { User } from '@dtos/user.dto';
-import { LoginRequestDto, LoginResponseDto } from '@dtos/auth.dto';
 
 @Component({
   selector: 'app-profile',

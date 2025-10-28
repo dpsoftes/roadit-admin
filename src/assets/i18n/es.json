@@ -96,6 +96,7 @@
   "clients": {
     "title": "Clientes",
     "create-group-title": "Creación Grupo Cliente",
+    "edit-group-title": "Edición Grupo Cliente",
     "create-client-title": "Crear/Editar Cliente",
     "create-client": {
       "upload-logo": "Subir Logo",

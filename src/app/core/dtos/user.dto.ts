@@ -4,6 +4,7 @@
  */
 
 export class User {
+    /** ID */
     id: number;
     username: string;
     email: string;
@@ -81,6 +82,7 @@ export class CreateUserDto {
  * Campos: username, email, name, last_name
  */
 export class UpdateUserDto {
+    id?: number;
     username: string;
     email: string;
     name?: string;
@@ -107,7 +109,6 @@ export class UpdateUserDto {
  * UserSerializer completo - Todos los campos (__all__)
  */
 export class UserFullDto  {
-    /** Aceptó política de privacidad */
     accepted_privacy_policy?: boolean;
     /** Aceptó términos y condiciones */
     accepted_terms_and_conditions?: boolean;

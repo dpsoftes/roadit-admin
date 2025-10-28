@@ -1,10 +1,12 @@
 import { Injectable, computed, inject } from '@angular/core';
-import { GlobalStore } from '@store/global';
+import { GlobalStore } from '@store/global.state';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { UsersState } from './users.state';
 import { ApiService } from '@services/api.service';
 import { EndPoints } from '@services/EndPoints';
+import { UserRole } from '@enums/user.enum';
+import { AdminProvider } from '@providers';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +24,7 @@ export class StoreService {
   readonly router = inject(Router)
   readonly users = inject(UsersState);
   readonly api = inject(ApiService);
+  readonly adminProvider = inject(AdminProvider);
   get isDebug() {
     return !environment.production;
   }
@@ -35,12 +38,24 @@ export class StoreService {
     
     // Inicializar desde localStorage al arrancar la aplicación
     this.global.initializeFromStorage();
-    this.global.getUserLoggedOutObservable().subscribe(loggedIn => {
+    this.global.getUserLoggedOutObservable().subscribe(async (loggedIn) => {
       if (!loggedIn) {
         this.router.navigate(['/login']);
       }else{
+      if(this.global.user().user.role ===  UserRole.ADMIN){
+        
+        const adminsList = await this.adminProvider.getAdmins({});
+        if(adminsList && adminsList.results && adminsList.results.length > 0){
+          this.global.updateState({ usersAdmin: adminsList.results.map(admin => {
+            return { id: admin.id!, name: admin.name + ' ' + admin.last_name, otherData: admin };
+          }) });
+        }
+      }
+
        if(this.global.tags().length === 0){
         this.loadTags();
+
+
        }   
       }
 

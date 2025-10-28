@@ -12,7 +12,7 @@ import { TranslatePipe } from '@i18n/translate.pipe';
 import { roleAdminDescriptions, UserRole, UserStatus,  userStatusDescriptions } from '@enums/user.enum';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { UsersState } from '@store/users.state';
-import { GlobalStore } from '@store/global';
+import { GlobalStore } from '@store/global.state';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';

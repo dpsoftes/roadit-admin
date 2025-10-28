@@ -47,6 +47,6 @@ export class LayoutComponent {
 
   // Método para cambiar idioma
   onChangeLanguage(language: string): void {
-    this.globalStore.setLanguage(language.toLowerCase());
+    this.globalStore.updateState({language: language.toLowerCase()});
   }
 }

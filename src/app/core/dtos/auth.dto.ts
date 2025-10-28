@@ -8,6 +8,7 @@ import { User } from './user.dto';
  * LoginRequestDto - Input para login
  */
 export class LoginRequestDto {
+    id?: number;
     email: string;
     password: string;
 

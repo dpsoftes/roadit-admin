@@ -6,8 +6,8 @@ import {  TableEvent } from '@components/dynamic-table/dynamic-table.interfaces'
 import { groupsTableConfig } from './groupTableConfig';
 import { createClientTableConfig } from './clientTableConfig';
 import { TabsComponent } from '@components/tabs.component/tabs.component';
-import { ActivatedRoute } from '@angular/router';
-import { ClientGroupSummary, ClientSummary } from '@dtos/clients.dto';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ClientGroupSummary, ClientSummary } from '@dtos/clients/clients.dto';
 import { ClientsProvider } from '@providers';
 // import { ClientDto, ClientMiniDto, ClientGroupDto } from '@dtos'; // Temporalmente comentado
 
@@ -39,7 +39,8 @@ export class Clients implements OnInit {
   clientTableConfig = signal(createClientTableConfig([]));
 
   constructor(
-    private route:ActivatedRoute
+    private route:ActivatedRoute, 
+    private router:Router,
   ){
     this.route.params.subscribe(params => {
       if(params['tab'] === 'group') {
@@ -112,17 +113,17 @@ export class Clients implements OnInit {
     }
   }
 
-  async onTableEvent(event: TableEvent) {
+  async onTableEvent(event: TableEvent, type: 'groups' | 'client') {
     switch (event.type) {
       case 'action':
         if (event.data?.action === 'edit') {
-          this.edit(event.data.row);
+          this.edit(event.data.row, type);
         } else if (event.data?.action === 'delete') {
-          this.delete(event.data.row);
+          this.delete(event.data.row, type);
         } else if (event.data?.action === 'view') {
-          this.view(event.data.row);
+          this.view(event.data.row, type);
         } else if (event.data?.action === 'add') {
-          this.add(event.data.row);
+          this.add(event.data.row, type);
         } else if (event.data?.action === 'activate') {
           this.createClient(event.data.row);
         }
@@ -141,19 +142,24 @@ export class Clients implements OnInit {
     }
   }
   
-  edit(element: any) {
-    console.log('Edit client:', element);
+  edit(element: any, type: 'groups' | 'client') {
+    if(type === 'groups'){
+        this.router.navigate(['/clients/edit-group', element.id]);
+    }else{
+
+    }
+    
   }
 
-  delete(element: any) {
+  delete(element: any, type: 'groups' | 'client') {
     console.log('Delete client:', element);
   }
 
-  view(element: any) {
-    console.log('View client:', element);
+  view(element: any, type: 'groups' | 'client') {
+    this.edit(element, type);
   }
 
-  add(element: any) {
+  add(element: any, type: 'groups' | 'client') {
     console.log('Add to client:', element);
   }
 

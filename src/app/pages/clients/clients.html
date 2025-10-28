@@ -14,13 +14,13 @@
 @if (showGroupsTable()) {
   <app-dynamic-table 
     [config]="groupsTableConfig()" 
-    (tableEvent)="onTableEvent($event)">
+    (tableEvent)="onTableEvent($event, 'groups')">
   </app-dynamic-table>
 }
 
 @if (showListTable()) {
   <app-dynamic-table 
     [config]="clientTableConfig()" 
-    (tableEvent)="onTableEvent($event)">
+    (tableEvent)="onTableEvent($event, 'client')">
   </app-dynamic-table>
 }

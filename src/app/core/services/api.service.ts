@@ -9,7 +9,7 @@ import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { EndPoints, HttpMethod } from './EndPoints';
 import { Helpers } from '@utils/helpers';
-import { GlobalStore } from '@store/global';
+import { GlobalStore } from '@store/global.state';
 
 
 export interface ApiRequestOptions {

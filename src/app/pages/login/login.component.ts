@@ -8,7 +8,7 @@ import { TranslatePipe } from '@i18n//translate.pipe';
 import { EnvironmentService } from '@services/environment.service';
 import { ApiService, EndPoints, HttpMethod } from '@services';
 import { LoginRequestDto, LoginResponseDto } from '@dtos';
-import { GlobalStore } from '@store/global';
+import { GlobalStore } from '@store/global.state';
 import { StoreService } from '@store/store.service';
 
 @Component({

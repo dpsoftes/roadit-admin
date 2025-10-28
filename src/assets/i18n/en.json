@@ -96,6 +96,7 @@
   "clients": {
     "title": "Clients",
     "create-group-title": "Create Client Group",
+    "edit-group-title": "Edit Grupo Cliente",
     "create-client-title": "Create/Edit Client",
     "create-client": {
       

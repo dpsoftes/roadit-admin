@@ -44,17 +44,17 @@ export class AdminSignal {
     };
   }
 
-  copyFromDto(dto: AdminDto): void {
-    this.id.set(dto.id);
-    this.username.set(dto.username);
-    this.email.set(dto.email);
-    this.phone.set(dto.phone ?? '');
-    this.name.set(dto.name ?? '');
-    this.last_name.set(dto.last_name ?? '');
-    this.image.set(dto.image ?? new File([''], ''));
-    this.is_active.set(dto.is_active ?? false);
-    this.roles.set(dto.roles ?? []);
-    this.departments.set(dto.departments ?? []);
+  copyFromDto(dto: Partial<AdminDto>): void {
+    this.id.set(dto.id != null ? dto.id : this.id());
+    this.username.set(dto.username != null ? dto.username : this.username());
+    this.email.set(dto.email != null ? dto.email : this.email());
+    this.phone.set(dto.phone != null ? dto.phone : this.phone());
+    this.name.set(dto.name != null ? dto.name : this.name());
+    this.last_name.set(dto.last_name != null ? dto.last_name : this.last_name());
+    this.image.set(dto.image != null ? dto.image : this.image());
+    this.is_active.set(dto.is_active != null ? dto.is_active : this.is_active());
+    this.roles.set(dto.roles != null ? dto.roles : this.roles());
+    this.departments.set(dto.departments != null ? dto.departments : this.departments());
   }
 
   toPatch<T>(): Partial<T> {
@@ -79,6 +79,7 @@ export class AdminSignal {
 
 // EntitySignal para AdminRequestDto (crear/actualizar)
 export class AdminRequestSignal {
+  id = signal<number | undefined>(undefined);
   username = signal<string>('');
   email = signal<string>('');
   phone = signal<string>('');
@@ -93,53 +94,57 @@ export class AdminRequestSignal {
 
   static fromDto(dto: AdminRequestDto): AdminRequestSignal {
     const entity = new AdminRequestSignal();
+    entity.id.set(dto.id);
     entity.username.set(dto.username);
     entity.email.set(dto.email);
-  entity.phone.set(dto.phone ?? '');
-  entity.name.set(dto.name ?? '');
-  entity.last_name.set(dto.last_name ?? '');
-  entity.image.set(dto.image ?? new File([''], ''));
-  entity.is_active.set(dto.is_active ?? false);
-  entity.roles.set(dto.roles ?? []);
-  entity.departments.set(dto.departments ?? []);
-  entity.password.set(dto.password ?? '');
-  entity.password_confirmation.set(dto.password_confirmation ?? '');
+    entity.phone.set(dto.phone ?? '');
+    entity.name.set(dto.name ?? '');
+    entity.last_name.set(dto.last_name ?? '');
+    entity.image.set(dto.image ?? new File([''], ''));
+    entity.is_active.set(dto.is_active ?? false);
+    entity.roles.set(dto.roles ?? []);
+    entity.departments.set(dto.departments ?? []);
+    entity.password.set(dto.password ?? '');
+    entity.password_confirmation.set(dto.password_confirmation ?? '');
     return entity;
   }
 
   toDto(): AdminRequestDto {
     return {
+      id: this.id(),
       username: this.username(),
       email: this.email(),
-  phone: this.phone(),
-  name: this.name(),
-  last_name: this.last_name(),
-  image: this.image(),
-  is_active: this.is_active(),
-  roles: this.roles(),
-  departments: this.departments(),
-  password: this.password(),
-  password_confirmation: this.password_confirmation(),
+      phone: this.phone(),
+      name: this.name(),
+      last_name: this.last_name(),
+      image: this.image(),
+      is_active: this.is_active(),
+      roles: this.roles(),
+      departments: this.departments(),
+      password: this.password(),
+      password_confirmation: this.password_confirmation(),
     };
   }
 
-  copyFromDto(dto: AdminRequestDto): void {
-    this.username.set(dto.username);
-    this.email.set(dto.email);
-    this.phone.set(dto.phone ?? '');
-    this.name.set(dto.name ?? '');
-    this.last_name.set(dto.last_name ?? '');
-    this.image.set(dto.image ?? new File([''], ''));
-    this.is_active.set(dto.is_active ?? false);
-    this.roles.set(dto.roles ?? []);
-    this.departments.set(dto.departments ?? []);
-    this.password.set(dto.password ?? '');
-    this.password_confirmation.set(dto.password_confirmation ?? '');
+  copyFromDto(dto: Partial<AdminRequestDto>): void {
+    this.id.set(dto.id != null ? dto.id : this.id());
+    this.username.set(dto.username != null ? dto.username : this.username());
+    this.email.set(dto.email != null ? dto.email : this.email());
+    this.phone.set(dto.phone != null ? dto.phone : this.phone());
+    this.name.set(dto.name != null ? dto.name : this.name());
+    this.last_name.set(dto.last_name != null ? dto.last_name : this.last_name());
+    this.image.set(dto.image != null ? dto.image : this.image());
+    this.is_active.set(dto.is_active != null ? dto.is_active : this.is_active());
+    this.roles.set(dto.roles != null ? dto.roles : this.roles());
+    this.departments.set(dto.departments != null ? dto.departments : this.departments());
+    this.password.set(dto.password != null ? dto.password : this.password());
+    this.password_confirmation.set(dto.password_confirmation != null ? dto.password_confirmation : this.password_confirmation());
   }
 
   toPatch<T>(): Partial<T> {
     const defaults = new AdminRequestSignal();
     const patch: Partial<T> = {};
+    if ((this.id() as any) !== (defaults.id() as any)) (patch as any).id = this.id();
     if ((this.username() as any) !== (defaults.username() as any)) (patch as any).username = this.username();
     if ((this.email() as any) !== (defaults.email() as any)) (patch as any).email = this.email();
     if ((this.phone() as any) !== (defaults.phone() as any)) (patch as any).phone = this.phone();
@@ -180,11 +185,11 @@ export class AdminSummarySignal {
     };
   }
 
-  copyFromDto(dto: AdminSummaryDto): void {
-    this.id.set(dto.id);
-    this.email.set(dto.email);
-    this.name.set(dto.name ?? '');
-    this.last_name.set(dto.last_name ?? '');
+  copyFromDto(dto: Partial<AdminSummaryDto>): void {
+    this.id.set(dto.id != null ? dto.id : this.id());
+    this.email.set(dto.email != null ? dto.email : this.email());
+    this.name.set(dto.name != null ? dto.name : this.name());
+    this.last_name.set(dto.last_name != null ? dto.last_name : this.last_name());
   }
 
   toPatch<T>(): Partial<T> {

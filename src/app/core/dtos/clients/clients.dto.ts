@@ -1,5 +1,7 @@
-import { AdminSummaryDto } from "./admins.dto";
-import { Tag } from "./tags.dto";
+
+import { BillingType, ClientOrigin, ClientType } from "@enums/client.enum";
+import { AdminSummaryDto } from "../admins.dto";
+import { Tag } from "../tags.dto";
 
 export interface ClientsQueryParams {
     cif?: string;
@@ -72,15 +74,12 @@ export interface ClientSummary {
 /**
  * CreateClientRequest
  */
-export class ClientsCreateRequest {
+export class ClientDto {
     /**
      * Identificador único
      */
     id?: number;
-    /**
-     * Fecha de creación
-     */
-    created_date?: Date | null;
+  
     at_risk?: boolean;
     /**
      * Tipo de facturación
@@ -94,11 +93,11 @@ export class ClientsCreateRequest {
     /**
      * Origen del cliente
      */
-    client_origin: ClientOrigin = ClientOrigin.Undefined;
+    client_origin: ClientOrigin = ClientOrigin.UNDEFINED;
     /**
      * Tipo de cliente
      */
-    client_type: ClientType = ClientType.Company;
+    client_type: ClientType = ClientType.COMPANY;
     contact_person_email?: string;
     /**
      * Nombre de la persona de contacto
@@ -120,10 +119,7 @@ export class ClientsCreateRequest {
      * Identificador Eurotransport
      */
     eurotransport_identifier?: null | string;
-    /**
-     * Tiene seguro
-     */
-    has_insurance?: boolean;
+
     /**
      * Página de contacto 1
      */
@@ -170,65 +166,30 @@ export class ClientsCreateRequest {
     state?: boolean;
     tags?: number[];
     [property: string]: any;
-}
 
-/**
- * Tipo de facturación
- *
- * BillingTypeEnum, * `MANUAL` - Manual
- * * `AUTOMATIC` - Automático
- */
-export enum BillingType {
-    Automatic = "AUTOMATIC",
-    Manual = "MANUAL",
-}
-
-/**
- * Origen del cliente
- *
- * ClientOriginEnum, * `PROSPECTING` - Prospección
- * * `REFERRAL` - Recomendación
- * * `MARKETING` - Marketing
- * * `INBOUND_REQUEST` - Solicitud entrante
- * * `OTHERS` - Otros
- * * `UNDEFINED` - Indefinido
- * * `EVENT` - Evento
- */
-export enum ClientOrigin {
-    Event = "EVENT",
-    InboundRequest = "INBOUND_REQUEST",
-    Marketing = "MARKETING",
-    Others = "OTHERS",
-    Prospecting = "PROSPECTING",
-    Referral = "REFERRAL",
-    Undefined = "UNDEFINED",
-}
-
-/**
- * Tipo de cliente
- *
- * ClientTypeEnum, * `DEALERSHIP` - Concesionario
- * * `RENTING` - Renting
- * * `LEASING` - Leasing
- * * `CAR_RENTAL` - Alquiler de coches
- * * `CAR_TRADING` - Compra-venta de coches
- * * `FLEET` - Flota
- * * `COMPANY` - Empresa
- */
-export enum ClientType {
-    CarRental = "CAR_RENTAL",
-    CarTrading = "CAR_TRADING",
-    Company = "COMPANY",
-    Dealership = "DEALERSHIP",
-    Fleet = "FLEET",
-    Leasing = "LEASING",
-    Renting = "RENTING",
+    static fromResponse(response: any): ClientDto {
+        const instance = new ClientDto();
+        const { tags, ...newObject } = response || {};
+        Object.assign(instance, newObject);
+        if (Array.isArray(tags)) {
+            if (tags.length > 0 && typeof tags[0] === 'object' && tags[0] !== null) {
+                instance.tags = tags.map((t: any) => t.id);
+            } else {
+                instance.tags = tags;
+            }
+        }
+        return instance;
+    }
 }
 
 /**
  * CreateClientGroupRequest
  */
 export class ClientsGroupCreateRequest {
+    /**
+     * Identificador único (opcional)
+     */
+    id?: number;
     assigned_admins: number[] = [];
     /**
      * País

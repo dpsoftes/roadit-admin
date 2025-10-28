@@ -61,6 +61,7 @@ export class HeaderComponent {
 
   onChangeLanguage(language: string): void {
     this.i18nService.setLanguage(language as 'es' | 'en');
+    
     this.changeLanguage.emit(language);
     this.showLangs.set(false);
   }
