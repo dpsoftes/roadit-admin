@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, ViewEncapsulation, input, output, inject, OnInit } from '@angular/core';
+import { Component, signal, ViewEncapsulation, input, output, inject, OnInit, computed } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +15,7 @@ import { billingTypeDescriptions, clientOriginDescriptions, clientTypeDescriptio
 import { GlobalStore } from '@store/global.state';
 import { ClientsProvider } from '@providers';
 import { SimpleDataDto } from '@dtos/simpleData.dto';
+import { Helpers } from '@utils/helpers';
 
 @Component({
   selector: 'app-general-tab-component',
@@ -38,6 +39,7 @@ export class GeneralTabComponent  implements OnInit{
 
   store = inject(ClientStore);
   global = inject(GlobalStore)
+  errors = this.store.errors;
   logoUrl = this.store.logoSrc;
   clientProvider = inject(ClientsProvider);
   client = ClientsGralEntity.fromDto(this.store.client());
@@ -49,7 +51,13 @@ export class GeneralTabComponent  implements OnInit{
   clientGroups = input<any[]>([]);
   managersInput = input<any[]>([]);
 
-  
+  errorsItems = computed(() => {
+    let err:any = {};
+    for(let e of this.errors()){
+      err[e] = true;
+    }
+    return err;
+  });
 
   formDataChange = output<any>();
 
@@ -65,10 +73,21 @@ export class GeneralTabComponent  implements OnInit{
       this.store.updateState({ curImage: event.file });
     }
   }
-  onPhotoChanged(){
-    
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    const allowed = ["JPG", "JPEG", "GIF", "PNG"];
+    const maxKb = 800;
+    const result = await Helpers.validateAndReadFile(file, allowed, maxKb);
+    if (!result.valid) {
+      Helpers.Instance.showToast(result.error || 'Archivo no válido', 'ERROR');
+      // Aquí podrías mostrar un snackbar, toast, etc.
+      return;
+    }
+    this.store.updateState({curImage: file});
   }
-
+ 
   async onGroupChage(groupId: number ){
     this.client.client_group.set(groupId)
     this.loadClientsByGroup();
@@ -82,7 +101,12 @@ export class GeneralTabComponent  implements OnInit{
       }
   }
   onSave(): void {
-
+    const dto = this.client.toDto();
+    const errors = this.store.validGralData(dto);
+    if(errors.length == 0){
+      this.store.updateState({client: dto });
+      this.store.saveGralData();
+    }
   }
 
   onCancel(): void {

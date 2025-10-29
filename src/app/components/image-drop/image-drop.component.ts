@@ -1,7 +1,8 @@
 
-import { Component, EventEmitter, Output, input, output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild, input, output } from '@angular/core';
 import { Helpers } from '@utils/helpers';
 import { environment } from 'src/environments/environment';
+import { TranslatePipe } from "../../core/i18n/translate.pipe";
 
 @Component({
   selector: 'image-drop',
@@ -9,27 +10,36 @@ import { environment } from 'src/environments/environment';
   template: `
     <div
       class="image-dropzone"
-      [style.width]="width || '100%'"
-      [style.height]="height || 'auto'"
+      [style.width]="width() || '100%'"
+      [style.height]="height() || 'auto'"
       (dragover)="onDragOver($event)"
       (drop)="onDrop($event)"
-      (click)="fileInput.click()"
+      (click)="clickHendle()"
   [class.has-image]="!!imageUrl"
     >
       <input type="file" accept=".jpg,.jpeg,.png,.gif" style="display:none" #fileInput (change)="onFileSelected($event)">
         @if (!isEmptyImage) {
+          @if(showLink()){
+          <a [href]="imageUrl" target="_blank">View Image</a>
+          }@else {
           <img [src]="imageUrl"
                [style.maxWidth]="width() || '100%'"
                [style.maxHeight]="height() || '100%'"
                [style.width]="width() || null"
                [style.height]="height() || null"
                style="object-fit:contain; display:block; margin:auto;" />
+          }
+          @if(canDelete()){
+          <div class="image-error" (click)="$event.stopPropagation(); imageAccepted.emit({ base64: '', file: null! });" style="cursor:pointer;">
+            &times; {{'dropFile.deleteFile' | translate}}
+          </div>
+          }
         } @else {
           <div class="placeholder"
                [style.width]="width() || '100%'"
                [style.height]="height() || 'auto'"
                style="display: flex; align-items: center; justify-content: center; text-align: center;">
-            Arrastra una imagen aquí o haz clic para seleccionar
+            {{text() | translate  }}
           </div>
         }
     </div>
@@ -73,7 +83,8 @@ import { environment } from 'src/environments/environment';
       border-radius: 4px;
       font-size: 12px;
     }
-  `]
+  `],
+  imports: [TranslatePipe]
 })
 export class ImageDropComponent {
   width = input<string | undefined>();
@@ -82,7 +93,20 @@ export class ImageDropComponent {
   maxWeight = input<number>(); // en KB
   src = input<string | File | null>();
   imageAccepted  = output<{ base64: string, file: File }>();
-  
+  text = input<string>("dropFile.dropImage");
+  showLink = input<boolean>(false);
+  canDelete = input<boolean>(false);
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
+
+  clickHendle = () => {
+    if(!this.isEmptyImage && this.showLink() && this.canDelete()){
+      return;
+    }
+    this.fileInput.nativeElement.click();
+  }
+
+
   /**
    * Propiedad computada para mostrar la imagen correctamente
    * Si src es string (URL o dataURL), la muestra; si es File, la convierte a blob URL
@@ -92,7 +116,7 @@ export class ImageDropComponent {
     const value = this.src();
     if (!value) return '';
     if (typeof value === 'string') {
-      if (value.startsWith('http') || value.startsWith('data:')) {
+      if (value.startsWith('http') || value.startsWith('data:') || value.startsWith('blob:')) {
         return value;
       }
       // Si es un string base64 tipo fichero (data:image/...), convertir a blob URL
@@ -111,7 +135,7 @@ export class ImageDropComponent {
         }
       } catch {}
       // Si no es file, blob ni http, anteponer apiUrl
-      return environment.apiUrl.replace(/\/$/, '') + '/' + value.replace(/^\//, '');
+      return environment.apiUrl + value;
     }
     if (value instanceof File) {
       return URL.createObjectURL(value);

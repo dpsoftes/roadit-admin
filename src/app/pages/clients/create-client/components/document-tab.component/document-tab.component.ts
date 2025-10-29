@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,11 @@ import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.c
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ButtonsComponent } from '@components/buttons.component/buttons.component';
+import { transportPrincipalTypeDescriptions } from '@enums/transport.enum';
+import { FileUploadType, directionTypeDescriptions, fileUploadTypeDescriptions } from '@enums/additional.enum';
+import { ClientStore } from '@store/clients.state';
+import { DocumentTemplateTransportEntity } from '@entities/clients.entities';
+import { ImageDropComponent } from '@components/index';
 
 @Component({
   selector: 'app-document-tab',
@@ -23,17 +28,34 @@ import { ButtonsComponent } from '@components/buttons.component/buttons.componen
     DynamicTableComponent,
     MatIconModule,
     MatButtonModule,
-    ButtonsComponent
+    ButtonsComponent,
+    ImageDropComponent,
   ],
   templateUrl: './document-tab.component.html',
   styleUrl: './document-tab.component.scss'
 })
 export class DocumentTabComponent {
 
-
-  
-
-
+  transportType = Object.entries(transportPrincipalTypeDescriptions).map(([key, value]) => ({ key, value }));
+  applicationMoment =  Object.entries(directionTypeDescriptions).map(([key, value]) => ({ key, value }));
+  fileUploadTypeDescriptions = Object.entries(fileUploadTypeDescriptions).map(([key, value]) => ({ key, value }));
+  selectedFileUploadType = signal<FileUploadType>(FileUploadType.URL);
+  filetype = fileUploadTypeDescriptions;
+  store = inject(ClientStore);
+  documents = this.store.documents;
+  curDocument = new DocumentTemplateTransportEntity()
+  file = signal<File|null>(null);
+  onImageAccepted(event: { base64: string, file: File }): void {
+    if(event.file){
+      this.file.set(event.file);
+    }
+  }
+  imgUrl = computed(() => {
+    if(this.file()){
+      return URL.createObjectURL(this.file() as File);
+    }
+    return "";
+  });
   tableConfig: TableConfig = {
     columns: [
       { key: 'doc_type', label: 'clients.create-client.doc_type', type: 'text' },

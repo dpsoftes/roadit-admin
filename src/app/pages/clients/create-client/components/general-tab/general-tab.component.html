@@ -11,19 +11,27 @@
             ></image-drop>
             <div class="logo-actions">
                 <div class="actions">
-                     <app-buttons type="save-changes" text="clients.create-client.upload-logo" (onClick)="onPhotoChanged()"></app-buttons>
+                     <input type="file" accept=".jpg,.jpeg,.png,.gif" style="display:none" #fileInput (change)="onFileSelected($event)">
+                     <button class="upload_photo_btn" matButton="filled" (click)="fileInput.click()">{{'users.profile.upload-photo' | translate}}</button>
+                     <!-- <app-buttons type="save-changes" text="clients.create-client.upload-logo" (onClick)="onPhotoChanged()"></app-buttons> -->
                 </div>
                 <p class="upload_photo_p">{{'clients.create-client.upload-logo-explanation' | translate}}</p>
             </div>
         </div>
-        <form (ngSubmit)="onSave()">
+        
             <div class="form">
 
             <div class="form-field half_field">
                 <label class="field-label">{{'clients.create-client.name' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <input type="text" matInput [value]="client.name()" (input)="client.name.set($event.target.value)">
+                
                 </mat-form-field>
+                @if(errorsItems()['errors.client.name-required']) {
+                <small class="error-message">
+                    {{ 'errors.client.name-required' | translate }}
+                </small>
+                }
             </div>
 
             <div class="form-field quarter_field">
@@ -36,7 +44,11 @@
                     </mat-select>
                     
                 </mat-form-field>
-                
+                @if(errorsItems()['errors.client.group-required']) {
+                    <small class="error-message">
+                        {{ 'errors.client.group-required' | translate }}
+                    </small>
+                }
                 <mat-checkbox [checked]="client.is_subentity()" (change)="client.is_subentity.set($event.checked);loadClientsByGroup()"> 
                     {{'clients.create-client.subentity' | translate}}
                 </mat-checkbox>
@@ -54,6 +66,12 @@
                     </mat-select>
                     
                 </mat-form-field>
+                @if(errorsItems()['errors.client.principal-client-required']) {
+                    <small class="error-message">
+                        {{ 'errors.client.principal-client-required' | translate }}
+                    </small>
+                }
+    
             </div>
         }
             <div class="form-field quarter_field">
@@ -102,13 +120,13 @@
             </div>
 
             <div class="form-field quarter_field">
-                <label class="field-label">{{'clients.create-client.invite-delay-minutes' | translate}}</label>
+                <label class="field-label">{{'clients.create-client.appointment-time' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <input type="number" matInput [value]="client.invite_delay_minutes()" (input)="client.invite_delay_minutes.set(parseInt($event.target.value))">
                 </mat-form-field>
             </div>
             <div class="form-field quarter_field">
-                <label class="field-label">{{'clients.create-client.reminder-interval-minutes' | translate}}</label>
+                <label class="field-label">{{'clients.create-client.appointment-time-between' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <input type="number" matInput [value]="client.reminder_interval_minutes()" (input)="client.reminder_interval_minutes.set(parseInt($event.target.value))">
                 </mat-form-field>
@@ -159,12 +177,22 @@
                 <mat-form-field appearance="outline" class="field-input">
                     <input type="text" matInput [value]="client.contact_person_name()" (input)="client.contact_person_name.set($event.target.value)">
                 </mat-form-field>
+                 @if(errorsItems()['errors.client.contact-name-required']) {
+                    <small class="error-message">
+                        {{ 'errors.client.contact-name-required' | translate }}
+                    </small>
+                }
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.main-contact-email' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <input type="email" matInput [value]="client.contact_person_email()" (input)="client.contact_person_email.set($event.target.value)">
                 </mat-form-field>
+                 @if(errorsItems()['errors.client.contact-email-invalid']) {
+                    <small class="error-message">
+                        {{ 'errors.client.contact-email-invalid' | translate }}
+                    </small>
+                }
             </div>
             <div class="form-field quarter_field">
                 <label class="field-label">{{'clients.create-client.main-contact-phone' | translate}}</label>
@@ -173,10 +201,10 @@
                 </mat-form-field>
             </div>
             <div class="action-buttons-container">
-                <app-buttons type="save-changes" text="clients.create-client.save-changes" (onClick)="onSave()"></app-buttons>
+                <app-buttons type="save-changes-noform" text="clients.create-client.save-changes" (onClick)="onSave()"></app-buttons>
                 <app-buttons type="cancel" text="clients.create-client.cancel" (onClick)="onCancel()"></app-buttons>
             </div>
         </div>
-        </form>
+        
     </mat-card-content>
 </mat-card>

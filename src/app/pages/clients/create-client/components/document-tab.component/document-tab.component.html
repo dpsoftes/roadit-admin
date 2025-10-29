@@ -4,76 +4,61 @@
             <div class="form-field twenty_field">
                 <label class="field-label">{{'clients.create-client.movement-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select>
-                        <mat-option value="SIMPLE_MOVEMENT">{{'clients.create-client.simple-movement' | translate}}</mat-option>
-                        <mat-option value="PICKUP_TO_FINAL_CUSTOMER">{{'clients.create-client.pickup-to-final-customer' | translate}}</mat-option>
-                        <mat-option value="DELIVERY_TO_FINAL_CUSTOMER">{{'clients.create-client.delivery-to-final-customer' | translate}}</mat-option>
-                        <mat-option value="PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER">{{'clients.create-client.pickup-and-delivery-to-final-customer' | translate}}</mat-option>
-                        <mat-option value="WITH_STOPOVER">{{'clients.create-client.with-stopover' | translate}}</mat-option>
-                    </mat-select>
+                    <mat-select [value]="curDocument.transport_principal_type()" (selectionChange)="curDocument.transport_principal_type.set($event.value)">
+                        @for( type of transportType; track type.key ) {
+                            <mat-option [value]="type.key">{{type.value | translate}}</mat-option>
+                        }
+                  </mat-select>
                 </mat-form-field>
             </div>
             <div class="form-field twenty_field">
                 <label class="field-label">{{'clients.create-client.adjunt-type' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <mat-select [value]="selectedFileUploadType()" (selectionChange)="selectedFileUploadType.set($event.value)">
+                         @for( type of fileUploadTypeDescriptions; track type.key ) {
+                            <mat-option [value]="type.key">{{type.value | translate}}</mat-option>
+                        }     
+                    </mat-select>
                 </mat-form-field>
             </div>
             <div class="form-field twenty_field">
                 <label class="field-label">{{'clients.create-client.application-moment' | translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <mat-select>
-                        <mat-option value="BOTH">{{'clients.create-client.both-departure-both' | translate}}</mat-option>
-                        <mat-option value="DEPARTURE">{{'clients.create-client.departure' | translate}}</mat-option>
-                        <mat-option value="ARRIVAL">{{'clients.create-client.arrival' | translate}}</mat-option>
+                    <mat-select  [value]="curDocument.application_time()" (selectionChange)="curDocument.application_time.set($event.value)">
+                         @for( type of applicationMoment; track type.key ) {
+                            <mat-option [value]="type.key">{{type.value | translate}}</mat-option>
+                        }     
                     </mat-select>
                 </mat-form-field>
             </div>
             <div class="form-field twenty_field">
-                <label class="field-label">{{'clients.create-client.main-client' | translate}}</label>
+                @if(selectedFileUploadType() === 'URL') {
+                <label class="field-label">{{filetype.URL| translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
                     <input type="text" matInput>
                 </mat-form-field>
+                }@else{
+                <label class="field-label">{{ filetype.FILE | translate}}</label>
+                <image-drop
+                    [src]="imgUrl()"
+                    text="dropFile.dropFile"
+                    [width]="'100%'"
+                    [height]="'50px'"
+                    [formats]="['JPG','JPEG','GIF','PNG', 'PDF', 'DOC', 'DOCX']"
+                    [maxWeight]="800"
+                    [showLink]="true"
+                    [canDelete]="true"
+                    (imageAccepted)="onImageAccepted($event)"
+                    
+            ></image-drop>
+
+
+                }
             </div>
             <div class="form-field eight_field button-field">
                  <app-buttons type="save-small" text="clients.create-client.save" ></app-buttons>
             </div>
-            <div class="form-field twenty_field">
-                <label class="field-label">{{'clients.create-client.doc-type' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <mat-select>
-                        <mat-option value="1">{{'clients.create-client.doc-type-1' | translate}}</mat-option>
-                        <mat-option value="2">{{'clients.create-client.doc-type-2' | translate}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="form-field twenty_field">
-                <label class="field-label">{{'clients.create-client.adjunt-type' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
-                </mat-form-field>
-            </div>
-            <div class="form-field twenty_field">
-                <label class="field-label">{{'clients.create-client.application-moment' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <mat-select>
-                        <mat-option value="BOTH">{{'clients.create-client.both-departure-both' | translate}}</mat-option>
-                        <mat-option value="DEPARTURE">{{'clients.create-client.departure' | translate}}</mat-option>
-                        <mat-option value="ARRIVAL">{{'clients.create-client.arrival' | translate}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div class="form-field twenty_field">
-                <label class="field-label">{{'clients.create-client.url' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
-                </mat-form-field>
-            </div>
-            <div class="form-field eight_field button-field">
-                <app-buttons type="save-small" text="clients.create-client.save" ></app-buttons>
-            </div>
-
+           
         </div>
     </mat-card-content>
 </mat-card>

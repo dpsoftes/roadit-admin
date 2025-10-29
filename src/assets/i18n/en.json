@@ -701,4 +701,25 @@
       "save": "SAVE"
     }
   }
+  ,
+  "errors": {
+    "client": {
+      "name-required": "Client name is required.",
+      "group-required": "Client group is required.",
+      "client-type-required": "Client type is required.",
+      "principal-client-required": "Main client is required.",
+      "contact-email-invalid": "Contact email is not valid.",
+      "contact-name-required": "Contact person name is required."
+    }
+  },
+  "fileUploadType": {
+    "URL": "Url",
+    "FILE": "File"
+  },
+  "dropFile": {
+    "dropHere": "Drop the file here...",
+    "dropImage": "Drag an image here or click to select",
+    "dropFile": "Drag a file or click",
+    "deleteFile": "Delete file"
+  }
 }

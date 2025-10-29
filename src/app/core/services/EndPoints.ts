@@ -127,7 +127,7 @@ export enum EndPoints {
     // Reglas por scope (client/transport)
     getPriceRules = "/price-rules/{scope}/", // GET scope=client|transport -> PaginatedResponse<PriceRuleSet>
     createPriceRule = "/price-rules/{scope}/", // POST scope=client|transport CreatePriceRuleSetRequestDto -> PriceRuleSet
-    getPriceRule = "/price-rules/{scope}/{ruleId}/", // GET scope=client|transport -> PriceRuleSet
+    getPriceRule = "/price-rules/{scope}/", // GET scope=client|transport -> PriceRuleSet
     updatePriceRule = "/price-rules/{scope}/{ruleId}/", // PATCH scope=client|transport UpdatePriceRuleSetRequestDto -> PriceRuleSet
     deletePriceRule = "/price-rules/{scope}/{ruleId}/", // DELETE scope=client|transport -> ApiResponse
 
@@ -174,6 +174,13 @@ export enum EndPoints {
     deleteCertification = "/certifications/{certificationId}/", // DELETE -> ApiResponse
     createManualCertification = "/certifications/manual/", // POST CreateManualCertificationRequestDto -> Certification
     getCertificationByDriverAndClient = "/certifications/certification-by-client/{driverId}/", // GET -> PaginatedResponse<Certification>
+    // ======================
+    // CERTIFICACIONES
+    // ======================
+    getClientCertifications = "/certifications/client-certifications/",
+    updateClientCertification = "/certifications/client-certifications/{certificationId}/", // PATCH UpdateCertificationRequestDto -> Certification
+    
+
 
     // ======================
     // DOCUMENTOS DE CONDUCTOR

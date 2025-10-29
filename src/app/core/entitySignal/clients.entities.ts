@@ -11,14 +11,15 @@ import { signal, Signal } from '@angular/core';
 import { ClientsGroupCreateRequest } from '@dtos/clients/clients.dto';
 import { ClientDto } from '@dtos/clients/clients.dto';
 import { BillingType, ClientOrigin, ClientType } from '@enums/client.enum';
+import { Helpers } from '@utils/helpers';
 
 
 export class ClientsGralEntity {
     /** Identificador único */
-    id = signal<number | undefined>(undefined);
-    at_risk = signal<boolean | undefined>(undefined);
+    id = signal<number>(0);
+    at_risk = signal<boolean>(false);
     /** Tipo de facturación */
-    billing_type = signal<BillingType | undefined>(undefined);
+    billing_type = signal<BillingType>(BillingType.AUTOMATIC); // Usa el valor por defecto más común o el que corresponda
     cif = signal<string>("");
     /** Grupo cliente */
     client_group = signal<number>(0);
@@ -26,42 +27,42 @@ export class ClientsGralEntity {
     client_origin = signal<ClientOrigin>(ClientOrigin.UNDEFINED);
     /** Tipo de cliente */
     client_type = signal<ClientType>(ClientType.COMPANY);
-    contact_person_email = signal<string | undefined>(undefined);
+    contact_person_email = signal<string>("");
     /** Nombre de la persona de contacto */
-    contact_person_name = signal<string | undefined>(undefined);
+    contact_person_name = signal<string>("");
     /** Teléfono de la persona de contacto */
-    contact_person_phone = signal<string | undefined>(undefined);
+    contact_person_phone = signal<string>("");
     /** Fecha de Eliminación */
-    deleted_date = signal<Date | null | undefined>(undefined);
+    deleted_date = signal<Date>(new Date(0));
     /** Departamento */
-    department = signal<string | undefined>(undefined);
+    department = signal<string>("");
     /** Identificador Eurotransport */
-    eurotransport_identifier = signal<string | null | undefined>(undefined);
+    eurotransport_identifier = signal<string>("");
     /** Página de contacto 1 */
-    html_contact_page1 = signal<string | undefined>(undefined);
+    html_contact_page1 = signal<string>("");
     /** Página de contacto 2 */
-    html_contact_page2 = signal<string | undefined>(undefined);
+    html_contact_page2 = signal<string>("");
     /** Página de información */
-    html_info_page = signal<string | undefined>(undefined);
+    html_info_page = signal<string>("");
     /** Minutos de retraso en la invitación */
-    invite_delay_minutes = signal<number | null | undefined>(undefined);
-    is_subentity = signal<boolean | undefined>(undefined);
-    logo = signal<string | null | undefined>(undefined);
-    managers = signal<number[] | undefined>(undefined);
+    invite_delay_minutes = signal<number>(0);
+    is_subentity = signal<boolean>(false);
+    logo = signal<string>("");
+    managers = signal<number[]>([]);
     /** Nombre */
     name = signal<string>("");
-    own_insurance = signal<boolean | undefined>(undefined);
+    own_insurance = signal<boolean>(false);
     /** Cliente padre, Dejar vacío solo para clientes principales. Subclientes deben tener padre. */
-    parent = signal<number | null | undefined>(undefined);
+    parent = signal<number>(0);
     /** Minutos de recordatorio */
-    reminder_interval_minutes = signal<number | null | undefined>(undefined);
+    reminder_interval_minutes = signal<number>(0);
     /** Identificador Revel */
-    revel_identifier = signal<string | null | undefined>(undefined);
+    revel_identifier = signal<string>("");
     /** Enviar encuesta */
-    send_survey = signal<boolean | undefined>(undefined);
+    send_survey = signal<boolean>(false);
     /** Estado */
-    state = signal<boolean | undefined>(undefined);
-    tags = signal<number[] | undefined>(undefined);
+    state = signal<boolean>(false);
+    tags = signal<number[]>([]);
 
     static fromDto(dto: ClientDto): ClientsGralEntity {
         const entity = new ClientsGralEntity();
@@ -130,34 +131,34 @@ export class ClientsGralEntity {
     }
 
     copyFromDto(dto: Partial<ClientDto>): void {
-    if (dto.id != undefined) this.id.set(dto.id);
-    if (dto.at_risk != undefined) this.at_risk.set(dto.at_risk);
-    if (dto.billing_type != undefined) this.billing_type.set(dto.billing_type);
-    if (dto.cif != undefined) this.cif.set(dto.cif);
-    if (dto.client_group != undefined) this.client_group.set(dto.client_group);
-    if (dto.client_origin != undefined) this.client_origin.set(dto.client_origin);
-    if (dto.client_type != undefined) this.client_type.set(dto.client_type);
-    if (dto.contact_person_email != undefined) this.contact_person_email.set(dto.contact_person_email);
-    if (dto.contact_person_name != undefined) this.contact_person_name.set(dto.contact_person_name);
-    if (dto.contact_person_phone != undefined) this.contact_person_phone.set(dto.contact_person_phone);
-    if (dto.deleted_date != undefined) this.deleted_date.set(dto.deleted_date);
-    if (dto.department != undefined) this.department.set(dto.department);
-    if (dto.eurotransport_identifier != undefined) this.eurotransport_identifier.set(dto.eurotransport_identifier);
-    if (dto.html_contact_page1 != undefined) this.html_contact_page1.set(dto.html_contact_page1);
-    if (dto.html_contact_page2 != undefined) this.html_contact_page2.set(dto.html_contact_page2);
-    if (dto.html_info_page != undefined) this.html_info_page.set(dto.html_info_page);
-    if (dto.invite_delay_minutes != undefined) this.invite_delay_minutes.set(dto.invite_delay_minutes);
-    if (dto.is_subentity != undefined) this.is_subentity.set(dto.is_subentity);
-    if (dto.logo != undefined) this.logo.set(dto.logo);
-    if (dto.managers != undefined) this.managers.set(dto.managers);
-    if (dto.name != undefined) this.name.set(dto.name);
-    if (dto.own_insurance != undefined) this.own_insurance.set(dto.own_insurance);
-    if (dto.parent != undefined) this.parent.set(dto.parent);
-    if (dto.reminder_interval_minutes != undefined) this.reminder_interval_minutes.set(dto.reminder_interval_minutes);
-    if (dto.revel_identifier != undefined) this.revel_identifier.set(dto.revel_identifier);
-    if (dto.send_survey != undefined) this.send_survey.set(dto.send_survey);
-    if (dto.state != undefined) this.state.set(dto.state);
-    if (dto.tags != undefined) this.tags.set(dto.tags);
+    if (!Helpers.isEmpty(dto.id)) this.id.set(dto.id!);
+    if (!Helpers.isEmpty(dto.at_risk)) this.at_risk.set(dto.at_risk!);
+    if (!Helpers.isEmpty(dto.billing_type)) this.billing_type.set(dto.billing_type!);
+    if (!Helpers.isEmpty(dto.cif)) this.cif.set(dto.cif!);
+    if (!Helpers.isEmpty(dto.client_group)) this.client_group.set(dto.client_group!);
+    if (!Helpers.isEmpty(dto.client_origin)) this.client_origin.set(dto.client_origin!);
+    if (!Helpers.isEmpty(dto.client_type)) this.client_type.set(dto.client_type!);
+    if (!Helpers.isEmpty(dto.contact_person_email)) this.contact_person_email.set(dto.contact_person_email!);
+    if (!Helpers.isEmpty(dto.contact_person_name)) this.contact_person_name.set(dto.contact_person_name!);
+    if (!Helpers.isEmpty(dto.contact_person_phone)) this.contact_person_phone.set(dto.contact_person_phone!);
+    if (!Helpers.isEmpty(dto.deleted_date)) this.deleted_date.set(dto.deleted_date!);
+    if (!Helpers.isEmpty(dto.department)) this.department.set(dto.department!);
+    if (!Helpers.isEmpty(dto.eurotransport_identifier)) this.eurotransport_identifier.set(dto.eurotransport_identifier!);
+    if (!Helpers.isEmpty(dto.html_contact_page1)) this.html_contact_page1.set(dto.html_contact_page1!);
+    if (!Helpers.isEmpty(dto.html_contact_page2)) this.html_contact_page2.set(dto.html_contact_page2!);
+    if (!Helpers.isEmpty(dto.html_info_page)) this.html_info_page.set(dto.html_info_page!);
+    if (!Helpers.isEmpty(dto.invite_delay_minutes)) this.invite_delay_minutes.set(dto.invite_delay_minutes!);
+    if (!Helpers.isEmpty(dto.is_subentity)) this.is_subentity.set(dto.is_subentity!);
+    if (!Helpers.isEmpty(dto.logo)) this.logo.set(dto.logo!);
+    if (!Helpers.isEmpty(dto.managers)) this.managers.set(dto.managers!);
+    if (!Helpers.isEmpty(dto.name)) this.name.set(dto.name!);
+    if (!Helpers.isEmpty(dto.own_insurance)) this.own_insurance.set(dto.own_insurance!);
+    if (!Helpers.isEmpty(dto.parent)) this.parent.set(dto.parent!);
+    if (!Helpers.isEmpty(dto.reminder_interval_minutes)) this.reminder_interval_minutes.set(dto.reminder_interval_minutes!);
+    if (!Helpers.isEmpty(dto.revel_identifier)) this.revel_identifier.set(dto.revel_identifier!);
+    if (!Helpers.isEmpty(dto.send_survey)) this.send_survey.set(dto.send_survey!);
+    if (!Helpers.isEmpty(dto.state)) this.state.set(dto.state!);
+    if (!Helpers.isEmpty(dto.tags)) this.tags.set(dto.tags!);
     }
 
     toPatch<T>(): Partial<T> {

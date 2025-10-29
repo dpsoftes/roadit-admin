@@ -1,4 +1,4 @@
-import { Component, signal, input, inject, OnInit } from '@angular/core';
+import { Component, signal, input, inject, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { MatButtonModule } from '@angular/material/button';
@@ -47,7 +47,13 @@ export class EditClient  implements OnInit{
   clientStore = inject(ClientStore);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  tabs = ['general', 'protocol', 'slogans', 'documents', 'extra-contact', 'billing', 'prices', 'certs', 'additional-services']
+  tabs = signal(['general', 'protocol', 'slogans', 'documents', 'extra-contact', 'billing', 'prices', 'certs', 'additional-services']);
+  displayedTabs = computed(() => { 
+    if(this.clientStore.client().id){
+      return this.tabs();
+    }
+    return ['general'];
+   });
 
 
   async ngOnInit(){
@@ -68,7 +74,7 @@ export class EditClient  implements OnInit{
   }
 
   onFormDataChange(formData: any) {
-    this.clientForm.set(formData);
+   // this.clientForm.set(formData);
   }
 
   onSave() {

@@ -1,4 +1,4 @@
-import { withDevtools } from "@angular-architects/ngrx-toolkit";
+import { updateState, withDevtools } from "@angular-architects/ngrx-toolkit";
 import { inject } from "@angular/core";
 import { ClientBillingAccountDto } from "@dtos/clients/billingsAccounts.dto";
 import { ClientCertification } from "@dtos/clients/clientsCertifications.dto";
@@ -14,13 +14,13 @@ export class ClientsState {
     client: ClientDto = new ClientDto();
     documents: DocumentsClientsDto[] = [];
     currentDocument: DocumentsClientsDto = {} as DocumentsClientsDto;
-    priceRules: PriceRulesClientDto[] = [];
-    currentPriceRule: PriceRulesClientDto = {} as PriceRulesClientDto;
+    priceRules: PriceRulesClientDto = new PriceRulesClientDto();
     billingsAccounts: ClientBillingAccountDto[] = [];
     currentBillingAccount: ClientBillingAccountDto = new ClientBillingAccountDto();
     certifications: ClientCertification[] = [];
     currentCertification: ClientCertification = new ClientCertification();
     curImage: File | null = null;
+    errors: string[] = [];
 }
 
 
@@ -49,7 +49,7 @@ export const ClientStore = signalStore(
       }
        if(store.client().logo && store.client().logo!.length > 0){
         let logo = store.client().logo!;
-        if(!logo?.startsWith("http")){
+        if(!logo?.startsWith("http") && !logo?.startsWith("blob:")){
           return  environment.apiUrl + logo;
         }
         return logo;
@@ -57,33 +57,45 @@ export const ClientStore = signalStore(
         return null;
     }
   })),
-
+  // Método globales 
   withMethods((store) => {
     
       return {
-       updateState: (updates: Partial<ClientsState>) => {
-/*         var newStore : ClientsState = new ClientsState();
-        newStore.client = updates.client || store.client();
-        newStore.documents = updates.documents || store.documents();
-        newStore.currentDocument = updates.currentDocument || store.currentDocument();
-        newStore.priceRules = updates.priceRules || store.priceRules();
-        newStore.currentPriceRule = updates.currentPriceRule || store.currentPriceRule();
-        newStore.billingsAccounts = updates.billingsAccounts || store.billingsAccounts();
-        newStore.currentBillingAccount = updates.currentBillingAccount || store.currentBillingAccount();
-        newStore.certifications = updates.certifications || store.certifications();
-        newStore.currentCertification         = updates.currentCertification || store.currentCertification(); */
-        patchState(store, {...updates} );
-        saveClientStoreToStorage(store);
-      }, 
-       initializeFromStorage: () => {
-            var loadedStore = loadClientStoreFromStorage();
-            if(loadedStore){
-              patchState(store, loadedStore);
-            }
-    }}}),
+
+        updateState: (updates: Partial<ClientsState>) => {
+          patchState(store, {...updates} );
+          saveClientStoreToStorage(store);
+        }, 
+        initializeFromStorage: () => {
+          var loadedStore = loadClientStoreFromStorage();
+          if(loadedStore){
+            patchState(store, loadedStore);
+          }
+        },
+      }
+    }),
+    withMethods((store) => ({
+      validGralData: (gral: ClientDto) : string[] => {
+        const errors: string[] = [];
+        if(Helpers.isEmpty(gral.name) )                             errors.push('errors.client.name-required');
+        if(gral.client_group == null || gral.client_group == 0 )    errors.push('errors.client.group-required');
+        if(Helpers.isEmpty(gral.client_type) )                      errors.push('errors.client.client-type-required');
+        if(gral.is_subentity && (Helpers.isEmpty(gral.parent) )  )  errors.push('errors.client.principal-client-required');
+        if(Helpers.isEmpty(gral.contact_person_email))              errors.push('errors.client.contact-email-invalid');
+        if(Helpers.isEmpty(gral.contact_person_name))               errors.push('errors.client.contact-name-required');
+        store.updateState({errors, client: gral });
+        return errors;
+      }
+    })),
+
+    // Metodos que acceden a providers
     withMethods((store) => {
       const prov = inject(ClientsProvider);
       return {
+        clearStore: () =>{
+          store.updateState(new ClientsState());
+        },
+
         loadById: async  (clientId: number) => {
           try{
             const clientData = await prov.getClientGralData(clientId);
@@ -91,17 +103,39 @@ export const ClientStore = signalStore(
               return;
             }
             store.updateState({client: clientData });
-
+            if(clientData.id && clientData.id > 0){
+              // Cargar datos adicionales
+              const fullData = await prov.getClientFullData(clientData.id);
+              if(fullData){
+                store.updateState({ documents: fullData.documents, billingsAccounts: fullData.billings, priceRules: fullData.priceRules, certifications: fullData.certifications });
+              }
+            }
           }catch(error){
             console.error('Error al cargar cliente por ID:', error);
             return ;
           }
+        },
+        
+        saveGralData: async () => {
+          try{
+            if(store.validGralData(store.client()).length > 0){
+              throw new Error('Datos generales del cliente no son válidos.');
+            }
+            let savedClient: ClientDto | null= store.client();
+            if(savedClient.id && savedClient.id > 0){
+              savedClient = await prov.updateClientGralData(savedClient, store.curImage());
+            }else{
+              savedClient = await prov.createClientGralData(savedClient);
+            }
+            console.log('savedClient', savedClient);
+          }catch(error){
+            console.error('Error al guardar datos generales del cliente:', error);
+            throw error;
+          }
 
-        }
-
-      
       }
-    })
+    }}),
+
 );
   
 

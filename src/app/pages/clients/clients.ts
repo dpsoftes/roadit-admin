@@ -9,6 +9,7 @@ import { TabsComponent } from '@components/tabs.component/tabs.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientGroupSummary, ClientSummary } from '@dtos/clients/clients.dto';
 import { ClientsProvider } from '@providers';
+import { ClientStore } from '@store/clients.state';
 // import { ClientDto, ClientMiniDto, ClientGroupDto } from '@dtos'; // Temporalmente comentado
 
 @Component({
@@ -25,6 +26,7 @@ import { ClientsProvider } from '@providers';
 export class Clients implements OnInit {
   // Input signals para recibir datos del backend
   clientsProvider = inject(ClientsProvider);
+  clientStore = inject(ClientStore);
 
   groupsArray = signal<ClientGroupSummary[]>([]);
 
@@ -49,7 +51,11 @@ export class Clients implements OnInit {
         this.activeTab.set('list');
       }
     });
-
+    var act = this.clientTableConfig().actions;
+    act!.create!.action = () => {this.createClient()};
+    act!.create!.route = "";
+    this.clientTableConfig.set({...this.clientTableConfig(), actions: act});
+    
   }  
 
   async ngOnInit() {
@@ -125,7 +131,7 @@ export class Clients implements OnInit {
         } else if (event.data?.action === 'add') {
           this.add(event.data.row, type);
         } else if (event.data?.action === 'activate') {
-          this.createClient(event.data.row);
+          //this.createClient(event.data.row);
         }
         break;
       case 'select':
@@ -163,8 +169,11 @@ export class Clients implements OnInit {
     console.log('Add to client:', element);
   }
 
-  createClient(element: any) {
-    console.log('Create client:', element);
+  createClient() {
+    this.clientStore.clearStore();    
+    this.router.navigate(['/clients/create-client']);
+
+
   }
 
 

@@ -1,7 +1,7 @@
 <h1>{{'clients.create-client-title' | translate}}</h1>
 
 
-<app-tabs [tabs]="tabs" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)"></app-tabs>
+<app-tabs [tabs]="displayedTabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)"></app-tabs>
 
 <div class="tab-content">
     @switch (activeTab()) {

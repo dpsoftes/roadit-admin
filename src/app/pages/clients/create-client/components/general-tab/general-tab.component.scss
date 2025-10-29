@@ -189,6 +189,13 @@
     color: vars.$white !important;
     text-transform: uppercase;
 }
+
+.error-message{
+    color: red;
+    padding: 0px;
+    margin: 0px;
+    margin-top: -25px;
+}
 mat-checkbox {
     font-size: 12px;
     align-items: center;

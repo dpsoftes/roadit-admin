@@ -271,6 +271,13 @@ export enum Severity {
     HIGH = 'HIGH'
 }
 
+export const severityDescriptions: Record<Severity, string> = {
+    [Severity.NONE]: 'severity.NONE',
+    [Severity.LOW]: 'severity.LOW',
+    [Severity.MEDIUM]: 'severity.MEDIUM',
+    [Severity.HIGH]: 'severity.HIGH'
+};
+
 export enum Responsibility {
     DRIVER = 'DRIVER',
     FORCE_MAJEURE = 'FORCE_MAJEURE',
@@ -283,6 +290,18 @@ export enum Responsibility {
     THIRD_PARTY = 'THIRD_PARTY'
 }
 
+export const responsibilityDescriptions: Record<Responsibility, string> = {
+    [Responsibility.DRIVER]: 'responsibility.DRIVER',
+    [Responsibility.FORCE_MAJEURE]: 'responsibility.FORCE_MAJEURE',
+    [Responsibility.CLIENT]: 'responsibility.CLIENT',
+    [Responsibility.END_CLIENT]: 'responsibility.END_CLIENT',
+    [Responsibility.INTERNAL_PROCESS]: 'responsibility.INTERNAL_PROCESS',
+    [Responsibility.DUPLICATE]: 'responsibility.DUPLICATE',
+    [Responsibility.TECHNICAL_ISSUE]: 'responsibility.TECHNICAL_ISSUE',
+    [Responsibility.NOT_APPLICABLE]: 'responsibility.NOT_APPLICABLE',
+    [Responsibility.THIRD_PARTY]: 'responsibility.THIRD_PARTY'
+};
+
 // Protocol Enums
 export enum ProtocolType {
     SINGLE_CHECK = 'SINGLE_CHECK',
@@ -290,11 +309,23 @@ export enum ProtocolType {
     IMAGE = 'IMAGE'
 }
 
+export const protocolTypeDescriptions: Record<ProtocolType, string> = {
+    [ProtocolType.SINGLE_CHECK]: 'protocolType.SINGLE_CHECK',
+    [ProtocolType.MULTI_CHECK]: 'protocolType.MULTI_CHECK',
+    [ProtocolType.IMAGE]: 'protocolType.IMAGE'
+};
+
 export enum DirectionType {
     ARRIVAL = 'ARRIVAL',
     DEPARTURE = 'DEPARTURE',
     BOTH = 'BOTH'
 }
+
+export const directionTypeDescriptions: Record<DirectionType, string> = {
+    [DirectionType.ARRIVAL]: 'directionType.ARRIVAL',
+    [DirectionType.DEPARTURE]: 'directionType.DEPARTURE',
+    [DirectionType.BOTH]: 'directionType.BOTH'
+};
 
 // Event Enums
 export enum TransportEventType {
@@ -314,6 +345,23 @@ export enum TransportEventType {
     MISSION_FINISHED = 'MISSION_FINISHED'
 }
 
+export const transportEventTypeDescriptions: Record<TransportEventType, string> = {
+    [TransportEventType.CREATED]: 'transportEventType.CREATED',
+    [TransportEventType.UPDATED]: 'transportEventType.UPDATED',
+    [TransportEventType.DRIVER_ASSIGNED]: 'transportEventType.DRIVER_ASSIGNED',
+    [TransportEventType.DRIVER_CHANGED]: 'transportEventType.DRIVER_CHANGED',
+    [TransportEventType.CLIENT_CANCELED]: 'transportEventType.CLIENT_CANCELED',
+    [TransportEventType.DRIVER_CANCELED]: 'transportEventType.DRIVER_CANCELED',
+    [TransportEventType.CLIENT_APPT_SELECTED]: 'transportEventType.CLIENT_APPT_SELECTED',
+    [TransportEventType.DRIVER_DATETIME_SET]: 'transportEventType.DRIVER_DATETIME_SET',
+    [TransportEventType.PICKUP_DONE]: 'transportEventType.PICKUP_DONE',
+    [TransportEventType.DOC_START_UPLOADED]: 'transportEventType.DOC_START_UPLOADED',
+    [TransportEventType.DOC_END_UPLOADED]: 'transportEventType.DOC_END_UPLOADED',
+    [TransportEventType.EXPENSE_TICKET_UPL]: 'transportEventType.EXPENSE_TICKET_UPL',
+    [TransportEventType.DELIVERY_DONE]: 'transportEventType.DELIVERY_DONE',
+    [TransportEventType.MISSION_FINISHED]: 'transportEventType.MISSION_FINISHED'
+};
+
 export enum DriverEventType {
     ONBOARD_REGISTERED = 'ONBOARD_REGISTERED',
     DOC_UPLOADED = 'DOC_UPLOADED',
@@ -332,11 +380,35 @@ export enum DriverEventType {
     QUALITY_ISSUE_REPORTED = 'QUALITY_ISSUE_REPORTED'
 }
 
+export const driverEventTypeDescriptions: Record<DriverEventType, string> = {
+    [DriverEventType.ONBOARD_REGISTERED]: 'driverEventType.ONBOARD_REGISTERED',
+    [DriverEventType.DOC_UPLOADED]: 'driverEventType.DOC_UPLOADED',
+    [DriverEventType.DOC_VALIDATED]: 'driverEventType.DOC_VALIDATED',
+    [DriverEventType.DOC_REJECTED]: 'driverEventType.DOC_REJECTED',
+    [DriverEventType.PROFILE_UPDATED]: 'driverEventType.PROFILE_UPDATED',
+    [DriverEventType.QUOTE_SENT]: 'driverEventType.QUOTE_SENT',
+    [DriverEventType.QUOTE_REJECTED]: 'driverEventType.QUOTE_REJECTED',
+    [DriverEventType.TRANSPORT_ASSIGNED]: 'driverEventType.TRANSPORT_ASSIGNED',
+    [DriverEventType.EXTRA_EXPENSE_REQUESTED]: 'driverEventType.EXTRA_EXPENSE_REQUESTED',
+    [DriverEventType.EXTRA_EXPENSE_ACCEPTED]: 'driverEventType.EXTRA_EXPENSE_ACCEPTED',
+    [DriverEventType.EXTRA_EXPENSE_REJECTED]: 'driverEventType.EXTRA_EXPENSE_REJECTED',
+    [DriverEventType.TICKET_UPLOADED]: 'driverEventType.TICKET_UPLOADED',
+    [DriverEventType.TICKET_ACCEPTED]: 'driverEventType.TICKET_ACCEPTED',
+    [DriverEventType.TICKET_REJECTED]: 'driverEventType.TICKET_REJECTED',
+    [DriverEventType.QUALITY_ISSUE_REPORTED]: 'driverEventType.QUALITY_ISSUE_REPORTED'
+};
+
 export enum IncidenceEventType {
     OPENED = 'OPENED',
     COMMENT_ADDED = 'COMMENT_ADDED',
     STATUS_CHANGED = 'STATUS_CHANGED'
 }
+
+export const incidenceEventTypeDescriptions: Record<IncidenceEventType, string> = {
+    [IncidenceEventType.OPENED]: 'incidenceEventType.OPENED',
+    [IncidenceEventType.COMMENT_ADDED]: 'incidenceEventType.COMMENT_ADDED',
+    [IncidenceEventType.STATUS_CHANGED]: 'incidenceEventType.STATUS_CHANGED'
+};
 
 export enum DocumentType {
     FRONT_DNI = 'front_dni',
@@ -357,12 +429,38 @@ export enum DocumentType {
     WORK_PERMIT_NIE = 'work_permit_nie'
 }
 
+export const documentTypeDescriptions: Record<DocumentType, string> = {
+    [DocumentType.FRONT_DNI]: 'documentType.front_dni',
+    [DocumentType.BACK_DNI]: 'documentType.back_dni',
+    [DocumentType.FRONT_DRIVING_LICENSE]: 'documentType.front_driving_license',
+    [DocumentType.BACK_DRIVING_LICENSE]: 'documentType.back_driving_license',
+    [DocumentType.SELF_EMPLOYMENT_REGISTRATION_FEE]: 'documentType.self_employment_registration_fee',
+    [DocumentType.BANK_ACCOUNT_CERTIFICATE]: 'documentType.bank_account_certificate',
+    [DocumentType.CRIMINAL_RECORD_CERTIFICATE]: 'documentType.criminal_record_certificate',
+    [DocumentType.DRIVING_POINTS_CERTIFICATE]: 'documentType.driving_points_certificate',
+    [DocumentType.SELF_EMPLOYMENT_PAYMENT_CERTIFICATE]: 'documentType.self_employment_payment_certificate',
+    [DocumentType.TAX_CENSUS_REGISTRATION_CERTIFICATE]: 'documentType.tax_census_registration_certificate',
+    [DocumentType.FORM_036]: 'documentType.form_036',
+    [DocumentType.RETA_REGISTRATION_RESOLUTION]: 'documentType.reta_registration_resolution',
+    [DocumentType.SOCIAL_SECURITY_COMPLIANCE_CERTIFICATE]: 'documentType.social_security_compliance_certificate',
+    [DocumentType.TAX_DEBT_CERTIFICATE]: 'documentType.tax_debt_certificate',
+    [DocumentType.RESIDENCE_PERMIT_NIE]: 'documentType.residence_permit_nie',
+    [DocumentType.WORK_PERMIT_NIE]: 'documentType.work_permit_nie'
+};
+
 export enum IncidenceSeverity {
     LOW = 'LOW',
     MEDIUM = 'MEDIUM',
     HIGH = 'HIGH',
     CRITICAL = 'CRITICAL'
 }
+
+export const incidenceSeverityDescriptions: Record<IncidenceSeverity, string> = {
+    [IncidenceSeverity.LOW]: 'incidenceSeverity.LOW',
+    [IncidenceSeverity.MEDIUM]: 'incidenceSeverity.MEDIUM',
+    [IncidenceSeverity.HIGH]: 'incidenceSeverity.HIGH',
+    [IncidenceSeverity.CRITICAL]: 'incidenceSeverity.CRITICAL'
+};
 
 
 export enum CertificationStatus {
@@ -371,6 +469,12 @@ export enum CertificationStatus {
     MANUAL = 'manual'
 }
 
+export const certificationStatusDescriptions: Record<CertificationStatus, string> = {
+    [CertificationStatus.PASSED]: 'certificationStatus.passed',
+    [CertificationStatus.REVOKED]: 'certificationStatus.revoked',
+    [CertificationStatus.MANUAL]: 'certificationStatus.manual'
+};
+
 // Exam Enums
 export enum ExamQuestionType {
     SINGLE = 'single',
@@ -378,3 +482,20 @@ export enum ExamQuestionType {
     TEXT = 'text',
     BOOLEAN = 'boolean'
 }
+
+export const examQuestionTypeDescriptions: Record<ExamQuestionType, string> = {
+    [ExamQuestionType.SINGLE]: 'examQuestionType.single',
+    [ExamQuestionType.MULTIPLE]: 'examQuestionType.multiple',
+    [ExamQuestionType.TEXT]: 'examQuestionType.text',
+    [ExamQuestionType.BOOLEAN]: 'examQuestionType.boolean'
+};
+
+export enum FileUploadType{
+    URL = 'URL',
+    FILE = 'FILE'
+}
+
+export const fileUploadTypeDescriptions: Record<FileUploadType, string> = {
+    [FileUploadType.URL]: 'fileUploadType.URL',
+    [FileUploadType.FILE]: 'fileUploadType.FILE'
+};

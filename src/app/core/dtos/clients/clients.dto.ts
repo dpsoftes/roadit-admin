@@ -78,18 +78,17 @@ export class ClientDto {
     /**
      * Identificador único
      */
-    id?: number;
-  
-    at_risk?: boolean;
+    id: number = 0;
+    at_risk: boolean = false;
     /**
      * Tipo de facturación
      */
-    billing_type?: BillingType;
+    billing_type: BillingType = BillingType.AUTOMATIC; // Usa el valor por defecto más común o el que corresponda
     cif: string = "";
     /**
      * Grupo cliente
      */
-    client_group: number = 0;   
+    client_group: number = 0;
     /**
      * Origen del cliente
      */
@@ -98,73 +97,72 @@ export class ClientDto {
      * Tipo de cliente
      */
     client_type: ClientType = ClientType.COMPANY;
-    contact_person_email?: string;
+    contact_person_email: string = "";
     /**
      * Nombre de la persona de contacto
      */
-    contact_person_name?: string;
+    contact_person_name: string = "";
     /**
      * Teléfono de la persona de contacto
      */
-    contact_person_phone?: string;
+    contact_person_phone: string = "";
     /**
      * Fecha de Eliminación
      */
-    deleted_date?: Date | null;
+    deleted_date: Date = new Date(0);
     /**
      * Departamento
      */
-    department?: string;
+    department: string = "";
     /**
      * Identificador Eurotransport
      */
-    eurotransport_identifier?: null | string;
-
+    eurotransport_identifier: string = "";
     /**
      * Página de contacto 1
      */
-    html_contact_page1?: string;
+    html_contact_page1: string = "";
     /**
      * Página de contacto 2
      */
-    html_contact_page2?: string;
+    html_contact_page2: string = "";
     /**
      * Página de información
      */
-    html_info_page?: string;
+    html_info_page: string = "";
     /**
      * Minutos de retraso en la invitación
      */
-    invite_delay_minutes?: number | null;
-    is_subentity?: boolean;
-    logo?: null | string;
-    managers?: number[];
+    invite_delay_minutes: number = 0;
+    is_subentity: boolean = false;
+    logo: string = "";
+    managers: number[] = [];
     /**
      * Nombre
      */
     name: string = "";
-    own_insurance?: boolean;
+    own_insurance: boolean = false;
     /**
      * Cliente padre, Dejar vacío solo para clientes principales. Subclientes deben tener padre.
      */
-    parent?: number | null;
+    parent: number = 0;
     /**
      * Minutos de recordatorio
      */
-    reminder_interval_minutes?: number | null;
+    reminder_interval_minutes: number = 0;
     /**
      * Identificador Revel
      */
-    revel_identifier?: null | string;
+    revel_identifier: string = "";
     /**
      * Enviar encuesta
      */
-    send_survey?: boolean;
+    send_survey: boolean = false;
     /**
      * Estado
      */
-    state?: boolean;
-    tags?: number[];
+    state: boolean = false;
+    tags: number[] = [];
     [property: string]: any;
 
     static fromResponse(response: any): ClientDto {
