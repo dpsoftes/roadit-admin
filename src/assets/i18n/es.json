@@ -709,6 +709,11 @@
       "principal-client-required": "El cliente principal es obligatorio.",
       "contact-email-invalid": "El email de contacto no es válido.",
       "contact-name-required": "El nombre de la persona de contacto es obligatorio."
+    },
+    "documents": {
+      "type-movement": "El tipo de movimiento es obligatorio.",
+      "moment": "El momento es obligatorio",
+      "not-file": "Debe seleccionar un archivo o una URL."
     }
   },
   "fileUploadType": {
@@ -719,6 +724,7 @@
     "dropHere": "Suelta el archivo aquí...",
     "dropImage": "Arrastra una imagen aquí o haz clic para seleccionar",
     "dropFile": "Arrastra un fichero o haz click",
+    "viewFile": "ver archivo",
     "deleteFile": "Eliminar archivo"
   }
 

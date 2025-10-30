@@ -124,6 +124,20 @@ export class ClientsProvider {
             return null;
         }
     }
+    async createClientDocument(data: Partial<DocumentsClientsDto>, file?: File | null | undefined): Promise<DocumentsClientsDto | null> {
+        try {
+            const { id, ...dto } = data;
+      
+            var options: ApiRequestOptions = { url: EndPoints.createDocumentTemplate, formParams: dto };
+            if (file) {
+                options.fileParams = { 'file': file };
+            }
+            return await this.api.post<DocumentsClientsDto>(options );
+        } catch (error) {
+            console.error('Error al obtener admins:', error);
+            return null;
+        }
+    }   
 
 
 }

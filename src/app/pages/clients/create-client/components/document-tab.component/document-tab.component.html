@@ -35,11 +35,12 @@
                 @if(selectedFileUploadType() === 'URL') {
                 <label class="field-label">{{filetype.URL| translate}}</label>
                 <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput>
+                    <input type="text" [value]="curDocument.link()" (change)="curDocument.link.set($event.target.value)" matInput>
                 </mat-form-field>
                 }@else{
                 <label class="field-label">{{ filetype.FILE | translate}}</label>
                 <image-drop
+                    #fileDrop
                     [src]="imgUrl()"
                     text="dropFile.dropFile"
                     [width]="'100%'"
@@ -48,6 +49,7 @@
                     [maxWeight]="800"
                     [showLink]="true"
                     [canDelete]="true"
+                    [linkText]="linkText()"
                     (imageAccepted)="onImageAccepted($event)"
                     
             ></image-drop>
@@ -56,7 +58,7 @@
                 }
             </div>
             <div class="form-field eight_field button-field">
-                 <app-buttons type="save-small" text="clients.create-client.save" ></app-buttons>
+                 <app-buttons type="save-small" text="clients.create-client.save" (onClick)="saveDocument()" ></app-buttons>
             </div>
            
         </div>

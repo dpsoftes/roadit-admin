@@ -1,4 +1,4 @@
-import { WritableSignal } from "@angular/core";
+import { Signal, WritableSignal } from "@angular/core";
 
 export interface TableColumn {
   key: string;
@@ -13,6 +13,7 @@ export interface TableColumn {
   chipConfig?: ChipConfig;
   actionConfig?: ActionConfig;
   imageConfig?: ImageConfig;
+  render?: (column: TableColumn, row: any) => string;
 }
 
 export interface ChipConfig {
@@ -49,7 +50,7 @@ export interface ExportConfig {
 
 export interface TableConfig {
   columns: TableColumn[];
-  data: WritableSignal<any[]>;
+  data: WritableSignal<any[]> ;
   selectable?: boolean;
   pagination?: boolean;
   pageSize?: number;

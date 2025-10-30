@@ -133,8 +133,27 @@ export const ClientStore = signalStore(
             throw error;
           }
 
+        },
+        saveDocument: async (document: Partial<DocumentsClientsDto>, fileUpload: File | null = null) => {
+          try{
+            document.client = store.client().id;
+            if(Helpers.isEmpty(document.link)) document.link = "";
+            if(Helpers.isEmpty(document.title)) document.title ?? fileUpload?.name;
+            const {file, ...docData} = document;
+            var doc = await prov.createClientDocument(docData, fileUpload);
+            if(doc){
+              store.updateState({ documents: [...store.documents()!, doc! ], currentDocument: {} as DocumentsClientsDto });
+              return doc;
+            }
+            return null;
+          }catch(error){
+            console.error('Error al guardar documento del cliente:', error);
+            throw error;
+          }
+        }
       }
-    }}),
+    }
+  ),
 
 );
   

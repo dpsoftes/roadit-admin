@@ -710,6 +710,11 @@
       "principal-client-required": "Main client is required.",
       "contact-email-invalid": "Contact email is not valid.",
       "contact-name-required": "Contact person name is required."
+    },
+    "documents": {
+      "type-movement": "Movement type is required.",
+      "moment": "Moment is required.",
+      "not-file": "You must select a file or a URL."
     }
   },
   "fileUploadType": {
@@ -720,6 +725,7 @@
     "dropHere": "Drop the file here...",
     "dropImage": "Drag an image here or click to select",
     "dropFile": "Drag a file or click",
+    "viewFile": "View file",
     "deleteFile": "Delete file"
   }
 }

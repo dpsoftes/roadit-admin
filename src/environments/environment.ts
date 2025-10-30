@@ -7,6 +7,7 @@ export const environment: Environment = {
   environment: 'development',
   
   apiUrl: 'https://roadit-api.bluumi.net',
+  imgUrl: 'https://roadit-api.bluumi.net/',
   apiVersion: 'v1',
   baseUrl: 'http://localhost:3000',
   

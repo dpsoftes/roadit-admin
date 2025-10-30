@@ -419,6 +419,13 @@ export class Helpers {
     }
     return def;
   }
+  static toUrl(source: string | null){
+    if (!source) return '';
+    if (!source.startsWith('http') ) {
+      return environment.imgUrl + source.startsWith("/") ? source.substring(1) : source;
+    }
+    return source;
+  }
   /**
    * Obtener el entorno actual
    */

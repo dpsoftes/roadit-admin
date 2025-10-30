@@ -3,10 +3,14 @@ import { Component, ElementRef, EventEmitter, Output, ViewChild, input, output }
 import { Helpers } from '@utils/helpers';
 import { environment } from 'src/environments/environment';
 import { TranslatePipe } from "../../core/i18n/translate.pipe";
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'image-drop',
   standalone: true,
+  imports: [TranslatePipe, MatIconModule,  CommonModule, FormsModule],
   template: `
     <div
       class="image-dropzone"
@@ -20,7 +24,7 @@ import { TranslatePipe } from "../../core/i18n/translate.pipe";
       <input type="file" accept=".jpg,.jpeg,.png,.gif" style="display:none" #fileInput (change)="onFileSelected($event)">
         @if (!isEmptyImage) {
           @if(showLink()){
-          <a [href]="imageUrl" target="_blank">View Image</a>
+          <a [href]="imageUrl" target="_blank">{{linkText() | translate}}</a>
           }@else {
           <img [src]="imageUrl"
                [style.maxWidth]="width() || '100%'"
@@ -30,8 +34,12 @@ import { TranslatePipe } from "../../core/i18n/translate.pipe";
                style="object-fit:contain; display:block; margin:auto;" />
           }
           @if(canDelete()){
-          <div class="image-error" (click)="$event.stopPropagation(); imageAccepted.emit({ base64: '', file: null! });" style="cursor:pointer;">
-            &times; {{'dropFile.deleteFile' | translate}}
+
+          <div class="image-error"  (click)="$event.stopPropagation(); imageAccepted.emit({ base64: '', file: null! });" style="cursor:pointer;width: 24px">
+                <mat-icon [fontSet]="'material-symbols-outlined'">
+                        delete
+                      </mat-icon>
+            
           </div>
           }
         } @else {
@@ -83,8 +91,7 @@ import { TranslatePipe } from "../../core/i18n/translate.pipe";
       border-radius: 4px;
       font-size: 12px;
     }
-  `],
-  imports: [TranslatePipe]
+  `]
 })
 export class ImageDropComponent {
   width = input<string | undefined>();
@@ -94,6 +101,7 @@ export class ImageDropComponent {
   src = input<string | File | null>();
   imageAccepted  = output<{ base64: string, file: File }>();
   text = input<string>("dropFile.dropImage");
+  linkText = input<string>("dropFile.viewFile");
   showLink = input<boolean>(false);
   canDelete = input<boolean>(false);
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -172,6 +180,7 @@ export class ImageDropComponent {
     const inputEl = event.target as HTMLInputElement;
     if (!inputEl.files || inputEl.files.length === 0) return;
     const file = inputEl.files[0];
+    inputEl.value = '';
   await this.handleFile(file);
   }
 

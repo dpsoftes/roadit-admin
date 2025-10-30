@@ -14,6 +14,7 @@ export interface Environment {
   
   // URLs de API
   apiUrl: string;
+  imgUrl: string,
   apiVersion: string;
   baseUrl: string;
   images: {

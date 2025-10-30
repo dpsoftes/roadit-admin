@@ -24,6 +24,7 @@ import {
   ExportConfig 
 } from './dynamic-table.interfaces';
 import { environment } from 'src/environments/environment';
+import { Helpers } from '@utils/helpers';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -183,6 +184,9 @@ export class DynamicTableComponent implements OnInit {
     if(column.type === 'image'){
       return this.getImageUrl(column, row);
     }
+    if(column.render){
+      return column.render(column, row);
+    }
     return this.getNestedValue(row, column.key);
   }
   private getImageUrl(column: TableColumn, row: any): string {
@@ -190,11 +194,7 @@ export class DynamicTableComponent implements OnInit {
     if (!url) {
       return environment.images?.defaultAvatar || 'assets/images/sample_user_icon.png';
     }
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-
-    return environment.apiUrl + url;
+      return Helpers.toUrl(url);
   }
   private getNestedValue(obj: any, path: string): any {
     if (typeof path !== 'string') {
