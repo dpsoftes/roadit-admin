@@ -35,6 +35,7 @@
     <div class="filters_content">
       @for (filter of config().filters; track filter.key) {
       <div class="filter_field" [style]="getFilterStyles(filter)">
+        @if (filter.type !== 'checkbox') {
         <label class="filter_label">{{ filter.label | translate }}</label>
 
         <mat-form-field appearance="outline" class="filter_input">
@@ -53,7 +54,7 @@
 
           <!-- Filtro tipo text -->
           @if (filter.type === 'text') {
-          <input matInput [value]="filters()[filter.key] || ''"
+          <input class="textInput" matInput [value]="filters()[filter.key] || ''"
             (input)="onFilterChange(filter.key, $event.target.value)" [placeholder]="filter.label | translate">
           }
 
@@ -95,8 +96,18 @@
             }
           </mat-select>
           }
-
         </mat-form-field>
+        }
+
+        <!-- Filtro tipo checkbox - FUERA DEL MAT-FORM-FIELD -->
+        @if (filter.type === 'checkbox') {
+        <div class="checkbox-wrapper">
+          <mat-checkbox [checked]="filters()[filter.key] || false"
+            (change)="onCheckboxFilterChange(filter.key, $event.checked)">
+            {{ filter.label | translate }}
+          </mat-checkbox>
+        </div>
+        }
       </div>
       }
     </div>

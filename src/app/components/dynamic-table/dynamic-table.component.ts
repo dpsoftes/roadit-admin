@@ -14,14 +14,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { RouterModule } from '@angular/router';
-import { 
-  TableConfig, 
-  TableColumn, 
-  TableEvent, 
-  ActionButton, 
+import {
+  TableConfig,
+  TableColumn,
+  TableEvent,
+  ActionButton,
   ChipConfig,
   ImageConfig,
-  ExportConfig 
+  ExportConfig
 } from './dynamic-table.interfaces';
 import { environment } from 'src/environments/environment';
 
@@ -48,30 +48,30 @@ import { environment } from 'src/environments/environment';
   styleUrl: './dynamic-table.component.scss'
 })
 export class DynamicTableComponent implements OnInit {
-  config= input.required<TableConfig>();
+  config = input.required<TableConfig>();
   @Output() tableEvent = new EventEmitter<TableEvent>();
 
   displayedColumns: string[] = [];
   selection = new SelectionModel<any>(true, []);
   showFilters = signal(false);
   searchTerm = signal('');
-  filters = signal<{[key: string]: string | string[]}>({});
+  filters = signal<{ [key: string]: string | string[] | boolean }>({});
   page = signal(0);
   pageSize = signal(10);
-      
+
   ngOnInit() {
     this.initializeColumns();
   }
 
   hasFixedWidthColumns(): boolean {
-    return this.config().columns.some(column => 
+    return this.config().columns.some(column =>
       column.width || column.minWidth || column.maxWidth || column.flex
     );
   }
 
   private initializeColumns() {
     const columnKeys = this.config().columns.map(col => col.key);
-    
+
     if (this.config().selectable) {
       this.displayedColumns = ['select', ...columnKeys];
     } else {
@@ -150,6 +150,14 @@ export class DynamicTableComponent implements OnInit {
     this.emit('filter');
   }
 
+  onCheckboxFilterChange(filterKey: string, checked: boolean) {
+    this.filters.update(filters => ({
+      ...filters,
+      [filterKey]: checked
+    }));
+    this.emit('filter');
+  }
+
   onChipFilterChange(filterKey: string, values: string[]) {
     this.filters.update(filters => ({
       ...filters,
@@ -171,16 +179,16 @@ export class DynamicTableComponent implements OnInit {
     this.emitEvent('page');
   }
   emit(type: TableEvent['type']) {
-    this.emitEvent(type, { 
-      page: this.page(), 
-      pageSize: this.pageSize(), 
-      filters: this.filters(), 
+    this.emitEvent(type, {
+      page: this.page(),
+      pageSize: this.pageSize(),
+      filters: this.filters(),
       searchTerm: this.searchTerm()
     });
   }
   // Cell rendering methods
   getCellValue(row: any, column: TableColumn): any {
-    if(column.type === 'image'){
+    if (column.type === 'image') {
       return this.getImageUrl(column, row);
     }
     return this.getNestedValue(row, column.key);
@@ -223,13 +231,13 @@ export class DynamicTableComponent implements OnInit {
     if ('translateKey' in chipConfig && chipConfig.translateKey) {
       return `${chipConfig.translateKey}.${value}`;
     }
-    
+
     const tagLabels: { [key: string]: string } = {
       'nuevo': 'Nuevo',
       'en_riesgo': 'En Riesgo',
       'seguro_propio': 'Seguro Propio'
     };
-    
+
     return tagLabels[value] || value;
   }
 
@@ -240,7 +248,7 @@ export class DynamicTableComponent implements OnInit {
   getActionButtonClass(color?: string, hasIcon?: boolean): string {
     const baseClass = hasIcon ? 'action-button' : 'action-text-button';
     if (!color) return baseClass;
-    
+
     switch (color) {
       case 'primary':
         return `${baseClass} action-primary`;
@@ -257,7 +265,7 @@ export class DynamicTableComponent implements OnInit {
 
   getColumnStyles(column: TableColumn): string {
     const styles: string[] = [];
-    
+
     if (column.width || column.minWidth || column.maxWidth || column.flex) {
       if (column.width) {
         let width: string;
@@ -268,31 +276,31 @@ export class DynamicTableComponent implements OnInit {
         }
         styles.push(`width: ${width}`);
       }
-      
+
       if (column.minWidth) {
         const minWidth = typeof column.minWidth === 'number' ? `${column.minWidth}px` : column.minWidth;
         styles.push(`min-width: ${minWidth}`);
       }
-      
+
       if (column.maxWidth) {
         const maxWidth = typeof column.maxWidth === 'number' ? `${column.maxWidth}px` : column.maxWidth;
         styles.push(`max-width: ${maxWidth}`);
       }
-      
+
       if (column.flex) {
         const flex = typeof column.flex === 'number' ? column.flex.toString() : column.flex;
         styles.push(`flex: ${flex}`);
       }
-      
+
       return styles.join('; ');
     }
-    
+
     return '';
   }
 
   getCellClass(column: TableColumn): string {
     const classes: string[] = [];
-    
+
     switch (column.type) {
       case 'text':
         classes.push('text-cell');
@@ -305,7 +313,7 @@ export class DynamicTableComponent implements OnInit {
         classes.push('chip-cell');
         break;
     }
-    
+
     return classes.join(' ');
   }
 
@@ -333,7 +341,7 @@ export class DynamicTableComponent implements OnInit {
     const { columns, headers, filename } = exportConfig!
 
     let csvContent = headers.join(',') + '\n';
-    
+
     data().forEach(item => {
       const row = columns.map(column => {
         let value = item[column] || '';

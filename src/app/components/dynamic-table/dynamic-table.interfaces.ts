@@ -66,7 +66,7 @@ export interface TableConfig {
 export interface FilterConfig {
   key: string;
   label: string;
-  type: 'select' | 'text' | 'date' | 'chips';
+  type: 'select' | 'text' | 'date' | 'chips' | 'checkbox';
   options?: FilterOption[];
   multiple?: boolean; // Para filtros que permiten selección múltiple
   width?: number; // Ancho del filtro en porcentaje (ej: 25 = 25%)

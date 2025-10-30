@@ -7,7 +7,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'image',
       label: 'drivers.list.image',
       type: 'image',
-      width: 6,
+      width: 8,
       imageConfig: {
         width: '40px',
         height: '40px',
@@ -19,7 +19,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'name',
       label: 'drivers.list.name',
       type: 'text',
-      width: 9
+      width: 10
     },
     {
       key: 'dni',
@@ -37,7 +37,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'province',
       label: 'drivers.list.province',
       type: 'text',
-      width: 10
+      width: 12
     },
     {
       key: 'city',
@@ -55,7 +55,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'phone',
       label: 'drivers.list.phone',
       type: 'text',
-      width: 11
+      width: 12
     },
     {
       key: 'created_datetime',
@@ -67,13 +67,13 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'rating',
       label: 'drivers.list.rating',
       type: 'text',
-      width: 12
+      width: 8
     },
     {
       key: 'tags',
       label: 'drivers.list.tags',
       type: 'chip',
-      width: 10,
+      width: 8,
       chipConfig: {
         type: 'tags',
         translateKey: 'drivers.list.tags'
@@ -83,7 +83,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'validated',
       label: 'drivers.list.validated',
       type: 'chip',
-      width: 11,
+      width: 13,
       chipConfig: {
         type: 'status',
         translateKey: 'drivers.list.status'
@@ -129,7 +129,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
             label: 'Eliminar',
             color: 'error',
             action: 'delete'
-          },
+          }
         ]
       }
     }
@@ -213,20 +213,14 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
     {
       key: 'expiredDocuments',
       label: 'drivers.list.expiredDocuments',
-      type: 'select',
-      options: [
-        { value: 'EXPIRED', label: 'drivers.profile.EXPIRED' },
-        { value: 'NO_EXPIRED', label: 'drivers.profile.NO_EXPIRED' },
-      ]
+      type: 'checkbox',
+      width: 18
     },
     {
       key: 'newDocuments',
       label: 'drivers.list.newDocuments',
-      type: 'select',
-      options: [
-        { value: 'NEW_DOCUMENT', label: 'drivers.profile.NEW_DOCUMENT' },
-        { value: 'NO_NEW_DOCUMENT', label: 'drivers.profile.NO_NEW_DOCUMENT' },
-      ]
+      type: 'checkbox',
+      width: 18
     },
   ],
   exportConfig: {
