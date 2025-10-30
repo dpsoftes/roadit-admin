@@ -79,21 +79,21 @@ export const tableConfig: TableConfig = {
     data: signal([]),
     selectable: true,
     pagination: true,
-    pageSize: 10,
-    pageSizeOptions: [10, 20, 50],
+    pageSize: 5,
+    pageSizeOptions: [5,10, 20, 50],
     searchable: true,
     searchPlaceholder: 'users.list.searchPlaceholder',
     filterable: true,
     filters: [
       {
-        key: 'role',
+        key: 'roles',
         label: 'users.profile.role',
         type: 'select',
         options: [
-          { value: 'ADMIN', label: 'users.profile.ADMIN' },
-          { value: 'USER', label: 'users.profile.USER' },
-          { value: 'CLIENT_USER', label: 'users.profile.CLIENT_USER' },
-          { value: 'DRIVER', label: 'users.profile.DRIVER' }
+          { value: 'KAM', label: 'roleAdmin.KAM' },
+          { value: 'SUPERADMIN', label: 'roleAdmin.SUPERADMIN' },
+          { value: 'OPERATIONS_MANAGER', label: 'roleAdmin.OPERATIONS_MANAGER' },
+          { value: 'SALES_MANAGER', label: 'roleAdmin.SALES_MANAGER' }
         ]
       },
       {

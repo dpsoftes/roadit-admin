@@ -1,5 +1,6 @@
 import { signal } from "@angular/core";
 import { TableConfig, ExportConfig } from "@components/dynamic-table/dynamic-table.interfaces";
+import { ISO_COUNTRIES, ISO_COUNTRIES_SELECT } from "@dtos/country-langs.dto";
 
 export const groupsTableConfig: TableConfig = {
     columns: [
@@ -50,11 +51,7 @@ export const groupsTableConfig: TableConfig = {
               color: 'error',
               action: 'delete'
             },
-            {
-              label: 'clients.list.create-client',
-              color: 'accent',
-              action: 'activate'
-            }
+
           ]
         }
       }
@@ -74,18 +71,7 @@ export const groupsTableConfig: TableConfig = {
         label: 'clients.list.country_filter',
         type: 'select',
         width: 40,
-        options: [
-          { value: 'ES', label: 'clients.list.country.ES' },
-          { value: 'FR', label: 'clients.list.country.FR' },
-          { value: 'PT', label: 'clients.list.country.PT' },
-          { value: 'IT', label: 'clients.list.country.IT' },
-          { value: 'DE', label: 'clients.list.country.DE' },
-          { value: 'UK', label: 'clients.list.country.UK' },
-          { value: 'NL', label: 'clients.list.country.NL' },
-          { value: 'BE', label: 'clients.list.country.BE' },
-          { value: 'CH', label: 'clients.list.country.CH' },
-          { value: 'AT', label: 'clients.list.country.AT' },
-        ]
+        options: ISO_COUNTRIES_SELECT, 
       },
       {
         key: 'assigned_admins',
@@ -102,6 +88,6 @@ export const groupsTableConfig: TableConfig = {
       filename: `grupos_clientes_${new Date().toISOString().split('T')[0]}.csv`
     },
     actions: {
-      create: { label: 'clients.list.create-client', route: '/clients/create' }
+      create: { label: 'clients.list.create-group', route: '/clients/create-group' }
     }
   };

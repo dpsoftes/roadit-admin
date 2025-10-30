@@ -1,4 +1,4 @@
-import { Component, signal, OnInit, input } from '@angular/core';
+import { Component, signal, OnInit, input, WritableSignal } from '@angular/core';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '../../components/dynamic-table/dynamic-table.component';
@@ -21,13 +21,35 @@ export class Users implements OnInit {
 
   constructor(private router: Router, private adminProvider: AdminProvider) {}
 
-  tableConfig: TableConfig = tableConfig;
+  tableConfig: WritableSignal< TableConfig> = signal(tableConfig);
 
   async ngOnInit() {
-    var data = await this.adminProvider.getAdmins();
     
+    
+    this.tableConfig().actions!.create!.route = '/users/new';
+    await this.loadData();
+  }
+  async loadData(params?: TableEvent) {
+    const options = {page: 1, page_size: 10, params: {} as any};
+    if(params){
+      if(params.type === 'page'){
+        options.page = params.page!;
+        options.page_size = params.pageSize!;
+      }
+      if(params.data){
+        if(params.data.searchTerm){
+        }
+      if(params.data.filters){
+          for(const filterKey of Object.keys(params.data.filters)){
+            options.params[filterKey] = params.data.filters[filterKey];
+          }
+        }
+      }
 
-    this.tableConfig.data.set(data?.results as any[]);
+      
+    }
+    var data = await this.adminProvider.getAdmins(options);
+    this.tableConfig().data.set(data?.results as any[]);
   }
 
   onTableEvent(event: TableEvent) {
@@ -43,10 +65,10 @@ export class Users implements OnInit {
         console.log('Selected items:', event.data?.selected);
         break;
       case 'filter':
-        console.log('Filters applied:', event.data?.filters);
-        break;
       case 'search':
-        console.log('Search term:', event.data?.searchTerm);
+      case 'page':
+        this.loadData(event);
+//        console.log('Search term:', event.data?.searchTerm);
         break;
       case 'export':
         this.exportToCSV(event.data?.data);

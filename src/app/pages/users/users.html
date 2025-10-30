@@ -1,6 +1,6 @@
 <h1>{{ 'users.title' | translate }}</h1>
 
 <app-dynamic-table 
-  [config]="tableConfig" 
+  [config]="tableConfig()" 
   (tableEvent)="onTableEvent($event)">
 </app-dynamic-table>

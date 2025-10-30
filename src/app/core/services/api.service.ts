@@ -9,7 +9,7 @@ import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { EndPoints, HttpMethod } from './EndPoints';
 import { Helpers } from '@utils/helpers';
-import { GlobalStore } from '@store/global';
+import { GlobalStore } from '@store/global.state';
 
 
 export interface ApiRequestOptions {
@@ -65,8 +65,6 @@ export class ApiService {
             throw error;
         }
     }
-
-
     async post<T>(options: ApiRequestOptions): Promise<T> {
         try {
             const { headers, params, body, url } = await this.buildRequestOptions(options);

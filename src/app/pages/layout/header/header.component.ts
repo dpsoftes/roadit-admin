@@ -7,6 +7,7 @@ import { StoreService } from '@store/store.service';
 import { Router } from '@angular/router';
 import { UsersProvider } from '@providers';
 import { User } from '@dtos/user.dto';
+import { Helpers } from '@utils/helpers';
 
 
 
@@ -40,12 +41,16 @@ export class HeaderComponent {
 
   // Signal para el idioma actual
   readonly currentLang = this.i18nService.currentLanguage;
+  helper = Helpers;
   currentUser = this.storeService.global.user.user;
   currentLanguage = input<string>('ES');
 
   // Controla la visibilidad del desplegable de idiomas
   showLangs = signal(false);
-
+  avatar = computed(() => {
+    const user = this.currentUser();
+    return this.helper.toSrc(user?.image);
+  });
   onLogout(): void {
     this.logout.emit();
   }
@@ -56,6 +61,7 @@ export class HeaderComponent {
 
   onChangeLanguage(language: string): void {
     this.i18nService.setLanguage(language as 'es' | 'en');
+    
     this.changeLanguage.emit(language);
     this.showLangs.set(false);
   }

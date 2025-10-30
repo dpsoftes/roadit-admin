@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, signal, computed, effect } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, signal, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -24,6 +24,7 @@ import {
   ExportConfig 
 } from './dynamic-table.interfaces';
 import { environment } from 'src/environments/environment';
+import { Helpers } from '@utils/helpers';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -48,7 +49,7 @@ import { environment } from 'src/environments/environment';
   styleUrl: './dynamic-table.component.scss'
 })
 export class DynamicTableComponent implements OnInit {
-  @Input() config!: TableConfig;
+  config= input.required<TableConfig>();
   @Output() tableEvent = new EventEmitter<TableEvent>();
 
   // Signals para el estado del componente
@@ -56,13 +57,10 @@ export class DynamicTableComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   showFilters = signal(false);
   searchTerm = signal('');
-  filters = signal<{[key: string]: string | string[] | {start: string; end: string}}>({});
-  
-  // Signals para rangos de fechas
-  dateRangeValues = signal<{[key: string]: string}>({});
-
-  constructor() {}
-
+  filters = signal<{[key: string]: string | string[]}>({});
+  page = signal(0);
+  pageSize = signal(10);
+      
   ngOnInit() {
     this.initializeColumns();
   }
@@ -120,16 +118,16 @@ export class DynamicTableComponent implements OnInit {
 
 
   hasFixedWidthColumns(): boolean {
-    return this.config.columns.some(column => 
+    return this.config().columns.some(column => 
       column.width || column.minWidth || column.maxWidth || column.flex
     );
   }
 
   private initializeColumns() {
-    const columnKeys = this.config.columns.map(col => col.key);
+    const columnKeys = this.config().columns.map(col => col.key);
     
-    if (this.config.selectable) {
-      this.displayedColumns.set(['select', ...columnKeys]);
+    if (this.config().selectable) {
+      this.displayedColumns = ['select', ...columnKeys];
     } else {
       this.displayedColumns.set(columnKeys);
     }
@@ -138,7 +136,7 @@ export class DynamicTableComponent implements OnInit {
   // Selection methods
   isAllSelected(): boolean {
     const selected = this.selection.selected.length;
-    const total = this.config.data().length;
+    const total = this.config().data.length;
     return selected === total && total > 0;
   }
 
@@ -146,7 +144,7 @@ export class DynamicTableComponent implements OnInit {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.selection.select(...this.config.data());
+      this.selection.select(...this.config().data());
     }
     this.emitEvent('select', { selected: this.selection.selected });
   }
@@ -167,27 +165,8 @@ export class DynamicTableComponent implements OnInit {
     this.emitEvent('action', { action, row });
   }
 
-  // Filter methods
-  toggleFilters(): void {
-    this.showFilters.update(show => !show);
-  }
-
-  onFilterChange(filterKey: string, value: string) {
-    this.filters.update(filters => ({
-      ...filters,
-      [filterKey]: value
-    }));
-    this.emitEvent('filter', { filters: this.filters() });
-  }
 
   // Métodos para filtros de chips
-  onChipFilterChange(filterKey: string, values: string[]) {
-    this.filters.update(filters => ({
-      ...filters,
-      [filterKey]: values
-    }));
-    this.emitEvent('filter', { filters: this.filters() });
-  }
 
   getChipFilterValues(filterKey: string): string[] {
     const value = this.filters()[filterKey];
@@ -208,29 +187,58 @@ export class DynamicTableComponent implements OnInit {
   // Método para obtener estilos de ancho de filtros
   getFilterStyles(filter: any): string {
     if (!filter.width) return '';
-    
-    // Todos los valores de width son números que representan porcentajes
     return `width: ${filter.width}%`;
+  }
+
+
+  // Filter methods
+  toggleFilters(): void {
+    this.showFilters.update(show => !show);
+  }
+
+  onFilterChange(filterKey: string, value: string) {
+    this.filters.update(filters => ({
+      ...filters,
+      [filterKey]: value
+    }));
+    this.emit('filter');
+  }
+
+  onChipFilterChange(filterKey: string, values: string[]) {
+    this.filters.update(filters => ({
+      ...filters,
+      [filterKey]: values
+    }));
+    this.emit('filter');
   }
 
   // Search methods
   onSearchChange(searchTerm: string) {
     this.searchTerm.set(searchTerm);
-    this.emitEvent('search', { searchTerm });
+    this.emit('search')
   }
 
   // Pagination methods
   onPageChange(event: any) {
-    this.emitEvent('page', { 
-      page: event.pageIndex, 
-      pageSize: event.pageSize 
+    this.page.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
+    this.emitEvent('page');
+  }
+  emit(type: TableEvent['type']) {
+    this.emitEvent(type, { 
+      page: this.page(), 
+      pageSize: this.pageSize(), 
+      filters: this.filters(), 
+      searchTerm: this.searchTerm()
     });
   }
-
   // Cell rendering methods
   getCellValue(row: any, column: TableColumn): any {
     if(column.type === 'image'){
       return this.getImageUrl(column, row);
+    }
+    if(column.render){
+      return column.render(column, row);
     }
     return this.getNestedValue(row, column.key);
   }
@@ -239,11 +247,7 @@ export class DynamicTableComponent implements OnInit {
     if (!url) {
       return environment.images?.defaultAvatar || 'assets/images/sample_user_icon.png';
     }
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-
-    return environment.apiUrl + url;
+      return Helpers.toUrl(url);
   }
   private getNestedValue(obj: any, path: string): any {
     if (typeof path !== 'string') {
@@ -359,27 +363,27 @@ export class DynamicTableComponent implements OnInit {
   }
 
   onCreateClick() {
-    if (this.config.actions?.create?.action) {
-      this.config.actions.create.action();
+    if (this.config().actions?.create?.action) {
+      this.config().actions!.create!.action!();
     }
     this.emitEvent('action', { action: 'create' });
   }
 
   onExportCSV() {
-    if (!this.config.exportConfig) {
+    if (!this.config().exportConfig) {
       console.warn('No export configuration provided');
       return;
     }
 
-    const data = this.config.data;
-    const exportConfig = this.config.exportConfig;
+    const data = this.config().data;
+    const exportConfig = this.config().exportConfig;
 
     if (!data || data.length === 0) {
       alert('No hay datos para exportar');
       return;
     }
 
-    const { columns, headers, filename } = exportConfig;
+    const { columns, headers, filename } = exportConfig!
 
     let csvContent = headers.join(',') + '\n';
     
@@ -408,7 +412,7 @@ export class DynamicTableComponent implements OnInit {
     document.body.removeChild(link);
 
     // Emitir evento para notificar que la exportación se completó
-    this.emitEvent('export', { data: this.config.data, filename });
+    this.emitEvent('export', { data: this.config().data, filename });
   }
 
   private emitEvent(type: TableEvent['type'], data?: any) {

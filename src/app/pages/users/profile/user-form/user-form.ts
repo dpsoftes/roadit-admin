@@ -12,7 +12,7 @@ import { TranslatePipe } from '@i18n/translate.pipe';
 import { roleAdminDescriptions, UserRole, UserStatus,  userStatusDescriptions } from '@enums/user.enum';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { UsersState } from '@store/users.state';
-import { GlobalStore } from '@store/global';
+import { GlobalStore } from '@store/global.state';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
@@ -49,10 +49,7 @@ import { AdminProvider } from '@providers';
 })
 export class UserForm implements OnInit {
   private readonly adminProvider = inject(AdminProvider);
-  // ...existing code...
-
   private readonly globalState = inject(GlobalStore);
-  private readonly userState = inject (UsersState);
   profile = input.required<AdminSignal>(); 
   departments = input<string[]>(['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH']);
   showPhotoSection =  input<boolean>(true);
@@ -60,6 +57,7 @@ export class UserForm implements OnInit {
   showFooterButtons = input<boolean>(true);
   isCreating = computed(() => !this.profile().id());
   cancel = output<void>();
+  save = output<void>();
   photoDeleted = output<string>();
   Object = Object;
   readonly userRolesDescriptions: Record<string, string> =
@@ -90,26 +88,8 @@ export class UserForm implements OnInit {
   }
 
   async onSave() {
-
-    // Nuevo método onSave con lógica de patch
-    const errors = this.validateProfile();
-    if (errors.length > 0) {
-      Helpers.Instance.showToast(errors.join('\n'), 'ERROR');
-      return;
-    }
-    if (!this.isCreating()) {
-      // PATCH: actualizar usuario existente
-      const patchDto = this.profile().toPatch();
-      const id = this.profile().id();
-      const result = await this.adminProvider.updateAdmin(id, patchDto);
-      if (result) {
-        Helpers.Instance.showToast('Usuario actualizado correctamente', 'OK');
-        // Actualiza el store si es necesario
-      } else {
-        Helpers.Instance.showToast('Error al actualizar usuario', 'ERROR');
-      }
-    }
-    // ...código para crear si es necesario
+    this.save.emit();
+    return;
   }
 
   onCancel(): void {
@@ -132,19 +112,7 @@ export class UserForm implements OnInit {
       (profile as any)[field].set(value);
     }
   }
-  // Validación de campos obligatorios excepto departamento
-  validateProfile(): string[] {
-  const errors: string[] = [];
-  const p = this.profile();
-  if (!p.name()) errors.push('El nombre es obligatorio');
-  if (!p.last_name()) errors.push('El apellido es obligatorio');
-  if (!p.email() || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(p.email())) errors.push('Email inválido');
-  if (!p.image()) errors.push('La imagen es obligatoria');
-  if (!p.roles() || p.roles().length === 0) errors.push('Debe seleccionar al menos un rol');
-  if (typeof p.is_active() !== 'boolean') errors.push('Debe seleccionar el estado');
-  // No se valida departamentos ni teléfono ni username
-  return errors;
-  }
+ 
   onImageAccepted(event: { base64: string, file: File }) {
     this.profile().image.set(event.file);
   }

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { ApiService } from '@services/api.service';
+import { ApiRequestOptions, ApiService } from '@services/api.service';
 import { EndPoints } from '@services/EndPoints';
 import { AdminRequestDto, AdminRequestPatchedDto, AdminDto, PaginatedAdminListDto } from '../dtos/admins.dto';
 import { Helpers } from '@utils/helpers';
@@ -8,19 +8,29 @@ import { Helpers } from '@utils/helpers';
 export class AdminProvider {
   private readonly api = inject(ApiService);
 
-  async getAdmins(page: number = 1, page_size: number = 100000, params?: any): Promise<PaginatedAdminListDto | null> {
+  async getAdmins(options : { page?: number , page_size?: number, params?: any}): Promise<PaginatedAdminListDto | null> {
     try {
-      const queryParams = { page, page_size, ...(params || {}) };
-      return await this.api.get<PaginatedAdminListDto>({ url: EndPoints.getAdmins, queryParams });
+      options.page = options.page || 1;
+      options.page_size = options.page_size || 10;
+      return await this.api.get<PaginatedAdminListDto>({ url: EndPoints.getAdmins, queryParams: options });
     } catch (error) {
       console.error('Error al obtener admins:', error);
       return null;
     }
   }
 
-  async createAdmin(dto: AdminRequestDto): Promise<AdminDto | null> {
+  async createAdmin(dto: Partial<AdminRequestDto>): Promise<AdminDto | null> {
     try {
-      return await this.api.post<AdminDto>({ url: EndPoints.createAdmin, body: dto });
+      const { image, ...rest } = dto;
+      const options: ApiRequestOptions = {
+        url: EndPoints.createAdmin,
+        formParams: { ...rest },
+      };
+      if (image) {
+        options.fileParams = { image };
+      }
+
+      return await this.api.post<AdminDto>(options);
     } catch (error) {
       console.error('Error al crear admin:', error);
       return null;
@@ -36,11 +46,19 @@ export class AdminProvider {
     }
   }
 
-  async updateAdmin(adminId: number, dto: AdminRequestPatchedDto): Promise<AdminDto | null> {
+  async updateAdmin(adminId: number, dto: Partial<AdminRequestPatchedDto>): Promise<AdminDto | null> {
     try {
       const { image, ...rest } = dto;
+      const options: ApiRequestOptions = {
+        url: EndPoints.updateAdmin,
+        queryParams: { adminId },
+        formParams: { ...rest },
+      };
+      if (image) {
+        options.fileParams = { image };
+      }
 
-      return await this.api.patch<AdminDto>({ url: EndPoints.updateAdmin, queryParams: { adminId }, formParams: {...rest}, fileParams: {image: image!} });
+      return await this.api.patch<AdminDto>(options);
     } catch (error) {
       console.error('Error al actualizar admin:', error);
       return null;

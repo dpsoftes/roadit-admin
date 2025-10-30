@@ -41,8 +41,8 @@
       
       <!-- Avatar del usuario -->
       <div class="user-avatar">
-        @if (currentUser().image) {
-          <img [src]="currentUser().image" [alt]="currentUser().image || 'Avatar'" class="avatar-image" />
+        @if (avatar()) {
+          <img [src]="avatar()" [alt]="currentUser().image || 'Avatar'" class="avatar-image" />
         } @else {
           <div class="avatar-placeholder">
             <span class="material-icons">person</span>

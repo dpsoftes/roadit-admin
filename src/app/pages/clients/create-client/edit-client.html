@@ -1,13 +1,12 @@
 <h1>{{'clients.create-client-title' | translate}}</h1>
 
 
-<app-tabs [tabs]="tabs" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)"></app-tabs>
+<app-tabs [tabs]="displayedTabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)"></app-tabs>
 
 <div class="tab-content">
     @switch (activeTab()) {
         @case ('general') {
             <app-general-tab-component 
-                [clientData]="clientData()"
                 [clientGroups]="clientGroups()"
                 (formDataChange)="onFormDataChange($event)">
             </app-general-tab-component>

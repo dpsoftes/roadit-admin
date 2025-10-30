@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, output, computed, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MenuItem, SubMenuItem } from './sidebar.types';
@@ -24,7 +24,6 @@ export class SidebarComponent {
 
   // Estructura del menú importada desde archivo de configuración
   menuItems: MenuItem[] = MENU_ITEMS;
-
   // Computed para obtener las traducciones actualizadas
   translatedMenuItems = computed(() => {
     return this.menuItems.map(item => ({

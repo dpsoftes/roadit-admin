@@ -1,4 +1,4 @@
-<h1>{{'clients.create-group-title' | translate}}</h1>
+<h1>{{titleView() | translate}}</h1>
 
 <mat-card>
     <mat-card-content>
@@ -6,16 +6,20 @@
         <mat-form-field appearance="outline">
             <mat-label>{{'clients.create-group.name' | translate}}</mat-label>
             <input type="text" matInput formControlName="name">
-            <mat-error *ngIf="groupForm.get('name')?.invalid && groupForm.get('name')?.touched">
-                El nombre es requerido
-            </mat-error>
+            @if (groupForm.get('name')?.invalid && groupForm.get('name')?.touched) {
+                <mat-error>
+                    El nombre es requerido
+                </mat-error>
+            }
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>{{'clients.create-group.country' | translate}}</mat-label>
             <input type="text" matInput formControlName="country">
-            <mat-error *ngIf="groupForm.get('country')?.invalid && groupForm.get('country')?.touched">
-                El país es requerido
-            </mat-error>
+            @if (groupForm.get('country')?.invalid && groupForm.get('country')?.touched) {
+                <mat-error>
+                    El país es requerido
+                </mat-error>
+            }
         </mat-form-field>
         <mat-form-field appearance="outline" class="users-field">
             <mat-label>{{'clients.create-group.assigned-admins' | translate}}</mat-label>
@@ -24,20 +28,20 @@
                 formControlName="assigned_admins"
                 class="users-select">
                 @for (admin of availableAdmins(); track admin.id) {
-                    <mat-option [value]="admin.id">{{ admin.name }} {{ admin.lastname }}</mat-option>
+                    <mat-option [value]="admin.id">{{ admin.name }} </mat-option>
                 }
             </mat-select>
             
             @if (selectedAdmins.length > 0) {
                 <div class="chips-spacer">
                     @for (admin of selectedAdmins; track admin.id) {
-                        <div class="chip-placeholder">{{ admin.name }} {{ admin.lastname }}</div>
+                        <div class="chip-placeholder">{{ admin.name }} </div>
                     }
                 </div>
                 <div class="chips-container">
                     @for (admin of selectedAdmins; track admin.id) {
                         <mat-chip class="user-chip">
-                            {{ admin.name }} {{ admin.lastname }}
+                            {{ admin.name }} 
                         </mat-chip>
                     }
                 </div>

@@ -2,6 +2,7 @@
 
 // Crear Admin
 export class AdminRequestDto {
+  id?: number;
   username!: string;
   email!: string;
   phone?: string | null;
@@ -17,6 +18,7 @@ export class AdminRequestDto {
 
 // Actualización parcial de Admin (usa las mismas propiedades que AdminRequestDto)
 export class AdminRequestPatchedDto {
+  id?: number;
   username?: string;
   email?: string;
   phone?: string | null;
@@ -54,6 +56,7 @@ export class AdminSummaryDto {
 
 // Paginación de Admins
 export class PaginatedAdminListDto {
+  id?: number;
   count!: number;
   next?: string | null;
   previous?: string | null;

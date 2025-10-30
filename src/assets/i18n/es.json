@@ -41,10 +41,12 @@
     "title": "Usuarios",
     "profileTittle": "Perfil de Usuario",
     "create-user": "Crear Nuevo usuario",
+    "edit-user": "Editar Usuario",
     "profile": {
       "upload-photo": "SUBIR FOTO",
       "delete": "ELIMINAR",
       "photo-upload-explanation": "Permite JPG, GIF o PNG. Tamaño max. 800Kb",
+      "userName": "nombre inicio de sesión",
       "name": "Nombre",
       "lastname": "Apellidos",
       "email": "Email",
@@ -94,6 +96,7 @@
   "clients": {
     "title": "Clientes",
     "create-group-title": "Creación Grupo Cliente",
+    "edit-group-title": "Edición Grupo Cliente",
     "create-client-title": "Crear/Editar Cliente",
     "create-client": {
       "upload-logo": "Subir Logo",
@@ -268,6 +271,7 @@
       "actions": "Acciones",
       "searchPlaceholder": "Buscar...",
       "create-client": "CREAR NUEVO CLIENTE",
+      "create-group": "CREAR NUEVO GRUPO",
       "group_filter": "Grupo",  
       "cif_filter": "CIF",
       "registration_date_filter": "Fecha de alta",
@@ -767,5 +771,32 @@
       "placeholder": "Escriba aquí...",
       "save": "GUARDAR"
     }
+  },
+  "errors": {
+    "client": {
+      "name-required": "El nombre del cliente es obligatorio.",
+      "group-required": "El grupo de cliente es obligatorio.",
+      "client-type-required": "El tipo de cliente es obligatorio.",
+      "principal-client-required": "El cliente principal es obligatorio.",
+      "contact-email-invalid": "El email de contacto no es válido.",
+      "contact-name-required": "El nombre de la persona de contacto es obligatorio."
+    },
+    "documents": {
+      "type-movement": "El tipo de movimiento es obligatorio.",
+      "moment": "El momento es obligatorio",
+      "not-file": "Debe seleccionar un archivo o una URL."
+    }
+  },
+  "fileUploadType": {
+    "URL": "Url",
+    "FILE": "Archivo"
+  },
+  "dropFile": {
+    "dropHere": "Suelta el archivo aquí...",
+    "dropImage": "Arrastra una imagen aquí o haz clic para seleccionar",
+    "dropFile": "Arrastra un fichero o haz click",
+    "viewFile": "ver archivo",
+    "deleteFile": "Eliminar archivo"
   }
+
 }

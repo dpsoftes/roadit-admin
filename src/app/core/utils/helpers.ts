@@ -6,6 +6,7 @@
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarCustomComponent } from '../../components/snackbar-custom.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class Helpers {
@@ -84,10 +85,15 @@ export class Helpers {
    * Verificar si un valor está vacío (null, undefined, string vacío, array vacío, objeto vacío)
    */
   static isEmpty(value: any): boolean {
-    if (value == null) return true;
+    if (value == null  || value == undefined) return true;
     if (typeof value === 'string') return value.trim().length === 0;
     if (Array.isArray(value)) return value.length === 0;
     if (typeof value === 'object') return Object.keys(value).length === 0;
+    return false;
+  }
+  static isEmptyOrZero(value: any): boolean {
+    if (this.isEmpty(value)) return true;
+    if (typeof value === 'number' && value === 0) return true;
     return false;
   }
 
@@ -398,7 +404,28 @@ export class Helpers {
     }
     return false;
   }
-
+  static toSrc(source: string | File | null, def: string = "assets/images/sample_user_icon.png"): string {
+    if (!source) return def;
+    if (typeof source === 'string') {
+      if (source.startsWith('http') || source.startsWith('data:')) {
+        return source;
+      }else{
+        return environment.apiUrl + source;
+      }
+    }
+    if (source instanceof File) {
+      const blobUrl = URL.createObjectURL(source);
+      return blobUrl;
+    }
+    return def;
+  }
+  static toUrl(source: string | null){
+    if (!source) return '';
+    if (!source.startsWith('http') ) {
+      return environment.imgUrl + source.startsWith("/") ? source.substring(1) : source;
+    }
+    return source;
+  }
   /**
    * Obtener el entorno actual
    */

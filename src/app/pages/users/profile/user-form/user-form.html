@@ -3,14 +3,14 @@
     @if(showPhotoSection()){
     <mat-card-header>
         <div class="photo-section">
-                        <image-drop
-                            [src]="profile().image()"
-                            [width]="'120px'"
-                            [height]="'120px'"
-                            [formats]="['JPG','JPEG','GIF','PNG']"
-                            [maxWeight]="800"
-                            (imageAccepted)="onImageAccepted($event)"
-                        ></image-drop>
+            <image-drop
+                [src]="profile().image()"
+                [width]="'120px'"
+                [height]="'120px'"
+                [formats]="['JPG','JPEG','GIF','PNG']"
+                [maxWeight]="800"
+                (imageAccepted)="onImageAccepted($event)"
+            ></image-drop>
             <div class="actions">
                 <input type="file" accept=".jpg,.jpeg,.png,.gif" style="display:none" #fileInput (change)="onFileSelected($event)">
                 <button class="upload_photo_btn" matButton="filled" (click)="fileInput.click()">{{'users.profile.upload-photo' | translate}}</button>
@@ -23,6 +23,12 @@
     </mat-card-header>
     }
     <mat-card-content>
+        @if(isCreating()){
+        <mat-form-field appearance="outline" class="half_field">
+            <mat-label>{{'users.profile.userName' | translate}}</mat-label>
+            <input matInput [value]="profile().username()" (input)="profile().username.set($event.target.value)">
+        </mat-form-field>
+        }
         <mat-form-field appearance="outline" class="half_field">
             <mat-label>{{'users.profile.name' | translate}}</mat-label>
             <input matInput [value]="profile().name()" (input)="profile().name.set($event.target.value)">
@@ -38,7 +44,7 @@
             <input matInput [value]="profile().email()" (input)="profile().email.set($event.target.value)">
         </mat-form-field>
         
-        @if (showPasswordField()) {
+<!--         @if (showPasswordField()) {
         <div class="form-field half_field">
             <label class="field-label">{{'users.profile.password' | translate}}</label>
             <div class="password-container">
@@ -53,7 +59,7 @@
             </div>
             <p class="placeholder-text">Placeholder text</p>
         </div>
-        }
+        } -->
         
         <div class="form-field half_field">
             <label class="field-label">{{'users.profile.role' | translate}}</label>
@@ -73,7 +79,6 @@
                     }
                 </mat-select>
             </mat-form-field>
-            <p class="placeholder-text">Placeholder text</p>
         </div>
         
         <mat-form-field class="third_field" appearance="outline">

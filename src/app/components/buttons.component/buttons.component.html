@@ -1,3 +1,8 @@
+@if (type() == 'save-changes-noform') {
+    <button mat-button  class="primary_btn save_changes_btn" (click)="onClick.emit()">
+        {{text() | translate}}
+    </button>
+}
 @if (type() == 'save-changes') {
     <button mat-button type="submit" class="primary_btn save_changes_btn" (click)="onClick.emit()">
         {{text() | translate}}

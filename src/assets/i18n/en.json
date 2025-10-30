@@ -41,10 +41,12 @@
     "title": "Users",
     "profileTittle": "User Profile",
     "create-user": "Create new user",
+    "edit-user": "Editar Usuario",
     "profile": {
       "upload-photo": "UPLOAD PHOTO",
       "delete": "DELETE",
       "photo-upload-explanation": "Allows JPG, GIF or PNG. Max size 800Kb",
+      "userName": "login user name",
       "name": "Name",
       "lastname": "Last Name",
       "email": "Email",
@@ -94,6 +96,7 @@
   "clients": {
     "title": "Clients",
     "create-group-title": "Create Client Group",
+    "edit-group-title": "Edit Grupo Cliente",
     "create-client-title": "Create/Edit Client",
     "create-client": {
       
@@ -268,6 +271,7 @@
       "actions": "Actions",
       "searchPlaceholder": "Search...",
       "create-client": "CREATE NEW CLIENT",
+      "create-group": "CREATE NEW GROUP",
       "group_filter": "Group",
       "cif_filter": "CIF",
       "registration_date_filter": "Registration date",
@@ -767,5 +771,32 @@
       "placeholder": "Type here...",
       "save": "SAVE"
     }
+  }
+  ,
+  "errors": {
+    "client": {
+      "name-required": "Client name is required.",
+      "group-required": "Client group is required.",
+      "client-type-required": "Client type is required.",
+      "principal-client-required": "Main client is required.",
+      "contact-email-invalid": "Contact email is not valid.",
+      "contact-name-required": "Contact person name is required."
+    },
+    "documents": {
+      "type-movement": "Movement type is required.",
+      "moment": "Moment is required.",
+      "not-file": "You must select a file or a URL."
+    }
+  },
+  "fileUploadType": {
+    "URL": "Url",
+    "FILE": "File"
+  },
+  "dropFile": {
+    "dropHere": "Drop the file here...",
+    "dropImage": "Drag an image here or click to select",
+    "dropFile": "Drag a file or click",
+    "viewFile": "View file",
+    "deleteFile": "Delete file"
   }
 }
