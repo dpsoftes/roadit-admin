@@ -14,11 +14,11 @@ export const routes: Routes = [
       {
         path: 'users',
         children: [
-        {
-          path: '',
-          loadComponent: () => import('./pages/users/users').then(m => m.Users)
-        },
-        
+          {
+            path: '',
+            loadComponent: () => import('./pages/users/users').then(m => m.Users)
+          },
+
           {
             path: 'new',
             loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
@@ -28,40 +28,43 @@ export const routes: Routes = [
             loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
           },
           {
-          path: 'profile',
-          loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
+            path: 'profile',
+            loadComponent: () => import('./pages/users/profile/profile').then(m => m.Profile)
           },
         ]
       },
-      
+      {
+        path: 'drivers',
+        loadComponent: () => import('./pages/drivers/drivers.component').then(m => m.DriversComponent)
+      },
       {
         path: 'clients',
-        
+
         children: [
-            {
-              path: '',
-              loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
-            },
-            {
-              path: 'create-group',
-              loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
-            },
-            {
-              path: 'edit-group/:id',
-              loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
-            },
-            {
-              path: 'edit-client/:id',
-              loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
-            },
-            {
-              path: 'create-client',
-              loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
-            },
-          ]
-        },
+          {
+            path: '',
+            loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+          },
+          {
+            path: 'create-group',
+            loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
+          },
+          {
+            path: 'edit-group/:id',
+            loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
+          },
+          {
+            path: 'edit-client/:id',
+            loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
+          },
+          {
+            path: 'create-client',
+            loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
+          },
+        ]
+      },
       // {
-      //  path: '**', 
+      //  path: '**',
       //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
       // }
     ]
@@ -72,7 +75,7 @@ export const routes: Routes = [
     canActivate: [noAuthGuard]
   },
   {
-    path: '**', 
+    path: '**',
     loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
   }
 ];
