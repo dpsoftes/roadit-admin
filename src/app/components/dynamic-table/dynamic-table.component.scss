@@ -112,31 +112,32 @@ mat-card-header {
       gap: 8px;
 
       .filter_label {
-        font-weight: 600;
-        font-size: 14px;
+        font-weight: 700;
+        font-size: 16px;
         color: vars.$gray-700;
         margin: 0;
-        line-height: 1.2;
+        line-height: normal;
       }
 
       .filter_input {
         width: 100%;
 
+
         ::ng-deep .mat-mdc-form-field {
-          height: 48px !important;
-          max-height: 48px !important;
+          height: 38px !important;
+          max-height: 38px !important;
         }
 
         ::ng-deep .mat-mdc-form-field-wrapper {
-          height: 48px !important;
-          max-height: 48px !important;
+          height: 38px !important;
+          max-height: 38px !important;
           padding-bottom: 0 !important;
         }
 
         ::ng-deep .mat-mdc-form-field-infix {
-          min-height: 48px !important;
-          height: 48px !important;
-          max-height: 48px !important;
+          min-height: 38px !important;
+          height: 38px !important;
+          max-height: 38px !important;
           padding: 8px 0 !important;
           padding-top: 0 !important;
           padding-bottom: 0 !important;
