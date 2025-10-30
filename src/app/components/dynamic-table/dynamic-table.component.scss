@@ -2,7 +2,7 @@
 
 mat-card {
   border-radius: 10px;
-  padding: 0px;
+  padding: 10px;
 }
 
 mat-card-header {
@@ -339,19 +339,18 @@ mat-card-content {
       color: vars.$text-primary;
       background-color: vars.$gray-100;
       position: relative;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      height: 56px;
+      max-height: 56px;
+      padding: 8px !important;
+      vertical-align: middle;
 
-      &:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        top: 20%;
-        bottom: 20%;
-        width: 1px;
-        background-color: vars.$gray-300;
-      }
+      // PERMITIR SALTO DE LÍNEA SOLO POR ESPACIOS, NO DIVIDIR PALABRAS
+      white-space: normal;
+      word-wrap: normal;
+      word-break: normal;
+      overflow: hidden;
+      line-height: 1.3;
+      hyphens: none;
     }
 
     td {
@@ -498,12 +497,11 @@ mat-card-content {
 // ESTILOS PARA BOTONES DE ACCIÓN
 .actions-container {
   display: flex;
-  gap: 8px;
   justify-content: center;
   align-items: center;
 
   button {
-    min-width: 36px;
+    min-width: 16px;
     width: 36px;
     height: 36px;
     padding: 0;

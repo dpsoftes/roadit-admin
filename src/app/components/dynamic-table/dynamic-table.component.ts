@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, signal, input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, signal, input, ViewChild, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -23,6 +23,7 @@ import {
   ImageConfig,
   ExportConfig
 } from './dynamic-table.interfaces';
+import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -47,9 +48,10 @@ import { environment } from 'src/environments/environment';
   templateUrl: './dynamic-table.component.html',
   styleUrl: './dynamic-table.component.scss'
 })
-export class DynamicTableComponent implements OnInit {
+export class DynamicTableComponent implements OnInit, AfterViewInit {
   config = input.required<TableConfig>();
   @Output() tableEvent = new EventEmitter<TableEvent>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns: string[] = [];
   selection = new SelectionModel<any>(true, []);
@@ -57,10 +59,28 @@ export class DynamicTableComponent implements OnInit {
   searchTerm = signal('');
   filters = signal<{ [key: string]: string | string[] | boolean }>({});
   page = signal(0);
-  pageSize = signal(10);
+  pageSize = signal(5);
+
+  paginatedData = computed(() => {
+    const data = this.config().data();
+    const pageIndex = this.page();
+    const size = this.pageSize();
+    const startIndex = pageIndex * size;
+    const endIndex = startIndex + size;
+    return data.slice(startIndex, endIndex);
+  });
 
   ngOnInit() {
     this.initializeColumns();
+  }
+
+  ngAfterViewInit() {
+    // ESTABLECER EL PAGESIZE DESPUÉS DE QUE LA VISTA SE INICIALICE
+    const configPageSize = this.config().pageSize;
+    if (this.paginator && configPageSize !== undefined) {
+      this.pageSize.set(configPageSize);
+      this.paginator.pageSize = configPageSize;
+    }
   }
 
   hasFixedWidthColumns(): boolean {
@@ -178,6 +198,7 @@ export class DynamicTableComponent implements OnInit {
     this.pageSize.set(event.pageSize);
     this.emitEvent('page');
   }
+
   emit(type: TableEvent['type']) {
     this.emitEvent(type, {
       page: this.page(),
@@ -290,6 +311,11 @@ export class DynamicTableComponent implements OnInit {
       if (column.flex) {
         const flex = typeof column.flex === 'number' ? column.flex.toString() : column.flex;
         styles.push(`flex: ${flex}`);
+      }
+
+      // AÑADIR ALINEACIÓN
+      if (column.align) {
+        styles.push(`text-align: ${column.align}`);
       }
 
       return styles.join('; ');

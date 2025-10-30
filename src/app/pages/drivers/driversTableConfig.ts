@@ -37,13 +37,15 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'province',
       label: 'drivers.list.province',
       type: 'text',
-      width: 12
+      width: 10,
+      align: 'center'
     },
     {
       key: 'city',
       label: 'drivers.list.city',
       type: 'text',
       width: 10,
+      // align: 'center'
     },
     {
       key: 'email',
@@ -67,7 +69,8 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'rating',
       label: 'drivers.list.rating',
       type: 'text',
-      width: 8
+      width: 12,
+      align: 'center'
     },
     {
       key: 'tags',
@@ -109,7 +112,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'actions',
       label: 'drivers.list.actions',
       type: 'actions',
-      width: 11,
+      width: 10,
       actionConfig: {
         actions: [
           {
@@ -117,12 +120,6 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
             label: 'Editar',
             color: 'warn',
             action: 'edit'
-          },
-          {
-            icon: 'material-symbols-outlined/visibility',
-            label: 'Ver',
-            color: 'primary',
-            action: 'view'
           },
           {
             icon: 'material-symbols-outlined/delete',
@@ -138,8 +135,8 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
   exportable: true,
   selectable: false,
   pagination: true,
-  pageSize: 10,
-  pageSizeOptions: [10, 20, 50],
+  pageSize: 5,
+  pageSizeOptions: [5, 10, 20, 50],
   searchable: true,
   searchPlaceholder: 'drivers.list.searchPlaceholder',
   filterable: true,

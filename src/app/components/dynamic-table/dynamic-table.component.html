@@ -115,7 +115,7 @@
   }
 
   <mat-card-content>
-    <table mat-table [dataSource]="config().data()" class="mat-elevation-z1"
+    <table mat-table [dataSource]="paginatedData()" class="mat-elevation-z1"
       [class.fixed-layout]="hasFixedWidthColumns()" role="table">
 
       @if (config().selectable) {
@@ -193,8 +193,8 @@
     </table>
 
     @if (config().pagination) {
-    <mat-paginator [length]="config().data().length" [pageSize]="config().pageSize || 10"
-      [pageSizeOptions]="config().pageSizeOptions || [10, 20, 50]" (page)="onPageChange($event)">
+    <mat-paginator [length]="config().data().length" [pageSize]="pageSize()"
+      [pageSizeOptions]="config().pageSizeOptions || [5, 10, 20, 50]" (page)="onPageChange($event)">
     </mat-paginator>
     }
 
