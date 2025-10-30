@@ -1,82 +1,95 @@
 @use '../../../styles/variables' as vars;
 
+mat-card {
+  border-radius: 15px;
+  padding: 5px;
+}
+
 mat-card-header {
   display: flex;
   justify-content: flex-start;
-  
+
   .search_input {
     width: 30%;
     height: fit-content;
-    
+
     ::ng-deep .mat-mdc-form-field-infix {
       min-height: 40px !important;
       padding: 8px 0 !important;
     }
-    
+
     input {
       height: 24px !important;
       font-size: 14px;
     }
   }
-  
+
   .filter_button {
-    width: 10%;
+    width: 97;
+    height: 30px;
     margin-left: 10px;
-    height: 40px;
+    margin-top: 5px;
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: vars.$black;
-    border: 1px solid #e0e0e0;
+    background-color: #2D3D32;
     border-radius: 8px;
     color: vars.$white;
     font-weight: 500;
-    padding: 0 12px;
+    padding: 4px 12px;
     flex-direction: row;
   }
-  
+
   .export_button {
-    width: 15%;
+    width: auto;
+    white-space: nowrap;
     margin-left: 10px;
-    height: 40px;
+    height: 30px;
+    margin-top: 5px;
     display: flex;
     align-items: center;
     gap: 8px;
+    border-radius: 8px;
     background-color: vars.$roadit-accent;
     border: none;
     color: vars.$black;
     font-weight: 500;
-    padding: 0 12px;
+    font-size: 12px;
+    padding: 8px 16px;
     flex-direction: row;
     text-decoration: none;
     cursor: pointer;
     transition: color 0.2s ease;
-    
+
     &:hover {
       color: vars.$primary;
     }
-    
+
     mat-icon {
       font-size: 18px;
       width: 18px;
       height: 18px;
     }
   }
-  
+
+
   .create_btn {
     display: flex;
-    margin-left: 35%;
+    margin-left: auto;
     background-color: vars.$roadit-accent;
     color: vars.$black;
-    width: 25%;
-    border-radius: 10px;
-    height: 40px;
+    width: auto;
+    white-space: nowrap;
+    padding: 0px 12px;
+    border-radius: 8px;
+    height: 46px;
     align-items: center;
     justify-content: center;
     font-size: 14px;
     font-family: vars.$font-family-primary;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    border-width: 0px;
   }
 }
 
@@ -85,18 +98,19 @@ mat-card-header {
   padding: 16px;
   border-radius: 8px;
   border-top: 1px solid vars.$gray-300;
-  
+
   .filters_content {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
-    
+
     .filter_field {
       min-width: 0;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      
+
       .filter_label {
         font-weight: 600;
         font-size: 14px;
@@ -104,21 +118,21 @@ mat-card-header {
         margin: 0;
         line-height: 1.2;
       }
-      
+
       .filter_input {
         width: 100%;
-        
+
         ::ng-deep .mat-mdc-form-field {
           height: 48px !important;
           max-height: 48px !important;
         }
-        
+
         ::ng-deep .mat-mdc-form-field-wrapper {
           height: 48px !important;
           max-height: 48px !important;
           padding-bottom: 0 !important;
         }
-        
+
         ::ng-deep .mat-mdc-form-field-infix {
           min-height: 48px !important;
           height: 48px !important;
@@ -129,29 +143,29 @@ mat-card-header {
           display: flex;
           align-items: center;
         }
-        
+
         ::ng-deep .mat-mdc-form-field-subscript-wrapper {
           display: none !important;
         }
-        
+
         ::ng-deep .mat-mdc-form-field-outline {
           border-radius: 8px;
         }
-        
+
         // Alineación vertical para selects
         ::ng-deep .mat-mdc-select {
           display: flex;
           align-items: center;
           height: 100%;
         }
-        
+
         // Alineación vertical para inputs
         ::ng-deep .mat-mdc-input-element {
           display: flex;
           align-items: center;
           height: 100%;
         }
-        
+
         // Estilos para el icono de calendario en filtros de fecha
         ::ng-deep .mat-mdc-form-field-suffix {
           .mat-icon {
@@ -162,7 +176,7 @@ mat-card-header {
             color: vars.$gray-600 !important;
           }
         }
-        
+
         // Estilos específicos para el icono de calendario
         ::ng-deep mat-icon[matSuffix] {
           font-size: 18px !important;
@@ -173,11 +187,11 @@ mat-card-header {
         }
       }
     }
-    
+
     .filter_field:first-child {
       margin-left: 0;
     }
-    
+
     .selected-chips {
       margin-top: 0;
       display: flex;
@@ -185,7 +199,7 @@ mat-card-header {
       gap: 4px;
       overflow-x: auto;
       padding: 4px 0;
-      
+
       mat-chip {
         font-size: 12px;
         height: 24px;
@@ -194,31 +208,31 @@ mat-card-header {
         color: vars.$text-primary;
         flex-shrink: 0;
         white-space: nowrap;
-        
+
         mat-icon {
           color: vars.$text-primary;
           font-size: 14px;
           width: 14px;
           height: 14px;
-  }
+        }
 
-}
+      }
 
 
     }
-    
+
     .chips-select {
       ::ng-deep .mat-mdc-form-field {
         height: 48px !important;
         max-height: 48px !important;
       }
-      
+
       ::ng-deep .mat-mdc-form-field-wrapper {
         height: 48px !important;
         max-height: 48px !important;
         padding-bottom: 0 !important;
       }
-      
+
       ::ng-deep .mat-mdc-form-field-infix {
         padding-left: 0 !important;
         padding-right: 0 !important;
@@ -228,7 +242,7 @@ mat-card-header {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
       }
-      
+
       ::ng-deep .mat-mdc-select-trigger {
         padding-left: 8px !important;
         padding-right: 32px !important;
@@ -238,11 +252,11 @@ mat-card-header {
         display: flex;
         align-items: center;
       }
-      
+
       ::ng-deep .mat-mdc-form-field-subscript-wrapper {
         display: none !important;
       }
-      
+
       ::ng-deep .mat-mdc-select-arrow {
         display: block !important;
         position: absolute;
@@ -250,14 +264,14 @@ mat-card-header {
         top: 50%;
         transform: translateY(-50%);
       }
-      
+
       // Estilos para el trigger personalizado
       .chip-display {
         display: flex;
         align-items: center;
         gap: 8px;
         width: 100%;
-        
+
         .chip-item {
           padding: 4px 8px;
           border-radius: 4px;
@@ -270,26 +284,26 @@ mat-card-header {
           text-overflow: ellipsis;
           line-height: 1.2;
           color: vars.$black;
-          
+
           // Colores específicos según el tipo de tag
           &.nuevo {
             background-color: vars.$info;
           }
-          
+
           &.en_riesgo {
             background-color: vars.$warning-light;
           }
-          
+
           &.seguro_propio {
             background-color: vars.$primary-300;
           }
-          
+
           // Color por defecto si no coincide con ningún tipo
           &:not(.nuevo):not(.en_riesgo):not(.seguro_propio) {
             background-color: vars.$primary-300;
           }
         }
-        
+
         .chip-count {
           background-color: #e8f5e8;
           color: #2e7d32;
@@ -300,19 +314,19 @@ mat-card-header {
           line-height: 1.2;
         }
       }
-      
+
       .placeholder-text {
         color: #999;
         font-size: 14px;
       }
-      
+
       &.has-selected-chips {
         ::ng-deep .mat-mdc-select-trigger {
           cursor: pointer !important;
         }
       }
     }
-}
+  }
 }
 
 .filter_button .mat-icon {
@@ -323,17 +337,18 @@ mat-card-header {
 mat-card-content {
   table {
     width: 100%;
-    table-layout: auto; 
-    
+    table-layout: auto;
+
     &.fixed-layout {
       table-layout: fixed;
-      
-      th, td {
+
+      th,
+      td {
         box-sizing: border-box;
         overflow: hidden;
       }
     }
-    
+
     th {
       font-size: 13px;
       font-family: vars.$font-family-primary;
@@ -345,7 +360,7 @@ mat-card-content {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      
+
       &:not(:last-child)::after {
         content: '';
         position: absolute;
@@ -356,58 +371,58 @@ mat-card-content {
         background-color: vars.$gray-300;
       }
     }
-    
+
     td {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       padding: 12px 8px; // Separación vertical y horizontal
-      
+
       &.text-cell {
         white-space: normal;
         word-wrap: break-word;
       }
-      
+
       &.actions-cell {
         white-space: nowrap;
         overflow: visible;
       }
-      
+
       &.chip-cell {
         white-space: normal;
         padding: 16px 8px;
       }
     }
-    
+
     th {
       padding: 12px 8px;
     }
-    
+
     mat-icon {
       font-size: 20px;
       color: vars.$text-primary;
     }
-    
+
     .edit_icon {
       color: vars.$warning;
     }
-    
+
     .delete_icon {
       color: vars.$error;
     }
-    
+
     .chip-array-container {
       display: flex;
       flex-wrap: wrap;
       gap: 4px;
       row-gap: 12px;
-      
+
     }
 
     .actions-container {
       display: flex;
       gap: 8px;
-      
+
       .action-button {
         transition: vars.$transition-color;
         background-color: transparent;
@@ -417,89 +432,89 @@ mat-card-content {
         justify-content: center;
         cursor: pointer;
 
-        
+
         &.action-primary {
           color: vars.$primary !important;
-          
+
           mat-icon {
             color: vars.$primary !important;
             margin-top: 5px;
           }
-          
+
           &:hover {
             color: vars.$primary-dark !important;
             background-color: rgba(vars.$primary, 0.04) !important;
-            
+
             mat-icon {
               color: vars.$primary-dark !important;
             }
           }
         }
-        
+
         &.action-accent {
           color: vars.$secondary !important;
-          
+
           mat-icon {
             color: vars.$secondary !important;
             margin-top: 5px;
           }
-          
+
           &:hover {
             color: vars.$secondary-dark !important;
             background-color: rgba(vars.$secondary, 0.04) !important;
-            
+
             mat-icon {
               color: vars.$secondary-dark !important;
             }
           }
         }
-        
+
         &.action-warn {
           color: vars.$warning !important;
-          
+
           mat-icon {
             color: vars.$warning !important;
             margin-top: 5px;
           }
-          
+
           &:hover {
             color: vars.$warning-dark !important;
             background-color: rgba(vars.$warning, 0.04) !important;
-            
+
             mat-icon {
               color: vars.$warning-dark !important;
             }
           }
         }
-        
+
         &.action-error {
           color: vars.$error !important;
-          
+
           mat-icon {
             color: vars.$error !important;
             margin-top: 5px;
           }
-          
+
           &:hover {
             color: vars.$error-dark !important;
             background-color: rgba(vars.$error, 0.04) !important;
-            
+
             mat-icon {
               color: vars.$error-dark !important;
             }
           }
         }
-        
+
         &:disabled {
           color: vars.$text-disabled !important;
           background-color: transparent !important;
-          
+
           mat-icon {
             color: vars.$text-disabled !important;
           }
         }
       }
-      
+
       .action-text-button {
         min-width: auto;
         padding: 0px 8px;
@@ -511,43 +526,43 @@ mat-card-content {
         border: none;
         cursor: pointer;
         color: vars.$white;
-        
+
         &.action-primary {
           background-color: vars.$primary !important;
           color: vars.$white !important;
-          
+
           &:hover {
             background-color: vars.$primary-dark !important;
           }
         }
-        
+
         &.action-accent {
           background-color: vars.$roadit-accent !important;
           color: vars.$black !important;
-          
+
           &:hover {
             background-color: vars.$roadit-accent !important;
           }
         }
-        
+
         &.action-warn {
           background-color: vars.$warning !important;
           color: white !important;
-          
+
           &:hover {
             background-color: vars.$warning-dark !important;
           }
         }
-        
+
         &.action-error {
           background-color: vars.$error !important;
           color: white !important;
-          
+
           &:hover {
             background-color: vars.$error-dark !important;
           }
         }
-        
+
         &:disabled {
           background-color: vars.$gray-300 !important;
           color: vars.$text-disabled !important;
@@ -563,73 +578,73 @@ mat-card-content {
     min-height: 24px !important;
     background-color: vars.$primary-300 !important;
     border-radius: 4px !important;
-    
+
     .mdc-evolution-chip__text-label {
       color: vars.$black !important;
       font-weight: 400;
     }
   }
-  
-  
+
+
   ::ng-deep .department-chip {
     font-size: 12px !important;
     height: 24px !important;
     min-height: 24px !important;
     background-color: vars.$primary-300 !important;
     border-radius: 4px !important;
-    
+
     .mdc-evolution-chip__text-label {
       color: vars.$black !important;
       font-weight: 400;
     }
   }
-  
+
   ::ng-deep .status-chip {
     font-size: 12px !important;
     height: 24px !important;
     min-height: 24px !important;
     border-radius: 4px !important;
-    
+
     &.active {
       background-color: vars.$success-light !important;
-      
+
       .mdc-evolution-chip__text-label {
         color: vars.$black !important;
       }
     }
-    
+
     &.inactive {
       background-color: vars.$error-light !important;
-      
+
       .mdc-evolution-chip__text-label {
         color: vars.$black !important;
       }
     }
-    
+
     &.pending {
       background-color: vars.$warning-light !important;
-      
+
       .mdc-evolution-chip__text-label {
         color: vars.$black !important;
       }
     }
-    
+
     &.suspended {
       background-color: vars.$gray-500 !important;
-      
+
       .mdc-evolution-chip__text-label {
         color: vars.$black !important;
       }
     }
   }
-  
+
   ::ng-deep .users-assigned-chip {
     font-size: 11px !important;
     height: 22px !important;
     min-height: 22px !important;
     border-radius: 4px !important;
     background-color: vars.$primary-300 !important;
-    
+
     .mdc-evolution-chip__text-label {
       color: vars.$primary-dark !important;
       font-weight: 500;
@@ -641,7 +656,7 @@ mat-card-content {
     object-fit: cover;
     display: block;
     margin: 0 auto;
-    
+
     &[src*="assets/images/"] {
       max-width: 100%;
       height: auto;
@@ -649,36 +664,36 @@ mat-card-content {
   }
 }
 
-  ::ng-deep .tags-chip {
-    font-size: 12px !important;
-    height: 24px !important;
-    min-height: 24px !important;
-    border-radius: 4px !important;
-    
-    &.nuevo {
-      background-color: vars.$info !important;
-      
-      .mdc-evolution-chip__text-label {
-        color: vars.$black !important;
-      }
-    }
-    
-    &.en_riesgo {
-      background-color: vars.$warning-light !important;
-      
-      .mdc-evolution-chip__text-label {
-        color: vars.$black !important;
-      }
-    }
-    
-    &.seguro_propio {
-      background-color: vars.$primary-300 !important;
-      
-      .mdc-evolution-chip__text-label {
-        color: vars.$black !important;
-      }
+::ng-deep .tags-chip {
+  font-size: 12px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  border-radius: 4px !important;
+
+  &.nuevo {
+    background-color: vars.$info !important;
+
+    .mdc-evolution-chip__text-label {
+      color: vars.$black !important;
     }
   }
+
+  &.en_riesgo {
+    background-color: vars.$warning-light !important;
+
+    .mdc-evolution-chip__text-label {
+      color: vars.$black !important;
+    }
+  }
+
+  &.seguro_propio {
+    background-color: vars.$primary-300 !important;
+
+    .mdc-evolution-chip__text-label {
+      color: vars.$black !important;
+    }
+  }
+}
 
 // Estilos para iconos de acciones (hacer que se vean como filled)
 .actions-container {
@@ -690,29 +705,28 @@ mat-card-content {
 
 ::ng-deep .mat-mdc-checkbox {
   .mdc-checkbox {
-    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
+    .mdc-checkbox__native-control:checked~.mdc-checkbox__background {
       background-color: vars.$roadit-accent !important;
       border-color: vars.$roadit-accent !important;
       box-shadow: inset 0 0 0 2px white !important;
     }
-    
-    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
+
+    .mdc-checkbox__native-control:checked~.mdc-checkbox__background .mdc-checkbox__checkmark {
       display: none !important;
     }
-    
-    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark-path {
+
+    .mdc-checkbox__native-control:checked~.mdc-checkbox__background .mdc-checkbox__checkmark-path {
       stroke: transparent !important;
     }
-    
-    .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+
+    .mdc-checkbox__native-control:indeterminate~.mdc-checkbox__background {
       background-color: vars.$roadit-accent !important;
       border-color: vars.$roadit-accent !important;
       box-shadow: inset 0 0 0 2px white !important;
     }
-    
-    .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
+
+    .mdc-checkbox__native-control:indeterminate~.mdc-checkbox__background .mdc-checkbox__mixedmark {
       background-color: white !important;
     }
   }
 }
-

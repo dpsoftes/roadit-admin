@@ -7,7 +7,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'image',
       label: 'drivers.list.image',
       type: 'image',
-      width: 8,
+      width: 6,
       imageConfig: {
         width: '40px',
         height: '40px',
@@ -19,13 +19,13 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'name',
       label: 'drivers.list.name',
       type: 'text',
-      width: 12
+      width: 9
     },
     {
       key: 'dni',
       label: 'drivers.list.dni',
       type: 'text',
-      width: 15
+      width: 10
     },
     {
       key: 'cif',
@@ -43,36 +43,37 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'city',
       label: 'drivers.list.city',
       type: 'text',
-      width: 12,
+      width: 10,
     },
     {
       key: 'email',
       label: 'drivers.list.email',
       type: 'text',
-      width: 20,
+      width: 12,
     },
     {
       key: 'phone',
       label: 'drivers.list.phone',
       type: 'text',
-      width: 12
+      width: 11
     },
     {
       key: 'created_datetime',
       label: 'drivers.list.created_datetime',
       type: 'text',
-      width: 12
+      width: 10
     },
     {
       key: 'rating',
       label: 'drivers.list.rating',
       type: 'text',
-      width: 8
+      width: 12
     },
     {
       key: 'tags',
       label: 'drivers.list.tags',
       type: 'chip',
+      width: 10,
       chipConfig: {
         type: 'tags',
         translateKey: 'drivers.list.tags'
@@ -82,6 +83,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'validated',
       label: 'drivers.list.validated',
       type: 'chip',
+      width: 11,
       chipConfig: {
         type: 'status',
         translateKey: 'drivers.list.status'
@@ -91,12 +93,13 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'fortnightEarnings',
       label: 'drivers.list.fortnight_earnings',
       type: 'text',
-      width: 12
+      width: 13
     },
     {
       key: 'is_active',
       label: 'drivers.list.status',
       type: 'chip',
+      width: 9,
       chipConfig: {
         type: 'status',
         translateKey: 'drivers.isActive'
@@ -106,7 +109,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'actions',
       label: 'drivers.list.actions',
       type: 'actions',
-      width: 10,
+      width: 11,
       actionConfig: {
         actions: [
           {
@@ -232,6 +235,6 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
     filename: `lista_conductores_${new Date().toISOString().split('T')[0]}.csv`
   },
   actions: {
-    create: { label: 'drivers.list.create-client', route: '/clients/create-driver' }
+    create: { label: 'drivers.list.create-driver', route: '/drivers/create-driver' }
   }
 });

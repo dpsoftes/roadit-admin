@@ -51,7 +51,7 @@
       "lastname": "Apellidos",
       "email": "Email",
       "password": "Contraseña",
-      "gen-pass":"GENERAR CONTRASEÑA SEGURA",
+      "gen-pass": "GENERAR CONTRASEÑA SEGURA",
       "role": "Rol",
       "status": "Estado",
       "ACTIVE": "Activo",
@@ -177,8 +177,8 @@
       "retention-percent": "RETENCIÓN (%)",
       "actions": "ACCIONES",
       "results-per-page": "Resultados por página",
-      "cif":"CIF",
-      "department":"Departamento",
+      "cif": "CIF",
+      "department": "Departamento",
       "fuel": "Combustible",
       "included-fuel": "Combustible incluido",
       "client-price": "Precio Cliente % por Km",
@@ -236,8 +236,8 @@
       "schemas": "Plantillas",
       "protocols": "Protocolos",
       "type": "Tipo",
-      "edit-options":"Editar opciones",
-      "client-process":"Proceso de cliente",
+      "edit-options": "Editar opciones",
+      "client-process": "Proceso de cliente",
       "simple-movement": "Movimiento simple",
       "pickup-to-final-customer": "Recogida a cliente final",
       "delivery-to-final-customer": "Entrega a cliente final",
@@ -253,7 +253,6 @@
       "additional-services": "Plantillas de servicios complementarios",
       "additional-services-assigned": "Servicios complementarios asignados",
       "other": "Otro"
-      
     },
     "list": {
       "clients_group": "Grupos de Clientes",
@@ -272,7 +271,7 @@
       "searchPlaceholder": "Buscar...",
       "create-client": "CREAR NUEVO CLIENTE",
       "create-group": "CREAR NUEVO GRUPO",
-      "group_filter": "Grupo",  
+      "group_filter": "Grupo",
       "cif_filter": "CIF",
       "registration_date_filter": "Fecha de alta",
       "department_filter": "Departamento",
@@ -308,7 +307,7 @@
       "country": "País",
       "assigned-users": "Usuarios asignados",
       "save": "Guardar cambios",
-      "cancel": "Cancelar"  
+      "cancel": "Cancelar"
     }
   },
   "tabs": {
@@ -326,8 +325,7 @@
   },
   "construction": {
     "title": "Página en construcción"
-  }
-  ,
+  },
   "transportPrincipalType": {
     "SIMPLE_MOVEMENT": "Movimiento simple",
     "PICKUP_TO_FINAL_CUSTOMER": "Recogida a cliente final",
@@ -376,8 +374,7 @@
     "ORIGIN": "Origen",
     "STOPOVER": "Escala",
     "DESTINATION": "Destino"
-  }
-  ,
+  },
   "clientType": {
     "DEALERSHIP": "Concesionario",
     "RENTING": "Renting",
@@ -399,8 +396,7 @@
     "OTHERS": "Otros",
     "UNDEFINED": "Indefinido",
     "EVENT": "Evento"
-  }
-  ,
+  },
   "requestType": {
     "TRANSPORT": "Transporte",
     "TOLL": "Peaje",
@@ -617,8 +613,7 @@
     "multiple": "Respuesta múltiple",
     "text": "Texto",
     "boolean": "Sí/No"
-  }
-  ,
+  },
   "status": {
     "ACTIVE": "Activo",
     "INACTIVE": "Inactivo",
@@ -653,8 +648,7 @@
     "READ": "Leer",
     "UPDATE": "Actualizar",
     "DELETE": "Eliminar"
-  }
-  ,
+  },
   "vehicleSize": {
     "SMALL": "Pequeño",
     "MEDIUM": "Mediano",
@@ -699,6 +693,76 @@
       "addNewOption": "+ AÑADIR NUEVA OPCIÓN",
       "placeholder": "Escriba aquí...",
       "save": "GUARDAR"
+    }
+  },
+  "drivers": {
+    "title": "Conductores",
+    "list": {
+      "image": "Foto",
+      "name": "Nombre",
+      "dni": "DNI",
+      "cif": "CIF",
+      "province": "Provincia",
+      "city": "Ciudad",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "created_datetime": "F. Alta",
+      "rating": "Puntuación",
+      "tags": "tags",
+      "validated": "Validación",
+      "fortnight_earnings": "F. Quincenal",
+      "status": "Estado",
+      "actions": "Acciones",
+      "searchPlaceholder": "Buscar conductores...",
+      "is_active": "Estado Activo",
+      "expiredDocuments": "Documentos Caducados",
+      "newDocuments": "Documentos Nuevos",
+      "create-driver": "Crear nuevo conductor",
+      "name_filter": "Nombre",
+      "email_filter": "Email",
+      "tags_filter": "Etiquetas",
+      "is_active_filter": "Estado Activo",
+      "validated_filter": "Validación",
+      "rating_filter": "Puntuación",
+      "phone_filter": "Teléfono",
+      "city_filter": "Ciudad",
+      "province_filter": "Provincia",
+      "expiredDocuments_filter": "Documentos Caducados",
+      "newDocuments_filter": "Documentos Nuevos"
+    },
+    "profile": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo",
+      "VALIDATE": "Validado",
+      "NO_VALIDATE": "Sin Validar",
+      "EXPIRED": "Caducados",
+      "NO_EXPIRED": "Sin Caducar",
+      "NEW_DOCUMENT": "Documento Nuevo",
+      "NO_NEW_DOCUMENT": "Sin Documento Nuevo"
+    },
+    "isActive": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo"
+    },
+    "tags": {
+      "Puntual": "Puntual",
+      "Profesional": "Profesional",
+      "Responsable": "Responsable",
+      "Eficiente": "Eficiente",
+      "Experiencia": "Experiencia",
+      "Nuevo": "Nuevo"
+    },
+    "actions": {
+      "edit": "Editar",
+      "view": "Ver",
+      "delete": "Eliminar"
+    },
+    "messages": {
+      "no_data": "No hay conductores disponibles",
+      "loading": "Cargando conductores...",
+      "delete_confirm": "¿Estás seguro de que deseas eliminar este conductor?",
+      "delete_success": "Conductor eliminado correctamente",
+      "delete_error": "Error al eliminar el conductor"
     }
   }
 }

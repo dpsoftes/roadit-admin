@@ -1,3 +1,7 @@
 <div class="drivers-page">
-  <h1 class="sectionTitleText">Conductores</h1>
+  <h1 class="sectionTitleText">{{ 'drivers.title' | translate }}</h1>
+
+  <!-- TABLA DE CONDUCTORES -->
+  <app-dynamic-table [config]="driversTableConfig()" (tableEvent)="handleTableEvent($event)">
+  </app-dynamic-table>
 </div>
