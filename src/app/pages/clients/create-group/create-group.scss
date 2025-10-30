@@ -2,21 +2,25 @@
 
 
 mat-card-content {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    align-items: flex-start;
+    form {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        align-items: flex-start;
+    }
     
     mat-form-field {
         flex: 1;
-        padding: 0px;
+        margin: 0 !important;
+        padding: 0 !important;
         height: 60px !important;
         max-height: 60px !important;
         min-height: 60px !important;
 
         ::ng-deep .mat-mdc-form-field-infix {
             min-height: 40px !important;
-            max-height: 68px !important;
+            max-height: 40px !important;
+            padding: 8px 0 !important;
         }
 
         ::ng-deep .mat-mdc-form-field-subscript-wrapper {
@@ -31,36 +35,47 @@ mat-card-content {
             height: 40px !important;
             line-height: 40px !important;
         }
+
+        ::ng-deep .mat-mdc-form-field-flex {
+            align-items: center !important;
+        }
     }
 
     .users-field {
-        height: auto !important;
-        min-height: 56px !important;
+        height: 60px !important;
+        max-height: 60px !important;
+        min-height: 60px !important;
 
         ::ng-deep .mat-mdc-form-field-infix {
             min-height: 40px !important;
-            height: auto !important;
+            max-height: 40px !important;
             padding: 8px 0 !important;
         }
 
         ::ng-deep .mat-mdc-text-field-wrapper {
+            height: 40px !important;
             min-height: 40px !important;
-            height: auto !important;
         }
 
         ::ng-deep .mat-mdc-form-field-flex {
             min-height: 40px !important;
-            height: auto !important;
+            height: 40px !important;
+            align-items: center !important;
         }
 
         ::ng-deep .mat-mdc-form-field {
-            height: auto !important;
-            min-height: 56px !important;
+            height: 60px !important;
+            min-height: 60px !important;
         }
 
         ::ng-deep .mat-mdc-form-field-outline {
-            height: auto !important;
-            min-height: 56px !important;
+            height: 40px !important;
+            min-height: 40px !important;
+        }
+
+        ::ng-deep .mat-mdc-select {
+            height: 40px !important;
+            line-height: 40px !important;
         }
     }
 
@@ -86,9 +101,9 @@ mat-card-content {
         display: flex;
         flex-wrap: wrap;
         gap: 4px;
-        margin-top: 8px;
+        margin-top: 0px;
         min-height: 24px;
-        padding: 4px 0;
+        padding: 0px;
         visibility: hidden;
         
         .chip-placeholder {
@@ -116,9 +131,9 @@ mat-card-content {
         gap: 4px;
         z-index: 1;
         pointer-events: none;
-        margin-top: 8px;
+        margin-top: 0px;
         min-height: 24px;
-        padding-bottom: 8px;
+        padding-bottom: 0px;
         
         .user-chip {
             pointer-events: auto;
@@ -145,17 +160,9 @@ mat-card-footer {
     display: flex;
     justify-content: flex-start;
     padding: 20px;
-    button {
-        text-transform: uppercase;
-        &.save_btn {
-            background-color: vars.$roadit-accent;
-            color: vars.$roadit-primary;
-        }
-        &.cancel_btn {
-            margin-left: 10px;
-            background-color: transparent;
-            color: vars.$text-secondary;
-            border: 1px solid vars.$text-secondary;
-        }
+    
+    .buttons-container {
+        display: flex;
+        gap: 10px;
     }
 }

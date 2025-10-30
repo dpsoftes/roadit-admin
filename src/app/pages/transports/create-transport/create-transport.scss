@@ -1,0 +1,95 @@
+@use '../../../../styles/variables' as vars;
+
+:host {
+  display: block;
+  margin: -1.5rem; 
+}
+
+@media (max-width: 768px) {
+  :host {
+    margin: -1rem; 
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    margin: -0.75rem; 
+  }
+}
+
+.header-container{
+    padding: 16px;
+    background-color: vars.$primary-100;
+    h1{
+        font-size: 32px;
+        margin-top: 25px;
+        font-weight: 600;
+        color: vars.$black;
+    }
+}
+.content-container{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    .card-container{
+        width: 35%;
+        padding: 16px;
+        background-color: vars.$white;
+        border-radius: 8px;
+        height: fit-content;
+        margin-top: 20px;
+        mat-form-field{
+            width: 100%;
+        }
+        mat-label{
+            font-size: 14px;
+            font-weight: 600;
+            color: vars.$black;
+        }
+        .checkbox-container{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            margin-top: 10px;
+        }
+    }
+    .options-container{
+        width: 65%;
+        padding: 16px;
+        h1{
+            font-size: 28px;
+            font-weight: 600;
+            color: vars.$black;
+        }
+        .type-item{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 20px;
+            background-color: vars.$white;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            gap: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+             &.active{
+                 border-color: vars.$primary-400;
+             }
+            mat-icon{
+                font-size: 24px;
+            }
+            h2{
+                font-size: 20px;
+                margin-bottom: 0;
+                color: vars.$black;
+            }
+        }
+    }
+}
+.buttons-container{
+    display: flex;
+    margin-left: 20px;
+    flex-direction: row;
+    gap: 10px;
+}

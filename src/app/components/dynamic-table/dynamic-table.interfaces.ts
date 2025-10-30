@@ -5,6 +5,7 @@ export interface TableColumn {
   label: string;
   type: 'text' | 'image' | 'chip' | 'chip-array' | 'actions' | 'checkbox';
   sortable?: boolean;
+  translateKey?: string; // Prefijo i18n para traducir valores (p.ej. 'transportPrincipalType')
   // Sistema de porcentajes para control preciso del ancho
   width?: string | number; // Porcentaje (ej: '25%', 25) o valor fijo (ej: '200px', 200)
   minWidth?: string | number;
@@ -66,7 +67,7 @@ export interface TableConfig {
 export interface FilterConfig {
   key: string;
   label: string;
-  type: 'select' | 'text' | 'date' | 'chips';
+  type: 'select' | 'text' | 'date' | 'date-range' | 'chips';
   options?: FilterOption[];
   multiple?: boolean; // Para filtros que permiten selección múltiple
   width?: number; // Ancho del filtro en porcentaje (ej: 25 = 25%)

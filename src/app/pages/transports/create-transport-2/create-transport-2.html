@@ -1,0 +1,134 @@
+<div class="header-container">
+    <app-buttons type="back" text="transports.create.back" (click)="onBack()"></app-buttons>
+    <div class="logo-title">
+        <img [src]="userData()?.logo" alt="logo">
+        <h1>{{'transports.create.title' | translate}}</h1>
+    </div>
+</div>
+<div class="header-info">
+    <mat-icon>location_on</mat-icon>
+    <p>{{transportData()?.distance ? transportData().distance + ' km' : 'N/A'}}</p>
+    <mat-icon fontSet="material-symbols-outlined">nest_clock_farsight_analog</mat-icon>
+    <p>{{transportData()?.time ? transportData().time : 'N/A'}}</p>
+    <mat-icon>payments</mat-icon>
+    <p>{{transportData()?.price ? transportData().price : 'N/A'}}</p>
+</div>
+
+<div class="content-container">
+    <h2>{{'transports.create.billing-center' | translate}}</h2>
+    <mat-card>
+        <mat-card-content>
+            <div class="form-field-label">{{'transports.create.billing-center' | translate}}</div>
+            <mat-form-field appearance="outline">
+                <mat-select>
+                    @for (billingCenter of billingCenters(); track billingCenter) {
+                        <mat-option [value]="billingCenter">{{billingCenter}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+    <div class="stages">
+        <div class="pickup">
+            <h2>{{'transports.create.pickup' | translate}}</h2>
+            <mat-card>
+                <mat-card-content>
+                    <mat-label class="form-field-label">{{'transports.create.pickup-address' | translate}}</mat-label>
+                    <mat-form-field appearance="outline">
+                        <input type="text" matInput>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <app-buttons  type="swap" text="" (onClick)="onAddPickup()"></app-buttons>
+        <div class="delivery">
+            <div class="title-with-action">
+                <h2>{{'transports.create.delivery' | translate}}</h2>
+                <app-buttons type="add-stage" [text]="'transports.create.add-stage'" (onClick)="onAddPickup()"></app-buttons>
+            </div>
+            <mat-card>
+                <mat-card-content>
+                    <mat-label class="form-field-label">{{'transports.create.delivery-address' | translate}}</mat-label>
+                    <mat-form-field appearance="outline">
+                        <input type="text" matInput>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+    </div>
+
+    <h2>{{'transports.create.schedule' | translate}}</h2>
+    <div class="schedule">
+        <div class="departure">
+            <h3>{{'transports.create.departure' | translate}}</h3>
+            <mat-card>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="field">
+                            <div class="form-field-label">{{'transports.create.available-from' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="date" matInput>
+                                <mat-icon matSuffix>event</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="field">
+                            <div class="form-field-label">{{'transports.create.from' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="time" matInput>
+                                <mat-icon matSuffix>schedule</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="field">
+                            <div class="form-field-label">{{'transports.create.to' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="time" matInput>
+                                <mat-icon matSuffix>schedule</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="helper error">{{'transports.create.min-time-range' | translate}}</div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="arrival">
+            <h3>{{'transports.create.arrival' | translate}}</h3>
+            <mat-card>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="field">
+                            <div class="form-field-label">{{'transports.create.available-from' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="date" matInput>
+                                <mat-icon matSuffix>event</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="field">
+                            <div class="form-field-label">{{'transports.create.from' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="time" matInput>
+                                <mat-icon matSuffix>schedule</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="field">
+                            <div class="form-field-label">{{'transports.create.to' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="time" matInput>
+                                <mat-icon matSuffix>schedule</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="helper error">{{'transports.create.min-time-range' | translate}}</div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div class="vehicles">
+        <div class="title-with-action">
+            <h2>{{'transports.create.vehicles' | translate}}</h2>
+            <app-buttons type="import-csv" [text]="'transports.create.import-csv'" (onClick)="onImportCsv()"></app-buttons>
+        </div>
+
+    </div>
+    
+</div>

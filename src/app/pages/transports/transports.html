@@ -1,0 +1,9 @@
+<h1>{{'transports.title' | translate}}</h1>
+
+<app-tabs [tabs]="['assignment', 'history']" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)"></app-tabs>
+
+@if (activeTab() === 'assignment') {
+   <app-dynamic-table [config]="assignmentTableConfig"></app-dynamic-table>
+} @else if (activeTab() === 'history') {
+    <p>History</p>
+}

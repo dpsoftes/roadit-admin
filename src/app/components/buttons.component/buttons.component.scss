@@ -1,4 +1,9 @@
 @use '../../../styles/variables' as vars;
+.add-stage{
+    & mat-icon{
+        margin-right: 6px;
+    }
+}
 
 .save_changes_btn {
     background-color: vars.$roadit-accent;
@@ -37,4 +42,51 @@
         height: 48px;
         border: none;
         border-radius: 8px;
+}
+.back-btn{
+    background-color: transparent;
+    color: vars.$roadit-primary !important;
+    border: 1px solid vars.$roadit-primary;
+    font-size: 10px;
+    padding: 5px 5px;
+    text-transform: uppercase;
+    & mat-icon{
+        font-size: 16px;
+        color: vars.$roadit-primary !important;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+    }
+}
+.swap-btn{
+    background-color: vars.$roadit-accent;
+    color: vars.$roadit-primary !important;
+    border: none;
+    padding: 0;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    & mat-icon{
+        font-size: 20px;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        border-radius: 50%;
+        background-color: transparent; 
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+.import-csv {
+    background-color: vars.$roadit-accent;
+    color: vars.$black !important;
+    font-size: 12px;
+    padding: 10px;
+    text-transform: uppercase;
 }

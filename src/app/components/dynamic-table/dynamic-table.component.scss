@@ -88,6 +88,7 @@ mat-card-header {
   
   .filters_content {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
     
     .filter_field {
@@ -715,4 +716,5 @@ mat-card-content {
     }
   }
 }
+
 

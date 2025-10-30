@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -51,15 +51,73 @@ export class DynamicTableComponent implements OnInit {
   @Input() config!: TableConfig;
   @Output() tableEvent = new EventEmitter<TableEvent>();
 
-  displayedColumns: string[] = [];
+  // Signals para el estado del componente
+  displayedColumns = signal<string[]>([]);
   selection = new SelectionModel<any>(true, []);
   showFilters = signal(false);
   searchTerm = signal('');
-  filters = signal<{[key: string]: string | string[]}>({});
+  filters = signal<{[key: string]: string | string[] | {start: string; end: string}}>({});
+  
+  // Signals para rangos de fechas
+  dateRangeValues = signal<{[key: string]: string}>({});
+
+  constructor() {}
 
   ngOnInit() {
     this.initializeColumns();
   }
+
+  // Computed signal para valor de rango de fechas
+  getDateRangeValue = computed(() => (key: string) => {
+    return this.dateRangeValues()[key] || '';
+  });
+
+  // Método para actualizar valor de rango de fechas
+  onDateRangeChange(key: string, value: string) {
+    this.dateRangeValues.update(current => ({
+      ...current,
+      [key]: value
+    }));
+    this.updateDateRangeFilter(key, value);
+  }
+
+  private updateDateRangeFilter(key: string, value: string) {
+    // Parsear el valor del input (formato: "dd/mm/aaaa - dd/mm/aaaa")
+    const parts = value.split(' - ');
+    
+    if (parts.length === 2) {
+      const startValue = parts[0].trim();
+      const endValue = parts[1].trim();
+      
+      if (startValue && endValue) {
+        const currentFilters = this.filters();
+        const newFilters = { ...currentFilters };
+        newFilters[key] = {
+          start: startValue,
+          end: endValue
+        } as {start: string; end: string};
+        
+        this.filters.set(newFilters);
+        this.tableEvent.emit({
+          type: 'filter',
+          filters: newFilters
+        });
+        return;
+      }
+    }
+    
+    // Si no hay ambas fechas válidas, eliminar el filtro
+    const currentFilters = this.filters();
+    const newFilters = { ...currentFilters };
+    delete newFilters[key];
+    
+    this.filters.set(newFilters);
+    this.tableEvent.emit({
+      type: 'filter',
+      filters: newFilters
+    });
+  }
+
 
   hasFixedWidthColumns(): boolean {
     return this.config.columns.some(column => 
@@ -71,16 +129,16 @@ export class DynamicTableComponent implements OnInit {
     const columnKeys = this.config.columns.map(col => col.key);
     
     if (this.config.selectable) {
-      this.displayedColumns = ['select', ...columnKeys];
+      this.displayedColumns.set(['select', ...columnKeys]);
     } else {
-      this.displayedColumns = columnKeys;
+      this.displayedColumns.set(columnKeys);
     }
   }
 
   // Selection methods
   isAllSelected(): boolean {
     const selected = this.selection.selected.length;
-    const total = this.config.data.length;
+    const total = this.config.data().length;
     return selected === total && total > 0;
   }
 

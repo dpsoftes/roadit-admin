@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
+import { ButtonsComponent } from '@components/buttons.component/buttons.component';
 
 @Component({
   selector: 'app-create-group',
@@ -23,6 +24,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatIconModule,
     MatSelectModule,
     MatChipsModule,
+    ButtonsComponent
   ],
   templateUrl: './create-group.html',
   styleUrl: './create-group.scss'

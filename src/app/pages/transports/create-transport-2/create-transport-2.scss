@@ -1,0 +1,157 @@
+@use '../../../../styles/variables' as vars;
+
+:host {
+  display: block;
+  margin: -1.5rem; 
+}
+
+@media (max-width: 768px) {
+  :host {
+    margin: -1rem; 
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    margin: -0.75rem; 
+  }
+}
+
+.header-container{
+    padding: 16px;
+    background-color: vars.$primary-100;
+    .logo-title{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        img{
+            width: 100px;
+        }
+        h1{
+            font-size: 32px;
+            margin-top: 25px;
+            font-weight: 600;
+            color: vars.$black;
+        }
+    }
+}
+.header-info{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    background-color: vars.$primary-600;
+    color: vars.$white;
+    flex-direction: row;
+    align-items: center;
+    font-size: 26px;
+    gap: 20px;
+    padding: 10px 0;
+    p{
+        font-weight: 600;
+        margin-bottom: 0;
+        color: vars.$white;
+    }
+}
+
+.content-container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    h2{
+        font-size: 28px;
+        font-weight: 600;
+        color: vars.$black;
+    }
+    .stages{
+        position: relative;
+        display: flex;
+        padding: 0px 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 20px;
+        .pickup{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 40%;
+        }
+        .delivery{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 40%;
+            .title-with-action{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                h2{ margin: 0; }
+            }
+        }
+        .swap-at-title{
+            position: absolute;
+            top: 6px; // alineado a la altura aproximada del título de Entrega
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+    }
+    mat-form-field{
+        width: 100%;
+    }
+}
+.form-field-label{
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: vars.$gray-700;
+}
+
+// Aspecto de tarjetas similar al mock
+::ng-deep mat-card{
+    border-radius: 16px !important;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08) !important;
+}
+
+.schedule{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 20px;
+    h3{
+        font-size: 18px;
+        font-weight: 700;
+        color: vars.$black;
+        margin: 0 0 10px 0;
+    }
+    .departure, .arrival{
+        width: 48%;
+    }
+    .row{
+        display: grid;
+        grid-template-columns: 1fr 160px 160px;
+        gap: 16px;
+        align-items: end;
+    }
+    .helper.error{
+        margin-top: 6px;
+        color: #e53935;
+        font-size: 12px;
+    }
+}
+.vehicles{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .title-with-action{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+}
