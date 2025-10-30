@@ -4,10 +4,10 @@
 // =============================================================================
 
 // BRAND COLORS (from layout.scss)
-$roadit-primary: #2D3D32;      // layoutBackGroundColor - Dark Green
-$roadit-accent: #C7D944;       // layoutIconColor - Lime Green
+$roadit-primary: #2D3D32; // layoutBackGroundColor - Dark Green
+$roadit-accent: #C7D944; // layoutIconColor - Lime Green
 $roadit-text-on-dark: rgba(255, 255, 255, 0.87); // Dark-Text-Primary
-$roadit-content-bg: #EAF0E5 ; // layoutContentBackgroundColor - Light Gray
+$roadit-content-bg: #EAF0E5; // layoutContentBackgroundColor - Light Gray
 // =============================================================================
 // MATERIAL DESIGN 2 COLOR PALETTE
 // =============================================================================
@@ -28,7 +28,7 @@ $primary: $primary-500;
 $primary-light: $primary-300;
 $primary-dark: $primary-700;
 
-// Secondary Palette (usando el verde lima de RoadIt) 
+// Secondary Palette (usando el verde lima de RoadIt)
 $secondary-50: #f7fce8;
 $secondary-100: #ecf7c3;
 $secondary-200: #e0f29b;
@@ -115,6 +115,7 @@ $border-dark: rgba(0, 0, 0, 0.38);
 // Font Families
 $font-family-primary: 'Geist Sans', 'Geist', 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 $font-family-mono: 'Roboto Mono', 'Monaco', 'Consolas', 'Courier New', monospace;
+$font-title-family: 'Geist';
 
 // Font Weights
 $font-weight-extra-light: 200;
@@ -125,19 +126,19 @@ $font-weight-semibold: 600;
 $font-weight-bold: 700;
 
 // Font Sizes (Material Design 2 Type Scale)
-$font-size-h1: 6rem;     // 96px - Headline 1
-$font-size-h2: 3.75rem;  // 60px - Headline 2
-$font-size-h3: 3rem;     // 48px - Headline 3
+$font-size-h1: 6rem; // 96px - Headline 1
+$font-size-h2: 3.75rem; // 60px - Headline 2
+$font-size-h3: 3rem; // 48px - Headline 3
 $font-size-h4: 2.125rem; // 34px - Headline 4
-$font-size-h5: 1.5rem;   // 24px - Headline 5
-$font-size-h6: 1.25rem;  // 20px - Headline 6
-$font-size-subtitle1: 1rem;      // 16px - Subtitle 1
-$font-size-subtitle2: 0.875rem;  // 14px - Subtitle 2
-$font-size-body1: 1rem;          // 16px - Body 1
-$font-size-body2: 0.875rem;      // 14px - Body 2
-$font-size-caption: 0.75rem;     // 12px - Caption
-$font-size-button: 0.875rem;     // 14px - Button
-$font-size-overline: 0.625rem;   // 10px - Overline
+$font-size-h5: 1.5rem; // 24px - Headline 5
+$font-size-h6: 1.25rem; // 20px - Headline 6
+$font-size-subtitle1: 1rem; // 16px - Subtitle 1
+$font-size-subtitle2: 0.875rem; // 14px - Subtitle 2
+$font-size-body1: 1rem; // 16px - Body 1
+$font-size-body2: 0.875rem; // 14px - Body 2
+$font-size-caption: 0.75rem; // 12px - Caption
+$font-size-button: 0.875rem; // 14px - Button
+$font-size-overline: 0.625rem; // 10px - Overline
 
 // Line Heights
 $line-height-tight: 1.2;
@@ -158,19 +159,19 @@ $spacing-unit: 8px;
 
 // Spacing Scale
 $spacing-0: 0;
-$spacing-1: $spacing-unit * 0.5;   // 4px
-$spacing-2: $spacing-unit * 1;     // 8px
-$spacing-3: $spacing-unit * 1.5;   // 12px
-$spacing-4: $spacing-unit * 2;     // 16px
-$spacing-5: $spacing-unit * 2.5;   // 20px
-$spacing-6: $spacing-unit * 3;     // 24px
-$spacing-8: $spacing-unit * 4;     // 32px
-$spacing-10: $spacing-unit * 5;    // 40px
-$spacing-12: $spacing-unit * 6;    // 48px
-$spacing-16: $spacing-unit * 8;    // 64px
-$spacing-20: $spacing-unit * 10;   // 80px
-$spacing-24: $spacing-unit * 12;   // 96px
-$spacing-32: $spacing-unit * 16;   // 128px
+$spacing-1: $spacing-unit * 0.5; // 4px
+$spacing-2: $spacing-unit * 1; // 8px
+$spacing-3: $spacing-unit * 1.5; // 12px
+$spacing-4: $spacing-unit * 2; // 16px
+$spacing-5: $spacing-unit * 2.5; // 20px
+$spacing-6: $spacing-unit * 3; // 24px
+$spacing-8: $spacing-unit * 4; // 32px
+$spacing-10: $spacing-unit * 5; // 40px
+$spacing-12: $spacing-unit * 6; // 48px
+$spacing-16: $spacing-unit * 8; // 64px
+$spacing-20: $spacing-unit * 10; // 80px
+$spacing-24: $spacing-unit * 12; // 96px
+$spacing-32: $spacing-unit * 16; // 128px
 
 // Component Specific Spacing
 $padding-small: $spacing-2;
@@ -188,15 +189,15 @@ $margin-xl: $spacing-8;
 // =============================================================================
 
 $elevation-0: none;
-$elevation-1: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
-$elevation-2: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
-$elevation-3: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
-$elevation-4: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
-$elevation-6: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
-$elevation-8: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12);
-$elevation-12: 0px 7px 8px -4px rgba(0,0,0,0.2), 0px 12px 17px 2px rgba(0,0,0,0.14), 0px 5px 22px 4px rgba(0,0,0,0.12);
-$elevation-16: 0px 8px 10px -5px rgba(0,0,0,0.2), 0px 16px 24px 2px rgba(0,0,0,0.14), 0px 6px 30px 5px rgba(0,0,0,0.12);
-$elevation-24: 0px 11px 15px -7px rgba(0,0,0,0.2), 0px 24px 38px 3px rgba(0,0,0,0.14), 0px 9px 46px 8px rgba(0,0,0,0.12);
+$elevation-1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+$elevation-2: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+$elevation-3: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+$elevation-4: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+$elevation-6: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+$elevation-8: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+$elevation-12: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12);
+$elevation-16: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12);
+$elevation-24: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
 
 // =============================================================================
 // BORDER RADIUS

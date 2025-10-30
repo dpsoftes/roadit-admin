@@ -1,5 +1,3 @@
-
-
 /* =============================================================================
    ROADIT ADMIN - MAIN STYLES v2.0
   Modern Material Design 2 + RoadIt Brand Integration
@@ -73,7 +71,7 @@ body {
   --roadit-primary: #{vars.$roadit-primary};
   --roadit-accent: #{vars.$roadit-accent};
   --roadit-text-on-dark: #{vars.$roadit-text-on-dark};
-  
+
   // Material Theme Integration
   --mat-toolbar-container-background-color: var(--roadit-primary);
   --mat-toolbar-container-text-color: var(--roadit-text-on-dark);
@@ -89,7 +87,7 @@ body {
   &.roadit-accent {
     color: vars.$roadit-accent !important;
   }
-  
+
   &.roadit-primary {
     color: vars.$roadit-primary !important;
   }
@@ -113,7 +111,8 @@ body {
    TYPOGRAPHY SYSTEM (Material Design 2)
    ============================================================================= */
 
-h1, .mat-headline-1 {
+h1,
+.mat-headline-1 {
   font-family: vars.$font-family-primary;
   font-size: vars.$font-size-h1;
   font-weight: vars.$font-weight-light;
@@ -122,7 +121,8 @@ h1, .mat-headline-1 {
   margin-bottom: vars.$spacing-6;
 }
 
-h2, .mat-headline-2 {
+h2,
+.mat-headline-2 {
   font-family: vars.$font-family-primary;
   font-size: vars.$font-size-h2;
   font-weight: vars.$font-weight-light;
@@ -131,7 +131,8 @@ h2, .mat-headline-2 {
   margin-bottom: vars.$spacing-5;
 }
 
-h3, .mat-headline-3 {
+h3,
+.mat-headline-3 {
   font-family: vars.$font-family-primary;
   font-size: vars.$font-size-h3;
   font-weight: vars.$font-weight-regular;
@@ -140,7 +141,8 @@ h3, .mat-headline-3 {
   margin-bottom: vars.$spacing-4;
 }
 
-h4, .mat-headline-4 {
+h4,
+.mat-headline-4 {
   font-family: vars.$font-family-primary;
   font-size: vars.$font-size-h4;
   font-weight: vars.$font-weight-regular;
@@ -149,7 +151,8 @@ h4, .mat-headline-4 {
   margin-bottom: vars.$spacing-4;
 }
 
-h5, .mat-headline-5 {
+h5,
+.mat-headline-5 {
   font-family: vars.$font-family-primary;
   font-size: vars.$font-size-h5;
   font-weight: vars.$font-weight-regular;
@@ -158,7 +161,8 @@ h5, .mat-headline-5 {
   margin-bottom: vars.$spacing-3;
 }
 
-h6, .mat-headline-6 {
+h6,
+.mat-headline-6 {
   font-family: vars.$font-family-primary;
   font-size: vars.$font-size-h6;
   font-weight: vars.$font-weight-medium;
@@ -202,15 +206,16 @@ h6, .mat-headline-6 {
   margin: 0 auto;
   padding: 0 vars.$container-padding;
 }
-.roadit-content{
+
+.roadit-content {
   background-color: vars.$roadit-content-bg;
-  
+
 }
 
 .roadit-app {
   min-height: 100vh;
   background-color: vars.$bg-default;
-  
+
   // Layout specific styling using brand colors
   &.dark-layout {
     background-color: vars.$roadit-primary;
@@ -223,64 +228,197 @@ h6, .mat-headline-6 {
    ============================================================================= */
 
 // Spacing Utilities (following Material 8px grid)
-.m-0 { margin: vars.$spacing-0 !important; }
-.m-1 { margin: vars.$spacing-1 !important; }
-.m-2 { margin: vars.$spacing-2 !important; }
-.m-3 { margin: vars.$spacing-3 !important; }
-.m-4 { margin: vars.$spacing-4 !important; }
-.m-5 { margin: vars.$spacing-5 !important; }
-.m-6 { margin: vars.$spacing-6 !important; }
+.m-0 {
+  margin: vars.$spacing-0 !important;
+}
 
-.p-0 { padding: vars.$spacing-0 !important; }
-.p-1 { padding: vars.$spacing-1 !important; }
-.p-2 { padding: vars.$spacing-2 !important; }
-.p-3 { padding: vars.$spacing-3 !important; }
-.p-4 { padding: vars.$spacing-4 !important; }
-.p-5 { padding: vars.$spacing-5 !important; }
-.p-6 { padding: vars.$spacing-6 !important; }
+.m-1 {
+  margin: vars.$spacing-1 !important;
+}
+
+.m-2 {
+  margin: vars.$spacing-2 !important;
+}
+
+.m-3 {
+  margin: vars.$spacing-3 !important;
+}
+
+.m-4 {
+  margin: vars.$spacing-4 !important;
+}
+
+.m-5 {
+  margin: vars.$spacing-5 !important;
+}
+
+.m-6 {
+  margin: vars.$spacing-6 !important;
+}
+
+.p-0 {
+  padding: vars.$spacing-0 !important;
+}
+
+.p-1 {
+  padding: vars.$spacing-1 !important;
+}
+
+.p-2 {
+  padding: vars.$spacing-2 !important;
+}
+
+.p-3 {
+  padding: vars.$spacing-3 !important;
+}
+
+.p-4 {
+  padding: vars.$spacing-4 !important;
+}
+
+.p-5 {
+  padding: vars.$spacing-5 !important;
+}
+
+.p-6 {
+  padding: vars.$spacing-6 !important;
+}
 
 // Color Utilities
-.text-primary { color: vars.$text-primary !important; }
-.text-secondary { color: vars.$text-secondary !important; }
-.text-success { color: vars.$success !important; }
-.text-warning { color: vars.$warning !important; }
-.text-error { color: vars.$error !important; }
-.text-info { color: vars.$info !important; }
+.text-primary {
+  color: vars.$text-primary !important;
+}
 
-.bg-primary { background-color: vars.$primary !important; }
-.bg-secondary { background-color: vars.$secondary !important; }
-.bg-success { background-color: vars.$success !important; }
-.bg-warning { background-color: vars.$warning !important; }
-.bg-error { background-color: vars.$error !important; }
-.bg-info { background-color: vars.$info !important; }
+.text-secondary {
+  color: vars.$text-secondary !important;
+}
+
+.text-success {
+  color: vars.$success !important;
+}
+
+.text-warning {
+  color: vars.$warning !important;
+}
+
+.text-error {
+  color: vars.$error !important;
+}
+
+.text-info {
+  color: vars.$info !important;
+}
+
+.bg-primary {
+  background-color: vars.$primary !important;
+}
+
+.bg-secondary {
+  background-color: vars.$secondary !important;
+}
+
+.bg-success {
+  background-color: vars.$success !important;
+}
+
+.bg-warning {
+  background-color: vars.$warning !important;
+}
+
+.bg-error {
+  background-color: vars.$error !important;
+}
+
+.bg-info {
+  background-color: vars.$info !important;
+}
 
 // RoadIt Brand Utilities
-.roadit-primary { color: vars.$roadit-primary !important; }
-.roadit-accent { color: vars.$roadit-accent !important; }
-.roadit-text-on-dark { color: vars.$roadit-text-on-dark !important; }
+.roadit-primary {
+  color: vars.$roadit-primary !important;
+}
 
-.bg-roadit-primary { background-color: vars.$roadit-primary !important; }
-.bg-roadit-accent { background-color: vars.$roadit-accent !important; }
+.roadit-accent {
+  color: vars.$roadit-accent !important;
+}
+
+.roadit-text-on-dark {
+  color: vars.$roadit-text-on-dark !important;
+}
+
+.bg-roadit-primary {
+  background-color: vars.$roadit-primary !important;
+}
+
+.bg-roadit-accent {
+  background-color: vars.$roadit-accent !important;
+}
 
 // Display Utilities
-.d-none { display: none !important; }
-.d-block { display: block !important; }
-.d-inline { display: inline !important; }
-.d-inline-block { display: inline-block !important; }
-.d-flex { display: flex !important; }
-.d-inline-flex { display: inline-flex !important; }
-.d-grid { display: grid !important; }
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-inline {
+  display: inline !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.d-inline-flex {
+  display: inline-flex !important;
+}
+
+.d-grid {
+  display: grid !important;
+}
 
 // Flex Utilities
-.flex-row { flex-direction: row !important; }
-.flex-column { flex-direction: column !important; }
-.justify-start { justify-content: flex-start !important; }
-.justify-center { justify-content: center !important; }
-.justify-end { justify-content: flex-end !important; }
-.justify-between { justify-content: space-between !important; }
-.align-start { align-items: flex-start !important; }
-.align-center { align-items: center !important; }
-.align-end { align-items: flex-end !important; }
+.flex-row {
+  flex-direction: row !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.justify-start {
+  justify-content: flex-start !important;
+}
+
+.justify-center {
+  justify-content: center !important;
+}
+
+.justify-end {
+  justify-content: flex-end !important;
+}
+
+.justify-between {
+  justify-content: space-between !important;
+}
+
+.align-start {
+  align-items: flex-start !important;
+}
+
+.align-center {
+  align-items: center !important;
+}
+
+.align-end {
+  align-items: flex-end !important;
+}
 
 /* =============================================================================
    RESPONSIVE DESIGN
@@ -288,21 +426,45 @@ h6, .mat-headline-6 {
 
 // Responsive utilities using Material breakpoints
 @media (max-width: #{vars.$breakpoint-sm - 1px}) {
-  .d-xs-none { display: none !important; }
-  .d-xs-block { display: block !important; }
-  .d-xs-flex { display: flex !important; }
+  .d-xs-none {
+    display: none !important;
+  }
+
+  .d-xs-block {
+    display: block !important;
+  }
+
+  .d-xs-flex {
+    display: flex !important;
+  }
 }
 
 @media (min-width: #{vars.$breakpoint-sm}) and (max-width: #{vars.$breakpoint-md - 1px}) {
-  .d-sm-none { display: none !important; }
-  .d-sm-block { display: block !important; }
-  .d-sm-flex { display: flex !important; }
+  .d-sm-none {
+    display: none !important;
+  }
+
+  .d-sm-block {
+    display: block !important;
+  }
+
+  .d-sm-flex {
+    display: flex !important;
+  }
 }
 
 @media (min-width: #{vars.$breakpoint-md}) {
-  .d-md-none { display: none !important; }
-  .d-md-block { display: block !important; }
-  .d-md-flex { display: flex !important; }
+  .d-md-none {
+    display: none !important;
+  }
+
+  .d-md-block {
+    display: block !important;
+  }
+
+  .d-md-flex {
+    display: flex !important;
+  }
 }
 
 /* =============================================================================
@@ -310,15 +472,26 @@ h6, .mat-headline-6 {
    ============================================================================= */
 
 // Common transitions using Material motion principles
-.transition-all { transition: vars.$transition-all !important; }
-.transition-color { transition: vars.$transition-color !important; }
-.transition-background { transition: vars.$transition-background !important; }
-.transition-transform { transition: vars.$transition-transform !important; }
+.transition-all {
+  transition: vars.$transition-all !important;
+}
+
+.transition-color {
+  transition: vars.$transition-color !important;
+}
+
+.transition-background {
+  transition: vars.$transition-background !important;
+}
+
+.transition-transform {
+  transition: vars.$transition-transform !important;
+}
 
 // Hover effects
 .hover-lift {
   transition: vars.$transition-transform;
-  
+
   &:hover {
     transform: translateY(-2px);
   }
@@ -326,7 +499,7 @@ h6, .mat-headline-6 {
 
 .hover-shadow {
   transition: vars.$transition-shadow;
-  
+
   &:hover {
     box-shadow: vars.$elevation-3;
   }
@@ -345,6 +518,7 @@ h6, .mat-headline-6 {
 
 // Reduced motion for accessibility
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -372,6 +546,7 @@ h6, .mat-headline-6 {
   background-color: #f00 !important;
   color: #fff !important;
 }
+
 .mat-mdc-snack-bar-container.snackbar-error,
 :root .mat-mdc-snack-bar-container.snackbar-error,
 body .mat-mdc-snack-bar-container.snackbar-error {
@@ -386,37 +561,181 @@ body .mat-mdc-snack-bar-container.snackbar-error {
   background-color: #f00 !important;
   color: #fff !important;
 }
+
 ::ng-deep .mat-mdc-snack-bar-container.snackbar-error {
   background-color: #f00 !important;
   color: #fff !important;
 }
+
 .mat-mdc-snack-bar-container.snackbar-alert {
   background-color: vars.$warning !important;
   color: #222 !important;
 }
+
 ::ng-deep .mat-mdc-snack-bar-container.snackbar-error,
 ::ng-deep .mat-mdc-snack-bar-container.snackbar-error .mdc-snackbar__surface {
   background-color: #f00 !important;
   color: #fff !important;
 }
+
 ::ng-deep .mat-mdc-snack-bar-container.snackbar-error .mdc-snackbar__surface {
   --mdc-snackbar-container-color: #f00 !important;
   background-color: #f00 !important;
   color: #fff !important;
 }
+
 ::ng-deep .mat-mdc-snack-bar-container,
 ::ng-deep .mat-mdc-snack-bar-container .mdc-snackbar__surface {
   box-shadow: none !important;
 }
+
 ::ng-deep .cdk-overlay-pane {
   box-shadow: none !important;
 }
-/* 
+
+/*
 .custom-label {
-    transform: translateY(12px) !important; 
+    transform: translateY(12px) !important;
 }
 
 .custom-label.floating {
     transform: translateY(-20px) scale(0.75) !important;
     font-size: 0.75rem !important;
 } */
+
+//CLASES GLOBALES
+
+/* =============================================================================
+   FORZAR FUENTE GEIST
+   Material Design está sobrescribiendo con Roboto, este código lo soluciona
+   ============================================================================= */
+
+/* FORZAR GEIST EN TODO EL BODY Y ELEMENTOS PRINCIPALES */
+body {
+  font-family: 'Geist', 'Geist Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* FORZAR GEIST EN TODOS LOS HEADINGS */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.mat-headline-1,
+.mat-headline-2,
+.mat-headline-3,
+.mat-headline-4,
+.mat-headline-5,
+.mat-headline-6 {
+  font-family: 'Geist', 'Geist Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* RESETEAR H1 A TAMAÑO NORMAL (32px) CON GEIST */
+h1 {
+  font-family: 'Geist', 'Geist Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 2rem !important; // 32px EN LUGAR DE 96px
+  font-weight: 500 !important; // MEDIUM
+  line-height: 1.2 !important;
+  letter-spacing: -0.025em !important;
+  margin-bottom: vars.$spacing-6;
+
+  // SI NECESITAS EL H1 GIGANTE DE MATERIAL
+  &.mat-display-large {
+    font-size: vars.$font-size-h1 !important; // 96px
+    font-weight: 300 !important;
+  }
+}
+
+/* CLASE PARA TÍTULOS DE PÁGINA CON GEIST */
+.page-title {
+  font-family: 'Geist', 'Geist Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 2rem; // 32px
+  font-weight: 500; // MEDIUM
+  margin: 0 0 vars.$spacing-6 0;
+  color: vars.$text-primary;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+
+  &--large {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: vars.$spacing-8;
+  }
+
+  &--small {
+    font-size: 1.5rem;
+    margin-bottom: vars.$spacing-4;
+  }
+
+  &--accent {
+    color: vars.$roadit-primary;
+  }
+
+  &--on-dark {
+    color: vars.$roadit-text-on-dark;
+  }
+
+  &--no-margin {
+    margin-bottom: 0;
+  }
+}
+
+/* SUBTÍTULOS Y TÍTULOS DE COMPONENTES CON GEIST */
+.section-subtitle {
+  font-family: 'Geist', 'Geist Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: vars.$text-secondary;
+  margin: 0 0 vars.$spacing-4 0;
+  line-height: 1.5;
+}
+
+.component-title {
+  font-family: 'Geist', 'Geist Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: vars.$text-primary;
+  margin: 0 0 vars.$spacing-3 0;
+  line-height: 1.3;
+}
+
+/* SOBRESCRIBIR MATERIAL TYPOGRAPHY CON GEIST */
+.mat-typography,
+.mat-body-1,
+.mat-body-2,
+.mat-caption,
+.mat-button {
+  font-family: 'Geist', 'Geist Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* FORZAR GEIST EN COMPONENTES MATERIAL */
+mat-card,
+mat-toolbar,
+mat-list,
+mat-menu,
+mat-dialog,
+mat-table,
+button[mat-button],
+button[mat-raised-button],
+button[mat-flat-button],
+button[mat-stroked-button] {
+  font-family: 'Geist', 'Geist Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* MEJORAR RENDERIZADO DE GEIST */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+
+//TITULO DE SECCIÓN
+.sectionTitleText {
+  font-size: 50px !important;
+  font-weight: 400 !important;
+  font-style: inherit !important;
+  line-height: 44px !important;
+  letter-spacing: 0px !important;
+}

@@ -738,44 +738,125 @@
 // =============================================================================
 
 // Text utilities
-.text-primary { color: $text-primary; }
-.text-secondary { color: $text-secondary; }
-.text-hint { color: $text-hint; }
-.text-disabled { color: $text-disabled; }
-.text-success { color: $success; }
-.text-warning { color: $warning; }
-.text-error { color: $error; }
+.text-primary {
+  color: $text-primary;
+}
+
+.text-secondary {
+  color: $text-secondary;
+}
+
+.text-hint {
+  color: $text-hint;
+}
+
+.text-disabled {
+  color: $text-disabled;
+}
+
+.text-success {
+  color: $success;
+}
+
+.text-warning {
+  color: $warning;
+}
+
+.text-error {
+  color: $error;
+}
 
 // Background utilities
-.bg-primary { background-color: $bg-primary; }
-.bg-secondary { background-color: $bg-secondary; }
-.bg-paper { background-color: $bg-paper; }
+.bg-primary {
+  background-color: $bg-primary;
+}
+
+.bg-secondary {
+  background-color: $bg-secondary;
+}
+
+.bg-paper {
+  background-color: $bg-paper;
+}
 
 // Spacing utilities
-.m-0 { margin: 0; }
-.m-1 { margin: $spacing-1; }
-.m-2 { margin: $spacing-2; }
-.m-3 { margin: $spacing-3; }
-.m-4 { margin: $spacing-4; }
+.m-0 {
+  margin: 0;
+}
 
-.p-0 { padding: 0; }
-.p-1 { padding: $spacing-1; }
-.p-2 { padding: $spacing-2; }
-.p-3 { padding: $spacing-3; }
-.p-4 { padding: $spacing-4; }
+.m-1 {
+  margin: $spacing-1;
+}
+
+.m-2 {
+  margin: $spacing-2;
+}
+
+.m-3 {
+  margin: $spacing-3;
+}
+
+.m-4 {
+  margin: $spacing-4;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.p-1 {
+  padding: $spacing-1;
+}
+
+.p-2 {
+  padding: $spacing-2;
+}
+
+.p-3 {
+  padding: $spacing-3;
+}
+
+.p-4 {
+  padding: $spacing-4;
+}
 
 // Elevation utilities
-.elevation-0 { box-shadow: $elevation-0; }
-.elevation-1 { box-shadow: $elevation-1; }
-.elevation-2 { box-shadow: $elevation-2; }
-.elevation-3 { box-shadow: $elevation-3; }
-.elevation-4 { box-shadow: $elevation-4; }
+.elevation-0 {
+  box-shadow: $elevation-0;
+}
+
+.elevation-1 {
+  box-shadow: $elevation-1;
+}
+
+.elevation-2 {
+  box-shadow: $elevation-2;
+}
+
+.elevation-3 {
+  box-shadow: $elevation-3;
+}
+
+.elevation-4 {
+  box-shadow: $elevation-4;
+}
 
 // Border radius utilities
-.rounded-sm { border-radius: $border-radius-small; }
-.rounded-md { border-radius: $border-radius-medium; }
-.rounded-lg { border-radius: $border-radius-large; }
-.rounded-full { border-radius: $border-radius-full; }
+.rounded-sm {
+  border-radius: $border-radius-small;
+}
+
+.rounded-md {
+  border-radius: $border-radius-medium;
+}
+
+.rounded-lg {
+  border-radius: $border-radius-large;
+}
+
+.rounded-full {
+  border-radius: $border-radius-full;
+}
 
 // =============================================================================
 // COMPACT MATERIAL FORM FIELDS FOR CREATE CLIENT PAGE

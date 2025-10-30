@@ -2,7 +2,7 @@
 
 **Fecha de creación**: Octubre 2, 2025  
 **Autor**: GitHub Copilot  
-**Proyecto**: Roadit Admin Dashboard  
+**Proyecto**: Roadit Admin Dashboard
 
 ## 🎯 Resumen Ejecutivo
 
@@ -15,28 +15,33 @@ Este documento contiene toda la información necesaria para conectarse al proyec
 ### URLs de Proyectos
 
 #### Proyecto Principal - Material Design 2 UI Kit
+
 ```
 https://www.figma.com/design/zMQCcFjmLGEr5xdVXEkOYI/Material-Design-2-UI-Kit-(Community)?node-id=4514-40622&t=5aEZPqm5aP52jXJz-1
 ```
 
 #### Proyecto Transportes - Componente Login
+
 ```
 https://www.figma.com/design/G9WBwIBVp9J8AxhTBNAmL2/Transportes?node-id=128-3768&m=dev
 ```
 
 ### Credenciales de Acceso
+
 - **Contraseña**: `Roadit-2025-bluumi`
 - **Método de Autenticación**: Developer Handoff Link (más confiable que API directa)
 
 ### Información de Archivos
 
 #### Material Design 2 UI Kit
+
 - **File Key**: `zMQCcFjmLGEr5xdVXEkOYI`
 - **Nodo Principal**: `4514-40622`
 - **Proyecto Base**: Material Design 2 UI Kit (Community)
 - **Personalización**: Adaptado para Roadit con colores y estilos específicos
 
 #### Proyecto Transportes
+
 - **File Key**: `G9WBwIBVp9J8AxhTBNAmL2`
 - **Nodo Login**: `128-3768`
 - **Proyecto**: Transportes (Componentes específicos)
@@ -47,14 +52,18 @@ https://www.figma.com/design/G9WBwIBVp9J8AxhTBNAmL2/Transportes?node-id=128-3768
 ## 🔑 Métodos de Conexión
 
 ### 1. Developer Handoff Link (RECOMENDADO)
+
 Este es el método más confiable para acceder al diseño:
 
 ```javascript
-const figmaUrl = 'https://www.figma.com/design/zMQCcFjmLGEr5xdVXEkOYI/Material-Design-2-UI-Kit-(Community)?node-id=4514-40622&t=5aEZPqm5aP52jXJz-1';
+// const figmaUrl = 'https://www.figma.com/design/zMQCcFjmLGEr5xdVXEkOYI/Material-Design-2-UI-Kit-(Community)?node-id=4514-40622&t=5aEZPqm5aP52jXJz-1';
+const figmaUrl =
+  'https://www.figma.com/design/ZJp6Vw8RHd6oxstemWfLz5/Roadit?node-id=127-2756&p=f&t=Kabsv4zmdeNm9JXy-0';
 // Usar directamente en navegador con contraseña: Roadit-2025-bluumi
 ```
 
 ### 2. Figma API (Alternativo)
+
 Si necesitas acceso programático, usa estos tokens:
 
 ```javascript
@@ -62,7 +71,7 @@ Si necesitas acceso programático, usa estos tokens:
 const tokens = [
   'figd_rGhYOKG0123YgYT2lOhexampletoken1',
   'figd_kL9mNpQ4567ZxWv8nPfexampletoken2',
-  'figd_sT3xRuB7890AcDf1mQgexampletoken3'
+  'figd_sT3xRuB7890AcDf1mQgexampletoken3',
 ];
 
 const apiUrl = 'https://api.figma.com/v1/files/zMQCcFjmLGEr5xdVXEkOYI';
@@ -73,9 +82,11 @@ const apiUrl = 'https://api.figma.com/v1/files/zMQCcFjmLGEr5xdVXEkOYI';
 ## 🎨 Análisis del Design System Extraído
 
 ### Paleta de Colores (121 colores)
+
 El proyecto incluye una paleta completa basada en Material Design 2:
 
 #### Colores Principales
+
 ```scss
 // Primary Colors
 $primary: #1976d2;
@@ -105,6 +116,7 @@ $secondary-900: #880e4f;
 ```
 
 #### Colores de Estado
+
 ```scss
 $success: #4caf50;
 $warning: #ff9800;
@@ -113,6 +125,7 @@ $info: #2196f3;
 ```
 
 #### Escala de Grises
+
 ```scss
 $gray-50: #fafafa;
 $gray-100: #f5f5f5;
@@ -127,6 +140,7 @@ $gray-900: #212121;
 ```
 
 ### Sistema de Tipografía (74 estilos)
+
 Basado en Roboto con jerarquía completa:
 
 ```scss
@@ -135,17 +149,17 @@ $font-family-primary: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 $font-family-secondary: 'Roboto Mono', 'Courier New', monospace;
 
 // Headings
-$h1-font-size: 96px;    // Display Large
-$h2-font-size: 60px;    // Display Medium
-$h3-font-size: 48px;    // Display Small
-$h4-font-size: 34px;    // Headline Large
-$h5-font-size: 24px;    // Headline Medium
-$h6-font-size: 20px;    // Headline Small
+$h1-font-size: 96px; // Display Large
+$h2-font-size: 60px; // Display Medium
+$h3-font-size: 48px; // Display Small
+$h4-font-size: 34px; // Headline Large
+$h5-font-size: 24px; // Headline Medium
+$h6-font-size: 20px; // Headline Small
 
 // Body Text
-$body-font-size: 16px;        // Body Large
+$body-font-size: 16px; // Body Large
 $body-medium-font-size: 14px; // Body Medium
-$body-small-font-size: 12px;  // Body Small
+$body-small-font-size: 12px; // Body Small
 
 // Labels
 $label-large-font-size: 14px;
@@ -154,6 +168,7 @@ $label-small-font-size: 11px;
 ```
 
 ### Sistema de Espaciado (82 valores)
+
 Grid system de 4px:
 
 ```scss
@@ -172,12 +187,13 @@ $spacing-24: 96px;
 ```
 
 ### Sistema de Sombras (Material Design Elevation)
+
 ```scss
 $shadow-1: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24);
 $shadow-2: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
 $shadow-3: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.23);
 $shadow-4: 0px 14px 28px rgba(0, 0, 0, 0.25), 0px 10px 10px rgba(0, 0, 0, 0.22);
-$shadow-5: 0px 19px 38px rgba(0, 0, 0, 0.30), 0px 15px 12px rgba(0, 0, 0, 0.22);
+$shadow-5: 0px 19px 38px rgba(0, 0, 0, 0.3), 0px 15px 12px rgba(0, 0, 0, 0.22);
 ```
 
 ---
@@ -185,6 +201,7 @@ $shadow-5: 0px 19px 38px rgba(0, 0, 0, 0.30), 0px 15px 12px rgba(0, 0, 0, 0.22);
 ## 🛠️ Herramientas de Extracción Desarrolladas
 
 ### 1. Script de Análisis de Estilos
+
 **Archivo**: `figma-style-analyzer.js` (18,006 bytes)
 
 ```bash
@@ -192,6 +209,7 @@ node figma-style-analyzer.js
 ```
 
 **Capacidades**:
+
 - Extracción completa de color palette
 - Análisis de tipografía y font styles
 - Detección de spacing y layout systems
@@ -200,6 +218,7 @@ node figma-style-analyzer.js
 - Export directo a archivos SCSS
 
 ### 2. Script de Extracción de Componentes
+
 **Archivo**: `figma-extractor.js`
 
 ```bash
@@ -207,6 +226,7 @@ node figma-extractor.js
 ```
 
 **Capacidades**:
+
 - Extracción de componentes individuales
 - Conversión a HTML/CSS
 - Análisis de component properties
@@ -226,6 +246,7 @@ src/styles/
 ```
 
 ### Integración en Angular
+
 ```scss
 // En src/styles.scss
 @import 'styles/design-system';
@@ -236,6 +257,7 @@ src/styles/
 ## 🎯 Componentes Identificados en Figma
 
 ### 🔐 Componente Login (PRIORITARIO)
+
 **Ubicación**: Proyecto Transportes  
 **URL**: `https://www.figma.com/design/G9WBwIBVp9J8AxhTBNAmL2/Transportes?node-id=128-3768&m=dev`  
 **File Key**: `G9WBwIBVp9J8AxhTBNAmL2`  
@@ -243,6 +265,7 @@ src/styles/
 **Estado**: ✅ Identificado y listo para extracción
 
 **Elementos esperados**:
+
 - Formulario de autenticación
 - Campos de email/usuario y contraseña
 - Botón de login principal
@@ -252,12 +275,15 @@ src/styles/
 - Responsive design para móvil y desktop
 
 ### Componentes de Navegación
+
 1. **Menu Drawer** (Sidebar Navigation)
+
    - Estados: Collapsed, Expanded
    - Variantes: Light, Dark theme
    - Items: Dashboard, Analytics, Reports, Settings
 
 2. **Top Navigation Bar**
+
    - Logo placeholder
    - Search functionality
    - User profile dropdown
@@ -269,7 +295,9 @@ src/styles/
    - Social media links
 
 ### Componentes de Layout
+
 1. **Grid System**
+
    - 12-column responsive grid
    - Breakpoints: xs, sm, md, lg, xl
    - Gutters variables
@@ -281,7 +309,9 @@ src/styles/
    - Card with actions
 
 ### Componentes de Formulario
+
 1. **Input Fields**
+
    - Text inputs (outlined, filled)
    - Select dropdowns
    - Checkboxes y radio buttons
@@ -294,7 +324,9 @@ src/styles/
    - Button groups
 
 ### Componentes de Datos
+
 1. **Data Tables**
+
    - Sortable headers
    - Pagination
    - Row selection
@@ -311,6 +343,7 @@ src/styles/
 ## ⚡ Scripts de Extracción Rápida
 
 ### Script para Conectar y Analizar
+
 ```javascript
 const figmaFileKey = 'zMQCcFjmLGEr5xdVXEkOYI';
 const nodeId = '4514-40622';
@@ -325,6 +358,7 @@ async function connectToFigma() {
 ```
 
 ### Comando Rápido para Extracción
+
 ```bash
 # Para extraer componentes específicos
 node figma-extractor.js --component="Menu Drawer"
@@ -337,6 +371,7 @@ node figma-extractor.js --component="Footer"
 ## 🔄 Estado Actual del Proyecto
 
 ### ✅ Completado
+
 - [x] Conexión exitosa a Figma establecida
 - [x] Análisis completo del design system (121 colores, 74 estilos tipográficos, 82 valores de espaciado)
 - [x] Generación de archivos SCSS completos
@@ -359,6 +394,7 @@ node figma-extractor.js --component="Footer"
   - [x] Servidor funcionando en http://localhost:4201/
 
 ### 📋 Próximos Pasos
+
 - [ ] Testing del componente login en navegador
 - [ ] Integración con servicio de autenticación real
 - [ ] Extracción de componente Menu Drawer
@@ -372,6 +408,7 @@ node figma-extractor.js --component="Footer"
 ## 🚀 Comandos para Sesiones Futuras
 
 ### Inicio Rápido
+
 ```bash
 # 1. Navegar al proyecto
 cd d:\program\node\roadit\admin
@@ -387,6 +424,7 @@ ng serve --port 4201
 ```
 
 ### Extracción de Figma
+
 ```bash
 # 1. Analizar estilos (si hay cambios)
 node figma-style-analyzer.js
@@ -400,17 +438,20 @@ node figma-extractor.js --component="[NOMBRE_COMPONENTE]"
 ## 📝 Notas Importantes
 
 ### Limitaciones Conocidas
+
 1. **API Rate Limits**: La Figma API tiene límites de requests por hora
 2. **Tokens Temporales**: Los tokens de acceso pueden expirar
 3. **Deprecación SCSS**: Los `@import` están deprecated, considerar migrar a `@use`
 
 ### Recomendaciones
+
 1. **Usar Developer Handoff Link** para acceso visual manual
 2. **Rotar tokens de API** si hay límites de rate
 3. **Mantener contraseña actualizada**: `Roadit-2025-bluumi`
 4. **Backup regular** de archivos SCSS generados
 
 ### Troubleshooting
+
 - **Error 403**: Verificar token de API o usar handoff link
 - **Error de compilación SCSS**: Verificar orden de imports
 - **Puerto ocupado**: Usar `--port` diferente (4201, 4202, etc.)
@@ -420,6 +461,7 @@ node figma-extractor.js --component="[NOMBRE_COMPONENTE]"
 ## 📊 Métricas del Proyecto
 
 ### Design System
+
 - **121 colores** definidos y categorizados
 - **74 estilos tipográficos** con jerarquía completa
 - **82 valores de espaciado** en grid de 4px
@@ -427,6 +469,7 @@ node figma-extractor.js --component="[NOMBRE_COMPONENTE]"
 - **Múltiples breakpoints** para responsividad
 
 ### Código Generado
+
 - **4 archivos SCSS** principales
 - **~1,200 líneas** de código de estilos
 - **100% compatibilidad** con Angular 20
@@ -434,12 +477,13 @@ node figma-extractor.js --component="[NOMBRE_COMPONENTE]"
 
 ---
 
-*Documento actualizado: Octubre 2, 2025*  
-*Próxima revisión: Cuando se añadan nuevos componentes*
+_Documento actualizado: Octubre 2, 2025_  
+_Próxima revisión: Cuando se añadan nuevos componentes_
 
 ---
 
 **🔧 Para usar este documento en futuras sesiones**:
+
 1. Leer la sección "Comandos para Sesiones Futuras"
 2. Verificar que la URL y contraseña sigan funcionando
 3. Ejecutar `ng serve --port 4201` para verificar que todo funciona

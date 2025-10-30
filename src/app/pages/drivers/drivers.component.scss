@@ -1,0 +1,17 @@
+.drivers-page {
+  padding: 2rem;
+
+  //SOBRESCRIBIR ESTILOS DE FILTROS PARA PERMITIR MÚLTIPLES LÍNEAS
+  ::ng-deep .filters_content {
+    display: flex;
+    flex-wrap: wrap !important;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  //AJUSTAR ALTURA DE LOS CAMPOS DE FILTRO
+  ::ng-deep .filter_field {
+    min-width: 200px;
+    flex-shrink: 0;
+  }
+}
