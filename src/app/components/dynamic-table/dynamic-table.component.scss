@@ -420,7 +420,7 @@ mat-card-content {
     height: 22px !important;
     min-height: 22px !important;
     border-radius: 11px !important;
-    border: 2px solid vars.$roadit-accent;
+    border: 1px solid vars.$roadit-accent;
     background-color: transparent !important;
 
     .mdc-evolution-chip__text-label {
@@ -479,6 +479,13 @@ mat-card-content {
     .mdc-evolution-chip__text-label {
       color: vars.$black !important;
     }
+  }
+
+  .chip-array-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
   }
 
   // ESTILOS PARA IMÁGENES EN CELDAS

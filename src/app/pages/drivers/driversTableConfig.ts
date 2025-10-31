@@ -8,6 +8,7 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
       key: 'image',
       label: 'drivers.list.image',
       type: 'image',
+      align: 'center',
       width: 8,
       imageConfig: {
         width: '40px',
@@ -55,6 +56,7 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
       key: 'email',
       label: 'drivers.list.email',
       type: 'text',
+      // align: 'center',
       width: 22,
     },
     {
@@ -79,11 +81,10 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
     {
       key: 'tags',
       label: 'drivers.list.tags',
-      type: 'chip',
-      width: 8,
+      type: 'chip-array',
+      width: 12,
       chipConfig: {
         type: 'tags',
-        // translateKey: 'drivers.list.tags'
       }
     },
     {
@@ -136,7 +137,7 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
           {
             icon: 'material-symbols-outlined/edit_square',
             label: 'Editar',
-            color: 'warn',
+            color: 'primary',
             action: 'edit'
           },
           {
