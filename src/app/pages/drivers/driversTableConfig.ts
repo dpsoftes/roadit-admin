@@ -1,7 +1,8 @@
 import { signal } from "@angular/core";
 import { TableConfig } from "@components/dynamic-table/dynamic-table.interfaces";
+import { I18nService } from "@i18n/i18n.service";
 
-export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
+export const createDriversTableConfig = (listArray: any[], i18n: I18nService): TableConfig => ({
   columns: [
     {
       key: 'image',
@@ -37,12 +38,6 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
         `;
       }
     },
-    // {
-    //   key: 'cif',
-    //   label: 'drivers.list.cif',
-    //   type: 'text',
-    //   width: 10
-    // },
     {
       key: 'province',
       label: 'drivers.list.province',
@@ -55,7 +50,6 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       label: 'drivers.list.city',
       type: 'text',
       width: 10,
-      // align: 'center'
     },
     {
       key: 'email',
@@ -95,21 +89,41 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
     {
       key: 'validated',
       label: 'drivers.list.validated',
-      type: 'chip',
+      type: 'custom',
       width: 13,
-      chipConfig: {
-        type: 'status',
-        translateKey: 'drivers.list.status'
+      render: (column: any, row: any) => {
+        //RENDERIZADO PERSONALIZADO PARA validated
+        //EVALUA SI EL VALOR ES true O false Y DEVUELVE SVG + TRADUCCION
+        const isValidated = row.validated;
+        const translationKey = isValidated ? 'drivers.profile.VALIDATE' : 'drivers.profile.NO_VALIDATE';
+        const translatedText = i18n.translate(translationKey);
+
+        //RUTA A LOS SVG EXTERNOS
+        const iconPath = isValidated
+          ? 'assets/icons/validatedIcon.svg'
+          : 'assets/icons/noValidatedIcon.svg';
+
+        return `
+          <div class="validated-cell">
+            <img src="${iconPath}" alt="${translatedText}" class="validated-icon" />
+            <span class="validated-text">${translatedText}</span>
+          </div>
+        `;
       }
     },
     {
       key: 'is_active',
       label: 'drivers.list.status',
-      type: 'chip',
+      type: 'custom',
       width: 9,
-      chipConfig: {
-        type: 'status',
-        translateKey: 'drivers.isActive'
+      render: (column: any, row: any) => {
+        //RENDERIZADO PERSONALIZADO PARA is_active
+        //EVALUA SI EL VALOR ES true O false Y DEVUELVE LA TRADUCCION CORRESPONDIENTE
+        const isActive = row.is_active;
+        const translationKey = isActive ? 'drivers.isActive.ACTIVE' : 'drivers.isActive.INACTIVE';
+        const translatedText = i18n.translate(translationKey);
+
+        return `<span>${translatedText}</span>`;
       }
     },
     {
