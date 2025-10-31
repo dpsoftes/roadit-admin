@@ -587,3 +587,48 @@ mat-card-content {
     }
   }
 }
+
+// BORDES DE LA TABLA - LATERALES DEL COLOR DEL FONDO Y INFERIOR CON COLOR ACCENT
+::ng-deep {
+  .mat-mdc-table {
+    border-collapse: collapse !important;
+    background-color: vars.$white !important;
+
+    .mdc-data-table__row {
+      border-left: 1px transparent !important;
+      border-right: 1px transparent !important;
+      border-top: 1px solid vars.$white !important;
+      border-bottom: 1px solid vars.$roadit-accent !important;
+    }
+
+    .mat-mdc-row {
+      border-left: 1px transparent !important;
+      border-right: 1px transparent !important;
+      border-top: 1px solid vars.$white !important;
+      border-bottom: 1px solid vars.$roadit-accent !important;
+    }
+
+    .mat-mdc-header-row {
+      border-left: 1px transparent !important;
+      border-right: 1px transparent !important;
+      border-top: 1px solid vars.$white !important;
+      border-bottom: 2px solid vars.$roadit-accent !important;
+    }
+
+    .mdc-data-table__cell,
+    .mdc-data-table__header-cell {
+      border-left: 1px transparent !important;
+      border-right: 1px transparent !important;
+      border-top: 1px solid vars.$white !important;
+      border-bottom: 1px solid vars.$roadit-accent !important;
+    }
+
+    .mat-mdc-cell,
+    .mat-mdc-header-cell {
+      border-left: 1px transparent !important;
+      border-right: 1px transparent !important;
+      border-top: 1px solid vars.$white !important;
+      border-bottom: 1px solid vars.$roadit-accent !important;
+    }
+  }
+}

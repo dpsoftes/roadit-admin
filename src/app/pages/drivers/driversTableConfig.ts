@@ -22,17 +22,17 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       width: 10
     },
     {
-      key: 'dni',
-      label: 'drivers.list.dni',
+      key: 'dni/cif',
+      label: 'drivers.list.dni/cif',
       type: 'text',
       width: 10
     },
-    {
-      key: 'cif',
-      label: 'drivers.list.cif',
-      type: 'text',
-      width: 10
-    },
+    // {
+    //   key: 'cif',
+    //   label: 'drivers.list.cif',
+    //   type: 'text',
+    //   width: 10
+    // },
     {
       key: 'province',
       label: 'drivers.list.province',

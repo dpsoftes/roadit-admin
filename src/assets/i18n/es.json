@@ -728,6 +728,7 @@
       "name": "Nombre",
       "dni": "DNI",
       "cif": "CIF",
+      "dni/cif": "DNI/CIF",
       "province": "Provincia",
       "city": "Ciudad",
       "email": "Correo",
