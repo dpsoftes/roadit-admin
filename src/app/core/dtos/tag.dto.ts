@@ -1,8 +1,9 @@
-﻿import { BaseEntity } from './base.dto';
+﻿import { TagType } from "@enums/common.enum";
+import { BaseEntity } from "./base.dto";
 
 export class TagDto extends BaseEntity {
     name: string;
-    type: string; // Display value from get_type_display()
+    type: TagType; // Display value from get_type_display()
 
     constructor(data: any = {}) {
         super(data);
@@ -14,7 +15,7 @@ export class TagDto extends BaseEntity {
         return new TagDto(json);
     }
 
-    override toJson(): any {
+     override toJson(): any {
         return {
             ...super.toJson(),
             name: this.name,

@@ -22,6 +22,6 @@ export class DriverConsignsComponent {
 
   saveChanges(){
     this.store.updateState({client: this.client()})
-    this.store.saveGralData();
+    this.store.saveGralData({id: this.client().id, html_info_page: this.client().html_info_page});
   }
 }

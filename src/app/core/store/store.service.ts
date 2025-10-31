@@ -88,9 +88,9 @@ export class StoreService {
   }
   async loadTags() {
     try {
-      const response = await this.api.get<any>({ url: EndPoints.getTags });
-      if(response.results && response.results.length > 0){
-        this.global.updateState({tags: response.results} );
+      const response = await this.api.get<any[]>({ url: EndPoints.getTags });
+      if(response && response.length > 0){
+        this.global.updateState({tags: response} );
       }
     }catch (error) {
       console.error('Error loading tags:', error);

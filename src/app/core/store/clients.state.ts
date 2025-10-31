@@ -1,10 +1,11 @@
 import { updateState, withDevtools } from "@angular-architects/ngrx-toolkit";
 import { inject } from "@angular/core";
-import { ClientBillingAccountDto } from "@dtos/clients/billingsAccounts.dto";
+import { BillingAccountItemDto, ClientBillingAccountDto } from "@dtos/clients/billingsAccounts.dto";
 import { ClientCertification } from "@dtos/clients/clientsCertifications.dto";
 import { DocumentsClientsDto } from "@dtos/clients/documents.dto";
 import { PriceRulesClientDto } from "@dtos/clients/priceRules.dtos";
 import { ClientDto } from "@dtos/index";
+import { DocumentTemplateTransportEntity } from "@entities/clients.entities";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { ClientsProvider } from "@providers";
 import { Helpers } from "@utils/helpers";
@@ -15,7 +16,7 @@ export class ClientsState {
     documents: DocumentsClientsDto[] = [];
     currentDocument: DocumentsClientsDto = {} as DocumentsClientsDto;
     priceRules: PriceRulesClientDto = new PriceRulesClientDto();
-    billingsAccounts: ClientBillingAccountDto[] = [];
+    billingsAccounts: BillingAccountItemDto[] = [];
     currentBillingAccount: ClientBillingAccountDto = new ClientBillingAccountDto();
     certifications: ClientCertification[] = [];
     currentCertification: ClientCertification = new ClientCertification();
@@ -116,12 +117,14 @@ export const ClientStore = signalStore(
           }
         },
         
-        saveGralData: async () => {
+        saveGralData: async (client?: Partial<ClientDto>) => {
           try{
-            if(store.validGralData(store.client()).length > 0){
-              throw new Error('Datos generales del cliente no son válidos.');
+            if(!client){
+              if(store.validGralData(store.client()).length > 0){
+                throw new Error('Datos generales del cliente no son válidos.');
+              }
             }
-            let savedClient: ClientDto | null= store.client();
+            let savedClient: Partial<ClientDto> | null= client ?? store.client();
             if(savedClient.id && savedClient.id > 0){
               savedClient = await prov.updateClientGralData(savedClient, store.curImage());
             }else{
@@ -150,7 +153,22 @@ export const ClientStore = signalStore(
             console.error('Error al guardar documento del cliente:', error);
             throw error;
           }
+        },
+        deleteDocument: async (document: Partial<DocumentsClientsDto>) => {
+          try{
+            var id = document.id;
+            var doc = await prov.deleteClientDocument(document);
+            if(doc){
+              store.updateState({ documents: store.documents().filter(d => d.id!=id)});
+              return true;
+            }
+            return false;
+          }catch(error){
+            console.error('Error al guardar documento del cliente:', error);
+            return false;
+          }
         }
+        
       }
     }
   ),
@@ -171,5 +189,4 @@ function saveClientStoreToStorage(store: any, key = 'roadit_client_store') {
 function loadClientStoreFromStorage( key = 'roadit_client_store'): ClientsState | null {
   
   return Helpers.getStorage<ClientsState>(key);
-
 }

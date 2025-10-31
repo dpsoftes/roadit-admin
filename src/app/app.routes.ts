@@ -58,6 +58,10 @@ export const routes: Routes = [
               path: 'create-client',
               loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
             },
+            {
+              path: ':type',
+              loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+            },
           ]
         },
       // {

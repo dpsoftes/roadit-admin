@@ -42,8 +42,8 @@ export class DocumentTabComponent implements OnInit {
   transportType = Object.entries(transportPrincipalTypeDescriptions).map(([key, value]) => ({ key, value }));
   applicationMoment =  Object.entries(directionTypeDescriptions).map(([key, value]) => ({ key, value }));
   fileUploadTypeDescriptions = Object.entries(fileUploadTypeDescriptions).map(([key, value]) => ({ key, value }));
-  selectedFileUploadType = signal<FileUploadType>(FileUploadType.URL);
   filetype = fileUploadTypeDescriptions;
+  selectedFileUploadType = signal<FileUploadType>(FileUploadType.URL);
   store = inject(ClientStore);
   documents = signal(this.store.documents());
   curDocument = new DocumentTemplateTransportEntity()
@@ -140,15 +140,19 @@ export class DocumentTabComponent implements OnInit {
               }
             },
             {
-
-              // TODO
               icon: 'material-symbols-outlined/delete',
               label: 'Eliminar',
               color: 'error',
               action: 'delete',
               onClick: (row: any) => {
-                const updatedDocs = this.store.documents()?.filter(doc => doc.id !== row.id) || [];
-                this.store.updateState({ documents: updatedDocs });
+                const updatedDocs = this.store.documents()?.find(doc => doc.id == row.id);
+                if(!updatedDocs) return;
+                var resp = window.confirm(this.i18n.translate('errors.documents.confirm-delete-document')) 
+                if(resp){
+                  if(!this.store.deleteDocument(updatedDocs)){
+                    alert(this.i18n.translate('errors.documents.error-delete-document'));
+                  }
+                }
               }
 
             },

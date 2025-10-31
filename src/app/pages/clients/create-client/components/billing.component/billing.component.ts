@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,16 +8,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@i18n/translate.pipe';
+import { ClientStore } from '@store/clients.state';
+import { ClientBillingAccountEntity } from '@entities/clients.entities';
+import { BillingAccountItemDto } from '@dtos/clients/billingsAccounts.dto';
+import { EntityDocumentTypeDescriptions } from '@enums/common.enum';
 
-interface BillingAccount {
-  idRef: string;
-  taxId: string;
-  companyName: string;
-  city: string;
-  email: string;
-  retention: string;
-  duePeriod: string;
-}
+
 
 @Component({
   selector: 'app-billing',
@@ -36,10 +32,18 @@ interface BillingAccount {
   styleUrls: ['./billing.component.scss']
 })
 export class BillingComponent {
+  store = inject(ClientStore);
+  current = new  ClientBillingAccountEntity();
+  billingAccounts = signal<BillingAccountItemDto[]>([]);
+  docstype = Object.entries(EntityDocumentTypeDescriptions).map(([key, value]) => ({ key, value })); 
+  constructor() {
+    // Mock data for billing accounts
+    effect(() => {
+      this.billingAccounts.set(this.store.billingsAccounts());
+    });
+  }
   
-  billingAccounts = signal<BillingAccount[]>([]);
-  
-  email_send_invoice = signal<string>('');
+/*   email_send_invoice = signal<string>('');
   state = signal<string>('');
   iban = signal<string>('');
   iva = signal<string>('');
@@ -57,10 +61,10 @@ export class BillingComponent {
   city = signal<string>('');
   phone = signal<string>('');
   expire_period_days = signal<number>(0);
-  client = signal<number>(0);
+  client = signal<number>(0); */
 
   onSave(): void {
-    const formData = {
+   /*  const formData = {
       email_send_invoice: this.email_send_invoice(),
       state: this.state(),
       iban: this.iban(),
@@ -81,23 +85,23 @@ export class BillingComponent {
       expire_period_days: this.expire_period_days(),
       client: this.client(),
     };
-    
-    console.log('Form data:', formData);
+     
+    console.log('Form data:', formData);*/
   }
 
   onAddAccount(): void {
     console.log('Add account clicked');
   }
 
-  onEditAccount(account: BillingAccount): void {
+  onEditAccount(account: BillingAccountItemDto): void {
     console.log('Edit account:', account);
   }
 
-  onViewAccount(account: BillingAccount): void {
+  onViewAccount(account: BillingAccountItemDto): void {
     console.log('View account:', account);
   }
 
-  onDeleteAccount(account: BillingAccount): void {
+  onDeleteAccount(account: BillingAccountItemDto): void {
     console.log('Delete account:', account);
   }
 }

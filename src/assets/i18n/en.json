@@ -714,7 +714,9 @@
     "documents": {
       "type-movement": "Movement type is required.",
       "moment": "Moment is required.",
-      "not-file": "You must select a file or a URL."
+      "not-file": "You must select a file or a URL.",
+      "confirm-delete-document": "Are you sure you want to delete this document?",
+      "error-delete-document": "Error deleting the document. Please try again."
     }
   },
   "fileUploadType": {
@@ -727,5 +729,10 @@
     "dropFile": "Drag a file or click",
     "viewFile": "View file",
     "deleteFile": "Delete file"
+  },
+  "EntityDocumentType":{
+    "DNI": "Dni (vat number)",
+    "CIF": "Cif (vat number)",
+    "OTHER": "Other"
   }
 }
