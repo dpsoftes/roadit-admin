@@ -7,6 +7,17 @@
     "forgot_password": "¿Olvidaste contraseña?",
     "loading": "Cargando..."
   },
+  "paginator": {
+    "itemsPerPageLabel": "Elementos por página:",
+    "nextPageLabel": "Página siguiente",
+    "previousPageLabel": "Página anterior",
+    "firstPageLabel": "Primera página",
+    "lastPageLabel": "Última página",
+    "rangeLabel": {
+      "empty": "0 de {{length}}",
+      "range": "{{start}} - {{end}} de {{length}}"
+    }
+  },
   "login": {
     "title": "Iniciar Sesión",
     "email_required": "El email es requerido",
