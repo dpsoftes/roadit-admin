@@ -62,7 +62,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'email',
       label: 'drivers.list.email',
       type: 'text',
-      width: 12,
+      width: 22,
     },
     {
       key: 'phone',
@@ -102,12 +102,6 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
         type: 'status',
         translateKey: 'drivers.list.status'
       }
-    },
-    {
-      key: 'fortnightEarnings',
-      label: 'drivers.list.fortnight_earnings',
-      type: 'text',
-      width: 13
     },
     {
       key: 'is_active',
