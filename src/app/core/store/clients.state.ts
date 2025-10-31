@@ -130,6 +130,7 @@ export const ClientStore = signalStore(
             }else{
               savedClient = await prov.createClientGralData(savedClient);
             }
+            store.updateState({ client: savedClient as ClientDto, curImage: null });
             console.log('savedClient', savedClient);
           }catch(error){
             console.error('Error al guardar datos generales del cliente:', error);

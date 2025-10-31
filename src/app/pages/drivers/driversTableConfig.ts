@@ -1,7 +1,7 @@
-import { signal } from "@angular/core";
+import { signal, WritableSignal } from "@angular/core";
 import { TableConfig } from "@components/dynamic-table/dynamic-table.interfaces";
 
-export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
+export const createDriversTableConfig = (listArray: WritableSignal<any[]>): TableConfig => ({
   columns: [
     {
       key: 'image',
@@ -135,7 +135,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       }
     }
   ],
-  data: signal([]),
+  data: listArray,
   exportable: true,
   selectable: false,
   pagination: true,

@@ -2,13 +2,16 @@ import {
   Component,
   ChangeDetectionStrategy,
   signal,
-  OnInit
+  OnInit,
+  inject,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
 import { createDriversTableConfig } from './driversTableConfig';
+import { DriverStore } from '@store/driver.state';
 
 @Component({
   selector: 'app-drivers',
@@ -195,11 +198,22 @@ export class DriversComponent implements OnInit {
       is_active: 'ACTIVE'
     }
   ]);
+  store = inject(DriverStore);
+  drivers = signal(this.store.drivers());
+  constructor() {
+    effect(() => {
+      this.drivers.set(this.store.drivers());
+    });
+  }
+
+
 
   //CONFIGURACION DE LA TABLA
-  driversTableConfig = signal(createDriversTableConfig(this.listArray()));
+  driversTableConfig = signal(createDriversTableConfig(this.drivers));
 
   ngOnInit() {
+    this.store.initializeFromStorage();
+
     this.loadDrivers();
   }
 
