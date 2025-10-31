@@ -83,7 +83,7 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
       width: 8,
       chipConfig: {
         type: 'tags',
-        translateKey: 'drivers.list.tags'
+        // translateKey: 'drivers.list.tags'
       }
     },
     {
