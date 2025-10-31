@@ -3,7 +3,7 @@ import { Signal, WritableSignal } from "@angular/core";
 export interface TableColumn {
   key: string;
   label: string;
-  type: 'text' | 'image' | 'chip' | 'chip-array' | 'actions' | 'checkbox';
+  type: 'text' | 'image' | 'chip' | 'chip-array' | 'actions' | 'checkbox' | 'custom';
   sortable?: boolean;
   align?: 'left' | 'center' | 'right'; // ALINEACIÓN DEL CONTENIDO
   // Sistema de porcentajes para control preciso del ancho
@@ -14,11 +14,10 @@ export interface TableColumn {
   chipConfig?: ChipConfig;
   actionConfig?: ActionConfig;
   imageConfig?: ImageConfig;
-  //FUNCIÓN RENDER: PERMITE PERSONALIZAR LA RENDERIZACIÓN DE LA CELDA
-  //PUEDE DEVOLVER STRING (TEXTO PLANO) O HTML (SE RENDERIZARÁ CON INNERHTML)
+  //FUNCIÓN RENDER: SOLO PARA COLUMNAS DE TIPO 'CUSTOM'
+  //PERMITE RENDERIZAR HTML PERSONALIZADO EN LA CELDA
+  //DEBE DEVOLVER UN STRING CON HTML VÁLIDO
   render?: (column: TableColumn, row: any) => string;
-  //INDICA SI EL VALOR DEVUELTO POR RENDER ES HTML QUE DEBE RENDERIZARSE CON INNERHTML
-  renderAsHtml?: boolean;
 }
 
 export interface ChipConfig {

@@ -24,9 +24,8 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
     {
       key: 'dni/cif',
       label: 'drivers.list.dni/cif',
-      type: 'text',
+      type: 'custom',
       width: 10,
-      renderAsHtml: true,
       render: (column: any, row: any) => {
         //RENDERIZADO HTML PERSONALIZADO PARA DNI/CIF
         //LOS ESTILOS ESTÁN EN drivers.component.scss
