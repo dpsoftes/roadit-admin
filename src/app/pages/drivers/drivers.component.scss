@@ -1,0 +1,33 @@
+.drivers-page {
+  padding: 2rem;
+
+  //SOBRESCRIBIR ESTILOS DE FILTROS PARA PERMITIR MÚLTIPLES LÍNEAS
+  ::ng-deep .filters_content {
+    display: flex;
+    flex-wrap: wrap !important;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  //AJUSTAR ALTURA DE LOS CAMPOS DE FILTRO
+  ::ng-deep .filter_field {
+    min-width: 200px;
+    flex-shrink: 0;
+  }
+
+  ::ng-deep .dni-cif-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .dni-line {
+      font-weight: 500;
+      color: #1A1A1A;
+    }
+
+    .cif-line {
+      font-weight: 400;
+      color: #666666;
+    }
+  }
+}

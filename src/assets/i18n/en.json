@@ -7,6 +7,17 @@
     "forgot_password": "Forgot password?",
     "loading": "Loading..."
   },
+  "paginator": {
+    "itemsPerPageLabel": "Items per page:",
+    "nextPageLabel": "Next page",
+    "previousPageLabel": "Previous page",
+    "firstPageLabel": "First page",
+    "lastPageLabel": "Last page",
+    "rangeLabel": {
+      "empty": "0 of {{length}}",
+      "range": "{{start}} - {{end}} of {{length}}"
+    }
+  },
   "login": {
     "title": "Sign In",
     "email_required": "Email is required",
@@ -99,7 +110,6 @@
     "edit-group-title": "Edit Grupo Cliente",
     "create-client-title": "Create/Edit Client",
     "create-client": {
-      
       "upload-logo": "Upload Logo",
       "delete-logo": "Delete",
       "upload-logo-explanation": "Allows JPG, GIF or PNG. Max size 800Kb",
@@ -178,8 +188,8 @@
       "retention-percent": "RETENTION (%)",
       "actions": "ACTIONS",
       "results-per-page": "Results per page",
-      "cif":"CIF",
-      "department":"Department",
+      "cif": "CIF",
+      "department": "Department",
       "fuel": "Fuel",
       "included-fuel": "Fuel included",
       "client-price": "Client price % per Km",
@@ -201,7 +211,7 @@
       "price-vu-lt-12": "Price VU < 12m3",
       "price-vu-gt-12": "Price VU > 12m3",
       "distance-interval": "Distance interval",
-      "validate-add":"Validate and add",
+      "validate-add": "Validate and add",
       "doc-type": "Document type",
       "cert_list": "Cert list",
       "certs-created": "Certs created list",
@@ -235,8 +245,8 @@
       "schemas": "Schemas",
       "protocols": "Protocols",
       "type": "Type",
-      "edit-options":"Edit options",
-      "client-process":"Client process",
+      "edit-options": "Edit options",
+      "client-process": "Client process",
       "simple-movement": "Simple movement",
       "pickup-to-final-customer": "Pickup to final customer",
       "delivery-to-final-customer": "Delivery to final customer",
@@ -326,8 +336,7 @@
   },
   "construction": {
     "title": "Page under construction"
-  }
-  ,
+  },
   "transportPrincipalType": {
     "SIMPLE_MOVEMENT": "Simple movement",
     "PICKUP_TO_FINAL_CUSTOMER": "Pickup to final customer",
@@ -376,8 +385,7 @@
     "ORIGIN": "Origin",
     "STOPOVER": "Stopover",
     "DESTINATION": "Destination"
-  }
-  ,
+  },
   "clientType": {
     "DEALERSHIP": "Dealership",
     "RENTING": "Renting",
@@ -399,8 +407,7 @@
     "OTHERS": "Others",
     "UNDEFINED": "Undefined",
     "EVENT": "Event"
-  }
-  ,
+  },
   "requestType": {
     "TRANSPORT": "Transport",
     "TOLL": "Toll",
@@ -617,8 +624,7 @@
     "multiple": "Multiple answer",
     "text": "Text",
     "boolean": "Yes/No"
-  }
-  ,
+  },
   "status": {
     "ACTIVE": "Active",
     "INACTIVE": "Inactive",
@@ -653,8 +659,7 @@
     "READ": "Read",
     "UPDATE": "Update",
     "DELETE": "Delete"
-  }
-  ,
+  },
   "vehicleSize": {
     "SMALL": "Small",
     "MEDIUM": "Medium",
@@ -700,8 +705,7 @@
       "placeholder": "Type here...",
       "save": "SAVE"
     }
-  }
-  ,
+  },
   "errors": {
     "client": {
       "name-required": "Client name is required.",

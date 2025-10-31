@@ -4,6 +4,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApiService } from '@services/api.service';
 import { environment } from '../environments/environment';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomMatPaginatorIntl } from './core/i18n/custom-mat-paginator-intl.service';
 
 import { routes } from './app.routes';
 
@@ -25,6 +27,10 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeApiService,
       deps: [ApiService],
       multi: true
+    },
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomMatPaginatorIntl
     }
   ]
 };
