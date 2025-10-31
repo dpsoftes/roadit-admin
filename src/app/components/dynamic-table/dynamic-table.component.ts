@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, signal, input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, signal, input, ViewChild, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -14,16 +14,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { RouterModule } from '@angular/router';
-import { computed } from '@angular/core';
-import { 
-  TableConfig, 
-  TableColumn, 
-  TableEvent, 
-  ActionButton, 
+import {
+  TableConfig,
+  TableColumn,
+  TableEvent,
+  ActionButton,
   ChipConfig,
   ImageConfig,
-  ExportConfig 
+  ExportConfig
 } from './dynamic-table.interfaces';
+import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { Helpers } from '@utils/helpers';
 
@@ -49,85 +49,51 @@ import { Helpers } from '@utils/helpers';
   templateUrl: './dynamic-table.component.html',
   styleUrl: './dynamic-table.component.scss'
 })
-export class DynamicTableComponent implements OnInit {
-  config= input.required<TableConfig>();
+export class DynamicTableComponent implements OnInit, AfterViewInit {
+  config = input.required<TableConfig>();
   @Output() tableEvent = new EventEmitter<TableEvent>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   // Signals para el estado del componente
   displayedColumns = signal<string[]>([]);
   selection = new SelectionModel<any>(true, []);
   showFilters = signal(false);
   searchTerm = signal('');
-  filters = signal<{[key: string]: string | string[] | { start: string; end: string } }>({});
+  filters = signal<{ [key: string]: string | string[] | boolean }>({});
   page = signal(0);
-  pageSize = signal(10);
-  dateRangeValues = signal<{ [key: string]: string }>({});
-      
+  pageSize = signal(5);
+
+  paginatedData = computed(() => {
+    const data = this.config().data();
+    const pageIndex = this.page();
+    const size = this.pageSize();
+    const startIndex = pageIndex * size;
+    const endIndex = startIndex + size;
+    return data.slice(startIndex, endIndex);
+  });
+
   ngOnInit() {
     this.initializeColumns();
   }
 
-  // Computed signal para valor de rango de fechas
-  getDateRangeValue = computed(() => (key: string) => {
-    return this.dateRangeValues()[key] || '';
-  });
-
-  // Método para actualizar valor de rango de fechas
-  onDateRangeChange(key: string, value: string) {
-    this.dateRangeValues.update(current => ({
-      ...current,
-      [key]: value
-    }));
-    this.updateDateRangeFilter(key, value);
-  }
-
-  private updateDateRangeFilter(key: string, value: string) {
-    // Parsear el valor del input (formato: "dd/mm/aaaa - dd/mm/aaaa")
-    const parts = value.split(' - ');
-    
-    if (parts.length === 2) {
-      const startValue = parts[0].trim();
-      const endValue = parts[1].trim();
-      
-      if (startValue && endValue) {
-        const currentFilters = this.filters();
-        const newFilters = { ...currentFilters };
-        newFilters[key] = {
-          start: startValue,
-          end: endValue
-        } as {start: string; end: string};
-        
-        this.filters.set(newFilters);
-        this.tableEvent.emit({
-          type: 'filter',
-          filters: newFilters
-        });
-        return;
-      }
+  ngAfterViewInit() {
+    // ESTABLECER EL PAGESIZE DESPUÉS DE QUE LA VISTA SE INICIALICE
+    const configPageSize = this.config().pageSize;
+    if (this.paginator && configPageSize !== undefined) {
+      this.pageSize.set(configPageSize);
+      this.paginator.pageSize = configPageSize;
     }
-    
-    // Si no hay ambas fechas válidas, eliminar el filtro
-    const currentFilters = this.filters();
-    const newFilters = { ...currentFilters };
-    delete newFilters[key];
-    
-    this.filters.set(newFilters);
-    this.tableEvent.emit({
-      type: 'filter',
-      filters: newFilters
-    });
   }
-
 
   hasFixedWidthColumns(): boolean {
-    return this.config().columns.some(column => 
+    return this.config().columns.some(column =>
       column.width || column.minWidth || column.maxWidth || column.flex
     );
   }
 
   private initializeColumns() {
     const columnKeys = this.config().columns.map(col => col.key);
-    
+
     if (this.config().selectable) {
       this.displayedColumns.set(['select', ...columnKeys]);
     } else {
@@ -206,6 +172,14 @@ export class DynamicTableComponent implements OnInit {
     this.emit('filter');
   }
 
+  onCheckboxFilterChange(filterKey: string, checked: boolean) {
+    this.filters.update(filters => ({
+      ...filters,
+      [filterKey]: checked
+    }));
+    this.emit('filter');
+  }
+
   onChipFilterChange(filterKey: string, values: string[]) {
     this.filters.update(filters => ({
       ...filters,
@@ -226,17 +200,18 @@ export class DynamicTableComponent implements OnInit {
     this.pageSize.set(event.pageSize);
     this.emitEvent('page');
   }
+
   emit(type: TableEvent['type']) {
-    this.emitEvent(type, { 
-      page: this.page(), 
-      pageSize: this.pageSize(), 
-      filters: this.filters(), 
+    this.emitEvent(type, {
+      page: this.page(),
+      pageSize: this.pageSize(),
+      filters: this.filters(),
       searchTerm: this.searchTerm()
     });
   }
   // Cell rendering methods
   getCellValue(row: any, column: TableColumn): any {
-    if(column.type === 'image'){
+    if (column.type === 'image') {
       return this.getImageUrl(column, row);
     }
     if(column.render){
@@ -278,13 +253,13 @@ export class DynamicTableComponent implements OnInit {
     if ('translateKey' in chipConfig && chipConfig.translateKey) {
       return `${chipConfig.translateKey}.${value}`;
     }
-    
+
     const tagLabels: { [key: string]: string } = {
       'nuevo': 'Nuevo',
       'en_riesgo': 'En Riesgo',
       'seguro_propio': 'Seguro Propio'
     };
-    
+
     return tagLabels[value] || value;
   }
 
@@ -295,7 +270,7 @@ export class DynamicTableComponent implements OnInit {
   getActionButtonClass(color?: string, hasIcon?: boolean): string {
     const baseClass = hasIcon ? 'action-button' : 'action-text-button';
     if (!color) return baseClass;
-    
+
     switch (color) {
       case 'primary':
         return `${baseClass} action-primary`;
@@ -312,7 +287,7 @@ export class DynamicTableComponent implements OnInit {
 
   getColumnStyles(column: TableColumn): string {
     const styles: string[] = [];
-    
+
     if (column.width || column.minWidth || column.maxWidth || column.flex) {
       if (column.width) {
         let width: string;
@@ -323,31 +298,36 @@ export class DynamicTableComponent implements OnInit {
         }
         styles.push(`width: ${width}`);
       }
-      
+
       if (column.minWidth) {
         const minWidth = typeof column.minWidth === 'number' ? `${column.minWidth}px` : column.minWidth;
         styles.push(`min-width: ${minWidth}`);
       }
-      
+
       if (column.maxWidth) {
         const maxWidth = typeof column.maxWidth === 'number' ? `${column.maxWidth}px` : column.maxWidth;
         styles.push(`max-width: ${maxWidth}`);
       }
-      
+
       if (column.flex) {
         const flex = typeof column.flex === 'number' ? column.flex.toString() : column.flex;
         styles.push(`flex: ${flex}`);
       }
-      
+
+      // AÑADIR ALINEACIÓN
+      if (column.align) {
+        styles.push(`text-align: ${column.align}`);
+      }
+
       return styles.join('; ');
     }
-    
+
     return '';
   }
 
   getCellClass(column: TableColumn): string {
     const classes: string[] = [];
-    
+
     switch (column.type) {
       case 'text':
         classes.push('text-cell');
@@ -360,7 +340,7 @@ export class DynamicTableComponent implements OnInit {
         classes.push('chip-cell');
         break;
     }
-    
+
     return classes.join(' ');
   }
 
@@ -388,8 +368,8 @@ export class DynamicTableComponent implements OnInit {
     const { columns, headers, filename } = exportConfig!
 
     let csvContent = headers.join(',') + '\n';
-    
-    data.forEach(item => {
+
+    data().forEach(item => {
       const row = columns.map(column => {
         let value = item[column] || '';
         if (Array.isArray(value)) {

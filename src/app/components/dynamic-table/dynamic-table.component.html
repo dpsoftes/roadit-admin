@@ -1,230 +1,191 @@
-<mat-card>
+<mat-card class="tableContainer">
   <mat-card-header>
-      @if (config().searchable) {
-        <mat-form-field appearance="outline" class="search_input">
-          <input 
-            matInput 
-            [placeholder]="(config().searchPlaceholder || 'users.list.searchPlaceholder') | translate" 
-            [value]="searchTerm()"
-            (input)="onSearchChange($event.target.value)">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      }
+    @if (config().searchable) {
+    <mat-form-field appearance="outline" class="search_input">
+      <input matInput [placeholder]="(config().searchPlaceholder || 'users.list.searchPlaceholder') | translate"
+        [value]="searchTerm()" (input)="onSearchChange($event.target.value)">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    }
 
     @if (config().filterable && config().filters) {
-      <button 
-        mat-button 
-        class="filter_button" 
-        (click)="toggleFilters()">
-        {{ 'users.list.filters' | translate }}
-        <mat-icon>keyboard_arrow_down</mat-icon>
-      </button>
+    <button class="filter_button" (click)="toggleFilters()">
+      {{ 'users.list.filters' | translate | uppercase}}
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
     }
 
     @if (config().exportable) {
-      <button 
-        mat-button 
-        class="export_button" 
-        (click)="onExportCSV()">
-        <mat-icon>download</mat-icon>
-        {{ 'users.list.exportCSV' | translate }}
-      </button>
+    <button class="export_button" (click)="onExportCSV()">
+      <mat-icon>download</mat-icon>
+      {{ 'users.list.exportCSV' | translate | uppercase}}
+    </button>
     }
 
     @if (config().actions?.create) {
-      <button 
-        mat-icon-button 
-        [routerLink]="config().actions?.create?.route || ''"
-        (click)="onCreateClick()"
-        class="create_btn">
-        {{ (config().actions?.create?.label || '') | translate }}
-      </button>
+    <button [routerLink]="config().actions?.create?.route || ''" (click)="onCreateClick()" class="create_btn">
+      {{ (config().actions?.create?.label || '') | translate }}
+    </button>
     }
   </mat-card-header>
 
   <!-- Filters Panel -->
   @if (showFilters() && config().filterable && config().filters) {
-    <div class="filters_panel">
-      <div class="filters_content">
-        @for (filter of config().filters; track filter.key) {
-          <div class="filter_field" [style]="getFilterStyles(filter)">
-            <label class="filter_label">{{ filter.label | translate }}</label>
-            
-              <!-- Filtro tipo select -->
-              @if (filter.type === 'select') {
-                <mat-form-field appearance="outline" class="filter_input">
-                  <mat-select 
-                    [value]="filters()[filter.key] || ''"
-                    (selectionChange)="onFilterChange(filter.key, $event.value)">
-                    <mat-option value="">{{ 'users.list.all' | translate }}</mat-option>
-                    @for (option of filter.options; track option.value) {
-                      <mat-option [value]="option.value">
-                        {{ option.label | translate }}
-                      </mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
+  <div class="filters_panel">
+    <div class="filters_content">
+      @for (filter of config().filters; track filter.key) {
+      <div class="filter_field" [style]="getFilterStyles(filter)">
+        @if (filter.type !== 'checkbox') {
+        <label class="filter_label">{{ filter.label | translate }}</label>
+
+        <mat-form-field appearance="outline" class="filter_input">
+          <!-- Filtro tipo select -->
+          @if (filter.type === 'select') {
+          <mat-select [value]="filters()[filter.key] || ''"
+            (selectionChange)="onFilterChange(filter.key, $event.value)">
+            <mat-option value="">{{ 'users.list.all' | translate }}</mat-option>
+            @for (option of filter.options; track option.value) {
+            <mat-option [value]="option.value">
+              {{ option.label | translate }}
+            </mat-option>
+            }
+          </mat-select>
+          }
+
+          <!-- Filtro tipo text -->
+          @if (filter.type === 'text') {
+          <input class="textInput" matInput [value]="filters()[filter.key] || ''"
+            (input)="onFilterChange(filter.key, $event.target.value)" [placeholder]="filter.label | translate">
+          }
+
+          <!-- Filtro tipo date -->
+          @if (filter.type === 'date') {
+          <input matInput type="date" [value]="filters()[filter.key] || ''"
+            (change)="onFilterChange(filter.key, $event.target.value)">
+          }
+          @if (filter.type === 'date') {
+          <mat-icon matSuffix>calendar_today</mat-icon>
+          }
+
+          <!-- Filtro tipo chips (select múltiple) -->
+          @if (filter.type === 'chips') {
+          <mat-select [value]="getChipFilterValues(filter.key)"
+            (selectionChange)="onChipFilterChange(filter.key, $event.value)" multiple
+            [placeholder]="filter.label | translate"
+            [class]="'chips-select' + (getChipFilterValues(filter.key).length > 0 ? ' has-selected-chips' : '')">
+
+            <mat-select-trigger>
+              @if (getChipFilterValues(filter.key).length > 0) {
+              <div class="chip-display">
+                <span class="chip-item {{ getChipFilterValues(filter.key)[0] }}">
+                  {{ getChipFilterLabel(filter, getChipFilterValues(filter.key)[0]) }}
+                </span>
+                @if (getChipFilterValues(filter.key).length > 1) {
+                <span class="chip-count">+{{ getChipFilterValues(filter.key).length - 1 }}</span>
+                }
+              </div>
+              } @else {
+              <span class="placeholder-text">{{ filter.label | translate }}</span>
               }
-              
-              <!-- Filtro tipo text -->
-              @if (filter.type === 'text') {
-                <mat-form-field appearance="outline" class="filter_input">
-                  <input 
-                    matInput 
-                    [value]="filters()[filter.key] || ''"
-                    (input)="onFilterChange(filter.key, $event.target.value)"
-                    [placeholder]="filter.label | translate">
-                </mat-form-field>
-              }
-              
-              <!-- Filtro tipo date -->
-              @if (filter.type === 'date') {
-                <mat-form-field appearance="outline" class="filter_input">
-                  <input 
-                    matInput 
-                    type="date"
-                    [value]="filters()[filter.key] || ''"
-                    (change)="onFilterChange(filter.key, $event.target.value)">
-                  <mat-icon matSuffix>calendar_today</mat-icon>
-                </mat-form-field>
-              }
-              
-              <!-- Filtro tipo date-range -->
-              @if (filter.type === 'date-range') {
-                <mat-form-field appearance="outline" class="filter_input">
-                  <mat-label>{{ filter.label | translate }}</mat-label>
-                  <input matInput [value]="getDateRangeValue()(filter.key)" (input)="onDateRangeChange(filter.key, $event.target.value)" placeholder="dd/mm/aaaa - dd/mm/aaaa">
-                </mat-form-field>
-              }
-              
-              <!-- Filtro tipo chips (select múltiple) -->
-              @if (filter.type === 'chips') {
-                <mat-form-field appearance="outline" class="filter_input">
-                  <mat-select 
-                    [value]="getChipFilterValues(filter.key)"
-                    (selectionChange)="onChipFilterChange(filter.key, $event.value)"
-                    multiple
-                    [placeholder]="filter.label | translate"
-                    [class]="'chips-select' + (getChipFilterValues(filter.key).length > 0 ? ' has-selected-chips' : '')">
-                    
-                    <mat-select-trigger>
-                      @if (getChipFilterValues(filter.key).length > 0) {
-                        <div class="chip-display">
-                          <span class="chip-item {{ getChipFilterValues(filter.key)[0] }}">
-                            {{ getChipFilterLabel(filter, getChipFilterValues(filter.key)[0]) }}
-                          </span>
-                          @if (getChipFilterValues(filter.key).length > 1) {
-                            <span class="chip-count">+{{ getChipFilterValues(filter.key).length - 1 }}</span>
-                          }
-                        </div>
-                      } @else {
-                        <span class="placeholder-text">{{ filter.label | translate }}</span>
-                      }
-                    </mat-select-trigger>
-                    
-                    @for (option of filter.options; track option.value) {
-                      <mat-option [value]="option.value">
-                        {{ option.label | translate }}
-                      </mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
-              }
-              
-            </div>
+            </mat-select-trigger>
+
+            @for (option of filter.options; track option.value) {
+            <mat-option [value]="option.value">
+              {{ option.label | translate }}
+            </mat-option>
+            }
+          </mat-select>
+          }
+        </mat-form-field>
+        }
+
+        <!-- Filtro tipo checkbox - FUERA DEL MAT-FORM-FIELD -->
+        @if (filter.type === 'checkbox') {
+        <div class="checkbox-wrapper">
+          <mat-checkbox [checked]="filters()[filter.key] || false"
+            (change)="onCheckboxFilterChange(filter.key, $event.checked)">
+            {{ filter.label | translate }}
+          </mat-checkbox>
+        </div>
         }
       </div>
+      }
     </div>
+  </div>
   }
 
   <mat-card-content>
-    <table mat-table [dataSource]="config().data()" class="mat-elevation-z1" [class.fixed-layout]="hasFixedWidthColumns()" role="table">
-      
+    <table mat-table [dataSource]="paginatedData()" class="mat-elevation-z1"
+      [class.fixed-layout]="hasFixedWidthColumns()" role="table">
+
       @if (config().selectable) {
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox
-              color="primary"
-              (change)="masterToggle()"
-              [checked]="isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()"
-              [aria-label]="checkboxLabel()">
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox
-              color="primary"
-              (click)="$event.stopPropagation()"
-              (change)="selection.toggle(row)"
-              [checked]="selection.isSelected(row)"
-              [aria-label]="checkboxLabel(row)">
-            </mat-checkbox>
-          </td>
-        </ng-container>
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox color="primary" (change)="masterToggle()" [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+            [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
       }
 
       @for (column of config().columns; track column.key) {
-        <ng-container [matColumnDef]="column.key">
-          <th mat-header-cell *matHeaderCellDef [style]="getColumnStyles(column)">{{ column.label | translate }}</th>
-          <td mat-cell *matCellDef="let element" [style]="getColumnStyles(column)" [class]="getCellClass(column)">
-            
-            @if (column.type === 'text') {
-              <span [innerHTML]="getCellValue(element, column)"></span>
-            }
+      <ng-container [matColumnDef]="column.key">
+        <th mat-header-cell *matHeaderCellDef [style]="getColumnStyles(column)">{{ column.label | translate }}</th>
+        <td mat-cell *matCellDef="let element" [style]="getColumnStyles(column)" [class]="getCellClass(column)">
 
-            @if (column.type === 'image') {
-              <img 
-                [src]="getCellValue(element, column)"
-                [style.width]="column.imageConfig?.width || '40px'"
-                [style.height]="column.imageConfig?.height || '40px'"
-                [alt]="column.imageConfig?.alt || ''"
-                (error)="$event.target.src = column.imageConfig?.fallback || 'assets/images/sample_user_icon.png'">
-            }
+          @if (column.type === 'text') {
+          <span>{{ getCellValue(element, column) }}</span>
+          }
 
-            @if (column.type === 'chip') {
-              <mat-chip 
-                [class]="getChipClass(column.chipConfig || {}, getCellValue(element, column))">
-                {{ getChipText(column.chipConfig || {}, getCellValue(element, column)) | translate }}
-              </mat-chip>
-            }
+          @if (column.type === 'image') {
+          <img [src]="getCellValue(element, column)" [style.width]="column.imageConfig?.width || '40px'"
+            [style.height]="column.imageConfig?.height || '40px'" [alt]="column.imageConfig?.alt || ''"
+            (error)="$event.target.src = column.imageConfig?.fallback || 'assets/images/sample_user_icon.png'">
+          }
 
-            @if (column.type === 'chip-array') {
-              <div class="chip-array-container">
-                @for (item of getCellValue(element, column); track item) {
-                  <mat-chip 
-                    [class]="getChipClass(column.chipConfig || {}, item)">
-                    {{ getChipText(column.chipConfig || {}, item) }}
-                  </mat-chip>
-                }
-              </div>
-            }
+          @if (column.type === 'chip') {
+          <mat-chip [class]="getChipClass(column.chipConfig || {}, getCellValue(element, column))">
+            {{ getChipText(column.chipConfig || {}, getCellValue(element, column)) | translate }}
+          </mat-chip>
+          }
 
-            @if (column.type === 'actions') {
-              <div class="actions-container">
-                @for (action of column.actionConfig?.actions; track action.action) {
-                  <button 
-                    [attr.mat-icon-button]="action.icon ? '' : null"
-                    [attr.mat-button]="!action.icon ? '' : null"
-                    [class]="getActionButtonClass(action.color, !!action.icon)"
-                    (click)="onActionClick(action.action, element, action)"
-                    [disabled]="!shouldShowAction(action, element)"
-                    [title]="action.label">
-                    @if (action.icon) {
-                      <mat-icon 
-                        [fontSet]="action.icon.includes('material-symbols') ? 'material-symbols-outlined' : ''">
-                        {{ action.icon.replace('material-symbols-outlined/', '') }}
-                      </mat-icon>
-                    }
-                    @if (!action.icon) {
-                      <span>{{ action.label | translate }}</span>
-                    }
-                  </button>
-                }
-              </div>
+          @if (column.type === 'chip-array') {
+          <div class="chip-array-container">
+            @for (item of getCellValue(element, column); track item) {
+            <mat-chip [class]="getChipClass(column.chipConfig || {}, item)">
+              {{ getChipText(column.chipConfig || {}, item) }}
+            </mat-chip>
             }
+          </div>
+          }
 
-          </td>
-        </ng-container>
+          @if (column.type === 'actions') {
+          <div class="actions-container">
+            @for (action of column.actionConfig?.actions; track action.action) {
+            <button [attr.mat-icon-button]="action.icon ? '' : null" [attr.mat-button]="!action.icon ? '' : null"
+              [class]="getActionButtonClass(action.color, !!action.icon)"
+              (click)="onActionClick(action.action, element, action)" [disabled]="!shouldShowAction(action, element)"
+              [title]="action.label">
+              @if (action.icon) {
+              <mat-icon [fontSet]="action.icon.includes('material-symbols') ? 'material-symbols-outlined' : ''">
+                {{ action.icon.replace('material-symbols-outlined/', '') }}
+              </mat-icon>
+              }
+              @if (!action.icon) {
+              <span>{{ action.label | translate }}</span>
+              }
+            </button>
+            }
+          </div>
+          }
+
+        </td>
+      </ng-container>
       }
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
@@ -232,12 +193,9 @@
     </table>
 
     @if (config().pagination) {
-      <mat-paginator 
-        [length]="config().data().length" 
-        [pageSize]="config().pageSize || 10" 
-        [pageSizeOptions]="config().pageSizeOptions || [10, 20, 50]"
-        (page)="onPageChange($event)">
-      </mat-paginator>
+    <mat-paginator [length]="config().data().length" [pageSize]="pageSize()"
+      [pageSizeOptions]="config().pageSizeOptions || [5, 10, 20, 50]" (page)="onPageChange($event)">
+    </mat-paginator>
     }
 
   </mat-card-content>

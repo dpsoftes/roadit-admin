@@ -1,82 +1,99 @@
 @use '../../../styles/variables' as vars;
 
+mat-card {
+  border-radius: 10px;
+  padding: 10px;
+}
+
 mat-card-header {
   display: flex;
   justify-content: flex-start;
-  
+
   .search_input {
     width: 30%;
     height: fit-content;
-    
+
     ::ng-deep .mat-mdc-form-field-infix {
       min-height: 40px !important;
       padding: 8px 0 !important;
     }
-    
+
+    ::ng-deep .mat-mdc-form-field-outline {
+      border-radius: 8px;
+    }
+
     input {
       height: 24px !important;
       font-size: 14px;
     }
   }
-  
+
   .filter_button {
-    width: 10%;
+    width: 97;
+    height: 30px;
     margin-left: 10px;
-    height: 40px;
+    margin-top: 5px;
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: vars.$black;
-    border: 1px solid #e0e0e0;
+    background-color: #2D3D32;
     border-radius: 8px;
     color: vars.$white;
     font-weight: 500;
-    padding: 0 12px;
+    padding: 4px 12px;
     flex-direction: row;
   }
-  
+
   .export_button {
-    width: 15%;
+    width: auto;
+    white-space: nowrap;
     margin-left: 10px;
-    height: 40px;
+    height: 30px;
+    margin-top: 5px;
     display: flex;
     align-items: center;
     gap: 8px;
+    border-radius: 8px;
     background-color: vars.$roadit-accent;
     border: none;
     color: vars.$black;
     font-weight: 500;
-    padding: 0 12px;
+    font-size: 12px;
+    padding: 8px 16px;
     flex-direction: row;
     text-decoration: none;
     cursor: pointer;
     transition: color 0.2s ease;
-    
+
     &:hover {
       color: vars.$primary;
     }
-    
+
     mat-icon {
       font-size: 18px;
       width: 18px;
       height: 18px;
     }
   }
-  
+
+
   .create_btn {
     display: flex;
-    margin-left: 35%;
+    margin-left: auto;
     background-color: vars.$roadit-accent;
     color: vars.$black;
-    width: 25%;
-    border-radius: 10px;
-    height: 40px;
+    width: auto;
+    white-space: nowrap;
+    padding: 0px 12px;
+    border-radius: 8px;
+    height: 46px;
     align-items: center;
     justify-content: center;
     font-size: 14px;
     font-family: vars.$font-family-primary;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    border-width: 0px;
   }
 }
 
@@ -85,75 +102,75 @@ mat-card-header {
   padding: 16px;
   border-radius: 8px;
   border-top: 1px solid vars.$gray-300;
-  
+
   .filters_content {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-    
+
     .filter_field {
       min-width: 0;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      
+
       .filter_label {
-        font-weight: 600;
-        font-size: 14px;
+        font-weight: 700;
+        font-size: 16px;
         color: vars.$gray-700;
         margin: 0;
-        line-height: 1.2;
+        line-height: normal;
       }
-      
+
       .filter_input {
         width: 100%;
-        
+
         ::ng-deep .mat-mdc-form-field {
-          height: 48px !important;
-          max-height: 48px !important;
+          height: 38px !important;
+          max-height: 38px !important;
         }
-        
+
         ::ng-deep .mat-mdc-form-field-wrapper {
-          height: 48px !important;
-          max-height: 48px !important;
+          height: 38px !important;
+          max-height: 38px !important;
           padding-bottom: 0 !important;
         }
-        
+
         ::ng-deep .mat-mdc-form-field-infix {
-          min-height: 48px !important;
-          height: 48px !important;
-          max-height: 48px !important;
+          min-height: 38px !important;
+          height: 38px !important;
+          max-height: 38px !important;
           padding: 8px 0 !important;
           padding-top: 0 !important;
           padding-bottom: 0 !important;
           display: flex;
           align-items: center;
         }
-        
+
         ::ng-deep .mat-mdc-form-field-subscript-wrapper {
           display: none !important;
         }
-        
+
         ::ng-deep .mat-mdc-form-field-outline {
           border-radius: 8px;
         }
-        
-        // Alineación vertical para selects
+
+        // ALINEACIÓN VERTICAL PARA SELECTS
         ::ng-deep .mat-mdc-select {
           display: flex;
           align-items: center;
           height: 100%;
         }
-        
-        // Alineación vertical para inputs
+
+        // ALINEACIÓN VERTICAL PARA INPUTS
         ::ng-deep .mat-mdc-input-element {
           display: flex;
           align-items: center;
           height: 100%;
         }
-        
-        // Estilos para el icono de calendario en filtros de fecha
+
+        // ESTILOS PARA EL ICONO DE CALENDARIO EN FILTROS DE FECHA
         ::ng-deep .mat-mdc-form-field-suffix {
           .mat-icon {
             font-size: 18px !important;
@@ -163,8 +180,8 @@ mat-card-header {
             color: vars.$gray-600 !important;
           }
         }
-        
-        // Estilos específicos para el icono de calendario
+
+        // ESTILOS ESPECÍFICOS PARA EL ICONO DE CALENDARIO
         ::ng-deep mat-icon[matSuffix] {
           font-size: 18px !important;
           width: 18px !important;
@@ -173,12 +190,65 @@ mat-card-header {
           color: vars.$gray-600 !important;
         }
       }
+
+      // ESTILOS PARA CHECKBOX (FUERA DE .filter_input)
+      .checkbox-wrapper {
+        display: flex;
+        align-items: flex-start;
+        min-height: 38px;
+        padding: 8px 12px;
+        background-color: vars.$white;
+
+        ::ng-deep .mat-mdc-checkbox {
+          margin: 0;
+          width: 100%;
+
+          .mdc-form-field {
+            width: 100%;
+            padding: 0;
+
+            label {
+              width: 100%;
+              padding-left: 8px;
+              font-weight: 700;
+              font-size: 16px;
+              color: vars.$gray-700;
+              line-height: 1.4;
+              word-wrap: break-word;
+              white-space: normal;
+              cursor: pointer;
+            }
+          }
+
+          .mdc-checkbox {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+
+            .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+              background-color: vars.$roadit-accent !important;
+              border-color: vars.$roadit-accent !important;
+            }
+
+            .mdc-checkbox__native-control:enabled~.mdc-checkbox__background {
+              border-color: vars.$gray-400 !important;
+              border-width: 2px !important;
+              border-radius: 4px !important;
+            }
+
+            .mdc-checkbox__checkmark {
+              color: vars.$black !important;
+            }
+          }
+        }
+      }
     }
-    
+
     .filter_field:first-child {
       margin-left: 0;
     }
-    
+
     .selected-chips {
       margin-top: 0;
       display: flex;
@@ -186,7 +256,7 @@ mat-card-header {
       gap: 4px;
       overflow-x: auto;
       padding: 4px 0;
-      
+
       mat-chip {
         font-size: 12px;
         height: 24px;
@@ -195,55 +265,35 @@ mat-card-header {
         color: vars.$text-primary;
         flex-shrink: 0;
         white-space: nowrap;
-        
+
         mat-icon {
           color: vars.$text-primary;
           font-size: 14px;
           width: 14px;
           height: 14px;
-  }
-
-}
-
-
+        }
+      }
     }
-    
+
     .chips-select {
-      ::ng-deep .mat-mdc-form-field {
-        height: 48px !important;
-        max-height: 48px !important;
+      ::ng-deep .mat-mdc-select-value {
+        display: none !important;
       }
-      
-      ::ng-deep .mat-mdc-form-field-wrapper {
-        height: 48px !important;
-        max-height: 48px !important;
-        padding-bottom: 0 !important;
+
+      ::ng-deep .mat-mdc-select-placeholder {
+        display: block !important;
       }
-      
+
+      ::ng-deep .mat-mdc-select-trigger {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
       ::ng-deep .mat-mdc-form-field-infix {
         padding-left: 0 !important;
         padding-right: 0 !important;
-        min-height: 48px !important;
-        height: 48px !important;
-        max-height: 48px !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
       }
-      
-      ::ng-deep .mat-mdc-select-trigger {
-        padding-left: 8px !important;
-        padding-right: 32px !important;
-        min-height: 48px !important;
-        height: 48px !important;
-        max-height: 48px !important;
-        display: flex;
-        align-items: center;
-      }
-      
-      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
-        display: none !important;
-      }
-      
+
       ::ng-deep .mat-mdc-select-arrow {
         display: block !important;
         position: absolute;
@@ -251,69 +301,14 @@ mat-card-header {
         top: 50%;
         transform: translateY(-50%);
       }
-      
-      // Estilos para el trigger personalizado
-      .chip-display {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        width: 100%;
-        
-        .chip-item {
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 12px;
-          font-weight: 500;
-          white-space: nowrap;
-          display: inline-block;
-          max-width: 200px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          line-height: 1.2;
-          color: vars.$black;
-          
-          // Colores específicos según el tipo de tag
-          &.nuevo {
-            background-color: vars.$info;
-          }
-          
-          &.en_riesgo {
-            background-color: vars.$warning-light;
-          }
-          
-          &.seguro_propio {
-            background-color: vars.$primary-300;
-          }
-          
-          // Color por defecto si no coincide con ningún tipo
-          &:not(.nuevo):not(.en_riesgo):not(.seguro_propio) {
-            background-color: vars.$primary-300;
-          }
-        }
-        
-        .chip-count {
-          background-color: #e8f5e8;
-          color: #2e7d32;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 12px;
-          font-weight: 500;
-          line-height: 1.2;
-        }
-      }
-      
-      .placeholder-text {
-        color: #999;
-        font-size: 14px;
-      }
-      
+
       &.has-selected-chips {
         ::ng-deep .mat-mdc-select-trigger {
           cursor: pointer !important;
         }
       }
     }
-}
+  }
 }
 
 .filter_button .mat-icon {
@@ -324,325 +319,174 @@ mat-card-header {
 mat-card-content {
   table {
     width: 100%;
-    table-layout: auto; 
-    
+    table-layout: auto;
+
     &.fixed-layout {
       table-layout: fixed;
-      
-      th, td {
+
+      th,
+      td {
         box-sizing: border-box;
         overflow: hidden;
       }
     }
-    
+
     th {
       font-size: 13px;
       font-family: vars.$font-family-primary;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: vars.$text-primary;
-      background-color: vars.$roadit-content-bg;
+      background-color: vars.$gray-100;
       position: relative;
-      white-space: nowrap;
+      height: 56px;
+      max-height: 56px;
+      padding: 8px !important;
+      vertical-align: middle;
+
+      // PERMITIR SALTO DE LÍNEA SOLO POR ESPACIOS, NO DIVIDIR PALABRAS
+      white-space: normal;
+      word-wrap: normal;
+      word-break: normal;
       overflow: hidden;
-      text-overflow: ellipsis;
-      
-      &:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        top: 20%;
-        bottom: 20%;
-        width: 1px;
-        background-color: vars.$gray-300;
-      }
+      line-height: 1.3;
+      hyphens: none;
     }
-    
+
     td {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      padding: 12px 8px; // Separación vertical y horizontal
-      
+      padding: 12px 8px;
+
       &.text-cell {
         white-space: normal;
         word-wrap: break-word;
       }
-      
+
       &.actions-cell {
-        white-space: nowrap;
-        overflow: visible;
+        text-align: center;
       }
-      
+
       &.chip-cell {
-        white-space: normal;
-        padding: 16px 8px;
-      }
-    }
-    
-    th {
-      padding: 12px 8px;
-    }
-    
-    mat-icon {
-      font-size: 20px;
-      color: vars.$text-primary;
-    }
-    
-    .edit_icon {
-      color: vars.$warning;
-    }
-    
-    .delete_icon {
-      color: vars.$error;
-    }
-    
-    .chip-array-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      row-gap: 12px;
-      
-    }
-
-    .actions-container {
-      display: flex;
-      gap: 8px;
-      
-      .action-button {
-        transition: vars.$transition-color;
-        background-color: transparent;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-
-        
-        &.action-primary {
-          color: vars.$primary !important;
-          
-          mat-icon {
-            color: vars.$primary !important;
-            margin-top: 5px;
-          }
-          
-          &:hover {
-            color: vars.$primary-dark !important;
-            background-color: rgba(vars.$primary, 0.04) !important;
-            
-            mat-icon {
-              color: vars.$primary-dark !important;
-            }
-          }
-        }
-        
-        &.action-accent {
-          color: vars.$secondary !important;
-          
-          mat-icon {
-            color: vars.$secondary !important;
-            margin-top: 5px;
-          }
-          
-          &:hover {
-            color: vars.$secondary-dark !important;
-            background-color: rgba(vars.$secondary, 0.04) !important;
-            
-            mat-icon {
-              color: vars.$secondary-dark !important;
-            }
-          }
-        }
-        
-        &.action-warn {
-          color: vars.$warning !important;
-          
-          mat-icon {
-            color: vars.$warning !important;
-            margin-top: 5px;
-          }
-          
-          &:hover {
-            color: vars.$warning-dark !important;
-            background-color: rgba(vars.$warning, 0.04) !important;
-            
-            mat-icon {
-              color: vars.$warning-dark !important;
-            }
-          }
-        }
-        
-        &.action-error {
-          color: vars.$error !important;
-          
-          mat-icon {
-            color: vars.$error !important;
-            margin-top: 5px;
-          }
-          
-          &:hover {
-            color: vars.$error-dark !important;
-            background-color: rgba(vars.$error, 0.04) !important;
-            
-            mat-icon {
-              color: vars.$error-dark !important;
-            }
-          }
-        }
-        
-        &:disabled {
-          color: vars.$text-disabled !important;
-          background-color: transparent !important;
-          
-          mat-icon {
-            color: vars.$text-disabled !important;
-          }
-        }
-      }
-      
-      .action-text-button {
-        min-width: auto;
-        padding: 0px 8px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        border-radius: 4px;
-        transition: vars.$transition-color;
-        border: none;
-        cursor: pointer;
-        color: vars.$white;
-        
-        &.action-primary {
-          background-color: vars.$primary !important;
-          color: vars.$white !important;
-          
-          &:hover {
-            background-color: vars.$primary-dark !important;
-          }
-        }
-        
-        &.action-accent {
-          background-color: vars.$roadit-accent !important;
-          color: vars.$black !important;
-          
-          &:hover {
-            background-color: vars.$roadit-accent !important;
-          }
-        }
-        
-        &.action-warn {
-          background-color: vars.$warning !important;
-          color: white !important;
-          
-          &:hover {
-            background-color: vars.$warning-dark !important;
-          }
-        }
-        
-        &.action-error {
-          background-color: vars.$error !important;
-          color: white !important;
-          
-          &:hover {
-            background-color: vars.$error-dark !important;
-          }
-        }
-        
-        &:disabled {
-          background-color: vars.$gray-300 !important;
-          color: vars.$text-disabled !important;
-          cursor: not-allowed;
-        }
+        padding: 8px;
       }
     }
   }
 
-  ::ng-deep .role-chip {
-    font-size: 12px !important;
-    height: 24px !important;
-    min-height: 24px !important;
-    background-color: vars.$primary-300 !important;
-    border-radius: 4px !important;
-    
-    .mdc-evolution-chip__text-label {
-      color: vars.$black !important;
-      font-weight: 400;
-    }
-  }
-  
-  
-  ::ng-deep .department-chip {
-    font-size: 12px !important;
-    height: 24px !important;
-    min-height: 24px !important;
-    background-color: vars.$primary-300 !important;
-    border-radius: 4px !important;
-    
-    .mdc-evolution-chip__text-label {
-      color: vars.$black !important;
-      font-weight: 400;
-    }
-  }
-  
+  // ESTILOS PARA CHIPS DE TIPO STATUS
   ::ng-deep .status-chip {
     font-size: 12px !important;
     height: 24px !important;
     min-height: 24px !important;
     border-radius: 4px !important;
-    
+
     &.active {
-      background-color: vars.$success-light !important;
-      
+      background-color: vars.$success !important;
+
       .mdc-evolution-chip__text-label {
         color: vars.$black !important;
       }
     }
-    
+
     &.inactive {
-      background-color: vars.$error-light !important;
-      
+      background-color: vars.$gray-300 !important;
+
       .mdc-evolution-chip__text-label {
         color: vars.$black !important;
       }
     }
-    
-    &.pending {
+
+    &.validate {
+      background-color: vars.$success !important;
+
+      .mdc-evolution-chip__text-label {
+        color: vars.$black !important;
+      }
+    }
+
+    &.no_validate {
       background-color: vars.$warning-light !important;
-      
-      .mdc-evolution-chip__text-label {
-        color: vars.$black !important;
-      }
-    }
-    
-    &.suspended {
-      background-color: vars.$gray-500 !important;
-      
+
       .mdc-evolution-chip__text-label {
         color: vars.$black !important;
       }
     }
   }
-  
-  ::ng-deep .users-assigned-chip {
+
+  // ESTILOS PARA CHIPS DE TAGS
+  ::ng-deep .tags-chip {
     font-size: 11px !important;
     height: 22px !important;
     min-height: 22px !important;
     border-radius: 4px !important;
     background-color: vars.$primary-300 !important;
-    
+
     .mdc-evolution-chip__text-label {
-      color: vars.$primary-dark !important;
-      font-weight: 500;
+      color: vars.$black !important;
     }
   }
 
+  // ESTILOS PARA CHIPS DE ROLE
+  ::ng-deep .role-chip {
+    font-size: 12px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    border-radius: 4px !important;
+
+    &.admin {
+      background-color: vars.$primary !important;
+
+      .mdc-evolution-chip__text-label {
+        color: vars.$white !important;
+      }
+    }
+
+    &.user {
+      background-color: vars.$info !important;
+
+      .mdc-evolution-chip__text-label {
+        color: vars.$black !important;
+      }
+    }
+
+    &.client_user {
+      background-color: vars.$warning-light !important;
+
+      .mdc-evolution-chip__text-label {
+        color: vars.$black !important;
+      }
+    }
+
+    &.driver {
+      background-color: vars.$success !important;
+
+      .mdc-evolution-chip__text-label {
+        color: vars.$black !important;
+      }
+    }
+  }
+
+  // ESTILOS PARA CHIPS DE DEPARTMENT
+  ::ng-deep .department-chip {
+    font-size: 12px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    border-radius: 4px !important;
+    background-color: vars.$gray-200 !important;
+
+    .mdc-evolution-chip__text-label {
+      color: vars.$black !important;
+    }
+  }
+
+  // ESTILOS PARA IMÁGENES EN CELDAS
   img {
     border-radius: 4px;
     object-fit: cover;
     display: block;
     margin: 0 auto;
-    
+
     &[src*="assets/images/"] {
       max-width: 100%;
       height: auto;
@@ -650,71 +494,96 @@ mat-card-content {
   }
 }
 
-  ::ng-deep .tags-chip {
-    font-size: 12px !important;
-    height: 24px !important;
-    min-height: 24px !important;
-    border-radius: 4px !important;
-    
-    &.nuevo {
-      background-color: vars.$info !important;
-      
-      .mdc-evolution-chip__text-label {
-        color: vars.$black !important;
-      }
-    }
-    
-    &.en_riesgo {
-      background-color: vars.$warning-light !important;
-      
-      .mdc-evolution-chip__text-label {
-        color: vars.$black !important;
-      }
-    }
-    
-    &.seguro_propio {
-      background-color: vars.$primary-300 !important;
-      
-      .mdc-evolution-chip__text-label {
-        color: vars.$black !important;
-      }
-    }
-  }
-
-// Estilos para iconos de acciones (hacer que se vean como filled)
+// ESTILOS PARA BOTONES DE ACCIÓN
 .actions-container {
-  mat-icon {
-    font-weight: 900 !important;
-    font-variation-settings: 'FILL' 1 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    min-width: 16px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 8px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      font-weight: 900 !important;
+      font-variation-settings: 'FILL' 1 !important;
+    }
+
+    &.action-button {
+      &:hover {
+        background-color: vars.$gray-100;
+      }
+
+      &.action-primary {
+        mat-icon {
+          color: vars.$primary;
+        }
+      }
+
+      &.action-accent {
+        mat-icon {
+          color: vars.$roadit-accent;
+        }
+      }
+
+      &.action-warn {
+        mat-icon {
+          color: vars.$warning;
+        }
+      }
+
+      &.action-error {
+        mat-icon {
+          color: vars.$error;
+        }
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 }
 
+// ESTILOS PARA CHECKBOXES DE LA TABLA
 ::ng-deep .mat-mdc-checkbox {
   .mdc-checkbox {
-    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
+    .mdc-checkbox__native-control:checked~.mdc-checkbox__background {
       background-color: vars.$roadit-accent !important;
       border-color: vars.$roadit-accent !important;
       box-shadow: inset 0 0 0 2px white !important;
     }
-    
-    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
+
+    .mdc-checkbox__native-control:checked~.mdc-checkbox__background .mdc-checkbox__checkmark {
       display: none !important;
     }
-    
-    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark-path {
+
+    .mdc-checkbox__native-control:checked~.mdc-checkbox__background .mdc-checkbox__checkmark-path {
       stroke: transparent !important;
     }
-    
-    .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+
+    .mdc-checkbox__native-control:indeterminate~.mdc-checkbox__background {
       background-color: vars.$roadit-accent !important;
       border-color: vars.$roadit-accent !important;
       box-shadow: inset 0 0 0 2px white !important;
     }
-    
-    .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
+
+    .mdc-checkbox__native-control:indeterminate~.mdc-checkbox__background .mdc-checkbox__mixedmark {
       background-color: white !important;
     }
   }
 }
-
-
