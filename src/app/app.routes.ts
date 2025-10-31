@@ -60,7 +60,33 @@ export const routes: Routes = [
             },
           ]
         },
-      // {
+        {
+          path: 'transports',
+          children: [
+            {
+              path: '',
+              loadComponent: () => import('./pages/transports/transports').then(m => m.Transports)
+            },
+            {
+              path: 'create',
+              children: [
+                {
+                  path: '',
+                  loadComponent: () => import('./pages/transports/create-transport/create-transport').then(m => m.CreateTransport)
+                },
+                {
+                  path: ':type',
+                  loadComponent: () => import('./pages/transports/create-transport-2/create-transport-2').then(m => m.CreateTransport2)
+                }
+              ]
+            },
+            
+            {
+              path: ':tab',
+              loadComponent: () => import('./pages/transports/transports').then(m => m.Transports)
+            },
+          ]
+        },      // {
       //  path: '**', 
       //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
       // }

@@ -14,6 +14,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { RouterModule } from '@angular/router';
+import { computed } from '@angular/core';
 import { 
   TableConfig, 
   TableColumn, 
@@ -57,9 +58,10 @@ export class DynamicTableComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   showFilters = signal(false);
   searchTerm = signal('');
-  filters = signal<{[key: string]: string | string[]}>({});
+  filters = signal<{[key: string]: string | string[] | { start: string; end: string } }>({});
   page = signal(0);
   pageSize = signal(10);
+  dateRangeValues = signal<{ [key: string]: string }>({});
       
   ngOnInit() {
     this.initializeColumns();
@@ -127,7 +129,7 @@ export class DynamicTableComponent implements OnInit {
     const columnKeys = this.config().columns.map(col => col.key);
     
     if (this.config().selectable) {
-      this.displayedColumns = ['select', ...columnKeys];
+      this.displayedColumns.set(['select', ...columnKeys]);
     } else {
       this.displayedColumns.set(columnKeys);
     }
@@ -136,7 +138,7 @@ export class DynamicTableComponent implements OnInit {
   // Selection methods
   isAllSelected(): boolean {
     const selected = this.selection.selected.length;
-    const total = this.config().data.length;
+    const total = this.config().data().length;
     return selected === total && total > 0;
   }
 
@@ -375,7 +377,7 @@ export class DynamicTableComponent implements OnInit {
       return;
     }
 
-    const data = this.config().data;
+    const data = this.config().data();
     const exportConfig = this.config().exportConfig;
 
     if (!data || data.length === 0) {
@@ -387,7 +389,7 @@ export class DynamicTableComponent implements OnInit {
 
     let csvContent = headers.join(',') + '\n';
     
-    data().forEach(item => {
+    data.forEach(item => {
       const row = columns.map(column => {
         let value = item[column] || '';
         if (Array.isArray(value)) {
@@ -412,7 +414,7 @@ export class DynamicTableComponent implements OnInit {
     document.body.removeChild(link);
 
     // Emitir evento para notificar que la exportación se completó
-    this.emitEvent('export', { data: this.config().data, filename });
+    this.emitEvent('export', { data, filename });
   }
 
   private emitEvent(type: TableEvent['type'], data?: any) {
