@@ -14,4 +14,20 @@
     min-width: 200px;
     flex-shrink: 0;
   }
+
+  ::ng-deep .dni-cif-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .dni-line {
+      font-weight: 500;
+      color: #1A1A1A;
+    }
+
+    .cif-line {
+      font-weight: 400;
+      color: #666666;
+    }
+  }
 }

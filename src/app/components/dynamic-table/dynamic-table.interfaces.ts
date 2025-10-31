@@ -14,7 +14,11 @@ export interface TableColumn {
   chipConfig?: ChipConfig;
   actionConfig?: ActionConfig;
   imageConfig?: ImageConfig;
+  //FUNCIÓN RENDER: PERMITE PERSONALIZAR LA RENDERIZACIÓN DE LA CELDA
+  //PUEDE DEVOLVER STRING (TEXTO PLANO) O HTML (SE RENDERIZARÁ CON INNERHTML)
   render?: (column: TableColumn, row: any) => string;
+  //INDICA SI EL VALOR DEVUELTO POR RENDER ES HTML QUE DEBE RENDERIZARSE CON INNERHTML
+  renderAsHtml?: boolean;
 }
 
 export interface ChipConfig {
@@ -51,7 +55,7 @@ export interface ExportConfig {
 
 export interface TableConfig {
   columns: TableColumn[];
-  data: WritableSignal<any[]> ;
+  data: WritableSignal<any[]>;
   selectable?: boolean;
   pagination?: boolean;
   pageSize?: number;

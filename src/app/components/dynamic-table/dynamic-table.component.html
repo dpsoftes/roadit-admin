@@ -139,7 +139,11 @@
         <td mat-cell *matCellDef="let element" [style]="getColumnStyles(column)" [class]="getCellClass(column)">
 
           @if (column.type === 'text') {
-          <span>{{ getCellValue(element, column) }}</span>
+          @if (column.renderAsHtml) {
+          <div [innerHTML]="getCellValue(element, column)"></div>
+          } @else {
+          {{ getCellValue(element, column) }}
+          }
           }
 
           @if (column.type === 'image') {
