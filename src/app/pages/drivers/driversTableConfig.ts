@@ -91,11 +91,10 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
     {
       key: 'tags',
       label: 'drivers.list.tags',
-      type: 'chip',
+      type: 'chip-array',
       width: 8,
       chipConfig: {
         type: 'tags',
-        translateKey: 'drivers.list.tags'
       }
     },
     {
