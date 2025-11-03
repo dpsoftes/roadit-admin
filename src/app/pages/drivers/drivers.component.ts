@@ -12,6 +12,7 @@ import { TranslatePipe } from '@i18n/translate.pipe';
 import { TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
 import { createDriversTableConfig } from './driversTableConfig';
 import { DriverStore } from '@store/driver.state';
+import { I18nService } from '@i18n/i18n.service';
 
 @Component({
   selector: 'app-drivers',
@@ -25,11 +26,12 @@ import { DriverStore } from '@store/driver.state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DriversComponent implements OnInit {
+  private i18n = inject(I18nService);
   store = inject(DriverStore);
   drivers = signal(this.store.drivers());
 
   //CONFIGURACION DE LA TABLA
-  driversTableConfig = signal(createDriversTableConfig(this.drivers));
+  driversTableConfig = signal(createDriversTableConfig(this.drivers, this.i18n));
 
   constructor() {
     //EFECTO QUE ACTUALIZA LA SEÑAL LOCAL CUANDO CAMBIA EL STORE
