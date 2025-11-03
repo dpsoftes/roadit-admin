@@ -1,7 +1,7 @@
 import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
-import { LoginResponseDto, SimpleDataDto, Tag, UserFullDto } from '@dtos';
+import { LoginResponseDto, SimpleDataDto,  TagDto, UserFullDto } from '@dtos';
 import { Helpers } from '@utils/helpers';
 import { Subject } from 'rxjs';
 //import { DevToolsHelper } from './devtools.helper';
@@ -10,7 +10,7 @@ export class GlobalStateData {
     user: LoginResponseDto = new LoginResponseDto();
     language: string = "es";
     userFull: UserFullDto = new UserFullDto();
-    tags: Tag[] = [];
+    tags: TagDto[] = [];
     menuCollapsed: boolean = false;
     usersAdmin: SimpleDataDto[] = [];
     groups: SimpleDataDto[] = [];

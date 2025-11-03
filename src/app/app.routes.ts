@@ -41,28 +41,32 @@ export const routes: Routes = [
         path: 'clients',
 
         children: [
-          {
-            path: '',
-            loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
-          },
-          {
-            path: 'create-group',
-            loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
-          },
-          {
-            path: 'edit-group/:id',
-            loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
-          },
-          {
-            path: 'edit-client/:id',
-            loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
-          },
-          {
-            path: 'create-client',
-            loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
-          },
-        ]
-      },
+            {
+              path: '',
+              loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+            },
+            {
+              path: 'create-group',
+              loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
+            },
+            {
+              path: 'edit-group/:id',
+              loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
+            },
+            {
+              path: 'edit-client/:id',
+              loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
+            },
+            {
+              path: 'create-client',
+              loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
+            },
+            {
+              path: ':type',
+              loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+            },
+          ]
+        },
       // {
       //  path: '**',
       //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),

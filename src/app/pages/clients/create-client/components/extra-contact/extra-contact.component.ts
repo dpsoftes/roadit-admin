@@ -25,10 +25,9 @@ export class ExtraContactComponent {
   client = this.store.client;
 
   saveChanges(){
-    this.client().html_contact_page1
-    this.client().html_contact_page2
+
     this.store.updateState({client: this.client()})
-    this.store.saveGralData();
+    this.store.saveGralData({id: this.client().id, html_contact_page1: this.client().html_contact_page1, html_contact_page2: this.client().html_contact_page2});
   }
 }
 

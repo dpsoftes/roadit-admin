@@ -18,7 +18,7 @@ export const MENU_ITEMS: MenuItem[] = [
   {
     icon: 'work',
     label: 'navigation.clients',
-    route: '/clients'/* 
+    route: '/clients',
     submenus: [
       {
         icon: 'groups',
@@ -30,7 +30,7 @@ export const MENU_ITEMS: MenuItem[] = [
         label: 'navigation.clients_list',
         route: '/clients/list'
       }
-    ] */
+    ]
   },
   {
     icon: 'sentiment_satisfied',

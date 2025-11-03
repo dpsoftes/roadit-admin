@@ -11,7 +11,7 @@ export * from './auth.dto';
 
 // User Management
 export * from './admin.dto';
-export * from './driver.dto';
+export * from '../dtos/driver.dto';
 export * from './user.dto';
 
 // Client Management

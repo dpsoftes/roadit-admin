@@ -394,6 +394,8 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
     phone = signal<string>("");
     expire_period_days = signal<number | null | undefined>(undefined);
     client = signal<number>(0);
+    eurotransport_identifier = signal<string>("");
+    revel_identifier = signal<string>("");
 
     static override fromDto(dto: ClientBillingAccountDto): ClientBillingAccountEntity {
         const entity = new ClientBillingAccountEntity();
@@ -412,6 +414,8 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
         if (dto.phone != undefined) entity.phone.set(dto.phone);
         if (dto.expire_period_days != undefined) entity.expire_period_days.set(dto.expire_period_days);
         if (dto.client != undefined) entity.client.set(dto.client);
+        if (dto.eurotransport_identifier != undefined) entity.eurotransport_identifier.set(dto.eurotransport_identifier);
+        if (dto.revel_identifier != undefined) entity.revel_identifier.set(dto.revel_identifier);
         return entity;
     }
 
@@ -431,6 +435,8 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
             phone: this.phone(),
             expire_period_days: this.expire_period_days(),
             client: this.client(),
+            eurotransport_identifier: this.eurotransport_identifier(),
+            revel_identifier: this.revel_identifier(),
         });
     }
 
@@ -449,6 +455,8 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
         if (dto.phone != undefined) this.phone.set(dto.phone);
         if (dto.expire_period_days != undefined) this.expire_period_days.set(dto.expire_period_days);
         if (dto.client != undefined) this.client.set(dto.client);
+        if (dto.eurotransport_identifier != undefined) this.eurotransport_identifier.set(dto.eurotransport_identifier);
+        if (dto.revel_identifier != undefined) this.revel_identifier.set(dto.revel_identifier);
     }
 
     override toPatch<T>(): Partial<T> {
@@ -467,6 +475,8 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
         if (this.phone() !== defaults.phone()) (patch as any).phone = this.phone();
         if (this.expire_period_days() !== defaults.expire_period_days()) (patch as any).expire_period_days = this.expire_period_days();
         if (this.client() !== defaults.client()) (patch as any).client = this.client();
+        if (this.eurotransport_identifier() !== defaults.eurotransport_identifier()) (patch as any).eurotransport_identifier = this.eurotransport_identifier();
+        if (this.revel_identifier() !== defaults.revel_identifier()) (patch as any).revel_identifier = this.revel_identifier();
         return patch;
     }
 }

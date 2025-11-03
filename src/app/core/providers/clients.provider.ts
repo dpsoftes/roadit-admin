@@ -5,7 +5,7 @@ import { EndPoints } from '@services/EndPoints';
 import { ClientGroupSummary, ClientSummary, GroupsQueryParams, ClientsQueryParams, ClientDto } from '@dtos/clients/clients.dto';
 import { ClientsGroupEntity } from '@entities/clients.entities';
 import { DocumentsClientsDto } from '@dtos/clients/documents.dto';
-import { ClientBillingAccountDto } from '@dtos/clients/billingsAccounts.dto';
+import { BillingAccountItemDto, ClientBillingAccountDto } from '@dtos/clients/billingsAccounts.dto';
 import { PriceRulesClientDto } from '@dtos/clients/priceRules.dtos';
 import { ClientCertification } from '@dtos/clients/clientsCertifications.dto';
 
@@ -104,11 +104,11 @@ export class ClientsProvider {
             return null;
         }
     }
-    async getClientFullData(id: number | string): Promise<{documents: DocumentsClientsDto[], billings: ClientBillingAccountDto[], priceRules: PriceRulesClientDto, certifications: ClientCertification[]} | null> {
+    async getClientFullData(id: number | string): Promise<{documents: DocumentsClientsDto[], billings: BillingAccountItemDto[], priceRules: PriceRulesClientDto, certifications: ClientCertification[]} | null> {
         try {
             var a = await this.api.get<any>({ url: EndPoints.getDocumentTemplates, queryParams: {client: id}  });
             var documents: DocumentsClientsDto[] = (await this.api.get<DocumentsClientsDto[]>({ url: EndPoints.getDocumentTemplates, queryParams: {client: id}  }));
-            var billings: ClientBillingAccountDto[] = (await this.api.get<any>({ url: EndPoints.getClientBillingAccounts, queryParams: {client: id}  }))["results"] as ClientBillingAccountDto[];
+            var billings: BillingAccountItemDto[] = (await this.api.get<any>({ url: EndPoints.getClientBillingAccounts, queryParams: {client: id}  }))["results"] as BillingAccountItemDto[];
             var priceRules: PriceRulesClientDto = (await this.api.get<PriceRulesClientDto>({ url: EndPoints.getPriceRule.replace("{scope}", "client"), queryParams: {client_id: id.toString()}  }))
             var certifications: ClientCertification[] = (await this.api.get<any>({ url: EndPoints.getClientCertifications, queryParams: {client: id}  }))["results"] as ClientCertification[];
 
@@ -138,6 +138,17 @@ export class ClientsProvider {
             return null;
         }
     }   
-
+    async deleteClientDocument(data: Partial<DocumentsClientsDto>): Promise<boolean> {
+        try {
+            const { id, ...dto } = data;
+      
+            var options: ApiRequestOptions = { url: EndPoints.deleteDocumentTemplate.replace("{templateId}", id!.toString())};
+            await this.api.delete<DocumentsClientsDto>(options );
+            return true;
+        } catch (error) {
+            console.error('Error al obtener admins:', error);
+            return false;
+        }
+    }   
 
 }

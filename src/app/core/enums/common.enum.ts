@@ -84,3 +84,16 @@ export const actionTypeDescriptions: Record<ActionType, string> = {
   [ActionType.UPDATE]: 'actionType.UPDATE',
   [ActionType.DELETE]: 'actionType.DELETE'
 };
+
+
+export enum EntityDocumentType {
+  DNI = 'dni',
+  CIF = 'cif',
+  OTHER = 'other',
+} 
+
+export const EntityDocumentTypeDescriptions: Record<EntityDocumentType, string> = {
+  [EntityDocumentType.DNI]:   'EntityDocumentType.DNI',
+  [EntityDocumentType.CIF]:   'EntityDocumentType.CIF',
+  [EntityDocumentType.OTHER]: 'EntityDocumentType.OTHER',
+};

@@ -1,7 +1,7 @@
 
 import { BillingType, ClientOrigin, ClientType } from "@enums/client.enum";
 import { AdminSummaryDto } from "../admins.dto";
-import { Tag } from "../tags.dto";
+import { TagDto } from "../tag.dto";
 
 export interface ClientsQueryParams {
     cif?: string;
@@ -66,7 +66,7 @@ export interface ClientSummary {
     logo?: null | string;
     name: string;
     parent_name: string;
-    tags: Tag[];
+    tags: TagDto[];
     [property: string]: any;
 }
 

@@ -1,14 +1,12 @@
-import { signal } from "@angular/core";
+import { signal, WritableSignal } from "@angular/core";
 import { TableConfig } from "@components/dynamic-table/dynamic-table.interfaces";
-import { I18nService } from "@i18n/i18n.service";
 
-export const createDriversTableConfig = (listArray: any[], i18n: I18nService): TableConfig => ({
+export const createDriversTableConfig = (listArray: WritableSignal<any[]>): TableConfig => ({
   columns: [
     {
       key: 'image',
       label: 'drivers.list.image',
       type: 'image',
-      align: 'center',
       width: 8,
       imageConfig: {
         width: '40px',
@@ -39,6 +37,12 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
         `;
       }
     },
+    // {
+    //   key: 'cif',
+    //   label: 'drivers.list.cif',
+    //   type: 'text',
+    //   width: 10
+    // },
     {
       key: 'province',
       label: 'drivers.list.province',
@@ -51,12 +55,12 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
       label: 'drivers.list.city',
       type: 'text',
       width: 10,
+      // align: 'center'
     },
     {
       key: 'email',
       label: 'drivers.list.email',
       type: 'text',
-      // align: 'center',
       width: 22,
     },
     {
@@ -81,50 +85,31 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
     {
       key: 'tags',
       label: 'drivers.list.tags',
-      type: 'chip-array',
-      width: 12,
+      type: 'chip',
+      width: 8,
       chipConfig: {
         type: 'tags',
+        translateKey: 'drivers.list.tags'
       }
     },
     {
       key: 'validated',
       label: 'drivers.list.validated',
-      type: 'custom',
+      type: 'chip',
       width: 13,
-      render: (column: any, row: any) => {
-        //RENDERIZADO PERSONALIZADO PARA validated
-        //EVALUA SI EL VALOR ES true O false Y DEVUELVE SVG + TRADUCCION
-        const isValidated = row.validated;
-        const translationKey = isValidated ? 'drivers.profile.VALIDATE' : 'drivers.profile.NO_VALIDATE';
-        const translatedText = i18n.translate(translationKey);
-
-        //RUTA A LOS SVG EXTERNOS
-        const iconPath = isValidated
-          ? 'assets/icons/validatedIcon.svg'
-          : 'assets/icons/noValidatedIcon.svg';
-
-        return `
-          <div class="validated-cell">
-            <img src="${iconPath}" alt="${translatedText}" class="validated-icon" />
-            <span class="validated-text">${translatedText}</span>
-          </div>
-        `;
+      chipConfig: {
+        type: 'status',
+        translateKey: 'drivers.list.status'
       }
     },
     {
       key: 'is_active',
       label: 'drivers.list.status',
-      type: 'custom',
+      type: 'chip',
       width: 9,
-      render: (column: any, row: any) => {
-        //RENDERIZADO PERSONALIZADO PARA is_active
-        //EVALUA SI EL VALOR ES true O false Y DEVUELVE LA TRADUCCION CORRESPONDIENTE
-        const isActive = row.is_active;
-        const translationKey = isActive ? 'drivers.isActive.ACTIVE' : 'drivers.isActive.INACTIVE';
-        const translatedText = i18n.translate(translationKey);
-
-        return `<span>${translatedText}</span>`;
+      chipConfig: {
+        type: 'status',
+        translateKey: 'drivers.isActive'
       }
     },
     {
@@ -137,7 +122,7 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
           {
             icon: 'material-symbols-outlined/edit_square',
             label: 'Editar',
-            color: 'primary',
+            color: 'warn',
             action: 'edit'
           },
           {
@@ -150,7 +135,7 @@ export const createDriversTableConfig = (listArray: any[], i18n: I18nService): T
       }
     }
   ],
-  data: signal([]),
+  data: listArray,
   exportable: true,
   selectable: false,
   pagination: true,

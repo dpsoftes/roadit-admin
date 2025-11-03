@@ -59,7 +59,11 @@ export class Clients implements OnInit {
   }  
 
   async ngOnInit() {
-    this.activeTab.set('groups');
+    let type: 'groups' | 'list' = "groups";
+     if (this.route.snapshot.paramMap.get('type')) {
+      type = this.route.snapshot.paramMap.get('type')! as 'groups' | 'list';
+    }
+    this.activeTab.set(type);
     await this.loadGroups();
     
   }

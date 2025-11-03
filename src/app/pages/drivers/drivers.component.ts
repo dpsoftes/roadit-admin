@@ -3,14 +3,15 @@ import {
   ChangeDetectionStrategy,
   signal,
   OnInit,
-  inject
+  inject,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
 import { createDriversTableConfig } from './driversTableConfig';
-import { I18nService } from '@i18n/i18n.service';
+import { DriverStore } from '@store/driver.state';
 
 @Component({
   selector: 'app-drivers',
@@ -24,8 +25,6 @@ import { I18nService } from '@i18n/i18n.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DriversComponent implements OnInit {
-  private i18n = inject(I18nService);
-
   //DATOS MOCK DE CONDUCTORES
   listArray = signal<any[]>([
     {
@@ -41,9 +40,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '15/01/25',
       rating: '4.8',
       tags: ['Puntual', 'Profesional'],
-      validated: true,
+      validated: 'VALIDATE',
       fortnightEarnings: '1.250,00 €',
-      is_active: true
+      is_active: 'ACTIVE'
     },
     {
       id: 2,
@@ -58,9 +57,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '09/02/20',
       rating: '4.9',
       tags: ['Responsable', 'Puntual'],
-      validated: true,
+      validated: 'VALIDATE',
       fortnightEarnings: '1.450,00 €',
-      is_active: true
+      is_active: 'ACTIVE'
     },
     {
       id: 3,
@@ -75,9 +74,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '13/03/24',
       rating: '4.5',
       tags: ['Experiencia'],
-      validated: false,
+      validated: 'NO_VALIDATE',
       fortnightEarnings: '980,00 €',
-      is_active: false
+      is_active: 'INACTIVE'
     },
     {
       id: 4,
@@ -92,9 +91,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '25/01/24',
       rating: '4.7',
       tags: ['Puntual', 'Eficiente'],
-      validated: true,
+      validated: 'VALIDATE',
       fortnightEarnings: '1.320,00 €',
-      is_active: true
+      is_active: 'ACTIVE'
     },
     {
       id: 5,
@@ -109,9 +108,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '05/12/24',
       rating: '4.6',
       tags: ['Nuevo', 'Responsable'],
-      validated: true,
+      validated: 'VALIDATE',
       fortnightEarnings: '1.150,00 €',
-      is_active: true
+      is_active: 'ACTIVE'
     },
     {
       id: 6,
@@ -126,9 +125,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '14/02/24',
       rating: '4.9',
       tags: ['Profesional', 'Puntual', 'Eficiente'],
-      validated: true,
+      validated: 'VALIDATE',
       fortnightEarnings: '1.520,00 €',
-      is_active: true
+      is_active: 'ACTIVE'
     },
     {
       id: 7,
@@ -143,9 +142,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '22/06/24',
       rating: '4.4',
       tags: ['Experiencia'],
-      validated: false,
+      validated: 'NO_VALIDATE',
       fortnightEarnings: '890,00 €',
-      is_active: false
+      is_active: 'INACTIVE'
     },
     {
       id: 8,
@@ -160,9 +159,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '03/12/24',
       rating: '4.8',
       tags: ['Responsable', 'Profesional'],
-      validated: true,
+      validated: 'VALIDATE',
       fortnightEarnings: '1.380,00 €',
-      is_active: true
+      is_active: 'ACTIVE'
     },
     {
       id: 9,
@@ -177,9 +176,9 @@ export class DriversComponent implements OnInit {
       created_datetime: '04/12/24',
       rating: '4.7',
       tags: ['Puntual', 'Eficiente'],
-      validated: true,
+      validated: 'VALIDATE',
       fortnightEarnings: '1.420,00 €',
-      is_active: true
+      is_active: 'ACTIVE'
     },
     {
       id: 10,
@@ -194,16 +193,27 @@ export class DriversComponent implements OnInit {
       created_datetime: '28/02/25',
       rating: '4.6',
       tags: ['Profesional'],
-      validated: true,
+      validated: 'VALIDATE',
       fortnightEarnings: '1.280,00 €',
-      is_active: true
+      is_active: 'ACTIVE'
     }
   ]);
+  store = inject(DriverStore);
+  drivers = signal(this.store.drivers());
+  constructor() {
+    effect(() => {
+      this.drivers.set(this.store.drivers());
+    });
+  }
+
+
 
   //CONFIGURACION DE LA TABLA
-  driversTableConfig = signal(createDriversTableConfig(this.listArray(), this.i18n));
+  driversTableConfig = signal(createDriversTableConfig(this.drivers));
 
   ngOnInit() {
+    this.store.initializeFromStorage();
+
     this.loadDrivers();
   }
 
