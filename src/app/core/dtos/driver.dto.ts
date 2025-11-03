@@ -1,10 +1,11 @@
-import { TagDto } from './tag.dto';
+import { TagDto } from "./tag.dto";
+
 
 export class DriverDto {
-    id: string; // UUID
+    id: number; 
     username: string;
     email: string;
-    phone: string;
+    phone: string | null;
     name: string;
     last_name: string;
     image: string | null;
@@ -12,7 +13,7 @@ export class DriverDto {
     dni: string;
     cif: string;
     validated: boolean;
-    rating: number;
+    rating: string; // Adaptado a string para coincidir con el JSON
     city: string;
     province: string;
     postal_code: string;
@@ -20,23 +21,22 @@ export class DriverDto {
     transport_blocked: boolean;
     allows_access_location: boolean;
     tags: TagDto[];
-    created_date: string;
-    modified_date: string;
-    state: boolean;
+    created_datetime: string | null;
+    // Se eliminan modified_date y state para coincidir con el JSON
 
     constructor(data: any = {}) {
         this.id = data.id || '';
         this.username = data.username || '';
         this.email = data.email || '';
-        this.phone = data.phone || '';
+        this.phone = data.phone ?? null;
         this.name = data.name || '';
         this.last_name = data.last_name || '';
-        this.image = data.image;
+        this.image = data.image ?? null;
         this.is_active = data.is_active || false;
         this.dni = data.dni || '';
         this.cif = data.cif || '';
         this.validated = data.validated || false;
-        this.rating = data.rating || 0;
+        this.rating = data.rating != null ? String(data.rating) : '';
         this.city = data.city || '';
         this.province = data.province || '';
         this.postal_code = data.postal_code || '';
@@ -44,9 +44,7 @@ export class DriverDto {
         this.transport_blocked = data.transport_blocked || false;
         this.allows_access_location = data.allows_access_location || false;
         this.tags = (data.tags || []).map((tag: any) => TagDto.fromJson(tag));
-        this.created_date = data.created_date || '';
-        this.modified_date = data.modified_date || '';
-        this.state = data.state || false;
+        this.created_datetime = data.created_datetime ?? null;
     }
 
     static fromJson(json: any): DriverDto {
@@ -74,9 +72,7 @@ export class DriverDto {
             transport_blocked: this.transport_blocked,
             allows_access_location: this.allows_access_location,
             tags: this.tags.map(tag => tag.toJson()),
-            created_date: this.created_date,
-            modified_date: this.modified_date,
-            state: this.state
+            created_datetime: this.created_datetime
         };
     }
 

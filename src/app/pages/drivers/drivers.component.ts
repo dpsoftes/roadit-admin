@@ -2,13 +2,16 @@ import {
   Component,
   ChangeDetectionStrategy,
   signal,
-  OnInit
+  OnInit,
+  inject,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
 import { createDriversTableConfig } from './driversTableConfig';
+import { DriverStore } from '@store/driver.state';
 
 @Component({
   selector: 'app-drivers',
@@ -34,7 +37,7 @@ export class DriversComponent implements OnInit {
       city: 'Dos Hermanas',
       email: 'juan.garcia@example.com',
       phone: '612 345 678',
-      created_datetime: '2024-01-15',
+      created_datetime: '15/01/25',
       rating: '4.8',
       tags: ['Puntual', 'Profesional'],
       validated: 'VALIDATE',
@@ -51,7 +54,7 @@ export class DriversComponent implements OnInit {
       city: 'Sevilla',
       email: 'maria.lopez@example.com',
       phone: '623 456 789',
-      created_datetime: '2024-02-20',
+      created_datetime: '09/02/20',
       rating: '4.9',
       tags: ['Responsable', 'Puntual'],
       validated: 'VALIDATE',
@@ -68,7 +71,7 @@ export class DriversComponent implements OnInit {
       city: 'Málaga',
       email: 'carlos.ruiz@example.com',
       phone: '634 567 890',
-      created_datetime: '2024-03-10',
+      created_datetime: '13/03/24',
       rating: '4.5',
       tags: ['Experiencia'],
       validated: 'NO_VALIDATE',
@@ -85,7 +88,7 @@ export class DriversComponent implements OnInit {
       city: 'Jerez de la Frontera',
       email: 'ana.martin@example.com',
       phone: '645 678 901',
-      created_datetime: '2024-01-25',
+      created_datetime: '25/01/24',
       rating: '4.7',
       tags: ['Puntual', 'Eficiente'],
       validated: 'VALIDATE',
@@ -102,7 +105,7 @@ export class DriversComponent implements OnInit {
       city: 'Alcalá de Guadaíra',
       email: 'pedro.gonzalez@example.com',
       phone: '656 789 012',
-      created_datetime: '2024-04-05',
+      created_datetime: '05/12/24',
       rating: '4.6',
       tags: ['Nuevo', 'Responsable'],
       validated: 'VALIDATE',
@@ -119,7 +122,7 @@ export class DriversComponent implements OnInit {
       city: 'Huelva',
       email: 'laura.jimenez@example.com',
       phone: '667 890 123',
-      created_datetime: '2024-02-14',
+      created_datetime: '14/02/24',
       rating: '4.9',
       tags: ['Profesional', 'Puntual', 'Eficiente'],
       validated: 'VALIDATE',
@@ -136,7 +139,7 @@ export class DriversComponent implements OnInit {
       city: 'Córdoba',
       email: 'francisco.romero@example.com',
       phone: '678 901 234',
-      created_datetime: '2024-03-22',
+      created_datetime: '22/06/24',
       rating: '4.4',
       tags: ['Experiencia'],
       validated: 'NO_VALIDATE',
@@ -153,7 +156,7 @@ export class DriversComponent implements OnInit {
       city: 'Mairena del Aljarafe',
       email: 'isabel.moreno@example.com',
       phone: '689 012 345',
-      created_datetime: '2024-01-30',
+      created_datetime: '03/12/24',
       rating: '4.8',
       tags: ['Responsable', 'Profesional'],
       validated: 'VALIDATE',
@@ -170,7 +173,7 @@ export class DriversComponent implements OnInit {
       city: 'Marbella',
       email: 'miguel.herrera@example.com',
       phone: '690 123 456',
-      created_datetime: '2024-04-12',
+      created_datetime: '04/12/24',
       rating: '4.7',
       tags: ['Puntual', 'Eficiente'],
       validated: 'VALIDATE',
@@ -187,7 +190,7 @@ export class DriversComponent implements OnInit {
       city: 'Granada',
       email: 'carmen.silva@example.com',
       phone: '601 234 567',
-      created_datetime: '2024-02-28',
+      created_datetime: '28/02/25',
       rating: '4.6',
       tags: ['Profesional'],
       validated: 'VALIDATE',
@@ -195,11 +198,22 @@ export class DriversComponent implements OnInit {
       is_active: 'ACTIVE'
     }
   ]);
+  store = inject(DriverStore);
+  drivers = signal(this.store.drivers());
+  constructor() {
+    effect(() => {
+      this.drivers.set(this.store.drivers());
+    });
+  }
+
+
 
   //CONFIGURACION DE LA TABLA
-  driversTableConfig = signal(createDriversTableConfig(this.listArray()));
+  driversTableConfig = signal(createDriversTableConfig(this.drivers));
 
   ngOnInit() {
+    this.store.initializeFromStorage();
+
     this.loadDrivers();
   }
 

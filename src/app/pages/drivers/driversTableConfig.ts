@@ -1,7 +1,7 @@
-import { signal } from "@angular/core";
+import { signal, WritableSignal } from "@angular/core";
 import { TableConfig } from "@components/dynamic-table/dynamic-table.interfaces";
 
-export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
+export const createDriversTableConfig = (listArray: WritableSignal<any[]>): TableConfig => ({
   columns: [
     {
       key: 'image',
@@ -22,17 +22,27 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       width: 10
     },
     {
-      key: 'dni',
-      label: 'drivers.list.dni',
-      type: 'text',
-      width: 10
+      key: 'dni/cif',
+      label: 'drivers.list.dni/cif',
+      type: 'custom',
+      width: 10,
+      render: (column: any, row: any) => {
+        //RENDERIZADO HTML PERSONALIZADO PARA DNI/CIF
+        //LOS ESTILOS ESTÁN EN drivers.component.scss
+        return `
+          <div class="dni-cif-cell">
+            <div class="dni-line">${row.dni}</div>
+            <div class="cif-line">${row.cif}</div>
+          </div>
+        `;
+      }
     },
-    {
-      key: 'cif',
-      label: 'drivers.list.cif',
-      type: 'text',
-      width: 10
-    },
+    // {
+    //   key: 'cif',
+    //   label: 'drivers.list.cif',
+    //   type: 'text',
+    //   width: 10
+    // },
     {
       key: 'province',
       label: 'drivers.list.province',
@@ -51,7 +61,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       key: 'email',
       label: 'drivers.list.email',
       type: 'text',
-      width: 12,
+      width: 22,
     },
     {
       key: 'phone',
@@ -93,12 +103,6 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       }
     },
     {
-      key: 'fortnightEarnings',
-      label: 'drivers.list.fortnight_earnings',
-      type: 'text',
-      width: 13
-    },
-    {
       key: 'is_active',
       label: 'drivers.list.status',
       type: 'chip',
@@ -131,7 +135,7 @@ export const createDriversTableConfig = (listArray: any[]): TableConfig => ({
       }
     }
   ],
-  data: signal([]),
+  data: listArray,
   exportable: true,
   selectable: false,
   pagination: true,

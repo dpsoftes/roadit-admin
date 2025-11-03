@@ -7,6 +7,17 @@
     "forgot_password": "¿Olvidaste contraseña?",
     "loading": "Cargando..."
   },
+  "paginator": {
+    "itemsPerPageLabel": "Elementos por página:",
+    "nextPageLabel": "Página siguiente",
+    "previousPageLabel": "Página anterior",
+    "firstPageLabel": "Primera página",
+    "lastPageLabel": "Última página",
+    "rangeLabel": {
+      "empty": "0 de {{length}}",
+      "range": "{{start}} - {{end}} de {{length}}"
+    }
+  },
   "login": {
     "title": "Iniciar Sesión",
     "email_required": "El email es requerido",
@@ -789,11 +800,14 @@
       "principal-client-required": "El cliente principal es obligatorio.",
       "contact-email-invalid": "El email de contacto no es válido.",
       "contact-name-required": "El nombre de la persona de contacto es obligatorio."
+
     },
     "documents": {
       "type-movement": "El tipo de movimiento es obligatorio.",
       "moment": "El momento es obligatorio",
-      "not-file": "Debe seleccionar un archivo o una URL."
+      "not-file": "Debe seleccionar un archivo o una URL.",
+      "confirm-delete-document": "¿Estás seguro de que deseas eliminar este documento?",
+      "error-delete-document": "Error al eliminar el documento. Por favor, inténtalo de nuevo."
     }
   },
   "fileUploadType": {
@@ -807,6 +821,11 @@
     "viewFile": "ver archivo",
     "deleteFile": "Eliminar archivo"
   },
+  "EntityDocumentType":{
+    "DNI": "Dni",
+    "CIF": "Cif",
+    "OTHER": "Otro"
+  },
   "drivers": {
     "title": "Conductores",
     "list": {
@@ -814,6 +833,7 @@
       "name": "Nombre",
       "dni": "DNI",
       "cif": "CIF",
+      "dni/cif": "DNI/CIF",
       "province": "Provincia",
       "city": "Ciudad",
       "email": "Correo",
@@ -846,7 +866,7 @@
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo",
       "VALIDATE": "Validado",
-      "NO_VALIDATE": "Sin Validar",
+      "NO_VALIDATE": "Pendiente",
       "EXPIRED": "Caducados",
       "NO_EXPIRED": "Sin Caducar",
       "NEW_DOCUMENT": "Documento Nuevo",

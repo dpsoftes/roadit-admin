@@ -61,6 +61,10 @@ export const routes: Routes = [
               path: 'create-client',
               loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
             },
+            {
+              path: ':type',
+              loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+            },
           ]
         },
         {
@@ -89,12 +93,14 @@ export const routes: Routes = [
               loadComponent: () => import('./pages/transports/transports').then(m => m.Transports)
             },
           ]
-        },      // {
-      //  path: '**', 
+        },
+      // {
+      //  path: '**',
       //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
       // }
     ]
   },
+  
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),

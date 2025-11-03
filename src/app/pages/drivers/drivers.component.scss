@@ -1,6 +1,24 @@
 .drivers-page {
   padding: 2rem;
 
+  ::ng-deep .validated-cell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .validated-icon {
+      width: 20px !important;
+      height: 20px !important;
+      display: block;
+    }
+
+    .validated-text {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+  }
+
   //SOBRESCRIBIR ESTILOS DE FILTROS PARA PERMITIR MÚLTIPLES LÍNEAS
   ::ng-deep .filters_content {
     display: flex;
@@ -13,5 +31,21 @@
   ::ng-deep .filter_field {
     min-width: 200px;
     flex-shrink: 0;
+  }
+
+  ::ng-deep .dni-cif-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .dni-line {
+      font-weight: 500;
+      color: #1A1A1A;
+    }
+
+    .cif-line {
+      font-weight: 400;
+      color: #666666;
+    }
   }
 }

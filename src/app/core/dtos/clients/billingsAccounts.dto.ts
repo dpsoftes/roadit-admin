@@ -69,8 +69,8 @@ export class BaseBillingAccountDto extends BaseEntity {
 export class ClientBillingAccountDto extends BaseBillingAccountDto {
     business_name: string;
     entity_number: string;
-    document: string; 
-    document_type: string; 
+    document: string;
+    document_type: string;
     address: string;
     address_complement: string;
     postal_code: string;
@@ -80,13 +80,15 @@ export class ClientBillingAccountDto extends BaseBillingAccountDto {
     phone: string;
     expire_period_days: number | null;
     client: number;
+    eurotransport_identifier: string;
+    revel_identifier: string;
 
     constructor(data: any = {}) {
         super(data);
         this.business_name = data.business_name || '';
         this.entity_number = data.entity_number || '';
-        this.document = data.document || ''; // Usando data.document
-        this.document_type = data.document_type || ''; // Inicialización del nuevo campo
+        this.document = data.document || '';
+        this.document_type = data.document_type || '';
         this.address = data.address || '';
         this.address_complement = data.address_complement || '';
         this.postal_code = data.postal_code || '';
@@ -96,6 +98,8 @@ export class ClientBillingAccountDto extends BaseBillingAccountDto {
         this.phone = data.phone || '';
         this.expire_period_days = data.expire_period_days;
         this.client = data.client || 0;
+        this.eurotransport_identifier = data.eurotransport_identifier || '';
+        this.revel_identifier = data.revel_identifier || '';
     }
 
     static override fromJson(json: any): ClientBillingAccountDto {
@@ -107,8 +111,8 @@ export class ClientBillingAccountDto extends BaseBillingAccountDto {
             ...super.toJson(),
             business_name: this.business_name,
             entity_number: this.entity_number,
-            document: this.document, // Incluyendo el campo renombrado
-            document_type: this.document_type, // Incluyendo el nuevo campo
+            document: this.document,
+            document_type: this.document_type,
             address: this.address,
             address_complement: this.address_complement,
             postal_code: this.postal_code,
@@ -117,12 +121,63 @@ export class ClientBillingAccountDto extends BaseBillingAccountDto {
             email_send_invoice: this.email_send_invoice,
             phone: this.phone,
             expire_period_days: this.expire_period_days,
-            client: this.client
+            client: this.client,
+            eurotransport_identifier: this.eurotransport_identifier,
+            revel_identifier: this.revel_identifier
         };
     }
 
     override copyWith(updates: Partial<ClientBillingAccountDto>): ClientBillingAccountDto {
         return new ClientBillingAccountDto({
+            ...this.toJson(),
+            ...updates
+        });
+    }
+}
+
+export class BillingAccountItemDto {
+    id: number;
+    entity_number: string;
+    business_name: string;
+    document: string;
+    city: string;
+    email_send_invoice: string;
+    irpf: string;
+    expire_period_days: number;
+    client: number;
+
+    constructor(data: any = {}) {
+        this.id = data.id ?? 0;
+        this.entity_number = data.entity_number ?? '';
+        this.business_name = data.business_name ?? '';
+        this.document = data.document ?? '';
+        this.city = data.city ?? '';
+        this.email_send_invoice = data.email_send_invoice ?? '';
+        this.irpf = data.irpf ?? '';
+        this.expire_period_days = data.expire_period_days ?? -2147483648;
+        this.client = data.client ?? 0;
+    }
+
+    static fromJson(json: any): BillingAccountItemDto {
+        return new BillingAccountItemDto(json);
+    }
+
+    toJson(): any {
+        return {
+            id: this.id,
+            entity_number: this.entity_number,
+            business_name: this.business_name,
+            document: this.document,
+            city: this.city,
+            email_send_invoice: this.email_send_invoice,
+            irpf: this.irpf,
+            expire_period_days: this.expire_period_days,
+            client: this.client
+        };
+    }
+
+    copyWith(updates: Partial<BillingAccountItemDto>): BillingAccountItemDto {
+        return new BillingAccountItemDto({
             ...this.toJson(),
             ...updates
         });

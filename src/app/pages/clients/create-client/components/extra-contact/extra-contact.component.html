@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="buttons">
-            <app-buttons type="save-changes" text="clients.create-client.save-changes"></app-buttons>
+            <app-buttons type="save-changes-noform" (onClick)="saveChanges()" text="clients.create-client.save-changes"></app-buttons>
             <app-buttons type="cancel" text="clients.create-client.cancel"></app-buttons>
         </div>
     </mat-card-content>
