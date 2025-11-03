@@ -33,7 +33,7 @@
     </button>
 }
 @if (type() == 'add-stage'){
-    <button mat-button class="primary_btn save-small add-stage" (click)="onClick.emit()">
+    <button mat-button class="primary_btn  add-stage" (click)="onClick.emit()">
         <mat-icon>add</mat-icon>
         {{text() | translate}}
     </button>
@@ -41,6 +41,18 @@
 @if (type() == 'import-csv'){
     <button mat-button class="primary_btn import-csv" (click)="onClick.emit()">
         <mat-icon>upload</mat-icon>
+        {{text() | translate}}
+    </button>
+}
+@if (type() == 'add-vehicle'){
+    <button mat-button class="primary_btn add-vehicle" (click)="onClick.emit()">
+        <mat-icon>add</mat-icon>
+        {{text() | translate}}
+    </button>
+}
+@if (type() == 'add'){
+    <button mat-button class="primary_btn add-btn" (click)="onClick.emit()">
+        <mat-icon>add</mat-icon>
         {{text() | translate}}
     </button>
 }

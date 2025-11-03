@@ -93,3 +93,35 @@
   padding: 10px;
   text-transform: uppercase;
 }
+.add-stage {
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 12px;
+  text-transform: uppercase;
+  background-color: vars.$roadit-accent;
+  color: vars.$black;
+  height: 48px;
+  border: none;
+  border-radius: 8px;
+  // margin-top: 10px;
+}
+.add-vehicle {
+  background-color: vars.$black;
+  color: vars.$white !important;
+  border: 1px solid vars.$black;
+  font-size: 12px;
+  padding: 10px;
+  text-transform: uppercase;
+}
+.add-btn {
+  background-color: vars.$roadit-accent;
+  color: vars.$black !important;
+  border: 1px solid vars.$roadit-accent;
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 6px;
+  text-transform: uppercase;
+  & mat-icon{
+      margin-right: 6px;
+  }
+}

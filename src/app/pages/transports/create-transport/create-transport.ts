@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TransportPrincipalType } from '@enums/transport.enum';
 
 @Component({
   selector: 'app-create-transport',
@@ -25,17 +26,27 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 export class CreateTransport {
   private router = inject(Router);
 
-  selectedTransportType = signal<string>('');
+  selectedTransportType = signal<TransportPrincipalType | ''>('');
+  
+  // Exponer el enum para usarlo en el template
+  TransportPrincipalType = TransportPrincipalType;
+  
   onBack() {
     this.router.navigate(['/transports/assignment']);
   }
-  onTransportType(type: string) {
+  
+  onTransportType(type: TransportPrincipalType) {
     this.selectedTransportType.set(type);
   }
+  
   onContinue() {
-    console.log('Continuing to next step');
-    this.router.navigate([`/transports/create/${this.selectedTransportType()}`]);
+    const type = this.selectedTransportType();
+    if (type) {
+      console.log('Continuing to next step');
+      this.router.navigate([`/transports/create/${type}`]);
+    }
   } 
+  
   onCancel() {
     this.router.navigate(['/transports/assignment']);
   }

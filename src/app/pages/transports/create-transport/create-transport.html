@@ -32,23 +32,23 @@
     </mat-card>
     <div class="options-container">
         <h1>{{'transports.create.transport-type' | translate}}</h1>
-        <div class="type-item" [class.active]="selectedTransportType() === 'SIMPLE_MOVEMENT'" (click)="onTransportType('SIMPLE_MOVEMENT')">
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.SIMPLE_MOVEMENT" (click)="onTransportType(TransportPrincipalType.SIMPLE_MOVEMENT)">
             <mat-icon>directions_car</mat-icon>
             <h2>{{'transports.create.simple-movement' | translate}}</h2>
         </div>
-        <div class="type-item" [class.active]="selectedTransportType() === 'PICKUP_TO_FINAL_CUSTOMER'" (click)="onTransportType('PICKUP_TO_FINAL_CUSTOMER')">
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.PICKUP_TO_FINAL_CUSTOMER" (click)="onTransportType(TransportPrincipalType.PICKUP_TO_FINAL_CUSTOMER)">
             <mat-icon fontSet="material-symbols-outlined">approval_delegation</mat-icon>
             <h2>{{'transports.create.pickup-to-final-customer' | translate}}</h2>
         </div>
-        <div class="type-item" [class.active]="selectedTransportType() === 'DELIVERY_TO_FINAL_CUSTOMER'" (click)="onTransportType('DELIVERY_TO_FINAL_CUSTOMER')">
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER" (click)="onTransportType(TransportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER)">
             <mat-icon>key</mat-icon>
             <h2>{{'transports.create.delivery-to-final-customer' | translate}}</h2>
         </div>
-        <div class="type-item" [class.active]="selectedTransportType() === 'PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER'" (click)="onTransportType('PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER')">
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER" (click)="onTransportType(TransportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER)">
             <mat-icon>repeat</mat-icon>
             <h2>{{'transports.create.pickup-and-delivery-to-final-customer' | translate}}</h2>
         </div>
-        <div class="type-item" [class.active]="selectedTransportType() === 'WITH_STOPOVER'" (click)="onTransportType('WITH_STOPOVER')">
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.WITH_STOPOVER" (click)="onTransportType(TransportPrincipalType.WITH_STOPOVER)">
             <mat-icon fontSet="material-symbols-outlined">search_hands_free</mat-icon>
             <h2>{{'transports.create.with-stopover' | translate}}</h2>
         </div>

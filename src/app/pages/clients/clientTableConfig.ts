@@ -22,22 +22,16 @@ export const createClientTableConfig = (listArray: any[]): TableConfig => ({
         width: 12
       },
       {
-        key: 'client_group_name',
-        label: 'clients.list.group',
-        type: 'text',
-        width: 15
-      },
-      {
         key: 'cif',
         label: 'clients.list.cif',
         type: 'text',
-        width: 10
+        width: 12
       },
       {
-        key: 'create_date',
+        key: 'created_date',
         label: 'clients.list.registration_date',
         type: 'text',
-        width: 10
+        width: 12
       },
       {
         key: 'department',
@@ -45,8 +39,7 @@ export const createClientTableConfig = (listArray: any[]): TableConfig => ({
         type: 'chip',
         width: 12,
         chipConfig: {
-          type: 'department',
-          translateKey: 'clients.list.department'
+          type: 'department'
         }
       },
       {
@@ -170,8 +163,8 @@ export const createClientTableConfig = (listArray: any[]): TableConfig => ({
       }
     ],
     exportConfig: {
-      columns: ['name', 'client_group', 'CIF', 'created_at', 'department', 'tags', 'contact_person_name'],
-      headers: ['Nombre', 'Grupo', 'CIF', 'Fecha Alta', 'Departamento', 'Tags', 'Cliente Principal'],
+      columns: ['name', 'cif', 'created_date', 'department', 'tags', 'parent_name'],
+      headers: ['Nombre', 'CIF', 'Fecha Alta', 'Departamento', 'Tags', 'Cliente Principal'],
       filename: `lista_clientes_${new Date().toISOString().split('T')[0]}.csv`
     },
     actions: {

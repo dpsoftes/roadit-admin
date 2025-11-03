@@ -193,7 +193,7 @@
     </table>
 
     @if (config().pagination) {
-    <mat-paginator [length]="config().data().length" [pageSize]="pageSize()"
+    <mat-paginator [length]="getDataLength()" [pageSize]="pageSize()"
       [pageSizeOptions]="config().pageSizeOptions || [5, 10, 20, 50]" (page)="onPageChange($event)">
     </mat-paginator>
     }

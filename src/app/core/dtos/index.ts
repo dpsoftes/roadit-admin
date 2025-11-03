@@ -6,3 +6,4 @@ export * from './clients/clients.dto';
 export * from './simpleData.dto';
 export * from './tags.dto';
 export * from './country-langs.dto';
+export * from './transports/transports.dto';

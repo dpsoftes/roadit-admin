@@ -360,7 +360,22 @@
       "to": "Hasta",
       "min-time-range": "Las franjas horarias deben ser de dos horas como mínimo.",
       "add-delivery": "Añadir entrega",
-      "add-stage": "Añadir etapa"
+      "add-stage": "Añadir etapa",
+      "vehicles": "Vehículo",
+      "import-csv": "Importar CSV",
+      "complementary-services-added": "Servicios complementarios añadidos",
+      "plate-search": "Busque la matrícula para añadir vehículo",
+      "add-vehicle": "Añadir otro vehículo",
+      "cleaning-service": "Servicio de limpieza",
+      "demostration-service": "Demostración vehículo",
+      "revision-service": "Revisión técnica",
+      "complementary-services": "Servicios complementarios",
+      "added": "Añadido",
+      "required-documents": "Documentación requerida",
+      "add": "Añadir",
+      "comments-reference": "Comentarios y referencia",
+      "reference-number": "Nº referencia",
+      "comments": "Comentarios"
     },
     "assignments": {
       "id": "ID",

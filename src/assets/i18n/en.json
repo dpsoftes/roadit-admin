@@ -361,7 +361,22 @@
       "to": "To",
       "min-time-range": "Time ranges must be at least two hours.",
       "add-delivery": "Add delivery",
-      "add-stage": "Add stage"
+      "add-stage": "Add stage",
+      "vehicles": "Vehicle",
+      "import-csv": "Import CSV",
+      "complementary-services-added": "Complementary services added",
+      "plate-search": "Search the plate to add vehicle",
+      "add-vehicle": "Add other vehicle",
+      "cleaning-service": "Cleaning service",
+      "demostration-service": "Vehicle demonstration",
+      "revision-service": "Technical revision",
+      "complementary-services": "Complementary services",
+      "added": "Added",
+      "required-documents": "Required documents",
+      "add": "Add",
+      "comments-reference": "Comments and reference",
+      "reference-number": "Reference number",
+      "comments": "Comments"
     },
     "assignments": {
       "id": "ID",

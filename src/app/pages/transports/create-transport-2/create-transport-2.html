@@ -7,11 +7,11 @@
 </div>
 <div class="header-info">
     <mat-icon>location_on</mat-icon>
-    <p>{{transportData()?.distance ? transportData().distance + ' km' : 'N/A'}}</p>
+    <p>{{transportData()?.distance ? (transportData()?.distance ?? 0) + ' km' : 'N/A'}}</p>
     <mat-icon fontSet="material-symbols-outlined">nest_clock_farsight_analog</mat-icon>
-    <p>{{transportData()?.time ? transportData().time : 'N/A'}}</p>
+    <p>{{transportData()?.time ?? 'N/A'}}</p>
     <mat-icon>payments</mat-icon>
-    <p>{{transportData()?.price ? transportData().price : 'N/A'}}</p>
+    <p>{{transportData()?.price ? (transportData()?.price ?? 0) : 'N/A'}}</p>
 </div>
 
 <div class="content-container">
@@ -128,7 +128,164 @@
             <h2>{{'transports.create.vehicles' | translate}}</h2>
             <app-buttons type="import-csv" [text]="'transports.create.import-csv'" (onClick)="onImportCsv()"></app-buttons>
         </div>
+        @for (vehicle of vehicles(); track vehicle.id()) {
+            <div class="vehicle" 
+                 [class.active]="isVehicleSelected(vehicle)"
+                 (click)="onSelectVehicle(vehicle)">
+                <div class="vehicle-info">
+                    <img [src]="vehicle.image()" alt="vehicle">
+                    <mat-form-field appearance="outline" (click)="$event.stopPropagation()">
+                        <input type="text" matInput>
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+                <p class="name">{{vehicle.brand()}} {{vehicle.model()}}</p>
+                <p class="type">
+                    <mat-icon>{{getFuelTypeIcon(vehicle.fuel_type())}}</mat-icon>
+                    <span>{{getFuelTypeTranslation(vehicle.fuel_type()) | translate}}</span>
+                </p>
+                <p class="complementary-services">
+                    {{'transports.create.complementary-services-added' | translate}} {{getVehicleServicesCount(vehicle)}}
+                </p>
+                <mat-icon class="delete" (click)="onDeleteVehicle(vehicle); $event.stopPropagation()">delete</mat-icon>
+            </div>
+        }
+            <div class="vehicle">
+                <div class="vehicle-info">
+                    <mat-form-field class="plate-search-add" appearance="outline">
+                        <input type="text" matInput>
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                </div>
+                <p>{{'transports.create.plate-search' | translate}}</p>
+                <app-buttons type="add-vehicle" [text]="'transports.create.add-vehicle'" (onClick)="onAddVehicle()"></app-buttons>
+            </div>
+
 
     </div>
-    
+    <h2>{{'transports.create.complementary-services' | translate}}</h2>
+    <div class="complementary-services-container">
+        @for (service of complementaryServices(); track service.id) {
+            <mat-card class="complementary-service-card" 
+                     [class.active]="isServiceAddedToSelectedVehicle(service.id)"
+                     [class.disabled]="selectedVehicleId() === null"
+                     (click)="onToggleService(service.id)">
+                <mat-card-content>
+                    <div class="complementary-service">
+                        <h3>{{service.translationKey | translate}}</h3>
+                        <p class="price">+ {{service.price | number:'1.2-2'}} EUR</p>
+                        @if (isServiceAddedToSelectedVehicle(service.id)) {
+                            <div class="added-badge">
+                                <mat-icon>check_circle</mat-icon>
+                                <span>{{'transports.create.added' | translate}}</span>
+                            </div>
+                        }
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        }
+    </div>
+
+    <div class="required-documents">
+        <h2>{{'transports.create.required-documents' | translate}}</h2>
+        <div class="documents-container">
+            <!-- Tarjeta de Recogida -->
+            <mat-card class="document-card">
+                <mat-card-content>
+                    <div class="document-header">
+                        <h3>{{'transports.create.pickup' | translate}}</h3>
+                        <app-buttons 
+                            type="add" 
+                            [text]="'transports.create.add'" 
+                            (onClick)="onAddDocument('pickup')">
+                        </app-buttons>
+                    </div>
+                    <input 
+                        type="file" 
+                        id="pickupFileInput" 
+                        style="display: none;" 
+                        (change)="onFileSelected($event, 'pickup')"
+                        multiple>
+                    <div class="documents-list">
+                        @for (document of getDocuments('pickup'); track document.id) {
+                            <div class="document-item">
+                                <span class="document-name">{{document.name}}</span>
+                                <div class="document-actions">
+                                    <button 
+                                        class="action-button download-button" 
+                                        (click)="onDownloadDocument(document)"
+                                        [attr.aria-label]="'transports.create.download' | translate">
+                                        <mat-icon>download</mat-icon>
+                                    </button>
+                                    <button 
+                                        class="action-button delete-button" 
+                                        (click)="onDeleteDocument(document.id, 'pickup')"
+                                        [attr.aria-label]="'transports.create.delete' | translate">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Tarjeta de Entrega -->
+            <mat-card class="document-card">
+                <mat-card-content>
+                    <div class="document-header">
+                        <h3>{{'transports.create.delivery' | translate}}</h3>
+                        <app-buttons 
+                            type="add" 
+                            [text]="'transports.create.add'" 
+                            (onClick)="onAddDocument('delivery')">
+                        </app-buttons>
+                    </div>
+                    <input 
+                        type="file" 
+                        id="deliveryFileInput" 
+                        style="display: none;" 
+                        (change)="onFileSelected($event, 'delivery')"
+                        multiple>
+                    <div class="documents-list">
+                        @for (document of getDocuments('delivery'); track document.id) {
+                            <div class="document-item">
+                                <span class="document-name">{{document.name}}</span>
+                                <div class="document-actions">
+                                    <button 
+                                        class="action-button download-button" 
+                                        (click)="onDownloadDocument(document)"
+                                        [attr.aria-label]="'transports.create.download' | translate">
+                                        <mat-icon>download</mat-icon>
+                                    </button>
+                                    <button 
+                                        class="action-button delete-button" 
+                                        (click)="onDeleteDocument(document.id, 'delivery')"
+                                        [attr.aria-label]="'transports.create.delete' | translate">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>    
+    </div>
+    <h2>{{'transports.create.comments-reference' | translate}}</h2>
+    <div class="comments">
+        <mat-card>
+            <mat-card-content>
+                <mat-label class="form-field-label">{{'transports.create.reference-number' | translate}}</mat-label>
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput>
+                </mat-form-field>
+                <mat-label class="form-field-label">{{'transports.create.comments' | translate}}</mat-label>
+                <mat-form-field appearance="outline">
+                    <textarea matInput></textarea>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
 </div>

@@ -154,4 +154,225 @@
         justify-content: space-between;
         gap: 12px;
     }
+    .vehicle{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        background-color: vars.$white;
+        border-radius: 20px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        p {
+            margin: 0;
+        }
+        &.active{
+            border-color: vars.$primary-600;
+        }
+        &:hover:not(.active){
+            border-color: vars.$gray-300;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .delete{
+            cursor: pointer;
+            color: vars.$error;
+            &:hover{
+                opacity: 0.8;
+            }
+        }
+        .vehicle-info{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            img{
+                width: 80px;
+                height: 80px;
+            }
+            mat-form-field{
+                width: 100%;
+            }
+            ::ng-deep .mat-mdc-form-field-subscript-wrapper{
+                display: none;
+            }
+            .plate-search-add{
+                width: 100%;
+                margin-left: 90px;
+            }
+        }
+        
+        .name{
+            font-size: 16px;
+            font-weight: 600;
+            color: vars.$black;
+        }
+        .type{
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: vars.$gray-700;
+            mat-icon{
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                color: vars.$gray-700;
+            }
+        }
+    }
+}
+.complementary-services-container{ 
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    .complementary-service-card{
+        width: 33%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        &.disabled{
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        &.active{
+            border-color: vars.$primary-600;
+        }
+        &:hover:not(.disabled):not(.active){
+            border-color: vars.$gray-300;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        mat-card-content{
+            width: 100%;
+        }
+        .complementary-service{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            position: relative;
+            h3{
+                font-size: 20px;
+                font-weight: 600;
+                color: vars.$black;
+                width: 100%;
+                margin: 0;
+            }
+            .price{
+                font-size: 14px;
+                font-weight: 600;
+                color: vars.$primary-600;
+                margin: 0;
+            }
+            .added-badge{
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                color: vars.$primary-600;
+                font-weight: 600;
+                font-size: 14px;
+                mat-icon{
+                    color: vars.$primary-600;
+                    font-size: 20px;
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+}
+
+.required-documents{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    h2{
+        font-size: 28px;
+        font-weight: 600;
+        color: vars.$black;
+        margin: 0;
+    }
+    .documents-container{
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        .document-card{
+            flex: 1;
+            mat-card-content{
+                padding: 20px;
+            }
+            .document-header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                h3{
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: vars.$black;
+                    margin: 0;
+                }
+            }
+            .documents-list{
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                .document-item{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 12px;
+                    background-color: vars.$gray-50;
+                    border-radius: 8px;
+                    gap: 12px;
+                    .document-name{
+                        flex: 1;
+                        font-size: 14px;
+                        color: vars.$gray-700;
+                        word-break: break-word;
+                    }
+                    .document-actions{
+                        display: flex;
+                        gap: 8px;
+                        align-items: center;
+                        .action-button{
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 50%;
+                            border: none;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            mat-icon{
+                                font-size: 20px;
+                                width: 20px;
+                                height: 20px;
+                            }
+                            &.download-button{
+                                background-color: vars.$primary-100;
+                                color: vars.$primary-600;
+                                &:hover{
+                                    background-color: vars.$primary-200;
+                                }
+                            }
+                            &.delete-button{
+                                background-color: transparent;
+                                color: vars.$error;
+                                &:hover{
+                                    background-color: rgba(vars.$error, 0.1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

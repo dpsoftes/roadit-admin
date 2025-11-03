@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, signal, input, ViewChild, computed } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, signal, input, ViewChild, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -26,6 +26,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { Helpers } from '@utils/helpers';
+import { GlobalStore } from '@store/global.state';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -53,6 +54,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   config = input.required<TableConfig>();
   @Output() tableEvent = new EventEmitter<TableEvent>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  private globalStore = inject(GlobalStore);
 
   // Signals para el estado del componente
   displayedColumns = signal<string[]>([]);
@@ -65,6 +67,9 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   paginatedData = computed(() => {
     const data = this.config().data();
+    if (!data || !Array.isArray(data)) {
+      return [];
+    }
     const pageIndex = this.page();
     const size = this.pageSize();
     const startIndex = pageIndex * size;
@@ -103,16 +108,24 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
   // Selection methods
   isAllSelected(): boolean {
+    const data = this.config().data();
+    if (!data || !Array.isArray(data)) {
+      return false;
+    }
     const selected = this.selection.selected.length;
-    const total = this.config().data().length;
+    const total = data.length;
     return selected === total && total > 0;
   }
 
   masterToggle(): void {
+    const data = this.config().data();
+    if (!data || !Array.isArray(data)) {
+      return;
+    }
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.selection.select(...this.config().data());
+      this.selection.select(...data);
     }
     this.emitEvent('select', { selected: this.selection.selected });
   }
@@ -217,7 +230,12 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     if(column.render){
       return column.render(column, row);
     }
-    return this.getNestedValue(row, column.key);
+    const value = this.getNestedValue(row, column.key);
+    // Si el valor es null o undefined, retornar string vacío o el valor según el tipo
+    if (value === null || value === undefined) {
+      return column.type === 'chip-array' ? [] : '';
+    }
+    return value;
   }
   private getImageUrl(column: TableColumn, row: any): string {
     var url = row[column.key] as string;
@@ -252,6 +270,17 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   getChipText(chipConfig: ChipConfig | {}, value: any): string {
     if ('translateKey' in chipConfig && chipConfig.translateKey) {
       return `${chipConfig.translateKey}.${value}`;
+    }
+
+    // Si el valor es un número y el chipConfig es tipo 'tags', buscar el tag por ID
+    if (typeof value === 'number' && 'type' in chipConfig && chipConfig.type === 'tags') {
+      const tag = this.globalStore.tags().find(t => t.id === value);
+      return tag?.name || value.toString();
+    }
+
+    // Si el valor es un objeto, extraer el campo name o username
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      return value.name || value.username || value.label || JSON.stringify(value);
     }
 
     const tagLabels: { [key: string]: string } = {
@@ -344,6 +373,11 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     return classes.join(' ');
   }
 
+  getDataLength(): number {
+    const data = this.config().data();
+    return data && Array.isArray(data) ? data.length : 0;
+  }
+
   onCreateClick() {
     if (this.config().actions?.create?.action) {
       this.config().actions!.create!.action!();
@@ -360,7 +394,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     const data = this.config().data();
     const exportConfig = this.config().exportConfig;
 
-    if (!data || data.length === 0) {
+    if (!data || !Array.isArray(data) || data.length === 0) {
       alert('No hay datos para exportar');
       return;
     }
@@ -369,11 +403,26 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
 
     let csvContent = headers.join(',') + '\n';
 
-    data().forEach(item => {
+    data.forEach((item: any) => {
       const row = columns.map(column => {
         let value = item[column] || '';
         if (Array.isArray(value)) {
-          value = value.join('; ');
+          // Si el array contiene objetos, extraer el campo name o username
+          if (value.length > 0 && typeof value[0] === 'object') {
+            value = value.map((v: any) => v?.name || v?.username || v?.label || JSON.stringify(v)).join('; ');
+          } else if (value.length > 0 && typeof value[0] === 'number') {
+            // Si el array contiene números y estamos exportando tags, mapear IDs a nombres
+            if (column === 'tags') {
+              value = value.map((id: number) => {
+                const tag = this.globalStore.tags().find(t => t.id === id);
+                return tag?.name || id.toString();
+              }).join('; ');
+            } else {
+              value = value.join('; ');
+            }
+          } else {
+            value = value.join('; ');
+          }
         }
         if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
           value = '"' + value.replace(/"/g, '""') + '"';

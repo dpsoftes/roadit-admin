@@ -100,11 +100,13 @@ export const cancelledReasonDescriptions: Record<CancelledReason, string> = {
 export enum LegPointType {
     ORIGIN = 'ORIGIN',
     STOPOVER = 'STOPOVER',
+    STAGE = 'STAGE',
     DESTINATION = 'DESTINATION'
 }
 
 export const legPointTypeDescriptions: Record<LegPointType, string> = {
     [LegPointType.ORIGIN]: 'legPointType.ORIGIN',
     [LegPointType.STOPOVER]: 'legPointType.STOPOVER',
+    [LegPointType.STAGE]: 'legPointType.STAGE',
     [LegPointType.DESTINATION]: 'legPointType.DESTINATION'
 };

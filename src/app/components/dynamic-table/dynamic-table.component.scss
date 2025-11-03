@@ -427,6 +427,14 @@ mat-card-content {
     }
   }
 
+  // ESTILOS PARA CONTENEDOR DE ARRAYS DE CHIPS
+  .chip-array-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
   // ESTILOS PARA CHIPS DE ROLE
   ::ng-deep .role-chip {
     font-size: 12px !important;

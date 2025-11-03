@@ -27,7 +27,6 @@ export const assignmentTableConfig: TableConfig = {
       label: 'transports.assignments.movement',
       type: 'text',
       width: 10,
-      translateKey: 'transportPrincipalType'
     },
     {
       key: 'init_date',
@@ -186,7 +185,7 @@ export const assignmentTableConfig: TableConfig = {
     {
       key: 'date_range',
       label: 'transports.assignments.date_range_filter',
-      type: 'date-range',
+      type: 'date',
       width: 19
     },
     {
