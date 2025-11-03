@@ -18,8 +18,13 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>): Tabl
     {
       key: 'name',
       label: 'drivers.list.name',
-      type: 'text',
-      width: 10
+      type: 'custom',
+      width: 10,
+      render: (column: any, row: any) => {
+        //CONCATENAR NOMBRE Y APELLIDO
+        const fullName = `${row.name || ''} ${row.last_name || ''}`.trim();
+        return fullName || '-';
+      }
     },
     {
       key: 'dni/cif',
