@@ -1,8 +1,8 @@
-import { signal, WritableSignal } from "@angular/core";
+import { signal } from "@angular/core";
 import { TableConfig } from "@components/dynamic-table/dynamic-table.interfaces";
 import { I18nService } from "@i18n/i18n.service";
 
-export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n: I18nService): TableConfig => ({
+export const createDriversTableConfig = (listArray: any[], i18n: I18nService): TableConfig => ({
   columns: [
     {
       key: 'image',
@@ -19,13 +19,8 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
     {
       key: 'name',
       label: 'drivers.list.name',
-      type: 'custom',
-      width: 10,
-      render: (column: any, row: any) => {
-        //CONCATENAR NOMBRE Y APELLIDO
-        const fullName = `${row.name || ''} ${row.last_name || ''}`.trim();
-        return fullName || '-';
-      }
+      type: 'text',
+      width: 10
     },
     {
       key: 'dni/cif',
@@ -43,12 +38,6 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
         `;
       }
     },
-    // {
-    //   key: 'cif',
-    //   label: 'drivers.list.cif',
-    //   type: 'text',
-    //   width: 10
-    // },
     {
       key: 'province',
       label: 'drivers.list.province',
@@ -61,7 +50,6 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
       label: 'drivers.list.city',
       type: 'text',
       width: 10,
-      // align: 'center'
     },
     {
       key: 'email',
@@ -161,7 +149,7 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
       }
     }
   ],
-  data: listArray,
+  data: signal([]),
   exportable: true,
   selectable: false,
   pagination: true,
