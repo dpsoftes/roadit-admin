@@ -9,6 +9,7 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
       label: 'drivers.list.image',
       type: 'image',
       width: 8,
+      align: 'center',
       imageConfig: {
         width: '40px',
         height: '40px',
@@ -20,7 +21,7 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
       key: 'name',
       label: 'drivers.list.name',
       type: 'custom',
-      width: 10,
+      width: 12,
       render: (column: any, row: any) => {
         //CONCATENAR NOMBRE Y APELLIDO
         const fullName = `${row.name || ''} ${row.last_name || ''}`.trim();
@@ -43,12 +44,6 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
         `;
       }
     },
-    // {
-    //   key: 'cif',
-    //   label: 'drivers.list.cif',
-    //   type: 'text',
-    //   width: 10
-    // },
     {
       key: 'province',
       label: 'drivers.list.province',
@@ -67,32 +62,43 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
       key: 'email',
       label: 'drivers.list.email',
       type: 'text',
-      width: 22,
+      width: 20,
     },
     {
       key: 'phone',
       label: 'drivers.list.phone',
       type: 'text',
-      width: 12
+      width: 13
     },
     {
       key: 'created_datetime',
       label: 'drivers.list.created_datetime',
       type: 'text',
-      width: 10
+      width: 10,
+      render: (column: any, row: any) => {
+        //FORMATEAR FECHA DE ISO A FORMATO ESPAÑOL DD/MM/YY
+        if (!row.created_datetime) return '-';
+
+        const date = new Date(row.created_datetime);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = String(date.getFullYear()).slice(-2);
+
+        return `${day}/${month}/${year}`;
+      }
     },
     {
       key: 'rating',
       label: 'drivers.list.rating',
       type: 'text',
-      width: 12,
+      width: 11,
       align: 'center'
     },
     {
       key: 'tags',
       label: 'drivers.list.tags',
       type: 'chip-array',
-      width: 8,
+      width: 12,
       chipConfig: {
         type: 'tags',
       }
@@ -147,7 +153,7 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
           {
             icon: 'material-symbols-outlined/edit_square',
             label: 'Editar',
-            color: 'warn',
+            color: 'primary',
             action: 'edit'
           },
           {
