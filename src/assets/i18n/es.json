@@ -780,7 +780,7 @@
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo",
       "VALIDATE": "Validado",
-      "NO_VALIDATE": "Sin Validar",
+      "NO_VALIDATE": "Pendiente",
       "EXPIRED": "Caducados",
       "NO_EXPIRED": "Sin Caducar",
       "NEW_DOCUMENT": "Documento Nuevo",

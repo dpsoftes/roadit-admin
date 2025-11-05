@@ -6,14 +6,14 @@ import { Helpers } from "@utils/helpers";
 import { DriversProvider } from "../providers/drivers.provider";
 
 export class DriverState {
-    drivers: DriverDto[] = [];
-    curDriver: DriverDto | null = null;
+  drivers: DriverDto[] = [];
+  curDriver: DriverDto | null = null;
 }
 
 export const DriverStore = signalStore(
-  { 
+  {
     providedIn: 'root',
-    
+
     // Configuración para Redux DevTools
     ...(typeof window !== 'undefined' && (window as any).__REDUX_DEVTOOLS_EXTENSION__ && {
       devtools: {
@@ -26,44 +26,44 @@ export const DriverStore = signalStore(
   withDevtools('DriverStore'),
   // Estado inicial usando directamente GlobalStateData
   withState(new DriverState()),
-  withComputed( (store) => ({
+  withComputed((store) => ({
     isNew: () => {
-        return !store.curDriver() || !store.curDriver()!.id  || store.curDriver()!.id! === 0 ;
+      return !store.curDriver() || !store.curDriver()!.id || store.curDriver()!.id! === 0;
     }
   })),
-  // Método globales 
+  // Método globales
   withMethods((store) => {
-      return {
-        updateState: (updates: Partial<DriverState>) => {
-          patchState(store, {...updates} );
-          saveDriverStoreToStorage(store);
-        }, 
-        initializeFromStorage: () => {
-          var loadedStore = loadDriverStoreFromStorage();
-          if(loadedStore){
-            patchState(store, loadedStore);
-          }
-          
-        },
-        
-      }
-    }),
-    withMethods((store) => {
-        var provider = inject(DriversProvider);
-        return  {
-        getDrivers: async (page: number = 1, page_size: number = 99999 )  => {
-            try{
-                var drivers = await provider.getGroups(page, page_size);
-            if(drivers){
-                store.updateState({ drivers: drivers });
-            }
-            }catch(error){
-                store.updateState({ drivers: [] });
-            }
-            
-        }    
+    return {
+      updateState: (updates: Partial<DriverState>) => {
+        patchState(store, { ...updates });
+        saveDriverStoreToStorage(store);
+      },
+      initializeFromStorage: () => {
+        var loadedStore = loadDriverStoreFromStorage();
+        if (loadedStore) {
+          patchState(store, loadedStore);
         }
-    })
+
+      },
+
+    }
+  }),
+  withMethods((store) => {
+    var provider = inject(DriversProvider);
+    return {
+      getDrivers: async (page: number = 1, page_size: number = 99999) => {
+        try {
+          var drivers = await provider.getDrivers(page, page_size);
+          if (drivers) {
+            store.updateState({ drivers: drivers });
+          }
+        } catch (error) {
+          store.updateState({ drivers: [] });
+        }
+
+      }
+    }
+  })
 );
 
 
@@ -77,7 +77,7 @@ function saveDriverStoreToStorage(store: any, key = 'roadit_driver_store') {
 }
 
 // Restaura solo las claves de GlobalStateData, asumiendo que todas son signals
-function loadDriverStoreFromStorage( key = 'roadit_driver_store'): DriverState | null {
-  
+function loadDriverStoreFromStorage(key = 'roadit_driver_store'): DriverState | null {
+
   return Helpers.getStorage<DriverState>(key);
 }
