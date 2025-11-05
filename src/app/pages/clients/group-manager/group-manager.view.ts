@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonsComponent } from '@components/buttons.component/buttons.component';
 import { ClientsGroupEntity } from '@entities/clients.entities';
 import { ClientsProvider } from '@providers';
 import { SimpleDataDto } from '@dtos/simpleData.dto';
@@ -29,6 +30,7 @@ import { RoleAdmin, UserRole } from '@enums/user.enum';
     MatIconModule,
     MatSelectModule,
     MatChipsModule,
+    ButtonsComponent,
   ],
   templateUrl: './group-manager.view.html',
   styleUrl: './group-manager.view.scss'

@@ -85,7 +85,7 @@ export class Clients implements OnInit {
       }
     }
     var data = await this.clientsProvider.getGroups(options);
-    this.groupsTableConfig().data.set(data?.map(item => ({ ...item, assigned_admins: item.assigned_admins.map(admin => admin.name).join(', ') })) as any[]);
+    this.groupsTableConfig().data.set(data as any[]);
 
   }
   async loadClients(params?: TableEvent){
