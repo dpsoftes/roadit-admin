@@ -1,0 +1,439 @@
+import { Component, input, OnInit, effect } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TableColumn, ChipData, ChipArrayData, ChipValue } from '../dp-datagrid.interfaces';
+
+@Component({
+  selector: 'dp-datagrid-cell',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatChipsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatTooltipModule
+  ],
+  host: {
+    'style': 'display: contents'
+  },
+  template: `
+    <div 
+      class="dp-datagrid-cell"
+      [class.cell-chip-array]="column().type === 'chip-array'"
+      [class.clickable]="hasClickHandler()"
+      [style.text-align]="column().align || 'left'"
+      [style.justify-content]="column().align === 'center' ? 'center' : column().align === 'right' ? 'flex-end' : 'flex-start'"
+      (click)="handleCellClick()">
+      
+      <!-- Text type -->
+      @if (column().type === 'text') {
+        <span class="cell-text">{{ getCellValue() }}</span>
+      }
+
+      <!-- Image type -->
+      @if (column().type === 'image') {
+        <img 
+          [src]="getCellValue()"
+          [alt]="column().imageConfig?.alt || ''"
+          [style.width]="column().imageConfig?.width || 'auto'"
+          [style.height]="column().imageConfig?.height || 'auto'"
+          [src]="getCellValue() || column().imageConfig?.fallback"
+          class="cell-image">
+      }
+
+      <!-- Chip type -->
+      @if (column().type === 'chip') {
+        <div class="chip-container">
+          <span 
+            class="custom-chip"
+            [style.background-color]="getChipBackgroundColor()"
+            [style.border]="getChipBorder()"
+            [style.color]="getChipTextColor()">
+            {{ getChipDisplayValue() }}
+          </span>
+        </div>
+      }
+
+      <!-- Chip Array type -->
+      @if (column().type === 'chip-array') {
+        <div class="chip-array-container">
+          @for (item of getChipArrayValue(); track $index) {
+            <span 
+              class="custom-chip"
+              [style.background-color]="getChipArrayItemBackgroundColor(item)"
+              [style.border]="getChipArrayItemBorder(item)"
+              [style.color]="getChipArrayItemTextColor(item)">
+              {{ getChipArrayItemDisplayValue(item) }}
+            </span>
+          }
+        </div>
+      }
+
+      <!-- Actions type -->
+      @if (column().type === 'actions') {
+        <div class="cell-actions">
+          @for (action of getVisibleActions(); track action.label) {
+            <button 
+              mat-icon-button
+              [color]="action.color || 'primary'"
+              (click)="onActionClick(action)"
+              [disabled]="isActionDisabled(action)"
+              [matTooltip]="action.label">
+              <mat-icon>{{ action.icon }}</mat-icon>
+            </button>
+          }
+        </div>
+      }
+
+      <!-- Checkbox type -->
+      @if (column().type === 'checkbox') {
+        <mat-checkbox 
+          [checked]="getCellValue()"
+          [disabled]="true">
+        </mat-checkbox>
+      }
+
+      <!-- Custom type -->
+      @if (column().type === 'custom' && column().render) {
+        <div [innerHTML]="renderCustom()"></div>
+      }
+    </div>
+  `,
+  styles: [`
+    .dp-datagrid-cell {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+      box-sizing: border-box;
+      overflow: hidden;
+      min-width: 0;
+      font-size: 13px;
+
+      &.clickable {
+        cursor: pointer;
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+      }
+
+      &.cell-chip-array {
+        align-items: center;
+      }
+
+      .cell-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 1;
+        min-width: 0;
+      }
+      
+      .cell-image {
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      .custom-chip {
+        display: inline-flex;
+        align-items: center;
+        height: 26px;
+        padding: 0 10px;
+        font-size: 12px;
+        border-radius: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .chip-container {
+        display: flex;
+        justify-content: inherit;
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
+        
+        .custom-chip {
+          max-width: 100%;
+          min-width: 0;
+        }
+      }
+
+      .chip-array-container {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 100%;
+        min-width: 0;
+        align-items: inherit;
+        
+        .custom-chip {
+          width: fit-content;
+          max-width: 100%;
+          min-width: 0;
+        }
+      }
+
+      .cell-actions {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+
+      mat-chip {
+        &.role-chip {
+          background-color: #e3f2fd;
+          color: #1976d2;
+        }
+        
+        &.status-chip {
+          background-color: #e8f5e9;
+          color: #388e3c;
+        }
+        
+        &.department-chip {
+          background-color: #fff3e0;
+          color: #f57c00;
+        }
+
+        &.tags-chip {
+          background-color: #f3e5f5;
+          color: #7b1fa2;
+        }
+      }
+    }
+  `]
+})
+export class DpDatagridCellComponent implements OnInit {
+  column = input.required<TableColumn>();
+  rowData = input.required<any>();
+  onCellClick = input<(columnKey: string, row: any) => void>();
+  onCellRender = input<(columnKey: string, row: any) => void>();
+
+  ngOnInit() {
+    // Emitir evento render cuando el componente se inicializa
+    const renderHandler = this.onCellRender();
+    if (renderHandler) {
+      renderHandler(this.column().key, this.rowData());
+    }
+  }
+
+  hasClickHandler(): boolean {
+    return !!this.onCellClick();
+  }
+
+  handleCellClick() {
+    const clickHandler = this.onCellClick();
+    if (clickHandler) {
+      clickHandler(this.column().key, this.rowData());
+    }
+  }
+
+  getCellValue(): any {
+    const data = this.rowData();
+    const key = this.column().key;
+    return data[key];
+  }
+
+  // Métodos para chip simple
+  getChipDisplayValue(): string {
+    const value = this.getCellValue();
+    if (typeof value === 'string') {
+      return value;
+    }
+    if (value && typeof value === 'object' && 'value' in value) {
+      return value.value;
+    }
+    return '';
+  }
+
+  getChipBackgroundColor(): string | undefined {
+    const value = this.getCellValue();
+    if (value && typeof value === 'object' && 'color' in value && value.color) {
+      return value.color;
+    }
+    // Si no tiene color, usar blanco
+    return '#ffffff';
+  }
+
+  getChipBorder(): string | undefined {
+    const value = this.getCellValue();
+    // Si tiene color definido, no mostrar borde
+    if (value && typeof value === 'object' && 'color' in value && value.color) {
+      return 'none';
+    }
+    // Si no tiene color, mostrar borde gris claro
+    return '1px solid #dadce0';
+  }
+
+  getChipTextColor(): string | undefined {
+    const value = this.getCellValue();
+    const bgColor = this.getChipBackgroundColor();
+    if (bgColor && bgColor !== '#ffffff') {
+      return this.getContrastColor(bgColor);
+    }
+    // Para chips sin color (fondo blanco), usar texto negro
+    return '#000000';
+  }
+
+  // Métodos para chip-array
+  getChipArrayValue(): (string | ChipValue)[] {
+    const value = this.getCellValue();
+    return Array.isArray(value) ? value : [];
+  }
+
+  getChipArrayItemDisplayValue(item: string | ChipValue): string {
+    if (typeof item === 'string') {
+      return item;
+    }
+    return item.value;
+  }
+
+  getChipArrayItemBackgroundColor(item: string | ChipValue): string | undefined {
+    if (typeof item === 'object' && item.color) {
+      return item.color;
+    }
+    // Si no tiene color, usar blanco
+    return '#ffffff';
+  }
+
+  getChipArrayItemBorder(item: string | ChipValue): string | undefined {
+    // Si tiene color definido, no mostrar borde
+    if (typeof item === 'object' && item.color) {
+      return 'none';
+    }
+    // Si no tiene color, mostrar borde gris claro
+    return '1px solid #dadce0';
+  }
+
+  getChipArrayItemTextColor(item: string | ChipValue): string | undefined {
+    const bgColor = this.getChipArrayItemBackgroundColor(item);
+    if (bgColor && bgColor !== '#ffffff') {
+      return this.getContrastColor(bgColor);
+    }
+    // Para chips sin color (fondo blanco), usar texto negro
+    return '#000000';
+  }
+
+  // Calcular color de contraste (inverso)
+  getContrastColor(hexColor: string): string {
+    // Remover # si existe
+    const hex = hexColor.replace('#', '');
+    
+    // Convertir a RGB
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    // Calcular luminosidad (YIQ)
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    
+    // Retornar blanco o negro según luminosidad
+    return yiq >= 128 ? '#000000' : '#ffffff';
+  }
+
+  getChipClass(): string {
+    const chipConfig = this.column().chipConfig;
+    if (!chipConfig) return '';
+    
+    if (chipConfig.customClass) {
+      return chipConfig.customClass;
+    }
+    
+    return `${chipConfig.type}-chip`;
+  }
+
+  getVisibleActions() {
+    const actionConfig = this.column().actionConfig;
+    if (!actionConfig) return [];
+    
+    return actionConfig.actions.filter(action => {
+      if (action.condition) {
+        return action.condition(this.rowData());
+      }
+      return true;
+    });
+  }
+
+  isActionDisabled(action: any): boolean {
+    if (action.condition) {
+      return !action.condition(this.rowData());
+    }
+    return false;
+  }
+
+  onActionClick(action: any) {
+    if (action.onClick) {
+      action.onClick(this.rowData());
+    }
+  }
+
+  renderCustom(): string {
+    const render = this.column().render;
+    if (!render) return '';
+    return render(this.column(), this.rowData());
+  }
+
+  getColumnWidth(): string {
+    const col = this.column();
+    if (col.width) {
+      return typeof col.width === 'number' ? `${col.width}px` : col.width;
+    }
+    return 'auto';
+  }
+
+  getColumnMinWidth(): string {
+    const col = this.column();
+    if (col.minWidth) {
+      return typeof col.minWidth === 'number' ? `${col.minWidth}px` : col.minWidth;
+    }
+    return '100px';
+  }
+
+  getColumnFlex(): string {
+    const col = this.column();
+    if (col.flex) {
+      return typeof col.flex === 'number' ? `${col.flex}` : col.flex;
+    }
+    // Si no tiene width ni flex definidos, usar flex 1
+    if (!col.width) {
+      return '1 1 0';
+    }
+    return '0 0 auto';
+  }
+
+  getWidth(): string {
+    const width = this.column().width;
+    if (!width) return 'auto';
+    return typeof width === 'number' ? `${width}px` : width;
+  }
+
+  getMinWidth(): string | undefined {
+    const minWidth = this.column().minWidth;
+    if (!minWidth) return '100px'; // Valor mínimo por defecto
+    return typeof minWidth === 'number' ? `${minWidth}px` : minWidth;
+  }
+
+  getMaxWidth(): string | undefined {
+    const maxWidth = this.column().maxWidth;
+    if (!maxWidth) return undefined;
+    return typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth;
+  }
+
+  getFlex(): string | undefined {
+    const flex = this.column().flex;
+    // Si no hay flex ni width definidos, usar flex 1 para distribuir espacio
+    if (!flex && !this.column().width) return '1';
+    if (!flex) return undefined;
+    return typeof flex === 'number' ? `${flex}` : flex;
+  }
+}
