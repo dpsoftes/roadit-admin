@@ -110,3 +110,26 @@ export const legPointTypeDescriptions: Record<LegPointType, string> = {
     [LegPointType.STAGE]: 'legPointType.STAGE',
     [LegPointType.DESTINATION]: 'legPointType.DESTINATION'
 };
+
+/**
+ * Tipo de dirección
+ */
+export enum AddressType {
+    CRANE_DEPOT = 'CRANE_DEPOT',
+    DEALERSHIP = 'DEALERSHIP',
+    ITV = 'ITV',
+    PRIVATE = 'PRIVATE',
+    REPAIR_SHOP = 'REPAIR_SHOP',
+    VEHICLE_YARD = 'VEHICLE_YARD',
+    WAREHOUSE = 'WAREHOUSE'
+}
+
+export const addressTypeDescriptions: Record<AddressType, string> = {
+    [AddressType.CRANE_DEPOT]: 'addressType.CRANE_DEPOT',
+    [AddressType.DEALERSHIP]: 'addressType.DEALERSHIP',
+    [AddressType.ITV]: 'addressType.ITV',
+    [AddressType.PRIVATE]: 'addressType.PRIVATE',
+    [AddressType.REPAIR_SHOP]: 'addressType.REPAIR_SHOP',
+    [AddressType.VEHICLE_YARD]: 'addressType.VEHICLE_YARD',
+    [AddressType.WAREHOUSE]: 'addressType.WAREHOUSE'
+};

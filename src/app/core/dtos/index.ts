@@ -8,5 +8,6 @@ export * from './simpleData.dto';
 export * from './tag.dto';
 export * from './country-langs.dto';
 export * from './transports/transports.dto';
+export * from './transports/transport-address.dto';
 export * from './driver.dto';
 export * from './clients/billingsAccounts.dto';

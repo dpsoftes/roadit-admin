@@ -71,11 +71,19 @@
         flex-direction: row;
         justify-content: space-between;
         gap: 20px;
+        .fixed-address-card{
+            height: 250px;
+        }
         .pickup{
             display: flex;
             flex-direction: column;
             gap: 20px;
             width: 40%;
+            .pickup-address-hint{
+                font-size: 12px;
+                color: vars.$gray-700;
+                margin-top: 6px;
+            }
         }
         .delivery{
             display: flex;
@@ -90,6 +98,133 @@
                 h2{ margin: 0; }
             }
         }
+        .address-display-card {
+            background-color: vars.$white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            
+            mat-card-content {
+                padding: 24px;
+                position: relative;
+                
+                .address-card-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 12px;
+                    
+                    .address-name {
+                        font-size: 24px;
+                        font-weight: 700;
+                        color: vars.$primary-700;
+                        margin: 0;
+                        flex: 1;
+                    }
+                    
+                    .edit-button {
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        padding: 4px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: vars.$primary-700;
+                        transition: color 0.2s;
+                        
+                        &:hover {
+                            color: vars.$primary-900;
+                        }
+                        
+                        mat-icon {
+                            font-size: 20px;
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                }
+                
+                .address-full {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: vars.$primary-700;
+                    margin: 0 0 20px 0;
+                    line-height: 1.5;
+                }
+                
+                .address-contact-section {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    margin-bottom: 16px;
+                    
+                    .contact-icon {
+                        color: vars.$primary-700;
+                        font-size: 20px;
+                        width: 20px;
+                        height: 20px;
+                        margin-top: 4px;
+                    }
+                    
+                    .contact-info {
+                        flex: 1;
+                        
+                        .contact-label {
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: vars.$primary-700;
+                            margin: 0 0 4px 0;
+                        }
+                        
+                        .contact-name {
+                            font-size: 16px;
+                            font-weight: 400;
+                            color: vars.$primary-700;
+                            margin: 0 0 4px 0;
+                        }
+                        
+                        .contact-phone {
+                            font-size: 16px;
+                            font-weight: 400;
+                            color: vars.$primary-700;
+                            margin: 0;
+                        }
+                    }
+                }
+                
+                .address-schedule-section {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    
+                    .schedule-icon {
+                        color: vars.$primary-700;
+                        font-size: 20px;
+                        width: 20px;
+                        height: 20px;
+                        margin-top: 4px;
+                    }
+                    
+                    .schedule-info {
+                        flex: 1;
+                        
+                        .schedule-label {
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: vars.$primary-700;
+                            margin: 0 0 4px 0;
+                        }
+                        
+                        .schedule-time {
+                            font-size: 16px;
+                            font-weight: 400;
+                            color: vars.$primary-700;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
         .swap-at-title{
             position: absolute;
             top: 6px; // alineado a la altura aproximada del título de Entrega
@@ -101,6 +236,12 @@
     }
     mat-form-field{
         width: 100%;
+    }
+    .pickup-address-field {
+        cursor: pointer;
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+        }
     }
 }
 .form-field-label{
@@ -137,6 +278,11 @@
         grid-template-columns: 1fr 160px 160px;
         gap: 16px;
         align-items: end;
+    }
+    .field{
+        mat-form-field{
+            cursor: pointer;
+        }
     }
     .helper.error{
         margin-top: 6px;
@@ -375,4 +521,10 @@
             }
         }
     }
+}
+.buttons-container{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
 }

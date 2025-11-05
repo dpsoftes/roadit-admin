@@ -1,0 +1,580 @@
+@use '../../../../../styles/variables' as vars;
+
+:host {
+    display: block;
+    width: 100%;
+    background: transparent;
+}
+
+// Estilos para quitar el padding del modal padre cuando tiene la clase edit-address-dialog
+::ng-deep .cdk-overlay-pane.edit-address-dialog {
+    .mat-mdc-dialog-container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+    
+    .mat-mdc-dialog-surface {
+        padding: 0 !important;
+        border: none !important;
+    }
+    
+    .mat-mdc-dialog-inner-container {
+        padding: 0 !important;
+    }
+    
+    .mat-mdc-dialog-content {
+        padding: 0 !important;
+        margin: 0 !important;
+        --mat-dialog-content-padding: 0 !important;
+    }
+    
+    &.cdk-overlay-pane {
+        padding: 0 !important;
+    }
+}
+
+.edit-address-modal {
+    display: flex;
+    flex-direction: column;
+    background-color: vars.$primary-50;
+    min-width: 900px;
+    max-width: 1200px;
+    width: 100%;
+    overflow: visible;
+    border-radius: 16px;
+    position: relative;
+
+    .modal-top-bar {
+        background-color: vars.$gray-800;
+        color: vars.$white;
+        padding: 8px 24px;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px;
+        background-color: vars.$primary-50;
+        border-radius: 16px 16px 0 0;
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: vars.$gray-800;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+
+            .favorite-button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: vars.$gray-400;
+                transition: color 0.2s;
+
+                &.favorite {
+                    color: #ff9800;
+                }
+
+                &:hover {
+                    color: #ff9800;
+                }
+
+                mat-icon {
+                    font-size: 28px;
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+
+            .close-button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: vars.$gray-700;
+                transition: color 0.2s;
+
+                &:hover {
+                    color: vars.$gray-900;
+                }
+
+                mat-icon {
+                    font-size: 24px;
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+        }
+    }
+
+    .modal-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0 24px 24px 24px;
+        background-color: vars.$primary-50;
+
+        .main-card {
+            background-color: vars.$white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+
+            mat-card-content {
+                padding: 24px;
+            }
+        }
+
+        .section {
+            margin-bottom: 24px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .section-title {
+                font-size: 18px;
+                font-weight: 700;
+                color: vars.$gray-800;
+                margin: 0 0 16px 0;
+            }
+
+            .section-subtitle {
+                font-size: 14px;
+                font-weight: 600;
+                color: vars.$gray-700;
+                margin-bottom: 12px;
+                display: block;
+            }
+
+            .form-field {
+                margin-bottom: 16px;
+
+                .field-label {
+                    display: block;
+                    margin-bottom: 6px;
+                    font-weight: 600;
+                    font-size: 14px;
+                    color: vars.$gray-700;
+                }
+
+                mat-form-field {
+                    width: 100%;
+                }
+
+                &.phone-field {
+                    .phone-input-container {
+                        display: flex;
+                        gap: 8px;
+                        align-items: flex-start;
+
+                        .country-code {
+                            width: 120px;
+                        }
+
+                        .phone-number {
+                            flex: 1;
+                        }
+
+                        .remove-button {
+                            width: 40px;
+                            height: 40px;
+                            min-width: 40px;
+                            border-radius: 8px;
+                            background-color: vars.$error;
+                            color: vars.$white;
+                            border: none;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-top: 8px;
+                            transition: background-color 0.2s;
+
+                            &:hover {
+                                background-color: #d32f2f;
+                            }
+
+                            mat-icon {
+                                font-size: 18px;
+                                width: 18px;
+                                height: 18px;
+                            }
+                        }
+
+                        .add-button-inline {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            padding: 10px 16px;
+                            background-color: vars.$gray-800;
+                            color: vars.$white;
+                            border: none;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            font-size: 14px;
+                            cursor: pointer;
+                            transition: background-color 0.2s;
+                            margin-top: 8px;
+                            white-space: nowrap;
+
+                            &:hover {
+                                background-color: vars.$gray-900;
+                            }
+
+                            mat-icon {
+                                font-size: 18px;
+                                width: 18px;
+                                height: 18px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .contact-phone-row {
+                position: relative;
+                margin-bottom: 8px;
+
+                .rocket-icon {
+                    position: absolute;
+                    top: -8px;
+                    right: 0;
+                    color: vars.$primary-400;
+                    z-index: 1;
+
+                    mat-icon {
+                        font-size: 24px;
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+            }
+
+            .additional-section {
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid vars.$gray-200;
+
+                .email-input-container {
+                    display: flex;
+                    gap: 8px;
+                    align-items: flex-start;
+
+                    .email-field {
+                        flex: 1;
+                    }
+
+                    .remove-button {
+                        width: 40px;
+                        height: 40px;
+                        min-width: 40px;
+                        border-radius: 8px;
+                        background-color: vars.$error;
+                        color: vars.$white;
+                        border: none;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-top: 8px;
+                        transition: background-color 0.2s;
+
+                        &:hover {
+                            background-color: #d32f2f;
+                        }
+
+                        mat-icon {
+                            font-size: 18px;
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+
+                    .add-button-inline {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        padding: 10px 16px;
+                        background-color: vars.$gray-800;
+                        color: vars.$white;
+                        border: none;
+                        border-radius: 8px;
+                        font-weight: 600;
+                        font-size: 14px;
+                        cursor: pointer;
+                        transition: background-color 0.2s;
+                        margin-top: 8px;
+                        white-space: nowrap;
+
+                        &:hover {
+                            background-color: vars.$gray-900;
+                        }
+
+                        mat-icon {
+                            font-size: 18px;
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+                }
+            }
+
+            .add-button {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 16px;
+                background-color: vars.$gray-800;
+                color: vars.$white;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+                margin-top: 12px;
+
+                &:hover {
+                    background-color: vars.$gray-900;
+                }
+
+                mat-icon {
+                    font-size: 18px;
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+
+            .add-button-inline {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 16px;
+                background-color: vars.$gray-800;
+                color: vars.$white;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+                white-space: nowrap;
+
+                &:hover {
+                    background-color: vars.$gray-900;
+                }
+
+                mat-icon {
+                    font-size: 18px;
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+
+            .checkbox-field {
+                margin-top: 16px;
+
+                ::ng-deep .mat-mdc-checkbox {
+                    .mdc-checkbox {
+                        .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+                            background-color: vars.$primary-600;
+                            border-color: vars.$primary-600;
+                        }
+                    }
+                }
+            }
+        }
+
+        .opening-hours-checkbox {
+            margin-top: 16px;
+            margin-bottom: 16px;
+
+            ::ng-deep .mat-mdc-checkbox {
+                .mdc-checkbox {
+                    .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+                        background-color: vars.$primary-600;
+                        border-color: vars.$primary-600;
+                    }
+                }
+            }
+        }
+
+        .schedule-card {
+            background-color: vars.$white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+
+            mat-card-content {
+                padding: 24px;
+            }
+
+            .opening-hours-section {
+                .time-slot-group {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    margin-bottom: 20px;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid vars.$gray-200;
+
+                    &:last-child {
+                        border-bottom: none;
+                        margin-bottom: 0;
+                        padding-bottom: 0;
+                    }
+
+                    .time-slot-label {
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: vars.$gray-700;
+                        min-width: 100px;
+                        margin: 0;
+                    }
+
+                    .day-selectors {
+                        display: flex;
+                        gap: 8px;
+                        margin: 0;
+
+                        .day-button {
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 50%;
+                            border: 2px solid vars.$gray-300;
+                            background-color: vars.$white;
+                            color: vars.$gray-700;
+                            font-weight: 600;
+                            font-size: 12px;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            &:hover {
+                                border-color: vars.$primary-400;
+                            }
+
+                            &.selected {
+                                background-color: vars.$primary-100;
+                                border-color: vars.$primary-600;
+                                color: vars.$primary-700;
+                            }
+                        }
+                    }
+
+                    .time-inputs-container {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+
+                        .time-field {
+                            width: 140px;
+
+                            ::ng-deep {
+                                .mat-mdc-form-field-infix {
+                                    padding: 8px 0 !important;
+                                    display: flex;
+                                    align-items: center;
+                                    min-height: 40px;
+                                }
+
+                                .mat-mdc-text-field-wrapper {
+                                    display: flex;
+                                    align-items: center;
+                                }
+
+                                input[type="time"] {
+                                    text-align: center;
+                                    line-height: 1.5;
+                                    padding: 8px 0;
+                                    height: 100%;
+                                    display: block;
+                                    vertical-align: middle;
+                                }
+                            }
+                        }
+
+                        .time-separator {
+                            font-size: 16px;
+                            font-weight: 600;
+                            color: vars.$gray-600;
+                        }
+                    }
+
+                    .time-slot-actions {
+                        display: flex;
+                        align-items: center;
+                        margin-left: auto;
+
+                        .remove-slot-button {
+                            width: 36px;
+                            height: 36px;
+                            min-width: 36px;
+                            border-radius: 8px;
+                            border: none;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: background-color 0.2s;
+                            background-color: vars.$error;
+                            color: vars.$white;
+
+                            &:hover {
+                                background-color: #d32f2f;
+                            }
+
+                            mat-icon {
+                                font-size: 18px;
+                                width: 18px;
+                                height: 18px;
+                            }
+                        }
+
+                        app-buttons {
+                            ::ng-deep .add-btn {
+                                margin: 0;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    .modal-actions {
+        display: flex;
+        justify-content: flex-start;
+        padding: 24px;
+        background-color: vars.$primary-50;
+    }
+
+    // Estilos para ocultar el subscript-wrapper
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+    }
+}
+

@@ -1,19 +1,23 @@
-<div mat-dialog-title class="modal-header">
-  @if (title()) {
-    <h2 class="modal-title">{{ title() | translate }}</h2>
-  }
-  <button mat-icon-button class="close-button" (click)="close()">
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
+@if (!hideTitle()) {
+  <div mat-dialog-title class="modal-header">
+    @if (title()) {
+      <h2 class="modal-title">{{ title() | translate }}</h2>
+    }
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+}
 
 <mat-dialog-content>
   @if (component()) {
-    <ng-container
-      [ngComponentOutlet]="component()"
-      [ngComponentOutletInputs]="componentInputs()"
-      (ngComponentOutletCreated)="onComponentCreated($event)">
-    </ng-container>
+    <div style="width: 100%; display: block;">
+      <ng-container
+        [ngComponentOutlet]="component()"
+        [ngComponentOutletInputs]="componentInputs()"
+        (ngComponentOutletCreated)="onComponentCreated($event)">
+      </ng-container>
+    </div>
   } @else if (content()) {
     <p>{{ content() }}</p>
   } @else {
