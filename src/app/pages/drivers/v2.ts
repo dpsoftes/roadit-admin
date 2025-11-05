@@ -1,15 +1,14 @@
-import { signal, WritableSignal } from "@angular/core";
+import { signal } from "@angular/core";
 import { TableConfig } from "@components/dynamic-table/dynamic-table.interfaces";
 import { I18nService } from "@i18n/i18n.service";
 
-export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n: I18nService): TableConfig => ({
+export const createDriversTableConfig = (listArray: any[], i18n: I18nService): TableConfig => ({
   columns: [
     {
       key: 'image',
       label: 'drivers.list.image',
       type: 'image',
       width: 8,
-      align: 'center',
       imageConfig: {
         width: '40px',
         height: '40px',
@@ -20,13 +19,8 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
     {
       key: 'name',
       label: 'drivers.list.name',
-      type: 'custom',
-      width: 12,
-      render: (column: any, row: any) => {
-        //CONCATENAR NOMBRE Y APELLIDO
-        const fullName = `${row.name || ''} ${row.last_name || ''}`.trim();
-        return fullName || '-';
-      }
+      type: 'text',
+      width: 10
     },
     {
       key: 'dni/cif',
@@ -56,51 +50,40 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
       label: 'drivers.list.city',
       type: 'text',
       width: 10,
-      // align: 'center'
     },
     {
       key: 'email',
       label: 'drivers.list.email',
       type: 'text',
-      width: 20,
+      width: 22,
     },
     {
       key: 'phone',
       label: 'drivers.list.phone',
       type: 'text',
-      width: 13
+      width: 12
     },
     {
       key: 'created_datetime',
       label: 'drivers.list.created_datetime',
       type: 'text',
-      width: 10,
-      render: (column: any, row: any) => {
-        //FORMATEAR FECHA DE ISO A FORMATO ESPAÑOL DD/MM/YY
-        if (!row.created_datetime) return '-';
-
-        const date = new Date(row.created_datetime);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = String(date.getFullYear()).slice(-2);
-
-        return `${day}/${month}/${year}`;
-      }
+      width: 10
     },
     {
       key: 'rating',
       label: 'drivers.list.rating',
       type: 'text',
-      width: 11,
+      width: 12,
       align: 'center'
     },
     {
       key: 'tags',
       label: 'drivers.list.tags',
-      type: 'chip-array',
-      width: 12,
+      type: 'chip',
+      width: 8,
       chipConfig: {
         type: 'tags',
+        translateKey: 'drivers.list.tags'
       }
     },
     {
@@ -153,7 +136,7 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
           {
             icon: 'material-symbols-outlined/edit_square',
             label: 'Editar',
-            color: 'primary',
+            color: 'warn',
             action: 'edit'
           },
           {
@@ -166,7 +149,7 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
       }
     }
   ],
-  data: listArray,
+  data: signal([]),
   exportable: true,
   selectable: false,
   pagination: true,
