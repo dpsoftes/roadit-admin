@@ -1,13 +1,13 @@
-// Estilos específicos para la tabla de transportes
+
 ::ng-deep app-transports {
   mat-card-content {
     table {
       th {
-        font-size: 12px !important; // Ajustado a 12px
+        font-size: 12px !important; 
         line-height: 1.2 !important;
-        white-space: normal !important; // Permite salto de línea
-        word-break: keep-all !important; // Respeta las palabras completas
-        overflow-wrap: break-word !important; // Solo rompe si es absolutamente necesario
+        white-space: normal !important; 
+        word-break: keep-all !important; 
+        overflow-wrap: break-word !important; 
       }
     }
   }

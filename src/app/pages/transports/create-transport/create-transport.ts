@@ -28,7 +28,6 @@ export class CreateTransport {
 
   selectedTransportType = signal<TransportPrincipalType | ''>('');
   
-  // Exponer el enum para usarlo en el template
   TransportPrincipalType = TransportPrincipalType;
   
   onBack() {

@@ -13,6 +13,8 @@ import {
     QuestionType,
     PhaseEnum
 } from '@dtos/transports/transports.dto';
+import { TransportAddress } from '@dtos/transports/transport-address.dto';
+import { TransportAddressEntity } from './transport-address.entities';
 import { TransportPrincipalType, TransportStatus, LegPointType } from '@enums/transport.enum';
 import { FuelType } from '@enums/vehicle.enum';
 import { VehicleSize } from '@enums/vehicle.enum';
@@ -26,7 +28,7 @@ export class VehicleEntity {
     created_date = signal<Date | null>(null);
     fuel_type = signal<FuelType>(FuelType.GASOLINE);
     id = signal<number>(0);
-    image = signal<string>("");
+    image = signal<string | null>(null);
     insurance_date_end = signal<Date | null>(null);
     insurance_date_start = signal<Date | null>(null);
     license_plate = signal<string>("");
@@ -40,7 +42,7 @@ export class VehicleEntity {
         entity.created_date.set(dto.created_date ?? null);
         entity.fuel_type.set(dto.fuel_type ?? FuelType.GASOLINE);
         entity.id.set(dto.id ?? 0);
-        entity.image.set(dto.image ?? "");
+        entity.image.set(dto.image ?? null);
         entity.insurance_date_end.set(dto.insurance_date_end ?? null);
         entity.insurance_date_start.set(dto.insurance_date_start ?? null);
         entity.license_plate.set(dto.license_plate ?? "");
@@ -71,7 +73,7 @@ export class VehicleEntity {
         if (dto.created_date != undefined) this.created_date.set(dto.created_date);
         if (dto.fuel_type != undefined) this.fuel_type.set(dto.fuel_type);
         if (dto.id != undefined) this.id.set(dto.id);
-        if (!Helpers.isEmpty(dto.image)) this.image.set(dto.image!);
+        if (dto.image != undefined) this.image.set(dto.image);
         if (dto.insurance_date_end != undefined) this.insurance_date_end.set(dto.insurance_date_end);
         if (dto.insurance_date_start != undefined) this.insurance_date_start.set(dto.insurance_date_start);
         if (!Helpers.isEmpty(dto.license_plate)) this.license_plate.set(dto.license_plate!);
@@ -508,7 +510,7 @@ export class LegDocumentEntity {
 export class LegEntity {
     additional_services = signal<AdditionalServiceEntity[]>([]);
     connection_type = signal<string>("");
-    destination_address = signal<string>("");
+    destination_address = signal<TransportAddressEntity>(new TransportAddressEntity());
     documents = signal<LegDocumentEntity[]>([]);
     duration = signal<number | null | undefined>(undefined);
     expected_arrival_from = signal<Date | null | undefined>(undefined);
@@ -519,14 +521,14 @@ export class LegEntity {
     id = signal<number>(0);
     kilometers = signal<string | null | undefined>(undefined);
     order = signal<number | undefined>(undefined);
-    origin_address = signal<string>("");
+    origin_address = signal<TransportAddressEntity>(new TransportAddressEntity());
     vehicle = signal<VehicleEntity>(new VehicleEntity());
 
     static fromDto(dto: Leg): LegEntity {
         const entity = new LegEntity();
         entity.additional_services.set((dto.additional_services || []).map(s => AdditionalServiceEntity.fromDto(s)));
         entity.connection_type.set(dto.connection_type ?? "");
-        entity.destination_address.set(dto.destination_address ?? "");
+        entity.destination_address.set(dto.destination_address ? TransportAddressEntity.fromDto(dto.destination_address) : new TransportAddressEntity());
         entity.documents.set((dto.documents || []).map(d => LegDocumentEntity.fromDto(d)));
         entity.duration.set(dto.duration);
         entity.expected_arrival_from.set(dto.expected_arrival_from);
@@ -537,7 +539,7 @@ export class LegEntity {
         entity.id.set(dto.id ?? 0);
         entity.kilometers.set(dto.kilometers);
         entity.order.set(dto.order);
-        entity.origin_address.set(dto.origin_address ?? "");
+        entity.origin_address.set(dto.origin_address ? TransportAddressEntity.fromDto(dto.origin_address) : new TransportAddressEntity());
         entity.vehicle.set(dto.vehicle ? VehicleEntity.fromDto(dto.vehicle) : new VehicleEntity());
         return entity;
     }
@@ -546,7 +548,7 @@ export class LegEntity {
         const dto = new Leg();
         dto.additional_services = this.additional_services().map(s => s.toDto());
         dto.connection_type = this.connection_type();
-        dto.destination_address = this.destination_address();
+        dto.destination_address = this.destination_address().toDto();
         dto.documents = this.documents().map(d => d.toDto());
         dto.duration = this.duration();
         dto.expected_arrival_from = this.expected_arrival_from();
@@ -557,7 +559,7 @@ export class LegEntity {
         dto.id = this.id();
         dto.kilometers = this.kilometers();
         dto.order = this.order();
-        dto.origin_address = this.origin_address();
+        dto.origin_address = this.origin_address().toDto();
         dto.vehicle = this.vehicle().toDto();
         return dto;
     }
@@ -565,7 +567,7 @@ export class LegEntity {
     copyFromDto(dto: Partial<Leg>): void {
         if (dto.additional_services != undefined) this.additional_services.set(dto.additional_services.map(s => AdditionalServiceEntity.fromDto(s)));
         if (!Helpers.isEmpty(dto.connection_type)) this.connection_type.set(dto.connection_type!);
-        if (!Helpers.isEmpty(dto.destination_address)) this.destination_address.set(dto.destination_address!);
+        if (dto.destination_address != undefined) this.destination_address.set(dto.destination_address ? TransportAddressEntity.fromDto(dto.destination_address) : new TransportAddressEntity());
         if (dto.documents != undefined) this.documents.set(dto.documents.map(d => LegDocumentEntity.fromDto(d)));
         if (dto.duration != undefined) this.duration.set(dto.duration);
         if (dto.expected_arrival_from != undefined) this.expected_arrival_from.set(dto.expected_arrival_from);
@@ -576,7 +578,7 @@ export class LegEntity {
         if (dto.id != undefined) this.id.set(dto.id);
         if (dto.kilometers != undefined) this.kilometers.set(dto.kilometers);
         if (dto.order != undefined) this.order.set(dto.order);
-        if (!Helpers.isEmpty(dto.origin_address)) this.origin_address.set(dto.origin_address!);
+        if (dto.origin_address != undefined) this.origin_address.set(dto.origin_address ? TransportAddressEntity.fromDto(dto.origin_address) : new TransportAddressEntity());
         if (dto.vehicle != undefined) this.vehicle.set(dto.vehicle ? VehicleEntity.fromDto(dto.vehicle) : new VehicleEntity());
     }
 
@@ -585,7 +587,7 @@ export class LegEntity {
         const patch: Partial<T> = {};
         if (JSON.stringify(this.additional_services()) !== JSON.stringify(defaults.additional_services())) (patch as any).additional_services = this.additional_services().map(s => s.toDto());
         if (this.connection_type() !== defaults.connection_type()) (patch as any).connection_type = this.connection_type();
-        if (this.destination_address() !== defaults.destination_address()) (patch as any).destination_address = this.destination_address();
+        if (this.destination_address() !== defaults.destination_address()) (patch as any).destination_address = this.destination_address().toDto();
         if (JSON.stringify(this.documents()) !== JSON.stringify(defaults.documents())) (patch as any).documents = this.documents().map(d => d.toDto());
         if (this.duration() !== defaults.duration()) (patch as any).duration = this.duration();
         if (this.expected_arrival_from() !== defaults.expected_arrival_from()) (patch as any).expected_arrival_from = this.expected_arrival_from();
@@ -596,7 +598,7 @@ export class LegEntity {
         if (this.id() !== defaults.id()) (patch as any).id = this.id();
         if (this.kilometers() !== defaults.kilometers()) (patch as any).kilometers = this.kilometers();
         if (this.order() !== defaults.order()) (patch as any).order = this.order();
-        if (this.origin_address() !== defaults.origin_address()) (patch as any).origin_address = this.origin_address();
+        if (this.origin_address() !== defaults.origin_address()) (patch as any).origin_address = this.origin_address().toDto();
         if (this.vehicle() !== defaults.vehicle()) (patch as any).vehicle = this.vehicle().toDto();
         return patch;
     }
@@ -617,10 +619,10 @@ export class TransportsRetrieveResponseEntity {
     client_name = signal<string>("");
     comment = signal<string | undefined>(undefined);
     created_date = signal<Date | null>(null);
-    driver_id = signal<number>(0);
-    driver_name = signal<string>("");
+    driver_id = signal<number | null>(null);
+    driver_name = signal<string | null>(null);
     duration = signal<number | null | undefined>(undefined);
-    emails = signal<any | undefined>(undefined);
+    emails = signal<string[] | undefined>(undefined);
     group_number = signal<number | null | undefined>(undefined);
     has_ferry = signal<boolean | undefined>(undefined);
     id = signal<number>(0);
@@ -633,12 +635,13 @@ export class TransportsRetrieveResponseEntity {
     phone = signal<string | undefined>(undefined);
     reference_number = signal<string | null | undefined>(undefined);
     reservation_number = signal<string | null | undefined>(undefined);
-    show_timeline = signal<string>("");
+    show_timeline = signal<boolean>(false);
     tags = signal<number[]>([]);
-    timeline = signal<string>("");
+    timeline = signal<string | null>(null);
+    countries = signal<string[]>([]);
     transport_principal_type = signal<TransportPrincipalType>(TransportPrincipalType.SIMPLE_MOVEMENT);
     transport_status = signal<TransportStatus | undefined>(undefined);
-    transport_type = signal<string>("");
+    transport_type = signal<string | null>(null);
     vehicle = signal<VehicleEntity>(new VehicleEntity());
 
     static fromDto(dto: TransportsRetrieveResponse): TransportsRetrieveResponseEntity {
@@ -654,8 +657,8 @@ export class TransportsRetrieveResponseEntity {
         entity.client_name.set(dto.client_name ?? "");
         entity.comment.set(dto.comment);
         entity.created_date.set(dto.created_date ?? null);
-        entity.driver_id.set(dto.driver_id ?? 0);
-        entity.driver_name.set(dto.driver_name ?? "");
+        entity.driver_id.set(dto.driver_id ?? null);
+        entity.driver_name.set(dto.driver_name ?? null);
         entity.duration.set(dto.duration);
         entity.emails.set(dto.emails);
         entity.group_number.set(dto.group_number);
@@ -670,12 +673,13 @@ export class TransportsRetrieveResponseEntity {
         entity.phone.set(dto.phone);
         entity.reference_number.set(dto.reference_number);
         entity.reservation_number.set(dto.reservation_number);
-        entity.show_timeline.set(dto.show_timeline ?? "");
+        entity.show_timeline.set(dto.show_timeline ?? false);
         entity.tags.set(dto.tags || []);
-        entity.timeline.set(dto.timeline ?? "");
+        entity.timeline.set(dto.timeline ?? null);
+        entity.countries.set(dto.countries || []);
         entity.transport_principal_type.set(dto.transport_principal_type ?? TransportPrincipalType.SIMPLE_MOVEMENT);
         entity.transport_status.set(dto.transport_status);
-        entity.transport_type.set(dto.transport_type ?? "");
+        entity.transport_type.set(dto.transport_type ?? null);
         entity.vehicle.set(dto.vehicle ? VehicleEntity.fromDto(dto.vehicle) : new VehicleEntity());
         return entity;
     }
@@ -712,6 +716,7 @@ export class TransportsRetrieveResponseEntity {
         dto.show_timeline = this.show_timeline();
         dto.tags = this.tags();
         dto.timeline = this.timeline();
+        dto.countries = this.countries();
         dto.transport_principal_type = this.transport_principal_type();
         dto.transport_status = this.transport_status();
         dto.transport_type = this.transport_type();
@@ -731,8 +736,8 @@ export class TransportsRetrieveResponseEntity {
         if (!Helpers.isEmpty(dto.client_name)) this.client_name.set(dto.client_name!);
         if (!Helpers.isEmpty(dto.comment)) this.comment.set(dto.comment);
         if (dto.created_date != undefined) this.created_date.set(dto.created_date);
-        if (!Helpers.isEmptyOrZero(dto.driver_id)) this.driver_id.set(dto.driver_id!);
-        if (!Helpers.isEmpty(dto.driver_name)) this.driver_name.set(dto.driver_name!);
+        if (dto.driver_id != undefined) this.driver_id.set(dto.driver_id);
+        if (dto.driver_name != undefined) this.driver_name.set(dto.driver_name);
         if (dto.duration != undefined) this.duration.set(dto.duration);
         if (dto.emails != undefined) this.emails.set(dto.emails);
         if (dto.group_number != undefined) this.group_number.set(dto.group_number);
@@ -747,12 +752,13 @@ export class TransportsRetrieveResponseEntity {
         if (!Helpers.isEmpty(dto.phone)) this.phone.set(dto.phone);
         if (dto.reference_number != undefined) this.reference_number.set(dto.reference_number);
         if (dto.reservation_number != undefined) this.reservation_number.set(dto.reservation_number);
-        if (!Helpers.isEmpty(dto.show_timeline)) this.show_timeline.set(dto.show_timeline!);
+        if (dto.show_timeline != undefined) this.show_timeline.set(dto.show_timeline);
         if (!Helpers.isEmpty(dto.tags)) this.tags.set(dto.tags!);
-        if (!Helpers.isEmpty(dto.timeline)) this.timeline.set(dto.timeline!);
+        if (dto.timeline != undefined) this.timeline.set(dto.timeline);
+        if (!Helpers.isEmpty(dto.countries)) this.countries.set(dto.countries!);
         if (dto.transport_principal_type != undefined) this.transport_principal_type.set(dto.transport_principal_type);
         if (dto.transport_status != undefined) this.transport_status.set(dto.transport_status);
-        if (!Helpers.isEmpty(dto.transport_type)) this.transport_type.set(dto.transport_type!);
+        if (dto.transport_type != undefined) this.transport_type.set(dto.transport_type);
         if (dto.vehicle != undefined) this.vehicle.set(dto.vehicle ? VehicleEntity.fromDto(dto.vehicle) : new VehicleEntity());
     }
 
@@ -789,6 +795,7 @@ export class TransportsRetrieveResponseEntity {
         if (this.show_timeline() !== defaults.show_timeline()) (patch as any).show_timeline = this.show_timeline();
         if (JSON.stringify(this.tags()) !== JSON.stringify(defaults.tags())) (patch as any).tags = this.tags();
         if (this.timeline() !== defaults.timeline()) (patch as any).timeline = this.timeline();
+        if (JSON.stringify(this.countries()) !== JSON.stringify(defaults.countries())) (patch as any).countries = this.countries();
         if (this.transport_principal_type() !== defaults.transport_principal_type()) (patch as any).transport_principal_type = this.transport_principal_type();
         if (this.transport_status() !== defaults.transport_status()) (patch as any).transport_status = this.transport_status();
         if (this.transport_type() !== defaults.transport_type()) (patch as any).transport_type = this.transport_type();
