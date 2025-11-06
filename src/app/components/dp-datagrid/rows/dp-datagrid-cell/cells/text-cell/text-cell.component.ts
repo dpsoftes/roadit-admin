@@ -20,7 +20,8 @@ import { TableColumn } from '../../../../dp-datagrid.interfaces';
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      padding: 0 8px;
+      width: 100%;
+      min-width: 0;
     }
   `]
 })

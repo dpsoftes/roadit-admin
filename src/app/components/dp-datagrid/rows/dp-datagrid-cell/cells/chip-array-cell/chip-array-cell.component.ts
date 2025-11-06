@@ -30,9 +30,9 @@ import { TableColumn, ChipValue } from '../../../../dp-datagrid.interfaces';
       display: flex;
       flex-direction: column;
       gap: 4px;
-      padding: 4px 8px;
       width: 100%;
       min-width: 0;
+      overflow: hidden;
       align-items: inherit;
     }
     
@@ -50,6 +50,7 @@ import { TableColumn, ChipValue } from '../../../../dp-datagrid.interfaces';
       max-width: 100%;
       min-width: 0;
       box-sizing: border-box;
+      flex-shrink: 0;
     }
   `]
 })

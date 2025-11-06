@@ -24,7 +24,8 @@ import { TableColumn } from '../../../../dp-datagrid.interfaces';
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 8px;
+      width: 100%;
+      min-width: 0;
     }
   `]
 })

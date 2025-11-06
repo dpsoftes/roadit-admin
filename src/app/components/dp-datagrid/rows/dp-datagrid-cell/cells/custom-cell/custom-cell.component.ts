@@ -23,8 +23,9 @@ import { TableColumn } from '../../../../dp-datagrid.interfaces';
   `,
   styles: [`
     .custom-cell {
-      padding: 0 8px;
       width: 100%;
+      min-width: 0;
+      overflow: hidden;
     }
   `]
 })
