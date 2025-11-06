@@ -45,11 +45,13 @@ export class Clients implements OnInit {
     private router:Router,
   ){
     this.route.params.subscribe(params => {
-      if(params['tab'] === 'group') {
+      if(params['type'] === 'groups') {
         this.activeTab.set('groups');
-      } else if(params['tab'] === 'list') {
+      } else if(params['type'] === 'list') {
         this.activeTab.set('list');
       }
+      this.onTabChange(params['type']);
+
     });
     var act = this.clientTableConfig().actions;
     act!.create!.action = () => {this.createClient()};

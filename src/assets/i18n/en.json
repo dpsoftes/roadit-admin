@@ -801,6 +801,16 @@
       "contact-email-invalid": "Contact email is not valid.",
       "contact-name-required": "Contact person name is required."
     },
+    "billing": {
+      "email_send_invoice": "Billing email is required.",
+      "iva": "VAT is required.",
+      "business_name": "Company name is required.",
+      "address": "The address must be at least 5 characters and is required.",
+      "postal_code": "Postal code is required.",
+      "country": "Country is required.",
+      "city": "City is required.",
+      "phone": "Phone is required."
+    },
     "documents": {
       "type-movement": "Movement type is required.",
       "moment": "Moment is required.",

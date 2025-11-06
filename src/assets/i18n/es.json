@@ -800,7 +800,16 @@
       "principal-client-required": "El cliente principal es obligatorio.",
       "contact-email-invalid": "El email de contacto no es válido.",
       "contact-name-required": "El nombre de la persona de contacto es obligatorio."
-
+    },
+    "billing": {
+      "email_send_invoice": "El email de facturación es obligatorio.",
+      "iva": "El IVA es obligatorio.",
+      "business_name": "La razón social es obligatoria.",
+      "address": "La dirección debe tener al menos 5 caracteress y es obligatoria.",
+      "postal_code": "El código postal es obligatorio.",
+      "country": "El país es obligatorio.",
+      "city": "La ciudad es obligatoria.",
+      "phone": "El teléfono es obligatorio."
     },
     "documents": {
       "type-movement": "El tipo de movimiento es obligatorio.",

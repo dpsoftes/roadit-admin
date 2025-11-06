@@ -108,7 +108,7 @@ export class ClientsProvider {
         try {
             var a = await this.api.get<any>({ url: EndPoints.getDocumentTemplates, queryParams: {client: id}  });
             var documents: DocumentsClientsDto[] = (await this.api.get<DocumentsClientsDto[]>({ url: EndPoints.getDocumentTemplates, queryParams: {client: id}  }));
-            var billings: BillingAccountItemDto[] = (await this.api.get<any>({ url: EndPoints.getClientBillingAccounts, queryParams: {client: id}  }))["results"] as BillingAccountItemDto[];
+            var billings: BillingAccountItemDto[] = (await this.api.get<BillingAccountItemDto[]>({ url: EndPoints.getClientBillingAccounts, queryParams: {client: id}  }));
             var priceRules: PriceRulesClientDto = (await this.api.get<PriceRulesClientDto>({ url: EndPoints.getPriceRule.replace("{scope}", "client"), queryParams: {client_id: id.toString()}  }))
             var certifications: ClientCertification[] = (await this.api.get<any>({ url: EndPoints.getClientCertifications, queryParams: {client: id}  }))["results"] as ClientCertification[];
 
@@ -149,6 +149,20 @@ export class ClientsProvider {
             console.error('Error al obtener admins:', error);
             return false;
         }
-    }   
+    }
+     async updateBilling(data: Partial<ClientBillingAccountDto>, id?: number): Promise<ClientBillingAccountDto | null> {
+        try {
+      
+            var options: ApiRequestOptions = { url: EndPoints.createClientBillingAccount, formParams: data };
+            if (id) {
+                options.url = EndPoints.updateClientBillingAccount.replace("{billingAccountId}", id.toString());
+            }
+            return await this.api.post<ClientBillingAccountDto>(options );
+        } catch (error) {
+            console.error('Error al obtener admins:', error);
+            return null;
+        }
+    }      
+    
 
 }
