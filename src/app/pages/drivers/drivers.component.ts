@@ -5,23 +5,48 @@ import {
   OnInit,
   inject,
   effect,
-  computed
+  computed,
+  untracked
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
-import { createDriversTableConfig } from './driversTableConfig';
 import { DriverStore } from '@store/driver.state';
 import { I18nService } from '@i18n/i18n.service';
 import { GlobalStore } from '@store/global.state';
 
+//IMPORTAR COMPONENTES Y TIPOS DE DP-DATAGRID
+import {
+  DpDatagridComponent,
+  DpDatagridColumnsComponent,
+  DpDatagridColumnComponent,
+  DpDatagridFilterComponent,
+  DpDatagridFilterContainerComponent,
+  DpDatagridActionsComponent,
+  DpDatagridActionComponent,
+  FilterChangeEvent,
+  ActionConfig
+} from '@components/dp-datagrid';
+
+//INTERFACE PARA LAS OPCIONES DE TAG
+export interface TagOption {
+  value: string;
+  label: string;
+  color?: string;
+}
+
 @Component({
   selector: 'app-drivers',
+  standalone: true,
   imports: [
     CommonModule,
-    DynamicTableComponent,
-    TranslatePipe
+    TranslatePipe,
+    DpDatagridComponent,
+    DpDatagridColumnsComponent,
+    DpDatagridColumnComponent,
+    DpDatagridFilterComponent,
+    DpDatagridFilterContainerComponent,
+    DpDatagridActionsComponent,
+    DpDatagridActionComponent
   ],
   templateUrl: './drivers.component.html',
   styleUrl: './drivers.component.scss',
@@ -51,48 +76,127 @@ export class DriversComponent implements OnInit {
     }));
   });
 
-  //CONFIGURACION DE LA TABLA
-  driversTableConfig = signal(
-    createDriversTableConfig(
-      this.drivers,
-      this.i18n,
-      this.tagOptions(),
-      this.allTags,
-      this.globalStore.language() as 'es' | 'en'
-    )
-  );
+  //CONFIGURACIÓN DE ACCIONES
+  actionsConfig: ActionConfig = {
+    actions: [
+      {
+        action: 'view',
+        icon: 'visibility',
+        label: 'Ver',
+        color: 'primary',
+        condition: (row: any) => true
+      },
+      {
+        action: 'delete',
+        icon: 'delete',
+        label: 'Eliminar',
+        color: 'warn',
+        condition: (row: any) => true
+      }
+    ]
+  };
+
+  //FUNCIONES DE RENDERIZADO PERSONALIZADO
+  renderFullName = (row: any): string => {
+    return `
+      <div class="name-cell">
+        <div>${row.name}</div>
+        <div class="last-name">${row.last_name}</div>
+      </div>
+    `;
+  };
+
+  renderDniCif = (row: any): string => {
+    return `
+      <div class="dni-cif-cell">
+        <div class="dni-line">${row.dni || '-'}</div>
+        <div class="cif-line">${row.cif || '-'}</div>
+      </div>
+    `;
+  };
+
+  renderDate = (row: any): string => {
+    if (!row.created_datetime) return '-';
+
+    const date = new Date(row.created_datetime);
+    return date.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
+  renderTags = (row: any): string => {
+    const currentLanguage = this.globalStore.language() as 'es' | 'en';
+
+    if (!Array.isArray(row.tags) || row.tags.length === 0) {
+      return '<span class="no-tags">-</span>';
+    }
+
+    const chipsHtml = row.tags
+      .map((driverTag: any) => {
+        const tagId = typeof driverTag === 'object' ? driverTag.id : driverTag;
+        const fullTag = this.findTagById(tagId);
+
+        if (!fullTag) {
+          return `<span class="tag-chip unknown-tag" style="background-color: #cccccc; color: #666666;">ID: ${tagId}</span>`;
+        }
+
+        const tagName = this.getTagName(fullTag, currentLanguage);
+        const tagColor = this.getTagColor(fullTag);
+        const textColor = this.isLightColor(tagColor) ? '#000000' : '#ffffff';
+
+        return `<span class="tag-chip" style="background-color: ${tagColor}; color: ${textColor};">${tagName}</span>`;
+      })
+      .join('');
+
+    return `<div class="tags-container">${chipsHtml}</div>`;
+  };
+
+  renderValidated = (row: any): string => {
+    const currentLanguage = this.globalStore.language() as 'es' | 'en';
+    const translatedYes = currentLanguage === 'es' ? 'Sí' : 'Yes';
+    const translatedNo = currentLanguage === 'es' ? 'No' : 'No';
+
+    if (row.validated) {
+      return `
+        <div class="validation-cell validated">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#4caf50">
+            <path d="M0 0h24v24H0V0z" fill="none"/>
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+          </svg>
+          <span>${translatedYes}</span>
+        </div>
+      `;
+    } else {
+      return `
+        <div class="validation-cell not-validated">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#f44336">
+            <path d="M0 0h24v24H0V0z" fill="none"/>
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+          </svg>
+          <span>${translatedNo}</span>
+        </div>
+      `;
+    }
+  };
 
   constructor() {
     //EFECTO QUE ACTUALIZA LA SEÑAL LOCAL CUANDO CAMBIA EL STORE
     effect(() => {
       this.drivers.set(this.store.drivers());
-      //ACTUALIZAR LA TABLA CUANDO CAMBIEN LOS DATOS
-      this.driversTableConfig().data.set(this.drivers());
     });
 
-    //EFECTO QUE ACTUALIZA LA CONFIG DE LA TABLA CUANDO CAMBIAN LAS TAG OPTIONS O EL IDIOMA
+    //EFECTO QUE REFRESCA LA VISTA CUANDO CAMBIA EL IDIOMA
     effect(() => {
       //FORZAR LA LECTURA DEL IDIOMA PARA QUE EL EFECTO SE EJECUTE CUANDO CAMBIE
       const currentLanguage = this.globalStore.language() as 'es' | 'en';
-      const currentOptions = this.tagOptions();
 
       console.log('🔄 Effect ejecutado - Idioma:', currentLanguage);
-      console.log('🏷️ Tag options actuales:', currentOptions);
+      console.log('🏷️ Tag options actuales:', this.tagOptions());
 
-      //RECREAR LA CONFIGURACIÓN DE LA TABLA COMPLETAMENTE
-      //ESTO ASEGURA QUE LAS FUNCIONES render SE EJECUTEN CON EL NUEVO IDIOMA
-      const newConfig = createDriversTableConfig(
-        this.drivers,
-        this.i18n,
-        currentOptions,
-        this.allTags,
-        currentLanguage
-      );
-
-      //ACTUALIZAR LA SEÑAL DE CONFIGURACIÓN
-      this.driversTableConfig.set(newConfig);
-
-      console.log('✅ Configuración de tabla actualizada');
+      //FORZAR ACTUALIZACIÓN DE LOS DATOS PARA QUE SE RE-RENDERICEN LAS COLUMNAS PERSONALIZADAS
+      this.drivers.set([...untracked(this.drivers)]);
     });
   }
 
@@ -109,80 +213,57 @@ export class DriversComponent implements OnInit {
     console.log('🌍 Idioma actual:', this.globalStore.language());
   }
 
+  //CARGAR CONDUCTORES
+  async loadDrivers() {
+    await this.store.getDrivers();
+  }
+
+  //MANEJAR CAMBIOS DE FILTROS
+  onFilterChange(event: FilterChangeEvent) {
+    console.log('Filtros aplicados:', event);
+    //AQUÍ PUEDES IMPLEMENTAR LÓGICA ADICIONAL DE FILTRADO SI ES NECESARIO
+  }
+
+  //MANEJAR ACCIÓN DE CREAR CONDUCTOR
+  onCreateDriver(event: any) {
+    console.log('Crear nuevo conductor');
+    //IMPLEMENTAR NAVEGACIÓN O MODAL PARA CREAR CONDUCTOR
+  }
+
   //HELPER: OBTENER NOMBRE DE TAG EN EL IDIOMA ESPECIFICADO
   private getTagName(tag: any, language: 'es' | 'en' = 'es'): string {
-    //SI LA TAG TIENE EL METODO getName (ES INSTANCIA DE TagDto)
     if (typeof tag.getName === 'function') {
       return tag.getName(language);
     }
-    //SI ES OBJETO PLANO CON LA ESTRUCTURA NUEVA
     if (tag.name && typeof tag.name === 'object') {
       return tag.name[language] || tag.name.es || '';
     }
-    //FALLBACK PARA ESTRUCTURA ANTIGUA
     return tag.name || '';
   }
 
   //HELPER: OBTENER COLOR DE TAG CON #
   private getTagColor(tag: any): string {
-    //SI LA TAG TIENE EL METODO getColorWithHash (ES INSTANCIA DE TagDto)
     if (typeof tag.getColorWithHash === 'function') {
       return tag.getColorWithHash();
     }
-    //SI ES OBJETO PLANO
     if (tag.color) {
       return tag.color.startsWith('#') ? tag.color : `#${tag.color}`;
     }
-    //FALLBACK
     return '#999999';
   }
 
-  //DEBUG: MOSTRAR TAGS EN FORMATO JSON LEGIBLE
-  tagsDebug(): string {
-    return JSON.stringify({
-      totalTags: this.allTags.length,
-      driverTags: this.driverTags().length,
-      tagOptions: this.tagOptions().length,
-      currentLanguage: this.globalStore.language(),
-      sampleTag: this.allTags[0] || null,
-      sampleDriverTag: this.driverTags()[0] || null,
-      sampleOption: this.tagOptions()[0] || null
-    }, null, 2);
+  //HELPER: BUSCAR TAG POR ID
+  private findTagById(tagId: number): any | null {
+    return this.allTags.find((tag: any) => tag.id === tagId) || null;
   }
 
-  //CARGAR CONDUCTORES EN LA TABLA
-  async loadDrivers(params?: TableEvent) {
-    //EL MÉTODO getDrivers DEL STORE AUTOMÁTICAMENTE ACTUALIZA EL ESTADO
-    await this.store.getDrivers();
-  }
-
-  //MANEJAR EVENTOS DE LA TABLA
-  handleTableEvent(event: TableEvent) {
-    console.log('Table event:', event);
-
-    if (event.type === 'action') {
-      this.handleAction(event.data?.action!, event.data?.row);
-    } else if (event.type === 'page') {
-      this.loadDrivers(event);
-    } else if (event.type === 'search' || event.type === 'filter') {
-      this.loadDrivers(event);
-    }
-  }
-
-  //MANEJAR ACCIONES DE LA TABLA
-  handleAction(action: string, row: any) {
-    console.log(`Action ${action} on row:`, row);
-
-    switch (action) {
-      case 'edit':
-        console.log('Editar conductor:', row);
-        break;
-      case 'view':
-        console.log('Ver conductor:', row);
-        break;
-      case 'delete':
-        console.log('Eliminar conductor:', row);
-        break;
-    }
+  //HELPER: CALCULAR SI EL COLOR ES CLARO U OSCURO
+  private isLightColor(hexColor: string): boolean {
+    const hex = hexColor.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5;
   }
 }
