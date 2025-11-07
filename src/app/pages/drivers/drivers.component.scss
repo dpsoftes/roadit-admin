@@ -66,36 +66,104 @@
   font-style: italic;
 }
 
-//ESTILOS PARA LA CELDA DE VALIDACIÓN
-.validation-cell {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  svg {
-    flex-shrink: 0;
-  }
-
-  span {
-    font-weight: 500;
-  }
-
-  &.validated {
-    color: #4caf50;
-  }
-
-  &.not-validated {
-    color: #f44336;
-  }
-}
-
-//SOBREESCRIBIR ESTILOS DE MATERIAL DESIGN SI ES NECESARIO
+//ESTILOS GLOBALES PARA LA CELDA DE VALIDACIÓN CON ::ng-deep
 ::ng-deep {
   .drivers-page {
 
     //ASEGURAR QUE LA FUENTE GEIST SE APLIQUE CORRECTAMENTE
     dp-datagrid {
       font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    }
+
+    //ESTILOS PARA LA CELDA DE VALIDACIÓN
+    dp-custom-cell {
+      .validated-cell-wrapper {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        line-height: 1 !important;
+      }
+
+      .validated-icon-24 {
+        width: 20px !important;
+        height: 20px !important;
+        max-width: 20px !important;
+        max-height: 20px !important;
+        min-width: 20px !important;
+        min-height: 20px !important;
+        flex-shrink: 0 !important;
+        object-fit: contain !important;
+        display: block !important;
+      }
+
+      .validated-text-span {
+        font-size: 14px !important;
+        line-height: 20px !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+      }
+    }
+
+    //SELECTOR ADICIONAL MÁS ESPECÍFICO PARA FORZAR ESTILOS
+    .dp-datagrid-cell {
+      .custom-cell {
+        .validated-cell-wrapper {
+          display: flex !important;
+          align-items: center !important;
+          gap: 2px !important;
+
+          img {
+            width: 20px !important;
+            height: 20px !important;
+            max-width: 20px !important;
+            max-height: 20px !important;
+            min-width: 20px !important;
+            min-height: 20px !important;
+            flex-shrink: 0 !important;
+            object-fit: contain !important;
+          }
+
+          span {
+            font-size: 14px !important;
+            line-height: 20px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+//SELECTOR GLOBAL ADICIONAL (FUERA DEL .drivers-page) PARA MÁXIMA ESPECIFICIDAD
+::ng-deep {
+  .validated-cell-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+
+    .validated-icon-24,
+    img {
+      width: 20px !important;
+      height: 20px !important;
+      max-width: 20px !important;
+      max-height: 20px !important;
+      min-width: 20px !important;
+      min-height: 20px !important;
+      flex-shrink: 0 !important;
+      object-fit: contain !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .validated-text-span,
+    span {
+      font-size: 14px !important;
+      line-height: 20px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
   }
 }

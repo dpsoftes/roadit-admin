@@ -13,6 +13,7 @@ import { TranslatePipe } from '@i18n/translate.pipe';
 import { DriverStore } from '@store/driver.state';
 import { I18nService } from '@i18n/i18n.service';
 import { GlobalStore } from '@store/global.state';
+import { TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
 
 //IMPORTAR COMPONENTES Y TIPOS DE DP-DATAGRID
 import {
@@ -97,16 +98,17 @@ export class DriversComponent implements OnInit {
   };
 
   //FUNCIONES DE RENDERIZADO PERSONALIZADO
-  renderFullName = (row: any): string => {
+  //NOTA: LAS FIRMAS DEBEN SER (column: TableColumn, row: any) => string
+  renderFullName = (column: TableColumn, row: any): string => {
     return `
       <div class="name-cell">
-        <div>${row.name}</div>
-        <div class="last-name">${row.last_name}</div>
+        <div>${row.name || ''}</div>
+        <div class="last-name">${row.last_name || ''}</div>
       </div>
     `;
   };
 
-  renderDniCif = (row: any): string => {
+  renderDniCif = (column: TableColumn, row: any): string => {
     return `
       <div class="dni-cif-cell">
         <div class="dni-line">${row.dni || '-'}</div>
@@ -115,18 +117,19 @@ export class DriversComponent implements OnInit {
     `;
   };
 
-  renderDate = (row: any): string => {
+  renderDate = (column: TableColumn, row: any): string => {
+    //FORMATEAR FECHA DE ISO A FORMATO ESPAÑOL DD/MM/YY
     if (!row.created_datetime) return '-';
 
     const date = new Date(row.created_datetime);
-    return date.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+
+    return `${day}/${month}/${year}`;
   };
 
-  renderTags = (row: any): string => {
+  renderTags = (column: TableColumn, row: any): string => {
     const currentLanguage = this.globalStore.language() as 'es' | 'en';
 
     if (!Array.isArray(row.tags) || row.tags.length === 0) {
@@ -153,32 +156,24 @@ export class DriversComponent implements OnInit {
     return `<div class="tags-container">${chipsHtml}</div>`;
   };
 
-  renderValidated = (row: any): string => {
-    const currentLanguage = this.globalStore.language() as 'es' | 'en';
-    const translatedYes = currentLanguage === 'es' ? 'Sí' : 'Yes';
-    const translatedNo = currentLanguage === 'es' ? 'No' : 'No';
+  renderValidated = (column: TableColumn, row: any): string => {
+    //RENDERIZADO PERSONALIZADO PARA validated
+    //EVALUA SI EL VALOR ES true O false Y DEVUELVE SVG + TRADUCCION
+    const isValidated = row.validated;
+    const translationKey = isValidated ? 'drivers.profile.VALIDATE' : 'drivers.profile.NO_VALIDATE';
+    const translatedText = this.i18n.translate(translationKey);
 
-    if (row.validated) {
-      return `
-        <div class="validation-cell validated">
-          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#4caf50">
-            <path d="M0 0h24v24H0V0z" fill="none"/>
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-          </svg>
-          <span>${translatedYes}</span>
-        </div>
-      `;
-    } else {
-      return `
-        <div class="validation-cell not-validated">
-          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="#f44336">
-            <path d="M0 0h24v24H0V0z" fill="none"/>
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
-          </svg>
-          <span>${translatedNo}</span>
-        </div>
-      `;
-    }
+    //RUTA A LOS SVG EXTERNOS
+    const iconPath = isValidated
+      ? 'assets/icons/validatedIcon.svg'
+      : 'assets/icons/noValidatedIcon.svg';
+
+    return `
+      <div class="validated-cell-wrapper">
+        <img src="${iconPath}" alt="${translatedText}" class="validated-icon-24" />
+        <span class="validated-text-span">${translatedText}</span>
+      </div>
+    `;
   };
 
   constructor() {
