@@ -12,7 +12,7 @@
       </dp-datagrid-column>
 
       <!-- COLUMNA DE NOMBRE Y APELLIDO -->
-      <dp-datagrid-column key="name" label="{{ 'drivers.list.name' | translate }}" type="custom" [width]="10"
+      <dp-datagrid-column key="name" label="{{ 'drivers.list.name' | translate }}" type="custom" [width]="8"
         [render]="renderFullName">
       </dp-datagrid-column>
 
@@ -39,7 +39,7 @@
 
       <!-- COLUMNA DE FECHA DE CREACIÓN -->
       <dp-datagrid-column key="created_datetime" label="{{ 'drivers.list.created_datetime' | translate }}" type="custom"
-        [width]="10" [render]="renderDate">
+        [width]="6" [render]="renderDate">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE TAGS -->
@@ -116,7 +116,10 @@
 
     <!-- ACCIONES GLOBALES -->
     <dp-datagrid-actions>
-      <dp-datagrid-action key="create" text="{{ 'drivers.create' | translate }}" icon="add" color="primary"
+      <dp-datagrid-action key="create" text="{{ 'drivers.create' | translate }}" color="accent"
+        (onClick)="onCreateDriver($event)">
+      </dp-datagrid-action>
+      <dp-datagrid-action key="create" text="{{ 'drivers.create' | translate }}" color="primary"
         (onClick)="onCreateDriver($event)">
       </dp-datagrid-action>
     </dp-datagrid-actions>

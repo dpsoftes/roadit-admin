@@ -10,7 +10,7 @@ import { TableAction, ActionClickEvent } from '../../dp-datagrid.interfaces';
   imports: [CommonModule, MatButtonModule, MatIconModule],
   template: `
     @if (shouldShow()) {
-      <button 
+      <button
         mat-raised-button
         [color]="color()"
         [disabled]="!shouldEnable()"
@@ -28,7 +28,7 @@ import { TableAction, ActionClickEvent } from '../../dp-datagrid.interfaces';
       display: flex;
       align-items: center;
       gap: 8px;
-      
+
       mat-icon {
         font-size: 20px;
         width: 20px;
@@ -45,7 +45,7 @@ export class DpDatagridActionComponent {
   isVisible = input<boolean>(true);
   isEnabled = input<boolean>(true);
   data = input<any>();
-  
+
   // Output - Evento onClick
   onClick = output<ActionClickEvent>();
 

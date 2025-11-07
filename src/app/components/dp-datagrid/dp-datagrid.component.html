@@ -5,36 +5,27 @@
       <div class="toolbar-left">
         <!-- Search -->
         @if (searchable()) {
-          <mat-form-field appearance="outline" class="search-field">
-            <mat-label>{{ searchPlaceholder() }}</mat-label>
-            <input 
-              matInput 
-              [ngModel]="searchTerm()"
-              (ngModelChange)="onSearchChange($event)">
-            <mat-icon matSuffix>search</mat-icon>
-          </mat-form-field>
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>{{ searchPlaceholder() }}</mat-label>
+          <input matInput [ngModel]="searchTerm()" (ngModelChange)="onSearchChange($event)">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
         }
 
         <!-- Filters Toggle Button -->
         @if (filters().length > 0) {
-          <button 
-            mat-stroked-button
-            (click)="toggleFilters()"
-            class="filter-toggle-button">
-            <mat-icon>filter_list</mat-icon>
-            Filtros
-          </button>
-          
-          <!-- Clear Filters Button -->
-          @if (showFilters() && hasActiveFilters()) {
-            <button 
-              mat-icon-button
-              (click)="clearAllFilters()"
-              class="clear-filters-button"
-              matTooltip="Limpiar todos los filtros">
-              <mat-icon>delete_outline</mat-icon>
-            </button>
-          }
+        <button mat-stroked-button (click)="toggleFilters()" class="filter-toggle-button">
+          <mat-icon>filter_list</mat-icon>
+          Filtros
+        </button>
+
+        <!-- Clear Filters Button -->
+        @if (showFilters() && hasActiveFilters()) {
+        <button mat-icon-button (click)="clearAllFilters()" class="clear-filters-button"
+          matTooltip="Limpiar todos los filtros">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+        }
         }
       </div>
 
@@ -46,80 +37,59 @@
 
     <!-- Filters Container -->
     @if (showFilters() && filters().length > 0) {
-      <ng-content select="dp-datagrid-filter-container"></ng-content>
+    <ng-content select="dp-datagrid-filter-container"></ng-content>
     }
   </div>
 
   <!-- Data Grid -->
   <div class="dp-datagrid-content">
     <!-- Header -->
-    <dp-datagrid-header
-      [columns]="columns()"
-      [columnWidths]="columnWidths()"
-      [selectable]="selectable()"
-      [allSelected]="isAllSelected()"
-      [indeterminate]="hasSelection() && !isAllSelected()"
-      [sortColumn]="sortColumn()"
-      [sortDirection]="sortDirection()"
-      (masterToggle)="masterToggle()"
+    <dp-datagrid-header [columns]="columns()" [columnWidths]="columnWidths()" [selectable]="selectable()"
+      [allSelected]="isAllSelected()" [indeterminate]="hasSelection() && !isAllSelected()" [sortColumn]="sortColumn()"
+      [sortDirection]="sortDirection()" (masterToggle)="masterToggle()"
       (sort)="handleColumnSort($event.column, $event.direction)">
     </dp-datagrid-header>
 
     <!-- Data Rows -->
     @for (row of paginatedData(); track row.id) {
-      <dp-datagrid-row
-        [columns]="columns()"
-        [columnWidths]="columnWidths()"
-        [rowData]="row"
-        [isSelected]="isSelected(row)"
-        [selectable]="selectable()"
-        [onCellClick]="cellClickHandler"
-        [onCellRender]="cellRenderHandler"
-        (toggleSelection)="toggleSelection(row)">
-      </dp-datagrid-row>
+    <dp-datagrid-row [columns]="columns()" [columnWidths]="columnWidths()" [rowData]="row"
+      [isSelected]="isSelected(row)" [selectable]="selectable()" [onCellClick]="cellClickHandler"
+      [onCellRender]="cellRenderHandler" (toggleSelection)="toggleSelection(row)">
+    </dp-datagrid-row>
     }
 
     <!-- Empty state -->
     @if (paginatedData().length === 0) {
-      <div class="empty-state">
-        <mat-icon>inbox</mat-icon>
-        <p>No hay datos para mostrar</p>
-      </div>
+    <div class="empty-state">
+      <mat-icon>inbox</mat-icon>
+      <p>No hay datos para mostrar</p>
+    </div>
     }
   </div>
 
   <!-- Pagination -->
   @if (pagination() && totalRows() > 0) {
-    <div class="dp-datagrid-pagination">
-      <span class="pagination-label">{{ paginationItemsPerPageLabel() }}</span>
-      <select 
-        class="pagination-select"
-        [value]="currentPageSize()"
-        (change)="onPageSizeChange($event)">
-        @for (option of pageSizeOptions(); track option) {
-          <option [value]="option">{{ option }}</option>
-        }
-      </select>
-      
-      <span class="pagination-range">
-        {{ paginationRangeLabel()(currentPage(), currentPageSize(), totalRows()) }}
-      </span>
-      
-      <button 
-        class="pagination-button"
-        [disabled]="currentPage() === 0"
-        (click)="goToPreviousPage()"
-        aria-label="Página anterior">
-        <mat-icon>chevron_left</mat-icon>
-      </button>
-      
-      <button 
-        class="pagination-button"
-        [disabled]="currentPage() >= totalPages() - 1"
-        (click)="goToNextPage()"
-        aria-label="Página siguiente">
-        <mat-icon>chevron_right</mat-icon>
-      </button>
-    </div>
+  <div class="dp-datagrid-pagination">
+    <span class="pagination-label">{{ paginationItemsPerPageLabel() }}</span>
+    <select class="pagination-select" [value]="currentPageSize()" (change)="onPageSizeChange($event)">
+      @for (option of pageSizeOptions(); track option) {
+      <option [value]="option">{{ option }}</option>
+      }
+    </select>
+
+    <span class="pagination-range">
+      {{ paginationRangeLabel()(currentPage(), currentPageSize(), totalRows()) }}
+    </span>
+
+    <button class="pagination-button" [disabled]="currentPage() === 0" (click)="goToPreviousPage()"
+      aria-label="Página anterior">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <button class="pagination-button" [disabled]="currentPage() >= totalPages() - 1" (click)="goToNextPage()"
+      aria-label="Página siguiente">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
   }
 </div>

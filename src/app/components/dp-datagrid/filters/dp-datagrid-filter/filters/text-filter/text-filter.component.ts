@@ -6,6 +6,7 @@ import { FilterBase } from '../../shared/filter-base';
 /**
  * COMPONENTE ATOMICO PARA FILTRO DE TEXTO
  * RESPONSABILIDAD UNICA: INPUT DE TEXTO SIMPLE CON ESTILOS PERSONALIZADOS DE FIGMA
+ * SOPORTA ICONOS COMO SVG INLINE O RUTAS A ARCHIVOS
  */
 @Component({
   selector: 'dp-text-filter',
@@ -22,7 +23,16 @@ import { FilterBase } from '../../shared/filter-base';
       <div class="input-wrapper">
         <!-- ICONO IZQUIERDO -->
         @if (iconLeft()) {
-          <div class="input-icon input-icon-left" [innerHTML]="iconLeft()"></div>
+          @if (isIconPath(iconLeft())) {
+            <!-- ICONO DESDE RUTA DE ARCHIVO -->
+            <img
+              class="input-icon input-icon-left"
+              [src]="iconLeft()"
+              alt="icon">
+          } @else {
+            <!-- ICONO SVG INLINE -->
+            <div class="input-icon input-icon-left" [innerHTML]="iconLeft()"></div>
+          }
         }
 
         <!-- INPUT -->
@@ -37,7 +47,16 @@ import { FilterBase } from '../../shared/filter-base';
 
         <!-- ICONO DERECHO -->
         @if (iconRight()) {
-          <div class="input-icon input-icon-right" [innerHTML]="iconRight()"></div>
+          @if (isIconPath(iconRight())) {
+            <!-- ICONO DESDE RUTA DE ARCHIVO -->
+            <img
+              class="input-icon input-icon-right"
+              [src]="iconRight()"
+              alt="icon">
+          } @else {
+            <!-- ICONO SVG INLINE -->
+            <div class="input-icon input-icon-right" [innerHTML]="iconRight()"></div>
+          }
         }
       </div>
     </div>
@@ -119,11 +138,27 @@ import { FilterBase } from '../../shared/filter-base';
       pointer-events: none;
       color: #5F6368;
 
+      /* PARA SVG INLINE */
       ::ng-deep svg {
         width: 20px;
         height: 20px;
         fill: currentColor;
       }
+
+      /* PARA IMG (RUTAS DE ARCHIVO) */
+      &.input-icon-left img,
+      &.input-icon-right img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
+    }
+
+    /* ESTILOS ESPECIFICOS PARA IMG */
+    img.input-icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
     }
 
     .input-icon-left {
@@ -139,7 +174,7 @@ export class TextFilterComponent extends FilterBase {
   value = signal('');
   valueInput = input<string>('');
 
-  //INPUTS PARA ICONOS SVG
+  //INPUTS PARA ICONOS SVG O RUTAS
   iconLeft = input<string>('');
   iconRight = input<string>('');
 
@@ -164,5 +199,42 @@ export class TextFilterComponent extends FilterBase {
   onValueChange(value: string): void {
     this.value.set(value);
     this.emitFilterChange(value);
+  }
+
+  /**
+   * DETECTAR SI EL ICONO ES UNA RUTA DE ARCHIVO O SVG INLINE
+   * RETORNA TRUE SI ES UNA RUTA DE ARCHIVO
+   * METODO MEJORADO PARA EVITAR FALSOS POSITIVOS
+   */
+  isIconPath(icon: string): boolean {
+    if (!icon) return false;
+
+    //SI EMPIEZA CON '<' ES DEFINITIVAMENTE SVG INLINE
+    if (icon.trim().startsWith('<')) {
+      return false;
+    }
+
+    //DETECTAR RUTAS ABSOLUTAS Y RELATIVAS
+    if (icon.startsWith('/') ||
+      icon.startsWith('./') ||
+      icon.startsWith('../') ||
+      icon.startsWith('http://') ||
+      icon.startsWith('https://')) {
+      return true;
+    }
+
+    //DETECTAR RUTAS QUE EMPIEZAN CON 'assets'
+    if (icon.startsWith('assets/')) {
+      return true;
+    }
+
+    //DETECTAR EXTENSIONES DE ARCHIVO AL FINAL DEL STRING
+    const fileExtensions = ['.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico'];
+    if (fileExtensions.some(ext => icon.toLowerCase().endsWith(ext))) {
+      return true;
+    }
+
+    //SI NO CUMPLE NINGUNA CONDICION, ASUMIR QUE ES SVG INLINE
+    return false;
   }
 }

@@ -71,6 +71,7 @@ export interface FilterConfig {
 export interface FilterOption {
   value: string | boolean;
   label: string;
+  icon?: string;
 }
 
 export interface TableAction {
