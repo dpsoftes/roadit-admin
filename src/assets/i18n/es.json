@@ -855,13 +855,14 @@
     "viewFile": "ver archivo",
     "deleteFile": "Eliminar archivo"
   },
-  "EntityDocumentType":{
+  "EntityDocumentType": {
     "DNI": "Dni",
     "CIF": "Cif",
     "OTHER": "Otro"
   },
   "drivers": {
     "title": "Conductores",
+    "create": "CREAR NUEVO CONDUCTOR",
     "list": {
       "image": "Foto",
       "name": "Nombre",
@@ -880,7 +881,7 @@
       "status": "Estado",
       "actions": "Acciones",
       "searchPlaceholder": "Buscar",
-      "is_active": "Estado Activo",
+      "is_active": "Estado",
       "expiredDocuments": "Conductores con documentos expirados",
       "newDocuments": "Conductores con nuevos documentos aportados",
       "create-driver": "Crear nuevo conductor",
@@ -909,14 +910,6 @@
     "isActive": {
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo"
-    },
-    "tags": {
-      "Puntual": "Puntual",
-      "Profesional": "Profesional",
-      "Responsable": "Responsable",
-      "Eficiente": "Eficiente",
-      "Experiencia": "Experiencia",
-      "Nuevo": "Nuevo"
     },
     "actions": {
       "edit": "Editar",

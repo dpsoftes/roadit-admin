@@ -176,6 +176,21 @@ export class DriversComponent implements OnInit {
     `;
   };
 
+  renderStatus = (column: TableColumn, row: any): string => {
+    //RENDERIZADO PERSONALIZADO PARA is_active
+    //EVALUA SI EL VALOR ES true O false Y TRADUCCION
+    const isActive = row.is_active;
+    const translationKey = isActive ? 'drivers.isActive.ACTIVE' : 'drivers.isActive.INACTIV';
+    const translatedText = this.i18n.translate(translationKey);
+
+    return `
+      <div class="validated-cell-wrapper">
+        <span class="validated-text-span">${translatedText}</span>
+      </div>
+    `;
+  };
+
+
   constructor() {
     //EFECTO QUE ACTUALIZA LA SEÑAL LOCAL CUANDO CAMBIA EL STORE
     effect(() => {
