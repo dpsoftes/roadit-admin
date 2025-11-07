@@ -4,7 +4,8 @@ import {
   signal,
   OnInit,
   inject,
-  effect
+  effect,
+  computed
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
@@ -13,6 +14,7 @@ import { TableEvent } from '@components/dynamic-table/dynamic-table.interfaces';
 import { createDriversTableConfig } from './driversTableConfig';
 import { DriverStore } from '@store/driver.state';
 import { I18nService } from '@i18n/i18n.service';
+import { GlobalStore } from '@store/global.state';
 
 @Component({
   selector: 'app-drivers',
@@ -29,9 +31,36 @@ export class DriversComponent implements OnInit {
   private i18n = inject(I18nService);
   store = inject(DriverStore);
   drivers = signal(this.store.drivers());
+  private globalStore = inject(GlobalStore);
+
+  //OBTENER TODAS LAS TAGS DEL GLOBALSTORE
+  allTags = this.globalStore.tags();
+
+  //COMPUTED: FILTRAR SOLO LAS TAGS TIPO DRIVER
+  driverTags = computed(() => {
+    return this.allTags.filter((tag: any) => tag.type === 'DRIVER');
+  });
+
+  //COMPUTED: CONVERTIR TAGS A FORMATO DE OPCIONES PARA EL FILTRO
+  tagOptions = computed(() => {
+    const currentLanguage = this.globalStore.language() as 'es' | 'en';
+    return this.driverTags().map((tag: any) => ({
+      value: String(tag.id),
+      label: this.getTagName(tag, currentLanguage),
+      color: this.getTagColor(tag)
+    }));
+  });
 
   //CONFIGURACION DE LA TABLA
-  driversTableConfig = signal(createDriversTableConfig(this.drivers, this.i18n));
+  driversTableConfig = signal(
+    createDriversTableConfig(
+      this.drivers,
+      this.i18n,
+      this.tagOptions(),
+      this.allTags,
+      this.globalStore.language() as 'es' | 'en'
+    )
+  );
 
   constructor() {
     //EFECTO QUE ACTUALIZA LA SEÑAL LOCAL CUANDO CAMBIA EL STORE
@@ -39,6 +68,25 @@ export class DriversComponent implements OnInit {
       this.drivers.set(this.store.drivers());
       //ACTUALIZAR LA TABLA CUANDO CAMBIEN LOS DATOS
       this.driversTableConfig().data.set(this.drivers());
+    });
+
+    //EFECTO QUE ACTUALIZA LA CONFIG DE LA TABLA CUANDO CAMBIAN LAS TAG OPTIONS O EL IDIOMA
+    effect(() => {
+      //FORZAR LA LECTURA DEL IDIOMA PARA QUE EL EFECTO SE EJECUTE CUANDO CAMBIE
+      const currentLanguage = this.globalStore.language() as 'es' | 'en';
+      const currentOptions = this.tagOptions();
+
+      console.log('🔄 Effect ejecutado - Idioma:', currentLanguage);
+      console.log('🏷️ Tag options actuales:', currentOptions);
+
+      const newConfig = createDriversTableConfig(
+        this.drivers,
+        this.i18n,
+        currentOptions,
+        this.allTags,
+        currentLanguage
+      );
+      this.driversTableConfig.set(newConfig);
     });
   }
 
@@ -48,13 +96,58 @@ export class DriversComponent implements OnInit {
 
     //CARGAR CONDUCTORES DESDE EL BACKEND
     await this.loadDrivers();
+
+    //LOG PARA DEBUG
+    console.log('📊 Drivers cargados:', this.drivers().length);
+    console.log('🏷️ Tags disponibles:', this.allTags.length);
+    console.log('🌍 Idioma actual:', this.globalStore.language());
+  }
+
+  //HELPER: OBTENER NOMBRE DE TAG EN EL IDIOMA ESPECIFICADO
+  private getTagName(tag: any, language: 'es' | 'en' = 'es'): string {
+    //SI LA TAG TIENE EL METODO getName (ES INSTANCIA DE TagDto)
+    if (typeof tag.getName === 'function') {
+      return tag.getName(language);
+    }
+    //SI ES OBJETO PLANO CON LA ESTRUCTURA NUEVA
+    if (tag.name && typeof tag.name === 'object') {
+      return tag.name[language] || tag.name.es || '';
+    }
+    //FALLBACK PARA ESTRUCTURA ANTIGUA
+    return tag.name || '';
+  }
+
+  //HELPER: OBTENER COLOR DE TAG CON #
+  private getTagColor(tag: any): string {
+    //SI LA TAG TIENE EL METODO getColorWithHash (ES INSTANCIA DE TagDto)
+    if (typeof tag.getColorWithHash === 'function') {
+      return tag.getColorWithHash();
+    }
+    //SI ES OBJETO PLANO
+    if (tag.color) {
+      return tag.color.startsWith('#') ? tag.color : `#${tag.color}`;
+    }
+    //FALLBACK
+    return '#999999';
+  }
+
+  //DEBUG: MOSTRAR TAGS EN FORMATO JSON LEGIBLE
+  tagsDebug(): string {
+    return JSON.stringify({
+      totalTags: this.allTags.length,
+      driverTags: this.driverTags().length,
+      tagOptions: this.tagOptions().length,
+      currentLanguage: this.globalStore.language(),
+      sampleTag: this.allTags[0] || null,
+      sampleDriverTag: this.driverTags()[0] || null,
+      sampleOption: this.tagOptions()[0] || null
+    }, null, 2);
   }
 
   //CARGAR CONDUCTORES EN LA TABLA
   async loadDrivers(params?: TableEvent) {
     //EL MÉTODO getDrivers DEL STORE AUTOMÁTICAMENTE ACTUALIZA EL ESTADO
     await this.store.getDrivers();
-
   }
 
   //MANEJAR EVENTOS DE LA TABLA

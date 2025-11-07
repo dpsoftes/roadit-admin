@@ -2,7 +2,77 @@ import { signal, WritableSignal } from "@angular/core";
 import { TableConfig } from "@components/dynamic-table/dynamic-table.interfaces";
 import { I18nService } from "@i18n/i18n.service";
 
-export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n: I18nService): TableConfig => ({
+//INTERFACE PARA LAS OPCIONES DE TAG
+export interface TagOption {
+  value: string;
+  label: string;
+  color?: string;
+}
+
+//HELPER: BUSCAR TAG POR ID EN EL ARRAY DE TODAS LAS TAGS
+const findTagById = (tagId: number, allTags: any[]): any | null => {
+  return allTags.find((tag: any) => tag.id === tagId) || null;
+};
+
+//HELPER: OBTENER NOMBRE DE TAG EN EL IDIOMA ESPECIFICADO
+const getTagName = (tag: any, language: 'es' | 'en' = 'es'): string => {
+  if (typeof tag?.getName === 'function') {
+    return tag.getName(language);
+  }
+  if (tag?.name && typeof tag.name === 'object') {
+    return tag.name[language] || tag.name.es || '';
+  }
+  return tag?.name || 'Sin nombre';
+};
+
+//HELPER: OBTENER COLOR DE TAG CON #
+const getTagColor = (tag: any): string => {
+  if (typeof tag?.getColorWithHash === 'function') {
+    return tag.getColorWithHash();
+  }
+  if (tag?.color) {
+    return tag.color.startsWith('#') ? tag.color : `#${tag.color}`;
+  }
+  return '#999999';
+};
+
+//HELPER: RENDERIZAR CHIPS DE TAGS CON COLORES Y NOMBRES TRADUCIDOS
+//AHORA USA ATRIBUTO data-color EN LUGAR DE INLINE STYLE
+const renderTagChips = (driverTags: any[], allTags: any[], language: 'es' | 'en'): string => {
+  if (!Array.isArray(driverTags) || driverTags.length === 0) {
+    return '<span class="no-tags">-</span>';
+  }
+
+  const chipsHtml = driverTags
+    .map((driverTag: any) => {
+      //SI LA TAG DEL CONDUCTOR ES UN OBJETO CON ID
+      const tagId = typeof driverTag === 'object' ? driverTag.id : driverTag;
+
+      //BUSCAR LA TAG COMPLETA EN TODAS LAS TAGS
+      const fullTag = findTagById(tagId, allTags);
+
+      if (!fullTag) {
+        return `<span class="tag-chip unknown-tag" data-color="#cccccc">ID: ${tagId}</span>`;
+      }
+
+      const tagName = getTagName(fullTag, language);
+      const tagColor = getTagColor(fullTag);
+
+      //USAR data-color EN LUGAR DE style="background-color"
+      return `<span class="tag-chip" data-color="${tagColor}">${tagName}</span>`;
+    })
+    .join('');
+
+  return `<div class="tags-container">${chipsHtml}</div>`;
+};
+
+export const createDriversTableConfig = (
+  listArray: WritableSignal<any[]>,
+  i18n: I18nService,
+  tagOptions: TagOption[] = [],
+  allTags: any[] = [],
+  currentLanguage: 'es' | 'en' = 'es'
+): TableConfig => ({
   columns: [
     {
       key: 'image',
@@ -97,10 +167,11 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
     {
       key: 'tags',
       label: 'drivers.list.tags',
-      type: 'chip-array',
+      type: 'custom',
       width: 12,
-      chipConfig: {
-        type: 'tags',
+      render: (column: any, row: any) => {
+        //RENDERIZAR TAGS CON NOMBRES TRADUCIDOS Y COLORES
+        return renderTagChips(row.tags, allTags, currentLanguage);
       }
     },
     {
@@ -194,11 +265,8 @@ export const createDriversTableConfig = (listArray: WritableSignal<any[]>, i18n:
       type: 'chips',
       multiple: true,
       width: 20,
-      options: [
-        { value: '1', label: 'tag_1' },
-        { value: '2', label: 'tag_2' },
-        { value: '3', label: 'tag_3' }
-      ]
+      //USAR LAS OPCIONES REALES DESDE EL BACKEND
+      options: tagOptions
     },
     {
       key: 'is_active',
