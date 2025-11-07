@@ -5,7 +5,7 @@ import { ClientCertification } from "@dtos/clients/clientsCertifications.dto";
 import { DocumentsClientsDto } from "@dtos/clients/documents.dto";
 import { PriceRulesClientDto } from "@dtos/clients/priceRules.dtos";
 import { ClientDto } from "@dtos/index";
-import { DocumentTemplateTransportEntity } from "@entities/clients.entities";
+import { ClientBillingAccountEntity, DocumentTemplateTransportEntity } from "@entities/clients.entities";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { ClientsProvider } from "@providers";
 import { Helpers } from "@utils/helpers";
@@ -78,6 +78,7 @@ export const ClientStore = signalStore(
     withMethods((store) => ({
       validGralData: (gral: ClientDto) : string[] => {
         const errors: string[] = [];
+        store.updateState({errors });
         if(Helpers.isEmpty(gral.name) )                             errors.push('errors.client.name-required');
         if(gral.client_group == null || gral.client_group == 0 )    errors.push('errors.client.group-required');
         if(Helpers.isEmpty(gral.client_type) )                      errors.push('errors.client.client-type-required');
@@ -86,7 +87,29 @@ export const ClientStore = signalStore(
         if(Helpers.isEmpty(gral.contact_person_name))               errors.push('errors.client.contact-name-required');
         store.updateState({errors, client: gral });
         return errors;
+      },
+
+      validateBilling: () : string[] =>{
+        const errors: string[] = [];
+        store.updateState({errors });
+        
+        const b = store.currentBillingAccount();
+        if(Helpers.isEmpty(b.email_send_invoice) )          errors.push('errors.billing.email_send_invoice');
+        if(Helpers.isEmpty(b.iva) )                         errors.push('errors.billing.iva');
+        if(Helpers.isEmpty(b.business_name) )               errors.push('errors.billing.business_name');
+        if(Helpers.isEmpty(b.address) )                     errors.push('errors.billing.address');
+        if(Helpers.isEmpty(b.postal_code) )                 errors.push('errors.billing.postal_code');
+        if(Helpers.isEmpty(b.country) )                     errors.push('errors.billing.country');
+        if(Helpers.isEmpty(b.city) )                        errors.push('errors.billing.city');
+        if(Helpers.isEmpty(b.phone) )                       errors.push('errors.billing.phone');
+        if(Helpers.isEmpty(b.postal_code) )                 errors.push('errors.billing.postal_code');
+
+        store.updateState({errors });
+
+
+        return errors;
       }
+
     })),
 
     // Metodos que acceden a providers
@@ -168,7 +191,36 @@ export const ClientStore = signalStore(
             console.error('Error al guardar documento del cliente:', error);
             return false;
           }
-        }
+        },
+        saveBilling: async () => {
+          try{
+            
+            const errors = store.validateBilling();
+
+            if(errors.length > 0){
+              return;
+            }
+
+            let {id, ...billing} = store.currentBillingAccount();
+            billing.client = store.client().id!;
+            delete(billing.deleted_date);
+            billing.state = true;
+            let result;
+            if(id){
+              const b =ClientBillingAccountEntity.fromDto(store.currentBillingAccount());
+              billing = b.toPatch() as any; 
+            }
+             result = await prov.updateBilling(billing, id);
+            if(result){
+              store.updateState({ currentBillingAccount: result, errors: [] });
+              return result;
+            }
+            return null;
+          }catch(error){
+            console.error('Error al guardar documento del cliente:', error);
+            throw error;
+          }
+        },
         
       }
     }

@@ -45,11 +45,13 @@ export class Clients implements OnInit {
     private router:Router,
   ){
     this.route.params.subscribe(params => {
-      if(params['tab'] === 'group') {
+      if(params['type'] === 'groups') {
         this.activeTab.set('groups');
-      } else if(params['tab'] === 'list') {
+      } else if(params['type'] === 'list') {
         this.activeTab.set('list');
       }
+      this.onTabChange(params['type']);
+
     });
     var act = this.clientTableConfig().actions;
     act!.create!.action = () => {this.createClient()};
@@ -85,7 +87,7 @@ export class Clients implements OnInit {
       }
     }
     var data = await this.clientsProvider.getGroups(options);
-    this.groupsTableConfig().data.set(data?.map(item => ({ ...item, assigned_admins: item.assigned_admins.map(admin => admin.name).join(', ') })) as any[]);
+    this.groupsTableConfig().data.set(data as any[]);
 
   }
   async loadClients(params?: TableEvent){

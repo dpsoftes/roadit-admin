@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +12,7 @@ import { ClientStore } from '@store/clients.state';
 import { ClientBillingAccountEntity } from '@entities/clients.entities';
 import { BillingAccountItemDto } from '@dtos/clients/billingsAccounts.dto';
 import { EntityDocumentTypeDescriptions } from '@enums/common.enum';
+import { ISO_COUNTRIES_SELECT } from '@dtos/country-langs.dto';
 
 
 
@@ -34,59 +35,21 @@ import { EntityDocumentTypeDescriptions } from '@enums/common.enum';
 export class BillingComponent {
   store = inject(ClientStore);
   current = new  ClientBillingAccountEntity();
-  billingAccounts = signal<BillingAccountItemDto[]>([]);
+  errors = computed(() => this.store.errors());
+  billingAccounts = computed(() => this.store.billingsAccounts());
   docstype = Object.entries(EntityDocumentTypeDescriptions).map(([key, value]) => ({ key, value })); 
+  ISO_COUNTRIES_SELECT = Object.entries(ISO_COUNTRIES_SELECT).map(([key, value]) => ({ key, value })); 
   constructor() {
     // Mock data for billing accounts
-    effect(() => {
+/*     effect(() => {
       this.billingAccounts.set(this.store.billingsAccounts());
-    });
+    }); */
   }
   
-/*   email_send_invoice = signal<string>('');
-  state = signal<string>('');
-  iban = signal<string>('');
-  iva = signal<string>('');
-  irpf = signal<string>('');
-  bic = signal<string>('');
-  is_favourite = signal<boolean>(false);
-  business_name = signal<string>('');
-  entity_number = signal<string>('');
-  document = signal<string>('');
-  document_type = signal<string>('');
-  address = signal<string>('');
-  address_complement = signal<string>('');
-  postal_code = signal<string>('');
-  country = signal<string>('');
-  city = signal<string>('');
-  phone = signal<string>('');
-  expire_period_days = signal<number>(0);
-  client = signal<number>(0); */
 
   onSave(): void {
-   /*  const formData = {
-      email_send_invoice: this.email_send_invoice(),
-      state: this.state(),
-      iban: this.iban(),
-      iva: this.iva(),
-      irpf: this.irpf(),
-      bic: this.bic(),
-      is_favourite: this.is_favourite(),
-      business_name: this.business_name(),
-      entity_number: this.entity_number(),
-      document: this.document(),
-      document_type: this.document_type(),
-      address: this.address(),
-      address_complement: this.address_complement(),
-      postal_code: this.postal_code(),
-      country: this.country(),
-      city: this.city(),
-      phone: this.phone(),
-      expire_period_days: this.expire_period_days(),
-      client: this.client(),
-    };
-     
-    console.log('Form data:', formData);*/
+    this.store.updateState({currentBillingAccount: this.current.toDto()});
+    this.store.saveBilling();
   }
 
   onAddAccount(): void {

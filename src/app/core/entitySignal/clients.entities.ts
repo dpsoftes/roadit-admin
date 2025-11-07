@@ -381,6 +381,7 @@ export class BaseBillingAccountEntity {
 }
 
 export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
+   
     business_name = signal<string>("");
     entity_number = signal<string>("");
     document = signal<string>("");
@@ -439,7 +440,35 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
             revel_identifier: this.revel_identifier(),
         });
     }
-
+    /**
+     * Devuelve un DTO solo con los campos requeridos para POST, según el JSON de ejemplo proporcionado.
+     */
+    toPost(): Partial<ClientBillingAccountDto> {
+        return {
+            email_send_invoice: this.email_send_invoice(),
+            state: this.state(),
+            deleted_date: this.deleted_date(),
+            iban: this.iban(),
+            iva: this.iva(),
+            irpf: this.irpf(),
+            bic: this.bic(),
+            is_favourite: this.is_favourite(),
+            business_name: this.business_name(),
+            entity_number: this.entity_number(),
+            document: this.document(),
+            document_type: this.document_type(),
+            address: this.address(),
+            address_complement: this.address_complement(),
+            postal_code: this.postal_code(),
+            country: this.country(),
+            city: this.city(),
+            phone: this.phone(),
+            expire_period_days: this.expire_period_days(),
+            eurotransport_identifier: this.eurotransport_identifier(),
+            revel_identifier: this.revel_identifier(),
+            client: this.client(),
+        };
+    }
     override copyFromDto(dto: Partial<ClientBillingAccountDto>): void {
         super.copyFromDto(dto);
         if (dto.business_name != undefined) this.business_name.set(dto.business_name);

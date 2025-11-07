@@ -50,7 +50,9 @@
         </form>
     </mat-card-content>
     <mat-card-footer>
-        <button matButton="filled" type="submit" class="save_btn" [disabled]="groupForm.invalid" (click)="onSave()">{{'clients.create-group.save' | translate}}</button>
-        <button matButton="outlined" type="button" class="cancel_btn" (click)="onCancel()">{{'clients.create-group.cancel' | translate}}</button>
+        <div class="buttons-container">
+            <app-buttons type="save-changes" text="clients.create-group.save" (onClick)="onSave()"></app-buttons>
+            <app-buttons type="cancel" text="clients.create-group.cancel" (onClick)="onCancel()"></app-buttons>
+        </div>
     </mat-card-footer>
 </mat-card>

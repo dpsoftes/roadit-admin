@@ -1,138 +1,190 @@
 <mat-card>
     <mat-card-content>
-        <form (ngSubmit)="onSave()">
-        <div class="form">
-            <div class="form-field six_field">
-                <label class="field-label">{{'clients.create-client.entity-reference' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.entity_number()" (input)="current.entity_number.set($event.target.value)" placeholder="Escriba aquí...">
-                </mat-form-field>
-            </div>
+            <div class="form">
+                <div class="form-field six_field">
+                    <label class="field-label">{{'clients.create-client.entity-reference' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.entity_number()"
+                            (input)="current.entity_number.set($event.target.value)" placeholder="Escriba aquí...">
+                    </mat-form-field>
+                </div>
 
-            <div class="form-field six_field">
-                <label class="field-label">{{'clients.create-client.document-type' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="current.document_type()" (selectionChange)="current.document_type.set($event.value)">
-                        @for(item of docstype; track item.key) {
+                <div class="form-field six_field">
+                    <label class="field-label">{{'clients.create-client.document-type' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <mat-select [value]="current.document_type()"
+                            (selectionChange)="current.document_type.set($event.value)">
+                            @for(item of docstype; track item.key) {
                             <mat-option [value]="item.key">{{item.value | translate}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-field six_field">
+                    <label class="field-label">{{'clients.create-client.document-code' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.document()"
+                            (input)="current.document.set($event.target.value)">
+                    </mat-form-field>
+                </div>
+
+                <div class="form-field six_field">
+                    <label class="field-label">{{'clients.create-client.retention' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.irpf()"
+                            (input)="current.irpf.set($event.target.value)">
+                    </mat-form-field>
+                </div>
+
+                <div class="form-field six_field">
+                    <label class="field-label">{{'clients.create-client.company-name' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.business_name()"
+                            (input)="current.business_name.set($event.target.value)">
+                    </mat-form-field>
+                    @if (errors().includes('errors.billing.business_name')) {
+                    <small style="color: #d32f2f; font-size: 12px;">{{'errors.billing.business_name' |
+                        translate}}</small>
+                    }
+                </div>
+
+                <div class="form-field six_field">
+                    <label class="field-label">{{'clients.create-client.vat-type' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.iva()"
+                            (input)="current.iva.set($event.target.value)">
+                    </mat-form-field>
+                    @if (errors().includes('errors.billing.iva')) {
+                    <small style="color: #d32f2f; font-size: 12px;">{{'errors.billing.iva' | translate}}</small>
+                    }
+                </div>
+
+                <div class="form-field half_field">
+                    <label class="field-label">{{'clients.create-client.billing-address' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.address()"
+                            (input)="current.address.set($event.target.value)">
+                    </mat-form-field>
+                    @if (errors().includes('errors.billing.address')) {
+                    <small style="color: #d32f2f; font-size: 12px;">{{'errors.billing.address' | translate}}</small>
+                    }
+                </div>
+
+                <div class="form-field small_field">
+                    <label class="field-label">{{'clients.create-client.address-complement' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.address_complement()"
+                            (input)="current.address_complement.set($event.target.value)">
+                    </mat-form-field>
+                </div>
+
+                <div class="form-field small_field">
+                    <label class="field-label">{{'clients.create-client.postal-code' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.postal_code()"
+                            (input)="current.postal_code.set($event.target.value)">
+                    </mat-form-field>
+                    @if (errors().includes('errors.billing.postal_code')) {
+                    <small style="color: #d32f2f; font-size: 12px;">{{'errors.billing.postal_code' | translate}}</small>
+                    }
+                </div>
+
+                <div class="form-field small_field">
+                    <label class="field-label">{{'clients.create-client.city' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.city()"
+                            (input)="current.city.set($event.target.value)">
+                    </mat-form-field>
+                    @if (errors().includes('errors.billing.city')) {
+                    <small style="color: #d32f2f; font-size: 12px;">{{'errors.billing.city' | translate}}</small>
+                    }
+                </div>
+
+                <div class="form-field small_field">
+
+                    <label class="field-label">{{'clients.create-client.country' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <mat-select [value]="current.country()" (selectionChange)="current.country.set($event.value)">
+                            @for (country of ISO_COUNTRIES_SELECT; track country.key) {
+                            <mat-option [value]="country.value.value">{{ country.value.label }}</mat-option>
                         }
-                    </mat-select>
-                </mat-form-field>
-            </div>
+                        </mat-select>
+                        
+                    </mat-form-field>
+<!--                     <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.country()"
+                            (input)="current.country.set($event.target.value)">
+                    </mat-form-field>
+ -->                    @if (errors().includes('errors.billing.country')) {
+                    <small style="color: #d32f2f; font-size: 12px;">{{'errors.billing.country' | translate}}</small>
+                    }
+                </div>
 
-            <div class="form-field six_field">
-                <label class="field-label">{{'clients.create-client.document-code' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.document()" (input)="current.document.set($event.target.value)">
-                </mat-form-field>
-            </div>
+                <div class="form-field half_field">
+                    <label class="field-label">{{'clients.create-client.eurotransportcar-identifier' |
+                        translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.eurotransport_identifier()"
+                            (input)="current.eurotransport_identifier.set($event.target.value)">
+                    </mat-form-field>
+                </div>
 
-            <div class="form-field six_field">
-                <label class="field-label">{{'clients.create-client.retention' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.irpf()" (input)="current.irpf.set($event.target.value)">
-                </mat-form-field>
-            </div>
+                <div class="form-field half_field">
+                    <label class="field-label">{{'clients.create-client.revel-identifier' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="text" matInput [value]="current.revel_identifier()"
+                            (input)="current.revel_identifier.set($event.target.value)">
+                    </mat-form-field>
+                </div>
 
-            <div class="form-field six_field">
-                <label class="field-label">{{'clients.create-client.company-name' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.business_name()" (input)="current.business_name.set($event.target.value)">
-                </mat-form-field>
-            </div>
+                <div class="form-field third_field">
+                    <label class="field-label">{{'clients.create-client.accounting-email' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="email" matInput [value]="current.email_send_invoice()"
+                            (input)="current.email_send_invoice.set($event.target.value)">
+                    </mat-form-field>
+                    @if (errors().includes('errors.billing.email_send_invoice')) {
+                    <small style="color: #d32f2f; font-size: 12px;">{{'errors.billing.email_send_invoice' |
+                        translate}}</small>
+                    }
+                </div>
 
-            <div class="form-field six_field">
-                <label class="field-label">{{'clients.create-client.vat-type' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.iva()" (input)="current.iva.set($event.target.value)">
-                </mat-form-field>
-            </div>
+                <div class="form-field third_field">
+                    <label class="field-label">{{'clients.create-client.accounting-phone' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <input type="tel" matInput [value]="current.phone()"
+                            (input)="current.phone.set($event.target.value)">
+                    </mat-form-field>
+                    @if (errors().includes('errors.billing.phone')) {
+                    <small style="color: #d32f2f; font-size: 12px;">{{'errors.billing.phone' | translate}}</small>
+                    }
+                </div>
 
-            <div class="form-field half_field">
-                <label class="field-label">{{'clients.create-client.billing-address' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.address()" (input)="current.address.set($event.target.value)">
-                </mat-form-field>
-            </div>
+                <div class="form-field checkbox-field">
+                    <mat-checkbox [checked]="current.is_favourite()"
+                        (change)="current.is_favourite.set($event.checked)">
+                        {{'clients.create-client.mark-as-favorite' | translate}}
+                    </mat-checkbox>
+                </div>
 
-            <div class="form-field small_field">
-                <label class="field-label">{{'clients.create-client.address-complement' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.address_complement()" (input)="current.address_complement.set($event.target.value)">
-                </mat-form-field>
-            </div>
+                <div class="form-field full_field">
+                    <label class="field-label">{{'clients.create-client.due-period' | translate}}</label>
+                    <mat-form-field appearance="outline" class="field-input">
+                        <mat-select [value]="current.expire_period_days()"
+                            (selectionChange)="current.expire_period_days.set($event.value)">
+                            <mat-option value="15">15 días</mat-option>
+                            <mat-option value="30">30 días</mat-option>
+                            <mat-option value="45">45 días</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-            <div class="form-field small_field">
-                <label class="field-label">{{'clients.create-client.postal-code' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.postal_code()" (input)="current.postal_code.set($event.target.value)">
-                </mat-form-field>
+                <div class="form-field button_field">
+                    <button mat-button (click)="onSave()" class="add-account-btn">{{'clients.create-client.add-account'
+                        | translate}}</button>
+                </div>
             </div>
-
-            <div class="form-field small_field">
-                <label class="field-label">{{'clients.create-client.city' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.city()" (input)="current.city.set($event.target.value)">
-                </mat-form-field>
-            </div>
-
-            <div class="form-field small_field">
-                <label class="field-label">{{'clients.create-client.country' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.country()" (input)="current.country.set($event.target.value)">
-                </mat-form-field>
-            </div>
-
-            <div class="form-field half_field">
-                <label class="field-label">{{'clients.create-client.eurotransportcar-identifier' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.eurotransport_identifier()" (input)="current.eurotransport_identifier.set($event.target.value)">
-                </mat-form-field>
-            </div>
-
-            <div class="form-field half_field">
-                <label class="field-label">{{'clients.create-client.revel-identifier' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="text" matInput [value]="current.revel_identifier()" (input)="current.revel_identifier.set($event.target.value)">
-                </mat-form-field>
-            </div>
-
-            <div class="form-field third_field">
-                <label class="field-label">{{'clients.create-client.accounting-email' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="email" matInput [value]="current.email_send_invoice()" (input)="current.email_send_invoice.set($event.target.value)">
-                </mat-form-field>
-            </div>
-
-            <div class="form-field third_field">
-                <label class="field-label">{{'clients.create-client.accounting-phone' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <input type="tel" matInput [value]="current.phone()" (input)="current.phone.set($event.target.value)">
-                </mat-form-field>
-            </div>
-
-            <div class="form-field checkbox-field">
-                <mat-checkbox [checked]="current.is_favourite()" (change)="current.is_favourite.set($event.checked)">
-                    {{'clients.create-client.mark-as-favorite' | translate}}
-                </mat-checkbox>
-            </div>
-
-            <div class="form-field full_field">
-                <label class="field-label">{{'clients.create-client.due-period' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
-                    <mat-select [value]="current.expire_period_days()" (selectionChange)="current.expire_period_days.set($event.value)">
-                        <mat-option value="15">15 días</mat-option>
-                        <mat-option value="30">30 días</mat-option>
-                        <mat-option value="45">45 días</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div class="form-field button_field">
-                <button mat-button class="add-account-btn" type="submit">{{'clients.create-client.add-account' | translate}}</button>
-            </div>
-        </div>
-        </form>
     </mat-card-content>
 </mat-card>
 
@@ -154,30 +206,30 @@
                 </thead>
                 <tbody>
                     @for (account of billingAccounts(); track account.id) {
-                        <tr>
-                            <td>{{ account.entity_number }}</td>
-                            <td>{{ account.document }}</td>
-                            <td>{{ account.business_name }}</td>
-                            <td>{{ account.city }}</td>
-                            <td>{{ account.email_send_invoice }}</td>
-                            <td>{{ account.irpf }}</td>
-                            <td>{{ account.expire_period_days }}</td>
-                            <td class="actions-cell">
-                                <button mat-icon-button class="action-btn edit-btn">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
-                                <button mat-icon-button class="action-btn view-btn">
-                                    <mat-icon>visibility</mat-icon>
-                                </button>
-                                <button mat-icon-button class="action-btn delete-btn">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ account.entity_number }}</td>
+                        <td>{{ account.document }}</td>
+                        <td>{{ account.business_name }}</td>
+                        <td>{{ account.city }}</td>
+                        <td>{{ account.email_send_invoice }}</td>
+                        <td>{{ account.irpf }}</td>
+                        <td>{{ account.expire_period_days }}</td>
+                        <td class="actions-cell">
+                            <button mat-icon-button class="action-btn edit-btn">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button class="action-btn view-btn">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                            <button mat-icon-button class="action-btn delete-btn">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
-            
+
             <div class="pagination-container">
                 <div class="pagination-info">
                     <span>{{'clients.create-client.results-per-page' | translate}}:</span>

@@ -23,7 +23,7 @@ export const MENU_ITEMS: MenuItem[] = [
       {
         icon: 'groups',
         label: 'navigation.client_group',
-        route: '/clients/group'
+        route: '/clients/groups'
       },
       {
         icon: 'groups',

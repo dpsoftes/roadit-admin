@@ -1,0 +1,49 @@
+<div class="address-modal">
+    <div class="modal-header">
+        <div class="header-content">
+            <p class="modal-subtitle">{{'transports.create.pickup-address' | translate}}</p>
+        </div>
+    </div>
+
+    <div class="modal-content">
+        <div class="search-section">
+            <mat-form-field appearance="outline" class="search-field">
+                <input 
+                    type="text" 
+                    matInput 
+                    [placeholder]="'transports.create.address-search-placeholder' | translate"
+                    [value]="searchQuery()"
+                    (input)="onSearchChange($event)">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+
+        <button class="add-address-button" (click)="onAddNewAddress()">
+            <mat-icon>add</mat-icon>
+            <span>{{'transports.create.add-new-address' | translate}}</span>
+        </button>
+
+        <div class="addresses-list">
+            <div 
+                class="address-card" 
+                [class.selected]="selectedAddress()?.name === favoriteAddress().name"
+                (click)="onSelectAddress(favoriteAddress())">
+                <mat-icon class="address-icon favorite">star</mat-icon>
+                <div class="address-info">
+                    <h3 class="address-name">{{favoriteAddress().name}}</h3>
+                    <p class="address-detail">{{favoriteAddress().address}}</p>
+                    <p class="address-contact">{{favoriteAddress().contact}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-actions">
+        <app-buttons 
+            type="save-changes" 
+            [text]="'transports.create.save'" 
+            (onClick)="onSave()">
+        </app-buttons>
+    </div>
+</div>
+
