@@ -36,8 +36,25 @@ const getTagColor = (tag: any): string => {
   return '#999999';
 };
 
+//HELPER: CALCULAR SI EL COLOR ES CLARO U OSCURO PARA DECIDIR COLOR DE TEXTO
+const isLightColor = (hexColor: string): boolean => {
+  //ELIMINAR EL # SI EXISTE
+  const hex = hexColor.replace('#', '');
+
+  //CONVERTIR A RGB
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+
+  //CALCULAR LUMINOSIDAD (FORMULA ESTÁNDAR)
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  //SI LA LUMINOSIDAD ES MAYOR A 0.5, ES UN COLOR CLARO
+  return luminance > 0.5;
+};
+
 //HELPER: RENDERIZAR CHIPS DE TAGS CON COLORES Y NOMBRES TRADUCIDOS
-//AHORA USA ATRIBUTO data-color EN LUGAR DE INLINE STYLE
+//AHORA USA ESTILOS INLINE DIRECTAMENTE
 const renderTagChips = (driverTags: any[], allTags: any[], language: 'es' | 'en'): string => {
   if (!Array.isArray(driverTags) || driverTags.length === 0) {
     return '<span class="no-tags">-</span>';
@@ -52,14 +69,17 @@ const renderTagChips = (driverTags: any[], allTags: any[], language: 'es' | 'en'
       const fullTag = findTagById(tagId, allTags);
 
       if (!fullTag) {
-        return `<span class="tag-chip unknown-tag" data-color="#cccccc">ID: ${tagId}</span>`;
+        return `<span class="tag-chip unknown-tag" style="background-color: #cccccc; color: #666666;">ID: ${tagId}</span>`;
       }
 
       const tagName = getTagName(fullTag, language);
       const tagColor = getTagColor(fullTag);
 
-      //USAR data-color EN LUGAR DE style="background-color"
-      return `<span class="tag-chip" data-color="${tagColor}">${tagName}</span>`;
+      //DETERMINAR COLOR DE TEXTO BASADO EN LA LUMINOSIDAD DEL FONDO
+      const textColor = isLightColor(tagColor) ? '#000000' : '#ffffff';
+
+      //USAR ESTILOS INLINE DIRECTAMENTE (ANGULAR PERMITE background-color Y color)
+      return `<span class="tag-chip" style="background-color: ${tagColor}; color: ${textColor};">${tagName}</span>`;
     })
     .join('');
 
@@ -91,12 +111,22 @@ export const createDriversTableConfig = (
       key: 'name',
       label: 'drivers.list.name',
       type: 'custom',
-      width: 12,
+      width: 8,
       render: (column: any, row: any) => {
-        //CONCATENAR NOMBRE Y APELLIDO
-        const fullName = `${row.name || ''} ${row.last_name || ''}`.trim();
-        return fullName || '-';
+        //RENDERIZADO HTML PERSONALIZADO PARA DNI/CIF
+        //LOS ESTILOS ESTÁN EN drivers.component.scss
+        return `
+          <div class="dni-cif-cell">
+            <div>${row.name}</div>
+            <div>${row.last_name}</div>
+          </div>
+        `;
       }
+      // render: (column: any, row: any) => {
+      //   //CONCATENAR NOMBRE Y APELLIDO
+      //   const fullName = `${row.name || ''} ${row.last_name || ''}`.trim();
+      //   return fullName || '-';
+      // }
     },
     {
       key: 'dni/cif',
@@ -161,17 +191,16 @@ export const createDriversTableConfig = (
       key: 'rating',
       label: 'drivers.list.rating',
       type: 'text',
-      width: 11,
+      width: 12,
       align: 'center'
     },
     {
       key: 'tags',
       label: 'drivers.list.tags',
       type: 'custom',
-      width: 12,
+      width: 15,
       render: (column: any, row: any) => {
-        //RENDERIZAR TAGS CON NOMBRES TRADUCIDOS Y COLORES
-        return renderTagChips(row.tags, allTags, currentLanguage);
+        return renderTagChips(row.tags || [], allTags, currentLanguage);
       }
     },
     {

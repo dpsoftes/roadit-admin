@@ -79,6 +79,8 @@ export class DriversComponent implements OnInit {
       console.log('🔄 Effect ejecutado - Idioma:', currentLanguage);
       console.log('🏷️ Tag options actuales:', currentOptions);
 
+      //RECREAR LA CONFIGURACIÓN DE LA TABLA COMPLETAMENTE
+      //ESTO ASEGURA QUE LAS FUNCIONES render SE EJECUTEN CON EL NUEVO IDIOMA
       const newConfig = createDriversTableConfig(
         this.drivers,
         this.i18n,
@@ -86,7 +88,11 @@ export class DriversComponent implements OnInit {
         this.allTags,
         currentLanguage
       );
+
+      //ACTUALIZAR LA SEÑAL DE CONFIGURACIÓN
       this.driversTableConfig.set(newConfig);
+
+      console.log('✅ Configuración de tabla actualizada');
     });
   }
 

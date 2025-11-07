@@ -4,11 +4,4 @@
   <!-- TABLA DE CONDUCTORES -->
   <app-dynamic-table [config]="driversTableConfig()" (tableEvent)="handleTableEvent($event)">
   </app-dynamic-table>
-
-  <!-- DEBUG: MOSTRAR TAGS -->
-  <div class="debug-section">
-    <h3>DEBUG - Tags disponibles:</h3>
-    <p><strong>Total de tags:</strong> {{ allTags.length }}</p>
-    <pre>{{ tagsDebug() }}</pre>
-  </div>
 </div>

@@ -14,6 +14,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { RouterModule } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   TableConfig,
   TableColumn,
@@ -55,6 +56,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   @Output() tableEvent = new EventEmitter<TableEvent>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   private globalStore = inject(GlobalStore);
+  private sanitizer = inject(DomSanitizer);
 
   // Signals para el estado del componente
   displayedColumns = signal<string[]>([]);
@@ -88,6 +90,11 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
       this.pageSize.set(configPageSize);
       this.paginator.pageSize = configPageSize;
     }
+  }
+
+  getSafeCustomHtml(row: any, column: TableColumn): SafeHtml {
+    const html = this.getCellValue(row, column);
+    return this.sanitizer.bypassSecurityTrustHtml(html as string);
   }
 
   hasFixedWidthColumns(): boolean {
