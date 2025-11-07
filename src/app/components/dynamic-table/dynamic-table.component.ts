@@ -27,6 +27,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { Helpers } from '@utils/helpers';
 import { GlobalStore } from '@store/global.state';
+import { I18nService } from '@i18n/i18n.service';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -55,6 +56,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   @Output() tableEvent = new EventEmitter<TableEvent>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   private globalStore = inject(GlobalStore);
+  private i18n = inject(I18nService);
 
   // Signals para el estado del componente
   displayedColumns = signal<string[]>([]);
@@ -275,7 +277,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     // Si el valor es un número y el chipConfig es tipo 'tags', buscar el tag por ID
     if (typeof value === 'number' && 'type' in chipConfig && chipConfig.type === 'tags') {
       const tag = this.globalStore.tags().find(t => t.id === value);
-      return tag?.name || value.toString();
+      return tag?.name[this.i18n.currentLanguage()] || value.toString();
     }
 
     // Si el valor es un objeto, extraer el campo name o username

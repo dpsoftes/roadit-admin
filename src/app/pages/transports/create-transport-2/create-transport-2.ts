@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TransportPrincipalType } from '@enums/transport.enum';
-import { VehicleEntity } from '@entities/transports.entities';
+import { VehicleEntity } from '@entities/transports.entities.old';
 import { VehicleSize, FuelType, fuelTypeDescriptions } from '@enums/vehicle.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '@components/modal/modal.component';

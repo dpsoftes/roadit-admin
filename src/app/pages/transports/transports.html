@@ -5,15 +5,17 @@
 @if (activeTab() === 'assignment') {
   <dp-datagrid
     datagridId="transports-assignment-grid"
-    [data]="transports()"
-    [localData]="true"
+    [data]="historyList()"
+    [localData]="false"
     [selectable]="false"
     [searchable]="true"
     searchPlaceholder="{{'transports.assignments.searchPlaceholder' | translate}}"
     [pagination]="true"
-    [pageSize]="10"
-    [pageSizeOptions]="[10, 20, 50]"
-    (onFilterChange)="onFilterChange($event)">
+    [pageSize]="3"
+    [totalRecords]="transportsTotalRecords()"
+    [pageSizeOptions]="[3, 5, 10, 20]"
+    (onLoadData)="loadTransportsFromServer($event)"
+  >
 
     <dp-datagrid-columns>
       <dp-datagrid-column

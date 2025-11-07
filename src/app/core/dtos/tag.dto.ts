@@ -1,8 +1,12 @@
 ﻿import { TagType } from "@enums/common.enum";
 import { BaseEntity } from "./base.dto";
 
+export interface TagNameLanguage {
+    [key: string]: string;
+}
+
 export class TagDto extends BaseEntity {
-    name: string;
+    name: TagNameLanguage;
     type: TagType; // Display value from get_type_display()
 
     constructor(data: any = {}) {

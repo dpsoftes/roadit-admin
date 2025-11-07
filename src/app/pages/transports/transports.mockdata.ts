@@ -1,5 +1,5 @@
 import { TransportPrincipalType, TransportStatus } from '@enums/transport.enum';
-import { TransportsRetrieveResponse } from '@dtos/transports/transports.dto';
+import { TransportsRetrieveResponse } from '@dtos/transports/transports.dto.old';
 
 export const transportsMockData: TransportsRetrieveResponse[] = [
   {
