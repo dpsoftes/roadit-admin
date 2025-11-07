@@ -3,7 +3,7 @@
 
   <!-- TABLA DE CONDUCTORES CON DP-DATAGRID -->
   <dp-datagrid datagridId="drivers-grid" [data]="drivers()" [localData]="true" [selectable]="false" [searchable]="true"
-    searchPlaceholder="{{ 'drivers.searchPlaceholder' | translate }}" [pagination]="true" [pageSize]="5"
+    searchPlaceholder="{{ 'drivers.list.searchPlaceholder' | translate }}" [pagination]="true" [pageSize]="5"
     [pageSizeOptions]="[5, 10, 20, 50]" (onFilterChange)="onFilterChange($event)">
 
     <dp-datagrid-columns>
@@ -38,7 +38,7 @@
       </dp-datagrid-column>
 
       <!-- COLUMNA DE FECHA DE CREACIÓN -->
-      <dp-datagrid-column key="created_datetime" label="{{ 'drivers.list.created_at' | translate }}" type="custom"
+      <dp-datagrid-column key="created_datetime" label="{{ 'drivers.list.created_datetime' | translate }}" type="custom"
         [width]="10" [render]="renderDate">
       </dp-datagrid-column>
 
