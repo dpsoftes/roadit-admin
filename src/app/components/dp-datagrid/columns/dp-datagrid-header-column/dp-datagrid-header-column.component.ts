@@ -8,6 +8,9 @@ import { TableColumn } from '../../dp-datagrid.interfaces';
   standalone: true,
   imports: [CommonModule, MatIconModule],
   encapsulation: ViewEncapsulation.None,
+  host: {
+    'style': 'display: block; min-width: 0; overflow: hidden;'
+  },
   template: `
     <div 
       class="dp-datagrid-header-column"
@@ -47,6 +50,7 @@ import { TableColumn } from '../../dp-datagrid.interfaces';
       box-sizing: border-box;
       overflow: hidden;
       min-width: 0;
+      max-width: 100%;
       transition: filter 0.2s ease;
     }
     
@@ -64,6 +68,7 @@ import { TableColumn } from '../../dp-datagrid.interfaces';
       text-overflow: ellipsis;
       white-space: nowrap;
       flex: 1;
+      min-width: 0;
     }
     
     .dp-datagrid-header-column .sort-icon {

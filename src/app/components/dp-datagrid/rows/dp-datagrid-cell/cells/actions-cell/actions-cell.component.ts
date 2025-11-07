@@ -32,11 +32,14 @@ import { TableColumn } from '../../../../dp-datagrid.interfaces';
       align-items: center;
       justify-content: center;
       gap: 4px;
-      padding: 0 8px;
+      width: 100%;
+      min-width: 0;
+      flex-shrink: 0;
     }
     button {
       width: 32px;
       height: 32px;
+      flex-shrink: 0;
       
       mat-icon {
         font-size: 18px;

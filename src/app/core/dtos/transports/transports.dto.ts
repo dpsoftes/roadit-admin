@@ -1,6 +1,7 @@
 import { TransportPrincipalType, TransportStatus, LegPointType } from "@enums/transport.enum";
 import { BillingType, ClientOrigin, ClientType } from "@enums/client.enum";
 import { FuelType, VehicleSize } from "@enums/vehicle.enum";
+import { TransportAddress } from "./transport-address.dto";
 
 /**
  * TransportDetail
@@ -44,8 +45,8 @@ export class TransportsRetrieveResponse {
      */
     created_date: Date | null = null;
 
-    driver_id: number = 0;
-    driver_name: string = "";
+    driver_id: number | null = null;
+    driver_name: string | null = null;
 
     /**
      * Duración, Duración en horas (decimal)
@@ -55,12 +56,17 @@ export class TransportsRetrieveResponse {
     /**
      * Lista de correos electrónicos
      */
-    emails?: any;
+    emails?: string[];
 
     /**
      * Número de grupo
      */
     group_number?: number | null;
+
+    /**
+     * Teléfono
+     */
+    phone?: string;
 
     /**
      * Tiene ferry
@@ -97,11 +103,6 @@ export class TransportsRetrieveResponse {
     modified_date: Date | null = null;
 
     /**
-     * Teléfono
-     */
-    phone?: string;
-
-    /**
      * Número de referencia
      */
     reference_number?: null | string;
@@ -111,9 +112,10 @@ export class TransportsRetrieveResponse {
      */
     reservation_number?: null | string;
 
-    show_timeline: string = "";
+    show_timeline: boolean = false;
     tags: number[] = [];
-    timeline: string = "";
+    timeline: string | null = null;
+    countries: string[] = [];
 
     /**
      * Tipo de transporte principal
@@ -125,7 +127,7 @@ export class TransportsRetrieveResponse {
      */
     transport_status?: TransportStatus;
 
-    transport_type: string = "";
+    transport_type: string | null = null;
     vehicle: Vehicle = new Vehicle();
 
     [property: string]: any;
@@ -488,7 +490,7 @@ export interface Client {
 export class Leg {
     additional_services: AdditionalService[] = [];
     connection_type: string = "";
-    destination_address: string = "";
+    destination_address: TransportAddress = new TransportAddress();
     documents: LegDocument[] = [];
 
     /**
@@ -533,7 +535,7 @@ export class Leg {
      */
     order?: number;
 
-    origin_address: string = "";
+    origin_address: TransportAddress = new TransportAddress();
     vehicle: Vehicle = new Vehicle();
 
     [property: string]: any;
@@ -595,7 +597,7 @@ export class Vehicle {
     fuel_type: FuelType = FuelType.GASOLINE;
 
     id: number = 0;
-    image: string = "";
+    image: string | null = null;
 
     /**
      * Fin del seguro
@@ -627,6 +629,57 @@ export class Vehicle {
      */
     size: VehicleSize = VehicleSize.SMALL;
 
+    [property: string]: any;
+}
+
+/**
+ * TransportsListRequest
+ * DTO para los parámetros de búsqueda/filtrado de transportes
+ */
+export interface TransportsListRequest {
+    admin_id?: number;
+    appointment_management?: boolean;
+    arrival_address?: string;
+    arrival_country?: string;
+    arrival_province?: string;
+    cancelled?: boolean;
+    client_id?: number;
+    created_from?: Date;
+    created_to?: Date;
+    departure_address?: string;
+    departure_country?: string;
+    departure_province?: string;
+    driver_email?: string;
+    driver_id?: number;
+    end_date?: Date;
+    fuel_included?: boolean;
+    init_date?: Date;
+    invoiced?: boolean;
+    is_blocked?: boolean;
+    is_express?: boolean;
+    max_kilometers?: number;
+    max_price?: number;
+    min_kilometers?: number;
+    min_price?: number;
+    /**
+     * Which field to use when ordering the results.
+     */
+    ordering?: string;
+    /**
+     * A page number within the paginated result set.
+     */
+    page?: number;
+    /**
+     * Number of results to return per page.
+     */
+    page_size?: number;
+    reference_number?: string;
+    reservation_number?: string;
+    search?: string;
+    tags?: string;
+    transport_principal_type?: string;
+    transport_status?: string;
+    vehicle_id?: number;
     [property: string]: any;
 }
 

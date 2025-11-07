@@ -1,0 +1,72 @@
+<div class="schedule-modal">
+    <button class="close-button" (click)="onClose()">
+        <mat-icon>close</mat-icon>
+    </button>
+    <div class="schedule-sections-container">
+        <div class="schedule-section departure">
+            <h3 class="section-title">{{'transports.create.pickup' | translate}}</h3>
+            <mat-card>
+                <mat-card-content>
+                    <div class="calendar-container">
+                        <mat-calendar 
+                            [selected]="departureDate()"
+                            (selectedChange)="onDepartureDateChange($event)">
+                        </mat-calendar>
+                    </div>
+                    <div class="time-pickers">
+                        <div class="time-field">
+                            <div class="form-field-label">{{'transports.create.from' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="time" matInput [value]="departureFromTime()" (change)="onDepartureFromTimeChange($event)">
+                                <mat-icon matSuffix>schedule</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="time-field">
+                            <div class="form-field-label">{{'transports.create.to' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="time" matInput [value]="departureToTime()" (change)="onDepartureToTimeChange($event)">
+                                <mat-icon matSuffix>schedule</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="schedule-section arrival">
+            <h3 class="section-title">{{'transports.create.delivery' | translate}}</h3>
+            <mat-card>
+                <mat-card-content>
+                    <div class="calendar-container">
+                        <mat-calendar 
+                            [selected]="arrivalDate()"
+                            (selectedChange)="onArrivalDateChange($event)">
+                        </mat-calendar>
+                    </div>
+                    <div class="time-pickers">
+                        <div class="time-field">
+                            <div class="form-field-label">{{'transports.create.from' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="time" matInput [value]="arrivalFromTime()" (change)="onArrivalFromTimeChange($event)">
+                                <mat-icon matSuffix>schedule</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="time-field">
+                            <div class="form-field-label">{{'transports.create.to' | translate}}</div>
+                            <mat-form-field appearance="outline">
+                                <input type="time" matInput [value]="arrivalToTime()" (change)="onArrivalToTimeChange($event)">
+                                <mat-icon matSuffix>schedule</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    @if (showDateError()) {
+        <div class="error-message">{{'transports.create.date-required' | translate}}</div>
+    }
+    <div class="actions">
+        <app-buttons type="save-changes" [text]="'transports.create.save'" (onClick)="onSave()"></app-buttons>
+    </div>
+</div>
+

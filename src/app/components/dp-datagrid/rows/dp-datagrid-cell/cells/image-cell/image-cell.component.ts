@@ -26,10 +26,12 @@ import { TableColumn } from '../../../../dp-datagrid.interfaces';
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 4px 8px;
+      width: 100%;
+      min-width: 0;
     }
     .cell-image {
       border-radius: 4px;
+      flex-shrink: 0;
     }
   `]
 })

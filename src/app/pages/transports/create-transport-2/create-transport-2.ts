@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TransportPrincipalType } from '@enums/transport.enum';
 import { VehicleEntity } from '@entities/transports.entities';
 import { VehicleSize, FuelType, fuelTypeDescriptions } from '@enums/vehicle.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from '@components/modal/modal.component';
+import { ScheduleModalComponent, ScheduleData } from './components/schedule-modal.component';
+import { AddressModalComponent, AddressData } from './components/address-modal.component';
 
 interface TransportData {
   distance?: number;
@@ -50,6 +54,8 @@ interface Document {
   styleUrl: './create-transport-2.scss'
 })
 export class CreateTransport2 {
+  private dialog = inject(MatDialog);
+
   transportData = signal<TransportData | null>(null);
   transportType = signal<TransportPrincipalType | ''>('');
   vehicles = signal<VehicleEntity[]>([]);
@@ -58,6 +64,15 @@ export class CreateTransport2 {
   
   // Vehículo seleccionado
   selectedVehicleId = signal<number | null>(null);
+
+  // Datos de schedule
+  scheduleData = signal<ScheduleData | null>(null);
+  
+  // Datos de dirección de recogida
+  pickupAddress = signal<AddressData | null>(null);
+  
+  // Datos de dirección de entrega
+  deliveryAddress = signal<AddressData | null>(null);
   
   // Servicios complementarios disponibles
   complementaryServices = signal<ComplementaryService[]>([
@@ -315,5 +330,193 @@ export class CreateTransport2 {
   // Obtener documentos por fase
   getDocuments(phase: 'pickup' | 'delivery'): Document[] {
     return phase === 'pickup' ? this.pickupDocuments() : this.deliveryDocuments();
+  }
+
+  onPublishTransport() {
+    console.log('Publishing transport');
+  }
+
+  onCancelTransport() {
+    this.router.navigate(['/transports/create']);
+  }
+
+  // Abrir modal de schedule
+  openScheduleModal() {
+    const currentSchedule = this.scheduleData();
+    const initialData: ScheduleData | null = currentSchedule || {
+      departure: {
+        date: null,
+        fromTime: '08:00',
+        toTime: '10:00'
+      },
+      arrival: {
+        date: null,
+        fromTime: '08:00',
+        toTime: '10:00'
+      }
+    };
+
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '90vw',
+      maxWidth: '900px',
+      maxHeight: '90vh',
+      panelClass: 'schedule-dialog',
+      data: {
+        title: 'transports.create.schedule',
+        component: ScheduleModalComponent,
+        componentInputs: {
+          initialData: initialData
+        },
+        showActions: false,
+        hideTitle: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: ScheduleData | undefined) => {
+      if (result) {
+        this.scheduleData.set(result);
+      }
+    });
+  }
+
+  // Formatear fecha para input date (YYYY-MM-DD)
+  formatDateForInput(date: Date | null): string {
+    if (!date) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // Obtener datos de salida
+  getDepartureDate(): string {
+    const schedule = this.scheduleData();
+    return this.formatDateForInput(schedule?.departure.date || null);
+  }
+
+  getDepartureFromTime(): string {
+    const schedule = this.scheduleData();
+    return schedule?.departure.fromTime || '';
+  }
+
+  getDepartureToTime(): string {
+    const schedule = this.scheduleData();
+    return schedule?.departure.toTime || '';
+  }
+
+  // Obtener datos de llegada
+  getArrivalDate(): string {
+    const schedule = this.scheduleData();
+    return this.formatDateForInput(schedule?.arrival.date || null);
+  }
+
+  getArrivalFromTime(): string {
+    const schedule = this.scheduleData();
+    return schedule?.arrival.fromTime || '';
+  }
+
+  getArrivalToTime(): string {
+    const schedule = this.scheduleData();
+    return schedule?.arrival.toTime || '';
+  }
+
+  // Validar si hay al menos 2 horas entre "desde" y "hasta"
+  private calculateTimeDifference(fromTime: string, toTime: string): number {
+    if (!fromTime || !toTime) return 0;
+    
+    const [fromHours, fromMinutes] = fromTime.split(':').map(Number);
+    const [toHours, toMinutes] = toTime.split(':').map(Number);
+    
+    const fromTotalMinutes = fromHours * 60 + fromMinutes;
+    const toTotalMinutes = toHours * 60 + toMinutes;
+    
+    // Si la hora "to" es menor que "from", asumimos que es del día siguiente
+    let difference = toTotalMinutes - fromTotalMinutes;
+    if (difference < 0) {
+      difference += 24 * 60; // Sumar 24 horas
+    }
+    
+    return difference;
+  }
+
+  // Validar salida (mínimo 2 horas = 120 minutos)
+  isValidDepartureTimeRange(): boolean {
+    const schedule = this.scheduleData();
+    if (!schedule?.departure) return false;
+    
+    const difference = this.calculateTimeDifference(
+      schedule.departure.fromTime,
+      schedule.departure.toTime
+    );
+    
+    return difference >= 120; // 2 horas = 120 minutos
+  }
+
+  // Validar llegada (mínimo 2 horas = 120 minutos)
+  isValidArrivalTimeRange(): boolean {
+    const schedule = this.scheduleData();
+    if (!schedule?.arrival) return false;
+    
+    const difference = this.calculateTimeDifference(
+      schedule.arrival.fromTime,
+      schedule.arrival.toTime
+    );
+    
+    return difference >= 120; // 2 horas = 120 minutos
+  }
+
+  // Validar ambos (salida y llegada)
+  isValidSchedule(): boolean {
+    return this.isValidDepartureTimeRange() && this.isValidArrivalTimeRange();
+  }
+
+  // Abrir modal de direcciones
+  openAddressModal() {
+    const currentAddress = this.pickupAddress();
+
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '90vw',
+      maxWidth: '800px',
+      maxHeight: '90vh',
+      data: {
+        title: 'transports.create.pickup',
+        component: AddressModalComponent,
+        componentInputs: currentAddress ? {
+          initialAddress: currentAddress
+        } : {},
+        showActions: false
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: AddressData | undefined) => {
+      if (result) {
+        this.pickupAddress.set(result);
+      }
+    });
+  }
+
+  // Abrir modal de direcciones de entrega
+  openDeliveryAddressModal() {
+    const currentAddress = this.deliveryAddress();
+
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '90vw',
+      maxWidth: '800px',
+      maxHeight: '90vh',
+      data: {
+        title: 'transports.create.delivery',
+        component: AddressModalComponent,
+        componentInputs: currentAddress ? {
+          initialAddress: currentAddress
+        } : {},
+        showActions: false
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: AddressData | undefined) => {
+      if (result) {
+        this.deliveryAddress.set(result);
+      }
+    });
   }
 }

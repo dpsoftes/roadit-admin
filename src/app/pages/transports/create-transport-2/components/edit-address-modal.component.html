@@ -1,0 +1,225 @@
+<div class="edit-address-modal">
+    <div class="modal-header">
+        <h2 class="modal-title">{{'transports.create.add-new-address' | translate}}</h2>
+        <div class="header-actions">
+            <button class="favorite-button" [class.favorite]="isFavorite()" (click)="onToggleFavorite()">
+                <mat-icon>{{isFavorite() ? 'star' : 'star_border'}}</mat-icon>
+            </button>
+            <button class="close-button" (click)="onClose()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-content">
+        <mat-card class="main-card">
+            <mat-card-content>
+                <!-- Datos dirección -->
+                <div class="section">
+                    <h3 class="section-title">{{'transports.create.address-data' | translate}}</h3>
+                    
+                    <div class="form-field">
+                        <label class="field-label">{{'transports.create.name' | translate}}</label>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput [value]="name()" (input)="name.set($event.target.value)" placeholder="Escribe aquí...">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label">{{'transports.create.address-type' | translate}}</label>
+                        <mat-form-field appearance="outline">
+                            <mat-select [value]="addressType()" (selectionChange)="addressType.set($event.value)">
+                                @for (type of addressTypes; track type) {
+                                    <mat-option [value]="type">{{'addressType.' + type | translate}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label">{{'transports.create.full-address' | translate}}</label>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput [value]="fullAddress()" (input)="fullAddress.set($event.target.value)" placeholder="Escribe aquí...">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- Contactos -->
+                <div class="section">
+                    <h3 class="section-title">{{'transports.create.contacts' | translate}}</h3>
+                    
+                    <div class="contact-phone-row">
+                    </div>
+
+                    <div class="form-field">
+                        <label class="field-label">{{'transports.create.name' | translate}}</label>
+                        <mat-form-field appearance="outline">
+                            <input type="text" matInput [value]="contactName()" (input)="contactName.set($event.target.value)" placeholder="Escriba aquí...">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field phone-field">
+                        <label class="field-label">{{'transports.create.phone' | translate}}</label>
+                        <div class="phone-input-container">
+                            <mat-form-field appearance="outline" class="country-code">
+                                <mat-select [value]="mainPhone().countryCode" (selectionChange)="onMainPhoneCountryChange($event.value)">
+                                    @for (country of countryCodes; track country.code) {
+                                        <mat-option [value]="country.code">{{country.code}} {{country.dialCode}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="phone-number">
+                                <input type="tel" matInput [value]="mainPhone().number" (input)="onMainPhoneNumberChange($event)" placeholder="678 54 56 78">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!-- Teléfonos adicionales -->
+                    <div class="additional-section">
+                        <label class="section-subtitle">{{'transports.create.additional-contact-phones' | translate}}</label>
+                        @for (phone of additionalPhones(); track phone.id; let isLast = $last) {
+                            <div class="form-field phone-field">
+                                <label class="field-label">{{'transports.create.phone' | translate}}</label>
+                                <div class="phone-input-container">
+                                    <mat-form-field appearance="outline" class="country-code">
+                                        <mat-select [value]="phone.countryCode" (selectionChange)="onAdditionalPhoneCountryChange(phone.id, $event.value)">
+                                            @for (country of countryCodes; track country.code) {
+                                                <mat-option [value]="country.code">{{country.code}} {{country.dialCode}}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="phone-number">
+                                        <input type="tel" matInput [value]="phone.number" (input)="onAdditionalPhoneNumberChange(phone.id, $event)" placeholder="678 54 56 78">
+                                    </mat-form-field>
+                                    @if (isLast) {
+                                        <button class="add-button-inline" (click)="onAddPhone()">
+                                            <mat-icon>add</mat-icon>
+                                            <span>{{'transports.create.add-another' | translate}}</span>
+                                        </button>
+                                    } @else {
+                                        <button class="remove-button" (click)="onRemovePhone(phone.id)">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Emails adicionales -->
+                    <div class="additional-section">
+                        <label class="section-subtitle">{{'transports.create.additional-contact-emails' | translate}}</label>
+                        @for (email of additionalEmails(); track email.id; let i = $index; let isLast = $last) {
+                            <div class="form-field">
+                                <label class="field-label">{{'transports.create.email' | translate}}</label>
+                                <div class="email-input-container">
+                                    <mat-form-field appearance="outline" class="email-field">
+                                        <input type="email" matInput [value]="email.email" (input)="onEmailChange(email.id, $event)" [placeholder]="i === 0 ? 'ejemplo@mail.com' : 'Escribe aquí...'">
+                                    </mat-form-field>
+                                    @if (isLast) {
+                                        <button class="add-button-inline" (click)="onAddEmail()">
+                                            <mat-icon>add</mat-icon>
+                                            <span>{{'transports.create.add-another' | translate}}</span>
+                                        </button>
+                                    } @else {
+                                        <button class="remove-button" (click)="onRemoveEmail(email.id)">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    @if (isEditing()) {
+                        <div class="checkbox-field">
+                            <mat-checkbox [checked]="overwriteContact()" (change)="overwriteContact.set($event.checked)">
+                                {{'transports.create.overwrite-associated-contact' | translate}}
+                            </mat-checkbox>
+                        </div>
+                    }
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Checkbox fuera del mat-card -->
+        <div class="opening-hours-checkbox">
+            <mat-checkbox [checked]="declareOpeningHours()" (change)="declareOpeningHours.set($event.checked)">
+                {{'transports.create.declare-opening-hours' | translate}}
+            </mat-checkbox>
+        </div>
+
+        <!-- Horarios - Solo visible si el checkbox está marcado -->
+        @if (declareOpeningHours()) {
+            <mat-card class="schedule-card">
+                <mat-card-content>
+                    <div class="section">
+                        <h3 class="section-title">{{'transports.create.schedules' | translate}}</h3>
+                        
+                        <div class="opening-hours-section">
+                            <label class="section-subtitle">{{'transports.create.opening-hours' | translate}}</label>
+                            
+                            @for (slot of timeSlots(); track slot.id) {
+                                <div class="time-slot-group">
+                                    <label class="time-slot-label">{{'transports.create.time-slot' | translate}}</label>
+                                    
+                                    <div class="day-selectors">
+                                        @for (day of weekDays; track day.value) {
+                                            <button 
+                                                class="day-button" 
+                                                [class.selected]="isDaySelected(slot.id, day.value)"
+                                                (click)="onToggleDay(slot.id, day.value)">
+                                                {{day.label}}
+                                            </button>
+                                        }
+                                    </div>
+                                    
+                                    <div class="time-inputs-container">
+                                        <mat-form-field appearance="outline" class="time-field">
+                                            <input type="time" matInput [value]="slot.fromTime" (change)="onTimeSlotChange(slot.id, 'fromTime', $event.target.value)">
+                                            <mat-icon matSuffix>schedule</mat-icon>
+                                        </mat-form-field>
+                                        <span class="time-separator">-</span>
+                                        <mat-form-field appearance="outline" class="time-field">
+                                            <input type="time" matInput [value]="slot.toTime" (change)="onTimeSlotChange(slot.id, 'toTime', $event.target.value)">
+                                            <mat-icon matSuffix>schedule</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                    
+                                    <div class="time-slot-actions">
+                                        @if (timeSlots().length > 1) {
+                                            <button class="remove-slot-button" (click)="onRemoveTimeSlot(slot.id)">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        } @else {
+                                            <app-buttons 
+                                                type="add" 
+                                                [text]="'transports.create.add'"
+                                                (onClick)="onAddTimeSlot()">
+                                            </app-buttons>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            
+                            <app-buttons 
+                                type="add" 
+                                [text]="'transports.create.add-time-slot'"
+                                (onClick)="onAddTimeSlot()">
+                            </app-buttons>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        }
+    </div>
+
+    <div class="modal-actions">
+        <app-buttons 
+            type="save-changes" 
+            [text]="'transports.create.save'" 
+            (onClick)="onSave()">
+        </app-buttons>
+    </div>
+</div>
+

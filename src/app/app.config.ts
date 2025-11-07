@@ -6,6 +6,7 @@ import { ApiService } from '@services/api.service';
 import { environment } from '../environments/environment';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './core/i18n/custom-mat-paginator-intl.service';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 import { routes } from './app.routes';
 
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideHttpClient(withInterceptorsFromDi()), // Configurar HttpClient
     provideRouter(routes),
+    provideNativeDateAdapter(), // DateAdapter para MatCalendar y MatDatepicker
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApiService,

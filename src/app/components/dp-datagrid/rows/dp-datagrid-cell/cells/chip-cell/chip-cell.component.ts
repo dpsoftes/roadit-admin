@@ -28,9 +28,9 @@ import { TableColumn, ChipValue } from '../../../../dp-datagrid.interfaces';
       display: flex;
       align-items: center;
       justify-content: inherit;
-      padding: 0 8px;
       width: 100%;
       min-width: 0;
+      overflow: hidden;
     }
     
     .custom-chip {
@@ -44,7 +44,9 @@ import { TableColumn, ChipValue } from '../../../../dp-datagrid.interfaces';
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
+      min-width: 0;
       box-sizing: border-box;
+      flex-shrink: 0;
     }
   `]
 })

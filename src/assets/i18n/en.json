@@ -370,6 +370,7 @@
       "from": "From",
       "to": "To",
       "min-time-range": "Time ranges must be at least two hours.",
+      "date-required": "You must select pickup and delivery dates to save.",
       "add-delivery": "Add delivery",
       "add-stage": "Add stage",
       "vehicles": "Vehicle",
@@ -386,7 +387,31 @@
       "add": "Add",
       "comments-reference": "Comments and reference",
       "reference-number": "Reference number",
-      "comments": "Comments"
+      "comments": "Comments",
+      "publish-transport": "Publish transport",
+      "cancel-transport": "Cancel transport",
+      "save": "Save",
+      "address-search-placeholder": "Type here...",
+      "add-new-address": "ADD NEW ADDRESS",
+      "pickup-address-hint": "Write manually or search in your favorites",
+      "name": "Name",
+      "address-type": "Address type",
+      "full-address": "Full address",
+      "address-data": "Address data",
+      "contacts": "Contacts",
+      "phone": "Phone",
+      "email": "Email",
+      "additional-contact-phones": "Additional contact phones",
+      "additional-contact-emails": "Additional contact emails",
+      "add-another": "+ ADD ANOTHER",
+      "overwrite-associated-contact": "Overwrite associated contact",
+      "declare-opening-hours": "Declare opening hours",
+      "schedules": "Schedules",
+      "opening-hours": "Opening hours",
+      "time-slot": "Time slot",
+      "add-time-slot": "ADD TIME SLOT",
+      "schedule-label": "Schedule:",
+      "contact": "Contact"
     },
     "assignments": {
       "id": "ID",
@@ -834,5 +859,14 @@
     "DNI": "Dni (vat number)",
     "CIF": "Cif (vat number)",
     "OTHER": "Other"
+  },
+  "addressType": {
+    "CRANE_DEPOT": "Crane depot",
+    "DEALERSHIP": "Dealership",
+    "ITV": "ITV",
+    "PRIVATE": "Private",
+    "REPAIR_SHOP": "Repair shop",
+    "VEHICLE_YARD": "Vehicle yard",
+    "WAREHOUSE": "Warehouse"
   }
 }

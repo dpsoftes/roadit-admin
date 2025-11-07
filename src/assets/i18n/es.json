@@ -346,7 +346,7 @@
       "title": "Nuevo Transporte",
       "client-user": "Usuario cliente",
       "client-user-assigned": "Usuario cliente asignado",
-      "manager": "Usuario manager",
+      "manager": "Responsable",
       "panel-user-assigned": "Usuario panel asignado",
       "budget-visible": "Presupuesto visible",
       "premium-transport": "Transporte premium",
@@ -370,6 +370,7 @@
       "from": "Desde",
       "to": "Hasta",
       "min-time-range": "Las franjas horarias deben ser de dos horas como mínimo.",
+      "date-required": "Debe seleccionar la fecha de recogida y entrega para poder guardar.",
       "add-delivery": "Añadir entrega",
       "add-stage": "Añadir etapa",
       "vehicles": "Vehículo",
@@ -386,7 +387,31 @@
       "add": "Añadir",
       "comments-reference": "Comentarios y referencia",
       "reference-number": "Nº referencia",
-      "comments": "Comentarios"
+      "comments": "Comentarios",
+      "publish-transport": "Publicar transporte",
+      "cancel-transport": "Cancelar transporte",
+      "save": "Guardar",
+      "address-search-placeholder": "Escriba aqui...",
+      "add-new-address": "AÑADIR NUEVA DIRECCION",
+      "pickup-address-hint": "Escribe manualmente o busca en tus favoritos",
+      "name": "Nombre",
+      "address-type": "Tipo de dirección",
+      "full-address": "Dirección completa",
+      "address-data": "Datos dirección",
+      "contacts": "Contactos",
+      "phone": "Teléfono",
+      "email": "Correo",
+      "additional-contact-phones": "Teléfonos de contacto adicionales",
+      "additional-contact-emails": "Correos de contacto adicionales",
+      "add-another": "+ AÑADIR OTRO",
+      "overwrite-associated-contact": "Sobrescribir contacto asociado",
+      "declare-opening-hours": "Declarar horarios de apertura",
+      "schedules": "Horarios",
+      "opening-hours": "Horario de apertura",
+      "time-slot": "Franja horaria",
+      "add-time-slot": "AÑADIR FRANJA HORARIA",
+      "schedule-label": "Horario:",
+      "contact": "Contacto"
     },
     "assignments": {
       "id": "ID",
@@ -905,5 +930,14 @@
       "delete_success": "Conductor eliminado correctamente",
       "delete_error": "Error al eliminar el conductor"
     }
+  },
+  "addressType": {
+    "CRANE_DEPOT": "Depósito de grúa",
+    "DEALERSHIP": "Concesionario",
+    "ITV": "ITV",
+    "PRIVATE": "Privado",
+    "REPAIR_SHOP": "Taller",
+    "VEHICLE_YARD": "Campamento de vehículos",
+    "WAREHOUSE": "Almacén"
   }
 }

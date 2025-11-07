@@ -43,6 +43,7 @@ import { TableColumn } from '../../dp-datagrid.interfaces';
       border-radius: 16px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       width: 100%;
+      min-width: 0;
       box-sizing: border-box;
       margin-bottom: 8px;
       font-size: 13px;
