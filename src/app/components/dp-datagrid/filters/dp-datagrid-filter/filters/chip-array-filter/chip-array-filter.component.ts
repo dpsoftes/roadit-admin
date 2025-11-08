@@ -1,7 +1,7 @@
 import { Component, signal, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterBase } from '../../shared/filter-base';
-import { FilterOptionChipArray } from '../../../../dp-datagrid.interfaces';
+import { FilterOption } from '../../../../dp-datagrid.interfaces';
 
 /**
  * Componente atómico para filtro de chip-array (selección múltiple)
@@ -16,7 +16,7 @@ import { FilterOptionChipArray } from '../../../../dp-datagrid.interfaces';
       <label class="filter-label">{{ label() }}</label>
       <div class="chip-select-wrapper">
         @for (option of options(); track option.value) {
-          <button
+          <button 
             type="button"
             class="chip-button"
             [class.selected]="selectedValues().includes(option.value)"
@@ -71,7 +71,7 @@ import { FilterOptionChipArray } from '../../../../dp-datagrid.interfaces';
   `]
 })
 export class ChipArrayFilterComponent extends FilterBase {
-  options = input.required<FilterOptionChipArray[]>();
+  options = input.required<FilterOption[]>();
   selectedValues = signal<string[]>([]);
   valueInput = input<string[] | null>(null);
 
@@ -95,14 +95,14 @@ export class ChipArrayFilterComponent extends FilterBase {
   toggleValue(value: string): void {
     const current = this.selectedValues();
     const index = current.indexOf(value);
-
+    
     let newValues: string[];
     if (index > -1) {
       newValues = current.filter(v => v !== value);
     } else {
       newValues = [...current, value];
     }
-
+    
     this.selectedValues.set(newValues);
     this.emitFilterChange(newValues);
   }

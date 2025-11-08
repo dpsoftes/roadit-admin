@@ -74,11 +74,6 @@ export interface FilterOption {
   icon?: string;
 }
 
-export interface FilterOptionChipArray {
-  value: string;
-  label: string;
-}
-
 export interface TableAction {
   key: string;
   text: string;
