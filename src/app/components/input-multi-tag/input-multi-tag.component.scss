@@ -58,10 +58,20 @@
     box-shadow: 0 0 0 3px rgba(199, 217, 68, 0.1);
   }
 
-  //ESTILOS ESPECÍFICOS PARA MODO FILTRO (REDUCE PADDING Y MIN-HEIGHT)
+  //ESTILOS ESPECÍFICOS PARA MODO FILTRO (COINCIDE CON LOS OTROS FILTROS)
   &.filter-style {
-    min-height: 32px;
-    padding: 2px 6px;
+    min-height: 38px;
+    padding: 4px 8px;
+    border: 1px solid #D0D0D0 !important;
+
+    &:hover:not(.focused) {
+      border-color: #B0B0B0;
+    }
+
+    &.focused {
+      border-color: #2D3D32 !important;
+      box-shadow: 0 0 0 2px rgba(45, 61, 50, 0.1);
+    }
   }
 }
 

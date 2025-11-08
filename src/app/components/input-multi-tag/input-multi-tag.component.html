@@ -8,12 +8,12 @@
   <div class="input-container" [class.focused]="isFocused" [class.filter-style]="filterStyle()">
     <!-- CHIPS SELECCIONADOS -->
     <div #chipsContainer class="chips-container" [class.has-max-width]="!!maxWidth()">
-      @for (tag of selectedTags(); track tag.id; let i = $index) {
+      @for (item of selectedItems(); track item.id; let i = $index) {
       @if (shouldShowChip(i)) {
-      <div class="chip" [style.background-color]="getTagColor(tag)" [style.color]="getTextColor(getTagColor(tag))">
-        {{ getTagName(tag, currentLanguage()) }}
-        <button type="button" class="chip-remove" (click)="removeTag(tag.id!); $event.stopPropagation()"
-          [style.color]="getTextColor(getTagColor(tag))">
+      <div class="chip" [style.background-color]="item.color" [style.color]="getTextColor(item.color)">
+        {{ item.name }}
+        <button type="button" class="chip-remove" (click)="removeItem(item.id); $event.stopPropagation()"
+          [style.color]="getTextColor(item.color)">
           ✕
         </button>
       </div>
@@ -33,13 +33,12 @@
     </div>
 
     <!-- DROPDOWN DE OPCIONES -->
-    @if (showDropdown && filteredTags().length > 0) {
+    @if (showDropdown && dropdownItems().length > 0) {
     <div class="dropdown" (click)="$event.stopPropagation()">
-      @for (tag of filteredTags(); track tag.id) {
-      <div class="dropdown-item" (click)="addTag(tag); $event.stopPropagation()">
-        <div class="dropdown-chip" [style.background-color]="getTagColor(tag)"
-          [style.color]="getTextColor(getTagColor(tag))">
-          {{ getTagName(tag, currentLanguage()) }}
+      @for (item of dropdownItems(); track item.id) {
+      <div class="dropdown-item" (click)="addItem(item); $event.stopPropagation()">
+        <div class="dropdown-chip" [style.background-color]="item.color" [style.color]="getTextColor(item.color)">
+          {{ item.name }}
         </div>
       </div>
       }

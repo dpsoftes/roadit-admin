@@ -238,9 +238,8 @@ export class DriversComponent implements OnInit {
   }
 
   //MANEJAR CAMBIOS EN LAS TAGS SELECCIONADAS
-  onTagsChange(tagIds: number[]): void {
-    console.log('🏷️ Tags seleccionadas:', tagIds);
-    this.selectedTagIds.set(tagIds);
+  onTagsChange(newTagIds: number[] | string[]) {
+    this.selectedTagIds.set(newTagIds as number[]);
     this.applyAllFilters();
   }
 

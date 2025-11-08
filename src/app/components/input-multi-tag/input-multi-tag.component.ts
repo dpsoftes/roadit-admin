@@ -13,13 +13,14 @@ import { TagDto } from '@dtos';
 export class InputMultiTagComponent implements OnInit {
   //INPUT SIGNALS (FORMA MODERNA DE ANGULAR 20)
   label = input<string>('Etiquetas'); //LABEL DEL COMPONENTE
-  value = input<number[]>([]); //VALORES SELECCIONADOS (IDS DE TAGS)
-  tagType = input<'DRIVER' | 'CLIENT'>('DRIVER'); //TIPO DE TAGS A MOSTRAR
+  value = input<number[] | string[]>([]); //VALORES SELECCIONADOS (IDS O STRINGS)
+  tagType = input<'DRIVER' | 'CLIENT' | 'CUSTOM'>('DRIVER'); //TIPO: TAGS DEL STORE O CUSTOM
+  customOptions = input<string[]>([]); //OPCIONES PERSONALIZADAS (PARA STRINGS)
   maxWidth = input<string | null>(null); //ANCHO MÁXIMO DEL COMPONENTE (EJ: '246px')
   filterStyle = input<boolean>(false); //SI TRUE, APLICA ESTILOS DE FILTRO
 
   //OUTPUT SIGNAL (FORMA MODERNA DE ANGULAR 20)
-  valueChange = output<number[]>();
+  valueChange = output<number[] | string[]>();
 
   @ViewChild('chipInput') inputRef!: ElementRef<HTMLInputElement>;
   @ViewChild('chipsContainer') chipsContainerRef!: ElementRef<HTMLDivElement>;
@@ -49,16 +50,41 @@ export class InputMultiTagComponent implements OnInit {
   //COMPUTED: IDIOMA ACTUAL
   currentLanguage = computed(() => this.globalStore.language() as 'es' | 'en');
 
-  //COMPUTED: FILTRAR TAGS POR TIPO
+  //COMPUTED: DETERMINAR SI ESTÁ EN MODO CUSTOM (STRING)
+  isCustomMode = computed(() => this.tagType() === 'CUSTOM');
+
+  //COMPUTED: FILTRAR TAGS POR TIPO (SOLO PARA TAGS DEL STORE)
   availableTags = computed(() => {
+    if (this.isCustomMode()) return [];
     return this.allTags.filter((tag: TagDto) => tag.type === this.tagType());
   });
 
-  //COMPUTED: TAGS FILTRADAS POR BÚSQUEDA
+  //COMPUTED: OPCIONES CUSTOM FILTRADAS (SOLO PARA MODO CUSTOM)
+  filteredCustomOptions = computed(() => {
+    if (!this.isCustomMode()) return [];
+
+    const search = this.searchTermSignal().toLowerCase().trim();
+    const currentValue = this.value() as string[];
+    const options = this.customOptions();
+
+    if (!search) {
+      //MOSTRAR SOLO LAS QUE NO ESTÁN SELECCIONADAS
+      return options.filter(opt => !currentValue.includes(opt));
+    }
+
+    //FILTRAR POR TEXTO
+    return options.filter(opt =>
+      opt.toLowerCase().includes(search) && !currentValue.includes(opt)
+    );
+  });
+
+  //COMPUTED: TAGS FILTRADAS POR BÚSQUEDA (PARA TAGS DEL STORE)
   filteredTags = computed(() => {
+    if (this.isCustomMode()) return [];
+
     const search = this.searchTermSignal().toLowerCase().trim();
     const language = this.currentLanguage();
-    const currentValue = this.value();
+    const currentValue = this.value() as number[];
 
     if (!search) {
       //MOSTRAR SOLO LAS QUE NO ESTÁN SELECCIONADAS
@@ -72,15 +98,47 @@ export class InputMultiTagComponent implements OnInit {
     });
   });
 
-  //COMPUTED: TAGS SELECCIONADAS
-  selectedTags = computed(() => {
-    const currentValue = this.value();
-    const tags = currentValue
-      .map(tagId => this.availableTags().find(tag => tag.id === tagId))
-      .filter(tag => tag !== undefined) as TagDto[];
+  //COMPUTED: TAGS/OPTIONS SELECCIONADAS
+  selectedItems = computed(() => {
+    if (this.isCustomMode()) {
+      //MODO CUSTOM: RETORNAR ARRAY DE STRINGS
+      const currentValue = this.value() as string[];
+      return currentValue.map(str => ({
+        id: str,
+        name: str,
+        color: '#E5E7EB'
+      }));
+    } else {
+      //MODO TAGS: RETORNAR ARRAY DE TAGS
+      const currentValue = this.value() as number[];
+      const tags = currentValue
+        .map(tagId => this.availableTags().find(tag => tag.id === tagId))
+        .filter(tag => tag !== undefined) as TagDto[];
 
-    console.log('🏷️ Tags seleccionadas computed ejecutado:', tags.length, tags.map(t => ({ id: t.id, name: t.name })));
-    return tags;
+      console.log('🏷️ Tags seleccionadas:', tags.length);
+      return tags.map(tag => ({
+        id: tag.id,
+        name: this.getTagName(tag, this.currentLanguage()),
+        color: this.getTagColor(tag)
+      }));
+    }
+  });
+
+  //COMPUTED: OPCIONES PARA EL DROPDOWN (UNIFICADO)
+  dropdownItems = computed(() => {
+    if (this.isCustomMode()) {
+      return this.filteredCustomOptions().map(opt => ({
+        id: opt,
+        name: opt,
+        color: '#E5E7EB'
+      }));
+    } else {
+      return this.filteredTags().map(tag => ({
+        id: tag.id,
+        name: this.getTagName(tag, this.currentLanguage()),
+        color: this.getTagColor(tag)
+      }));
+    }
   });
 
   //EFFECT PARA RECALCULAR OVERFLOW CUANDO CAMBIA VALUE
@@ -203,14 +261,26 @@ export class InputMultiTagComponent implements OnInit {
     this.shouldLabelFloat = hasValue || this.isFocused;
   }
 
-  //AÑADIR TAG SELECCIONADA
-  addTag(tag: TagDto): void {
+  //AÑADIR ITEM SELECCIONADO
+  addItem(item: { id: any; name: string; color: string }): void {
     const currentValue = this.value();
 
-    if (!currentValue.includes(tag.id!)) {
-      const newValues = [...currentValue, tag.id!];
-      console.log('➕ Añadiendo tag:', tag.id, 'Valores actuales:', currentValue, 'Nuevos valores:', newValues);
-      this.valueChange.emit(newValues); //EMITIR USANDO OUTPUT SIGNAL
+    if (this.isCustomMode()) {
+      //MODO CUSTOM (STRINGS)
+      const values = currentValue as string[];
+      if (!values.includes(item.id as string)) {
+        const newValues = [...values, item.id as string];
+        console.log('➕ Añadiendo string:', item.id);
+        this.valueChange.emit(newValues);
+      }
+    } else {
+      //MODO TAGS (NUMBERS)
+      const values = currentValue as number[];
+      if (!values.includes(item.id as number)) {
+        const newValues = [...values, item.id as number];
+        console.log('➕ Añadiendo tag:', item.id);
+        this.valueChange.emit(newValues);
+      }
     }
 
     //LIMPIAR BÚSQUEDA PERO MANTENER DROPDOWN ABIERTO Y FOCUS
@@ -223,13 +293,24 @@ export class InputMultiTagComponent implements OnInit {
     this.updateFloatingState();
   }
 
-  //ELIMINAR TAG SELECCIONADA
-  removeTag(tagId: number): void {
+  //ELIMINAR ITEM SELECCIONADO
+  removeItem(itemId: any): void {
     const currentValue = this.value();
-    const newValues = currentValue.filter(id => id !== tagId);
 
-    console.log('➖ Eliminando tag:', tagId, 'Valores actuales:', currentValue, 'Nuevos valores:', newValues);
-    this.valueChange.emit(newValues); //EMITIR USANDO OUTPUT SIGNAL
+    if (this.isCustomMode()) {
+      //MODO CUSTOM (STRINGS)
+      const values = currentValue as string[];
+      const newValues = values.filter(id => id !== itemId);
+      console.log('➖ Eliminando string:', itemId);
+      this.valueChange.emit(newValues);
+    } else {
+      //MODO TAGS (NUMBERS)
+      const values = currentValue as number[];
+      const newValues = values.filter(id => id !== itemId);
+      console.log('➖ Eliminando tag:', itemId);
+      this.valueChange.emit(newValues);
+    }
+
     this.updateFloatingState();
 
     //MANTENER FOCUS EN EL INPUT PARA SEGUIR INTERACTUANDO
@@ -246,7 +327,7 @@ export class InputMultiTagComponent implements OnInit {
   onSearchInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.searchTerm = input.value; //USA EL SETTER QUE ACTUALIZA LA SIGNAL
-    console.log('🔍 Búsqueda:', this.searchTerm, 'Tags filtradas:', this.filteredTags().length);
+    console.log('🔍 Búsqueda:', this.searchTerm);
   }
 
   //HELPER: OBTENER NOMBRE DE TAG EN EL IDIOMA ACTUAL
@@ -272,17 +353,14 @@ export class InputMultiTagComponent implements OnInit {
 
     if (typeof tag.getColorWithHash === 'function') {
       const color = tag.getColorWithHash();
-      console.log('🎨 Color desde getColorWithHash:', color, 'para tag:', tag.id);
       return color || '#999999';
     }
 
     if (tag.color) {
       const color = tag.color.startsWith('#') ? tag.color : `#${tag.color}`;
-      console.log('🎨 Color desde tag.color:', color, 'para tag:', tag.id);
       return color;
     }
 
-    console.warn('⚠️ Tag sin color:', tag.id);
     return '#999999';
   }
 
@@ -304,6 +382,12 @@ export class InputMultiTagComponent implements OnInit {
   //DETERMINAR SI UN CHIP DEBE MOSTRARSE BASÁNDOSE EN EL ÍNDICE
   shouldShowChip(index: number): boolean {
     if (!this.maxWidth()) return true; //SI NO HAY LÍMITE, MOSTRAR TODOS
+
+    //SI AÚN NO SE HA CALCULADO EL OVERFLOW (visibleTagsCount === 0), MOSTRAR TODOS TEMPORALMENTE
+    if (this.visibleTagsCount() === 0 && this.selectedItems().length > 0) {
+      return true;
+    }
+
     return index < this.visibleTagsCount();
   }
 }
