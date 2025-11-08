@@ -12,12 +12,12 @@
       </dp-datagrid-column>
 
       <!-- COLUMNA DE NOMBRE Y APELLIDO -->
-      <dp-datagrid-column key="name" label="{{ 'drivers.list.name' | translate }}" type="custom" [width]="8"
+      <dp-datagrid-column key="name" label="{{ 'drivers.list.name' | translate }}" type="custom" [width]="6"
         [render]="renderFullName">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE DNI/CIF -->
-      <dp-datagrid-column key="dni" label="{{ 'drivers.list.dni/cif' | translate }}" type="custom" [width]="10"
+      <dp-datagrid-column key="dni" label="{{ 'drivers.list.dni/cif' | translate }}" type="custom" [width]="8"
         [render]="renderDniCif">
       </dp-datagrid-column>
 
@@ -43,11 +43,11 @@
       </dp-datagrid-column>
 
       <!-- COLUMNA DE TAGS -->
-      <dp-datagrid-column key="tags" label="{{ 'drivers.list.tags' | translate }}" type="chip-array" [width]="12">
+      <dp-datagrid-column key="tags" label="{{ 'drivers.list.tags' | translate }}" type="chip-array" [width]="11">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE VALIDADO -->
-      <dp-datagrid-column key="validated" label="{{ 'drivers.list.validated' | translate }}" type="custom" [width]="8"
+      <dp-datagrid-column key="validated" label="{{ 'drivers.list.validated' | translate }}" type="custom" [width]="9"
         [render]="renderValidated">
       </dp-datagrid-column>
 

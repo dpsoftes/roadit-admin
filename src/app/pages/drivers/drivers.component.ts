@@ -252,8 +252,18 @@ export class DriversComponent implements OnInit {
           continue;
         }
 
-        //SI ES UN ID (NUMBER), BUSCAR EL TAG COMPLETO
-        const tagId = typeof tagItem === 'object' && 'id' in tagItem ? tagItem.id : tagItem as number;
+        //SI ES UN ID (NUMBER O OBJETO CON ID), EXTRAER EL ID
+        let tagId: number;
+
+        if (typeof tagItem === 'number') {
+          tagId = tagItem;
+        } else if (typeof tagItem === 'object' && tagItem !== null && 'id' in tagItem) {
+          //SOLUCION ERROR 1: CAST EXPLICITO PARA ACCEDER A ID
+          tagId = (tagItem as { id: number }).id;
+        } else {
+          console.warn(`⚠️ Tag con formato inválido`, tagItem);
+          continue;
+        }
 
         //BUSCAR LA TAG COMPLETA EN TODAS LAS TAGS
         const fullTag = this.allTags.find((tag: TagDto) => tag.id === tagId);
@@ -326,13 +336,18 @@ export class DriversComponent implements OnInit {
           return false;
         }
 
-        //OBTENER LOS IDs DE LAS TAGS DEL CONDUCTOR
-        const driverTagIds: number[] = driver.tags.map((tag: TagDto | number) => {
-          if (typeof tag === 'object' && 'id' in tag) {
-            return tag.id;
-          }
-          return tag as number;
-        });
+        //SOLUCION ERROR 2: USAR FILTER PARA ELIMINAR UNDEFINED Y CAMBIAR EL TIPO
+        const driverTagIds: number[] = driver.tags
+          .map((tag: TagDto | number): number | undefined => {
+            if (typeof tag === 'number') {
+              return tag;
+            }
+            if (typeof tag === 'object' && tag !== null && 'id' in tag) {
+              return tag.id;
+            }
+            return undefined;
+          })
+          .filter((id): id is number => id !== undefined);
 
         //VERIFICAR SI EL CONDUCTOR TIENE AL MENOS UNA DE LAS TAGS SELECCIONADAS
         return tagIds.some(selectedTagId => driverTagIds.includes(selectedTagId));
