@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { DriverStore } from '@store/driver.state';
 import { I18nService } from '@i18n/i18n.service';
 import { GlobalStore } from '@store/global.state';
+import { DriverDto, TagDto } from '@dtos';
 import { TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
 import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
 
@@ -30,12 +31,37 @@ import {
   ActionConfig
 } from '@components/dp-datagrid';
 
-//INTERFACE PARA LAS OPCIONES DE TAG
+//INTERFACE PARA LAS OPCIONES DE TAG (FILTRO)
 export interface TagOption {
   value: string;
   label: string;
   color?: string;
 }
+
+//TIPO PARA DRIVER CON TAGS TRANSFORMADAS (SOLO PARA DISPLAY)
+//NO EXTIENDE DRIVERDTO PORQUE PERDEMOS LOS METODOS AL HACER SPREAD
+export type DriverDisplayData = {
+  id: number;
+  username: string;
+  email: string;
+  phone: string | null;
+  name: string;
+  last_name: string;
+  image: string | null;
+  is_active: boolean;
+  dni: string;
+  cif: string;
+  validated: boolean;
+  rating: string;
+  city: string;
+  province: string;
+  postal_code: string;
+  billing_blocked: boolean;
+  transport_blocked: boolean;
+  allows_access_location: boolean;
+  tags: TagDto[]; //TAGS YA SON OBJETOS COMPLETOS TAGDTO
+  created_datetime: string | null;
+};
 
 @Component({
   selector: 'app-drivers',
@@ -63,36 +89,36 @@ export class DriversComponent implements OnInit {
   private router = inject(Router);
 
   //SIGNAL PARA LOS CONDUCTORES ORIGINALES SIN FILTRAR
-  private allDrivers = signal(this.store.drivers());
+  private allDrivers = signal<DriverDto[]>(this.store.drivers());
 
-  //SIGNAL PARA LOS CONDUCTORES FILTRADOS QUE SE MUESTRAN EN LA TABLA
-  drivers = signal(this.store.drivers());
+  //SIGNAL PARA LOS CONDUCTORES FILTRADOS CON TAGS TRANSFORMADAS
+  drivers = signal<DriverDisplayData[]>([]);
 
   //SIGNAL PARA LOS IDs DE TAGS SELECCIONADOS EN EL FILTRO
   selectedTagIds = signal<number[]>([]);
 
   //SIGNAL PARA OTROS FILTROS DEL DP-DATAGRID
-  private otherFilters = signal<Record<string, any>>({});
+  private otherFilters = signal<Record<string, string | boolean | number>>({});
 
   //OBTENER TODAS LAS TAGS DEL GLOBALSTORE
-  allTags = this.globalStore.tags();
+  allTags: TagDto[] = this.globalStore.tags();
 
   //COMPUTED: FILTRAR SOLO LAS TAGS TIPO DRIVER
-  driverTags = computed(() => {
-    return this.allTags.filter((tag: any) => tag.type === 'DRIVER');
+  driverTags = computed<TagDto[]>(() => {
+    return this.allTags.filter((tag: TagDto) => tag.type === 'DRIVER');
   });
 
-  //COMPUTED: CONVERTIR TAGS A FORMATO DE OPCIONES (MANTENER PARA COMPATIBILIDAD)
-  tagOptions = computed(() => {
+  //COMPUTED: CONVERTIR TAGS A FORMATO DE OPCIONES PARA EL FILTRO
+  tagOptions = computed<TagOption[]>(() => {
     const currentLanguage = this.globalStore.language() as 'es' | 'en';
-    return this.driverTags().map((tag: any) => ({
+    return this.driverTags().map((tag: TagDto) => ({
       value: String(tag.id),
-      label: this.getTagName(tag, currentLanguage),
-      color: this.getTagColor(tag)
+      label: tag.getName(currentLanguage),
+      color: tag.getColorWithHash()
     }));
   });
 
-  //CONFIGURACIÓN DE ACCIONES
+  //CONFIGURACION DE ACCIONES
   actionsConfig: ActionConfig = {
     actions: [
       {
@@ -100,22 +126,22 @@ export class DriversComponent implements OnInit {
         icon: 'visibility',
         label: 'Ver',
         color: 'primary',
-        condition: (row: any) => true,
-        onClick: (row: any) => this.viewDriver(row)
+        condition: (row: DriverDisplayData) => true,
+        onClick: (row: DriverDisplayData) => this.viewDriver(row)
       },
       {
         action: 'delete',
         icon: 'delete',
         label: 'Eliminar',
         color: 'warn',
-        condition: (row: any) => true,
-        onClick: (row: any) => this.deleteDriver(row)
+        condition: (row: DriverDisplayData) => true,
+        onClick: (row: DriverDisplayData) => this.deleteDriver(row)
       }
     ]
   };
 
   //FUNCIONES DE RENDERIZADO PERSONALIZADO
-  renderFullName = (column: TableColumn, row: any): string => {
+  renderFullName = (column: TableColumn, row: DriverDisplayData): string => {
     return `
       <div class="name-cell">
         <div>${row.name || ''}</div>
@@ -124,7 +150,7 @@ export class DriversComponent implements OnInit {
     `;
   };
 
-  renderDniCif = (column: TableColumn, row: any): string => {
+  renderDniCif = (column: TableColumn, row: DriverDisplayData): string => {
     return `
       <div class="dni-cif-cell">
         <div class="dni-line">${row.dni || '-'}</div>
@@ -133,7 +159,7 @@ export class DriversComponent implements OnInit {
     `;
   };
 
-  renderDate = (column: TableColumn, row: any): string => {
+  renderDate = (column: TableColumn, row: DriverDisplayData): string => {
     if (!row.created_datetime) return '-';
 
     const date = new Date(row.created_datetime);
@@ -144,34 +170,9 @@ export class DriversComponent implements OnInit {
     return `${day}/${month}/${year}`;
   };
 
-  renderTags = (column: TableColumn, row: any): string => {
-    const currentLanguage = this.globalStore.language() as 'es' | 'en';
+  //⭐ YA NO NECESITAS RENDERTAGS - EL CHIP-ARRAY LO MANEJA AUTOMATICAMENTE
 
-    if (!Array.isArray(row.tags) || row.tags.length === 0) {
-      return '<span class="no-tags">-</span>';
-    }
-
-    const chipsHtml = row.tags
-      .map((driverTag: any) => {
-        const tagId = typeof driverTag === 'object' ? driverTag.id : driverTag;
-        const fullTag = this.findTagById(tagId);
-
-        if (!fullTag) {
-          return `<span class="tag-chip unknown-tag" style="background-color: #cccccc; color: #666666;">ID: ${tagId}</span>`;
-        }
-
-        const tagName = this.getTagName(fullTag, currentLanguage);
-        const tagColor = this.getTagColor(fullTag);
-        const textColor = this.isLightColor(tagColor) ? '#000000' : '#ffffff';
-
-        return `<span class="tag-chip" style="background-color: ${tagColor}; color: ${textColor};">${tagName}</span>`;
-      })
-      .join('');
-
-    return `<div class="tags-container">${chipsHtml}</div>`;
-  };
-
-  renderValidated = (column: TableColumn, row: any): string => {
+  renderValidated = (column: TableColumn, row: DriverDisplayData): string => {
     const isValidated = row.validated;
     const translationKey = isValidated ? 'drivers.profile.VALIDATE' : 'drivers.profile.NO_VALIDATE';
     const translatedText = this.i18n.translate(translationKey);
@@ -188,7 +189,7 @@ export class DriversComponent implements OnInit {
     `;
   };
 
-  renderStatus = (column: TableColumn, row: any): string => {
+  renderStatus = (column: TableColumn, row: DriverDisplayData): string => {
     const isActive = row.is_active;
     const translationKey = isActive ? 'drivers.isActive.ACTIVE' : 'drivers.isActive.INACTIVE';
     const translatedText = this.i18n.translate(translationKey);
@@ -204,7 +205,7 @@ export class DriversComponent implements OnInit {
     //EFECTO QUE ACTUALIZA LA SEÑAL LOCAL CUANDO CAMBIA EL STORE
     effect(() => {
       this.allDrivers.set(this.store.drivers());
-      //APLICAR FILTROS DESPUÉS DE CARGAR LOS DATOS
+      //APLICAR FILTROS DESPUES DE CARGAR LOS DATOS
       this.applyAllFilters();
     });
 
@@ -214,12 +215,13 @@ export class DriversComponent implements OnInit {
       console.log('🔄 Effect ejecutado - Idioma:', currentLanguage);
       console.log('🏷️ Tag options actuales:', this.tagOptions());
 
-      //FORZAR ACTUALIZACIÓN DE LOS DATOS PARA QUE SE RE-RENDERICEN LAS COLUMNAS PERSONALIZADAS
-      this.drivers.set([...untracked(this.drivers)]);
+      //FORZAR ACTUALIZACION DE LOS DATOS PARA QUE SE RE-RENDERICEN LAS COLUMNAS
+      //TRANSFORMAR LAS TAGS NUEVAMENTE
+      this.updateDriversWithTransformedTags();
     });
   }
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     //INICIALIZAR DESDE LOCALSTORAGE
     this.store.initializeFromStorage();
 
@@ -233,18 +235,79 @@ export class DriversComponent implements OnInit {
   }
 
   //CARGAR CONDUCTORES
-  async loadDrivers() {
+  async loadDrivers(): Promise<void> {
     await this.store.getDrivers();
   }
 
+  //⭐ METODO PARA TRANSFORMAR LAS TAGS AL FORMATO QUE ENTIENDE EL CHIP-ARRAY
+  //CONVIERTE IDS DE TAGS A OBJETOS TAGDTO COMPLETOS
+  private transformDriverTags(driver: DriverDto): DriverDisplayData {
+    const transformedTags: TagDto[] = [];
+
+    if (Array.isArray(driver.tags) && driver.tags.length > 0) {
+      for (const tagItem of driver.tags) {
+        //SI YA ES UN TAGDTO, AGREGARLO DIRECTAMENTE
+        if (typeof tagItem === 'object' && 'getName' in tagItem) {
+          transformedTags.push(tagItem);
+          continue;
+        }
+
+        //SI ES UN ID (NUMBER), BUSCAR EL TAG COMPLETO
+        const tagId = typeof tagItem === 'object' && 'id' in tagItem ? tagItem.id : tagItem as number;
+
+        //BUSCAR LA TAG COMPLETA EN TODAS LAS TAGS
+        const fullTag = this.allTags.find((tag: TagDto) => tag.id === tagId);
+
+        if (fullTag) {
+          transformedTags.push(fullTag);
+        } else {
+          console.warn(`⚠️ Tag con ID ${tagId} no encontrada`);
+        }
+      }
+    }
+
+    //RETORNAR OBJETO PLANO CON TODAS LAS PROPIEDADES DEL DRIVER Y TAGS TRANSFORMADAS
+    return {
+      id: driver.id,
+      username: driver.username,
+      email: driver.email,
+      phone: driver.phone,
+      name: driver.name,
+      last_name: driver.last_name,
+      image: driver.image,
+      is_active: driver.is_active,
+      dni: driver.dni,
+      cif: driver.cif,
+      validated: driver.validated,
+      rating: driver.rating,
+      city: driver.city,
+      province: driver.province,
+      postal_code: driver.postal_code,
+      billing_blocked: driver.billing_blocked,
+      transport_blocked: driver.transport_blocked,
+      allows_access_location: driver.allows_access_location,
+      tags: transformedTags,
+      created_datetime: driver.created_datetime
+    };
+  }
+
+  //METODO AUXILIAR PARA ACTUALIZAR DRIVERS CON TAGS TRANSFORMADAS
+  private updateDriversWithTransformedTags(): void {
+    const currentDrivers = untracked(this.allDrivers);
+    const driversWithTransformedTags = currentDrivers.map(driver =>
+      this.transformDriverTags(driver)
+    );
+    this.drivers.set(driversWithTransformedTags);
+  }
+
   //MANEJAR CAMBIOS EN LAS TAGS SELECCIONADAS
-  onTagsChange(newTagIds: number[] | string[]) {
+  onTagsChange(newTagIds: number[] | string[]): void {
     this.selectedTagIds.set(newTagIds as number[]);
     this.applyAllFilters();
   }
 
   //MANEJAR CAMBIOS DE FILTROS DE DP-DATAGRID
-  onFilterChange(event: FilterChangeEvent) {
+  onFilterChange(event: FilterChangeEvent): void {
     console.log('Filtros de dp-datagrid aplicados:', event);
     this.otherFilters.set(event.filters);
     this.applyAllFilters();
@@ -252,21 +315,24 @@ export class DriversComponent implements OnInit {
 
   //APLICAR TODOS LOS FILTROS (TAGS + DP-DATAGRID)
   private applyAllFilters(): void {
-    let filteredData = [...this.allDrivers()];
+    let filteredData: DriverDto[] = [...this.allDrivers()];
     const tagIds = this.selectedTagIds();
     const filters = this.otherFilters();
 
     //FILTRAR POR TAGS SI HAY TAGS SELECCIONADAS
     if (tagIds && tagIds.length > 0) {
-      filteredData = filteredData.filter(driver => {
+      filteredData = filteredData.filter((driver: DriverDto) => {
         if (!Array.isArray(driver.tags) || driver.tags.length === 0) {
           return false;
         }
 
         //OBTENER LOS IDs DE LAS TAGS DEL CONDUCTOR
-        const driverTagIds = driver.tags.map((tag: any) =>
-          typeof tag === 'object' ? tag.id : tag
-        );
+        const driverTagIds: number[] = driver.tags.map((tag: TagDto | number) => {
+          if (typeof tag === 'object' && 'id' in tag) {
+            return tag.id;
+          }
+          return tag as number;
+        });
 
         //VERIFICAR SI EL CONDUCTOR TIENE AL MENOS UNA DE LAS TAGS SELECCIONADAS
         return tagIds.some(selectedTagId => driverTagIds.includes(selectedTagId));
@@ -277,9 +343,9 @@ export class DriversComponent implements OnInit {
     if (filters && Object.keys(filters).length > 0) {
       Object.entries(filters).forEach(([key, value]) => {
         if (value !== null && value !== undefined && value !== '') {
-          filteredData = filteredData.filter(driver => {
-            //USAR ACCESO DE TIPO SEGURO CON KEYOF
-            const driverValue = (driver as any)[key];
+          filteredData = filteredData.filter((driver: DriverDto) => {
+            //USAR KEYOF PARA ACCESO TIPADO
+            const driverValue = driver[key as keyof DriverDto];
 
             //MANEJO ESPECIAL PARA DIFERENTES TIPOS DE FILTROS
             if (typeof value === 'string') {
@@ -297,61 +363,30 @@ export class DriversComponent implements OnInit {
     }
 
     console.log(`📊 Filtros aplicados: ${this.allDrivers().length} → ${filteredData.length} conductores`);
-    this.drivers.set(filteredData);
+
+    //⭐ TRANSFORMAR LAS TAGS ANTES DE ASIGNAR A drivers
+    const driversWithTransformedTags = filteredData.map(driver =>
+      this.transformDriverTags(driver)
+    );
+
+    this.drivers.set(driversWithTransformedTags);
   }
 
-  //MANEJAR ACCIÓN DE CREAR CONDUCTOR
-  onCreateDriver(event: any) {
+  //MANEJAR ACCION DE CREAR CONDUCTOR
+  onCreateDriver(event: any): void {
     console.log('Navegando a crear nuevo conductor');
     this.router.navigate(['/drivers/create-driver']);
   }
 
   //NAVEGAR A VER CONDUCTOR
-  viewDriver(row: any) {
+  viewDriver(row: DriverDisplayData): void {
     console.log('Ver conductor:', row);
     this.router.navigate(['/drivers/edit-driver', row.id]);
   }
 
   //ELIMINAR CONDUCTOR
-  deleteDriver(row: any) {
+  deleteDriver(row: DriverDisplayData): void {
     console.log('Eliminar conductor:', row);
-    //IMPLEMENTAR LÓGICA DE ELIMINACIÓN
-  }
-
-  //HELPER: BUSCAR TAG POR ID
-  private findTagById(tagId: number): any {
-    return this.allTags.find((tag: any) => tag.id === tagId);
-  }
-
-  //HELPER: OBTENER NOMBRE DE TAG EN EL IDIOMA ESPECIFICADO
-  private getTagName(tag: any, language: 'es' | 'en' = 'es'): string {
-    if (typeof tag.getName === 'function') {
-      return tag.getName(language);
-    }
-    if (tag.name && typeof tag.name === 'object') {
-      return tag.name[language] || tag.name.es || '';
-    }
-    return tag.name || '';
-  }
-
-  //HELPER: OBTENER COLOR DE TAG CON #
-  private getTagColor(tag: any): string {
-    if (typeof tag.getColorWithHash === 'function') {
-      return tag.getColorWithHash();
-    }
-    if (tag.color) {
-      return tag.color.startsWith('#') ? tag.color : `#${tag.color}`;
-    }
-    return '#999999';
-  }
-
-  //HELPER: CALCULAR SI EL COLOR ES CLARO U OSCURO
-  private isLightColor(hexColor: string): boolean {
-    const hex = hexColor.replace('#', '');
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5;
+    //IMPLEMENTAR LOGICA DE ELIMINACION
   }
 }
