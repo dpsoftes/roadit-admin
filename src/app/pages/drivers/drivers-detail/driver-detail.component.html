@@ -1,0 +1,30 @@
+<h1>{{ (driverId() ? 'drivers.edit-driver-title' : 'drivers.create') | translate }}</h1>
+
+<app-tabs [tabs]="displayedTabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)">
+</app-tabs>
+
+<div class="tab-content">
+  @switch (activeTab()) {
+  @case ('general-data') {
+  <h1>{{ 'drivers.tabs.general-data' | translate }}</h1>
+  }
+  @case ('quality') {
+  <h1>{{ 'drivers.tabs.quality' | translate }}</h1>
+  }
+  @case ('certifications') {
+  <h1>{{ 'drivers.tabs.certifications' | translate }}</h1>
+  }
+  @case ('blacklist') {
+  <h1>{{ 'drivers.tabs.blacklist' | translate }}</h1>
+  }
+  @case ('documentation') {
+  <h1>{{ 'drivers.tabs.documentation' | translate }}</h1>
+  }
+  @case ('billing') {
+  <h1>{{ 'drivers.tabs.billing' | translate }}</h1>
+  }
+  @case ('timeline') {
+  <h1>{{ 'drivers.tabs.timeline' | translate }}</h1>
+  }
+  }
+</div>

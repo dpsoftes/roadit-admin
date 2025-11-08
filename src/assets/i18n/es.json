@@ -336,7 +336,13 @@
     "certs": "Certificados",
     "additional-services": "Servicios Adicionales",
     "assignment": "Asignaciones de transportes",
-    "history": "Historial de transportes"
+    "history": "Historial de transportes",
+    "general-data": "Datos generales",
+    "quality": "Calidad",
+    "certifications": "Certificaciones",
+    "blacklist": "Blacklist",
+    "documentation": "Documentación",
+    "timeline": "Timeline"
   },
   "transports": {
     "title": "Transportes",
@@ -864,8 +870,17 @@
   },
   "drivers": {
     "title": "Conductores",
-    "create": "CREAR NUEVO CONDUCTOR",
+    "create": "Crear nuevo conductor",
     "IVAIRPF": "MODIFICAR IVA / IRPF",
+    "tabs": {
+      "general-data": "Datos generales",
+      "quality": "Calidad",
+      "certifications": "Certificaciones",
+      "blacklist": "Blacklist",
+      "documentation": "Documentación",
+      "billing": "Facturación",
+      "timeline": "Timeline"
+    },
     "list": {
       "image": "Foto",
       "name": "Nombre",

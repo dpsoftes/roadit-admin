@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
+import { Router } from '@angular/router'; //IMPORTAR ROUTER
 import { DriverStore } from '@store/driver.state';
 import { I18nService } from '@i18n/i18n.service';
 import { GlobalStore } from '@store/global.state';
@@ -58,6 +59,7 @@ export class DriversComponent implements OnInit {
   store = inject(DriverStore);
   drivers = signal(this.store.drivers());
   private globalStore = inject(GlobalStore);
+  private router = inject(Router); //INYECTAR ROUTER
 
   //OBTENER TODAS LAS TAGS DEL GLOBALSTORE
   allTags = this.globalStore.tags();
@@ -77,7 +79,7 @@ export class DriversComponent implements OnInit {
     }));
   });
 
-  //CONFIGURACIÓN DE ACCIONES
+  //CONFIGURACIÓN DE ACCIONES - USAR action COMO STRING Y onClick COMO FUNCIÓN
   actionsConfig: ActionConfig = {
     actions: [
       {
@@ -85,14 +87,16 @@ export class DriversComponent implements OnInit {
         icon: 'visibility',
         label: 'Ver',
         color: 'primary',
-        condition: (row: any) => true
+        condition: (row: any) => true,
+        onClick: (row: any) => this.viewDriver(row)
       },
       {
         action: 'delete',
         icon: 'delete',
         label: 'Eliminar',
         color: 'warn',
-        condition: (row: any) => true
+        condition: (row: any) => true,
+        onClick: (row: any) => this.deleteDriver(row)
       }
     ]
   };
@@ -180,7 +184,7 @@ export class DriversComponent implements OnInit {
     //RENDERIZADO PERSONALIZADO PARA is_active
     //EVALUA SI EL VALOR ES true O false Y TRADUCCION
     const isActive = row.is_active;
-    const translationKey = isActive ? 'drivers.isActive.ACTIVE' : 'drivers.isActive.INACTIV';
+    const translationKey = isActive ? 'drivers.isActive.ACTIVE' : 'drivers.isActive.INACTIVE';
     const translatedText = this.i18n.translate(translationKey);
 
     return `
@@ -189,7 +193,6 @@ export class DriversComponent implements OnInit {
       </div>
     `;
   };
-
 
   constructor() {
     //EFECTO QUE ACTUALIZA LA SEÑAL LOCAL CUANDO CAMBIA EL STORE
@@ -236,8 +239,20 @@ export class DriversComponent implements OnInit {
 
   //MANEJAR ACCIÓN DE CREAR CONDUCTOR
   onCreateDriver(event: any) {
-    console.log('Crear nuevo conductor');
-    //IMPLEMENTAR NAVEGACIÓN O MODAL PARA CREAR CONDUCTOR
+    console.log('Navegando a crear nuevo conductor');
+    this.router.navigate(['/drivers/create-driver']);
+  }
+
+  //NAVEGAR A VER CONDUCTOR
+  viewDriver(row: any) {
+    console.log('Ver conductor:', row);
+    this.router.navigate(['/drivers/edit-driver', row.id]);
+  }
+
+  //ELIMINAR CONDUCTOR
+  deleteDriver(row: any) {
+    console.log('Eliminar conductor:', row);
+    //IMPLEMENTAR LÓGICA DE ELIMINACIÓN
   }
 
   //HELPER: OBTENER NOMBRE DE TAG EN EL IDIOMA ESPECIFICADO

@@ -35,72 +35,85 @@ export const routes: Routes = [
       },
       {
         path: 'drivers',
-        loadComponent: () => import('./pages/drivers/drivers.component').then(m => m.DriversComponent)
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./pages/drivers/drivers.component').then(m => m.DriversComponent)
+          },
+          {
+            path: 'create-driver',
+            loadComponent: () => import('./pages/drivers/drivers-detail/driver-detail.component').then(m => m.DriverDetailComponent)
+          },
+          {
+            path: 'edit-driver/:id',
+            loadComponent: () => import('./pages/drivers/drivers-detail/driver-detail.component').then(m => m.DriverDetailComponent)
+          }
+        ]
       },
       {
         path: 'clients',
 
         children: [
-            {
-              path: '',
-              loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
-            },
-            {
-              path: 'create-group',
-              loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
-            },
-            {
-              path: 'edit-group/:id',
-              loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
-            },
-            {
-              path: 'edit-client/:id',
-              loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
-            },
-            {
-              path: 'create-client',
-              loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
-            },
-            {
-              path: ':type',
-              loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
-            },
-          ]
-        },
-        {
-          path: 'transports',
-          children: [
-            {
-              path: '',
-              loadComponent: () => import('./pages/transports/transports').then(m => m.Transports)
-            },
-            {
-              path: 'create',
-              children: [
-                {
-                  path: '',
-                  loadComponent: () => import('./pages/transports/create-transport/create-transport').then(m => m.CreateTransport)
-                },
-                {
-                  path: ':type',
-                  loadComponent: () => import('./pages/transports/create-transport-2/create-transport-2').then(m => m.CreateTransport2)
-                }
-              ]
-            },
-            
-            {
-              path: ':tab',
-              loadComponent: () => import('./pages/transports/transports').then(m => m.Transports)
-            },
-          ]
-        },
+          {
+            path: '',
+            loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+          },
+          {
+            path: 'create-group',
+            loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
+          },
+          {
+            path: 'edit-group/:id',
+            loadComponent: () => import('./pages/clients/group-manager/group-manager.view').then(m => m.GroupManagerView)
+          },
+          {
+            path: 'edit-client/:id',
+            loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
+          },
+          {
+            path: 'create-client',
+            loadComponent: () => import('./pages/clients/create-client/edit-client').then(m => m.EditClient)
+          },
+          {
+            path: ':type',
+            loadComponent: () => import('./pages/clients/clients').then(m => m.Clients)
+          },
+        ]
+      },
+      {
+        path: 'transports',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./pages/transports/transports').then(m => m.Transports)
+          },
+          {
+            path: 'create',
+            children: [
+              {
+                path: '',
+                loadComponent: () => import('./pages/transports/create-transport/create-transport').then(m => m.CreateTransport)
+              },
+              {
+                path: ':type',
+                loadComponent: () => import('./pages/transports/create-transport-2/create-transport-2').then(m => m.CreateTransport2)
+              }
+            ]
+          },
+
+          {
+            path: ':tab',
+            loadComponent: () => import('./pages/transports/transports').then(m => m.Transports)
+          },
+        ]
+      },
       // {
       //  path: '**',
       //   loadComponent: () => import('./pages/construction/construction').then(m => m.Construction),
       // }
     ]
   },
-  
+
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
