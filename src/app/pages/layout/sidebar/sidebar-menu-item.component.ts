@@ -34,7 +34,7 @@ import { I18nService } from '@i18n/i18n.service';
     </div>
     </RouterLink>
     }
-    
+
   `,
   styles: [`
     .sidebar-menu-item {
@@ -65,7 +65,7 @@ import { I18nService } from '@i18n/i18n.service';
     }
     .expand-icon {
       margin-left: auto;
-      color: #C7D944;
+      color: #F5F5F5;
       font-size: 22px;
       display: flex;
       align-items: center;
