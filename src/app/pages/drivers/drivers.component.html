@@ -75,12 +75,14 @@
       </dp-datagrid-filter>
 
       <!-- FILTRO POR TAGS -->
-      <dp-datagrid-filter key="tags" label="{{ 'drivers.list.tags' | translate }}" type="chip-select" [width]="246"
-        [options]="tagOptions()">
-      </dp-datagrid-filter>
+      <div class="custom-filter-wrapper">
+        <input-multi-tag [label]="'drivers.list.tags' | translate" [value]="selectedTagIds()" [tagType]="'DRIVER'"
+          (valueChange)="onTagsChange($event)">
+        </input-multi-tag>
+      </div>
 
       <!-- FILTRO POR ESTADO -->
-      <dp-datagrid-filter key="validated" label="{{ 'drivers.list.is_active' | translate }}" type="select" [width]="138"
+      <dp-datagrid-filter key="is_active" label="{{ 'drivers.list.is_active' | translate }}" type="select" [width]="138"
         [options]="[
           { value: true.toString(), label: 'Activo' },
           { value: false.toString(), label: 'Inactivo' }

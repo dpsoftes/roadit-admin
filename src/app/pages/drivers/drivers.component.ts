@@ -10,11 +10,12 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { Router } from '@angular/router'; //IMPORTAR ROUTER
+import { Router } from '@angular/router';
 import { DriverStore } from '@store/driver.state';
 import { I18nService } from '@i18n/i18n.service';
 import { GlobalStore } from '@store/global.state';
 import { TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
+import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
 
 //IMPORTAR COMPONENTES Y TIPOS DE DP-DATAGRID
 import {
@@ -48,7 +49,8 @@ export interface TagOption {
     DpDatagridFilterComponent,
     DpDatagridFilterContainerComponent,
     DpDatagridActionsComponent,
-    DpDatagridActionComponent
+    DpDatagridActionComponent,
+    InputMultiTagComponent
   ],
   templateUrl: './drivers.component.html',
   styleUrl: './drivers.component.scss',
@@ -57,9 +59,20 @@ export interface TagOption {
 export class DriversComponent implements OnInit {
   private i18n = inject(I18nService);
   store = inject(DriverStore);
-  drivers = signal(this.store.drivers());
   private globalStore = inject(GlobalStore);
-  private router = inject(Router); //INYECTAR ROUTER
+  private router = inject(Router);
+
+  //SIGNAL PARA LOS CONDUCTORES ORIGINALES SIN FILTRAR
+  private allDrivers = signal(this.store.drivers());
+
+  //SIGNAL PARA LOS CONDUCTORES FILTRADOS QUE SE MUESTRAN EN LA TABLA
+  drivers = signal(this.store.drivers());
+
+  //SIGNAL PARA LOS IDs DE TAGS SELECCIONADOS EN EL FILTRO
+  selectedTagIds = signal<number[]>([]);
+
+  //SIGNAL PARA OTROS FILTROS DEL DP-DATAGRID
+  private otherFilters = signal<Record<string, any>>({});
 
   //OBTENER TODAS LAS TAGS DEL GLOBALSTORE
   allTags = this.globalStore.tags();
@@ -69,7 +82,7 @@ export class DriversComponent implements OnInit {
     return this.allTags.filter((tag: any) => tag.type === 'DRIVER');
   });
 
-  //COMPUTED: CONVERTIR TAGS A FORMATO DE OPCIONES PARA EL FILTRO
+  //COMPUTED: CONVERTIR TAGS A FORMATO DE OPCIONES (MANTENER PARA COMPATIBILIDAD)
   tagOptions = computed(() => {
     const currentLanguage = this.globalStore.language() as 'es' | 'en';
     return this.driverTags().map((tag: any) => ({
@@ -79,7 +92,7 @@ export class DriversComponent implements OnInit {
     }));
   });
 
-  //CONFIGURACIÓN DE ACCIONES - USAR action COMO STRING Y onClick COMO FUNCIÓN
+  //CONFIGURACIÓN DE ACCIONES
   actionsConfig: ActionConfig = {
     actions: [
       {
@@ -102,7 +115,6 @@ export class DriversComponent implements OnInit {
   };
 
   //FUNCIONES DE RENDERIZADO PERSONALIZADO
-  //NOTA: LAS FIRMAS DEBEN SER (column: TableColumn, row: any) => string
   renderFullName = (column: TableColumn, row: any): string => {
     return `
       <div class="name-cell">
@@ -122,7 +134,6 @@ export class DriversComponent implements OnInit {
   };
 
   renderDate = (column: TableColumn, row: any): string => {
-    //FORMATEAR FECHA DE ISO A FORMATO ESPAÑOL DD/MM/YY
     if (!row.created_datetime) return '-';
 
     const date = new Date(row.created_datetime);
@@ -161,13 +172,10 @@ export class DriversComponent implements OnInit {
   };
 
   renderValidated = (column: TableColumn, row: any): string => {
-    //RENDERIZADO PERSONALIZADO PARA validated
-    //EVALUA SI EL VALOR ES true O false Y DEVUELVE SVG + TRADUCCION
     const isValidated = row.validated;
     const translationKey = isValidated ? 'drivers.profile.VALIDATE' : 'drivers.profile.NO_VALIDATE';
     const translatedText = this.i18n.translate(translationKey);
 
-    //RUTA A LOS SVG EXTERNOS
     const iconPath = isValidated
       ? 'assets/icons/validatedIcon.svg'
       : 'assets/icons/noValidatedIcon.svg';
@@ -181,8 +189,6 @@ export class DriversComponent implements OnInit {
   };
 
   renderStatus = (column: TableColumn, row: any): string => {
-    //RENDERIZADO PERSONALIZADO PARA is_active
-    //EVALUA SI EL VALOR ES true O false Y TRADUCCION
     const isActive = row.is_active;
     const translationKey = isActive ? 'drivers.isActive.ACTIVE' : 'drivers.isActive.INACTIVE';
     const translatedText = this.i18n.translate(translationKey);
@@ -197,14 +203,14 @@ export class DriversComponent implements OnInit {
   constructor() {
     //EFECTO QUE ACTUALIZA LA SEÑAL LOCAL CUANDO CAMBIA EL STORE
     effect(() => {
-      this.drivers.set(this.store.drivers());
+      this.allDrivers.set(this.store.drivers());
+      //APLICAR FILTROS DESPUÉS DE CARGAR LOS DATOS
+      this.applyAllFilters();
     });
 
     //EFECTO QUE REFRESCA LA VISTA CUANDO CAMBIA EL IDIOMA
     effect(() => {
-      //FORZAR LA LECTURA DEL IDIOMA PARA QUE EL EFECTO SE EJECUTE CUANDO CAMBIE
       const currentLanguage = this.globalStore.language() as 'es' | 'en';
-
       console.log('🔄 Effect ejecutado - Idioma:', currentLanguage);
       console.log('🏷️ Tag options actuales:', this.tagOptions());
 
@@ -231,10 +237,68 @@ export class DriversComponent implements OnInit {
     await this.store.getDrivers();
   }
 
-  //MANEJAR CAMBIOS DE FILTROS
+  //MANEJAR CAMBIOS EN LAS TAGS SELECCIONADAS
+  onTagsChange(tagIds: number[]): void {
+    console.log('🏷️ Tags seleccionadas:', tagIds);
+    this.selectedTagIds.set(tagIds);
+    this.applyAllFilters();
+  }
+
+  //MANEJAR CAMBIOS DE FILTROS DE DP-DATAGRID
   onFilterChange(event: FilterChangeEvent) {
-    console.log('Filtros aplicados:', event);
-    //AQUÍ PUEDES IMPLEMENTAR LÓGICA ADICIONAL DE FILTRADO SI ES NECESARIO
+    console.log('Filtros de dp-datagrid aplicados:', event);
+    this.otherFilters.set(event.filters);
+    this.applyAllFilters();
+  }
+
+  //APLICAR TODOS LOS FILTROS (TAGS + DP-DATAGRID)
+  private applyAllFilters(): void {
+    let filteredData = [...this.allDrivers()];
+    const tagIds = this.selectedTagIds();
+    const filters = this.otherFilters();
+
+    //FILTRAR POR TAGS SI HAY TAGS SELECCIONADAS
+    if (tagIds && tagIds.length > 0) {
+      filteredData = filteredData.filter(driver => {
+        if (!Array.isArray(driver.tags) || driver.tags.length === 0) {
+          return false;
+        }
+
+        //OBTENER LOS IDs DE LAS TAGS DEL CONDUCTOR
+        const driverTagIds = driver.tags.map((tag: any) =>
+          typeof tag === 'object' ? tag.id : tag
+        );
+
+        //VERIFICAR SI EL CONDUCTOR TIENE AL MENOS UNA DE LAS TAGS SELECCIONADAS
+        return tagIds.some(selectedTagId => driverTagIds.includes(selectedTagId));
+      });
+    }
+
+    //APLICAR OTROS FILTROS DE DP-DATAGRID SI EXISTEN
+    if (filters && Object.keys(filters).length > 0) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          filteredData = filteredData.filter(driver => {
+            //USAR ACCESO DE TIPO SEGURO CON KEYOF
+            const driverValue = (driver as any)[key];
+
+            //MANEJO ESPECIAL PARA DIFERENTES TIPOS DE FILTROS
+            if (typeof value === 'string') {
+              return String(driverValue).toLowerCase().includes(value.toLowerCase());
+            } else if (typeof value === 'boolean') {
+              return driverValue === value;
+            } else if (Array.isArray(value)) {
+              return value.includes(driverValue);
+            }
+
+            return String(driverValue) === String(value);
+          });
+        }
+      });
+    }
+
+    console.log(`📊 Filtros aplicados: ${this.allDrivers().length} → ${filteredData.length} conductores`);
+    this.drivers.set(filteredData);
   }
 
   //MANEJAR ACCIÓN DE CREAR CONDUCTOR
@@ -253,6 +317,11 @@ export class DriversComponent implements OnInit {
   deleteDriver(row: any) {
     console.log('Eliminar conductor:', row);
     //IMPLEMENTAR LÓGICA DE ELIMINACIÓN
+  }
+
+  //HELPER: BUSCAR TAG POR ID
+  private findTagById(tagId: number): any {
+    return this.allTags.find((tag: any) => tag.id === tagId);
   }
 
   //HELPER: OBTENER NOMBRE DE TAG EN EL IDIOMA ESPECIFICADO
@@ -275,11 +344,6 @@ export class DriversComponent implements OnInit {
       return tag.color.startsWith('#') ? tag.color : `#${tag.color}`;
     }
     return '#999999';
-  }
-
-  //HELPER: BUSCAR TAG POR ID
-  private findTagById(tagId: number): any | null {
-    return this.allTags.find((tag: any) => tag.id === tagId) || null;
   }
 
   //HELPER: CALCULAR SI EL COLOR ES CLARO U OSCURO
