@@ -951,6 +951,13 @@
       "invalidFileType": "Invalid file type. Only images are allowed (JPG, PNG, WEBP).",
       "fileTooLarge": "File is too large. Maximum size is 5MB."
     },
+    "billing": {
+      "iban": "IBAN",
+      "bic": "BIC",
+      "irpf": "Income Tax Withholding",
+      "biweeklyBilling": "Billed in the fortnight",
+      "saveChanges": "SAVE CHANGES"
+    },
     "profile": {
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo",

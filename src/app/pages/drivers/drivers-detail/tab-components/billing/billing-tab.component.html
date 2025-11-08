@@ -1,0 +1,54 @@
+<div class="billing-tab">
+  <!-- FORMULARIO DE FACTURACIÓN -->
+  <div class="billing-form">
+
+    <!-- FILA 1: IBAN, BIC -->
+    <div class="form-row">
+      <div class="form-field width-1-2">
+        <label for="iban" class="custom-field-label">
+          {{ 'drivers.billing.iban' | translate }}
+        </label>
+        <input type="text" id="iban" class="inputText" [value]="iban()" (input)="iban.set($any($event.target).value)" />
+      </div>
+
+      <div class="form-field width-1-2">
+        <label for="bic" class="custom-field-label">
+          {{ 'drivers.billing.bic' | translate }}
+        </label>
+        <input type="text" id="bic" class="inputText" [value]="bic()" (input)="bic.set($any($event.target).value)" />
+      </div>
+    </div>
+
+    <!-- FILA 2: IRPF, FACTURADO EN LA QUINCENA -->
+    <div class="form-row">
+      <div class="form-field width-1-2">
+        <label for="irpf" class="custom-field-label">
+          {{ 'drivers.billing.irpf' | translate }}
+        </label>
+        <div class="input-with-suffix">
+          <input type="text" id="irpf" class="inputText input-with-suffix-field" [value]="irpf()"
+            (input)="irpf.set($any($event.target).value); onlyNumericInput($event)" />
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+
+      <div class="form-field width-1-2">
+        <label for="biweeklyBilling" class="custom-field-label">
+          {{ 'drivers.billing.biweeklyBilling' | translate }}
+        </label>
+        <div class="input-with-suffix">
+          <input type="text" id="biweeklyBilling" class="inputText input-with-suffix-field readonly-input"
+            [value]="biweeklyBilling()" readonly />
+          <span class="input-suffix">€</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTÓN GUARDAR -->
+    <div class="form-actions">
+      <button type="button" class="save-button" (click)="onSaveChanges()">
+        {{ 'drivers.billing.saveChanges' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

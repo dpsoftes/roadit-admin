@@ -6,6 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { TabsComponent } from '@components/tabs.component/tabs.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralDataTabComponent } from './tab-components/general-data/general-data-tab.component';
+import { BillingTabComponent } from './tab-components/billing/billing-tab.component';
+
 
 @Component({
   selector: 'app-driver-detail',
@@ -16,7 +18,9 @@ import { GeneralDataTabComponent } from './tab-components/general-data/general-d
     MatButtonModule,
     MatCardModule,
     TabsComponent,
-    GeneralDataTabComponent
+    GeneralDataTabComponent,
+    BillingTabComponent
+
   ],
   templateUrl: './driver-detail.component.html',
   styleUrl: './driver-detail.component.scss'
@@ -40,12 +44,17 @@ export class DriverDetailComponent implements OnInit {
     'timeline'
   ]);
 
+  //↓↓ DESCOMENTAR FUERA DE DESARROLLO ↓↓
+  // displayedTabs = computed(() => {
+  //   if (this.driverId()) {
+  //     return this.tabs();
+  //   }
+  //   //SI ES CREACION, MOSTRAR SOLO LA PRIMERA TAB
+  //   return ['general-data'];
+  // });
+
   displayedTabs = computed(() => {
-    if (this.driverId()) {
-      return this.tabs();
-    }
-    //SI ES CREACION, MOSTRAR SOLO LA PRIMERA TAB
-    return ['general-data'];
+    return this.tabs();
   });
 
   async ngOnInit() {
