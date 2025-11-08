@@ -1,7 +1,7 @@
 import { Component, signal, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { SafeUrl } from '@angular/platform-browser';
 import { ISO_COUNTRIES } from '@dtos/country-langs.dto';
 import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
 
@@ -86,10 +86,10 @@ export class GeneralDataTabComponent {
 
   //MANEJAR CAMBIOS EN LAS TAGS SELECCIONADAS
   onTagsChange(tagIds: number[]): void {
-    console.log('🔄 onTagsChange llamado con:', tagIds);
-    console.log('📊 Valor anterior:', this.selectedTagIds());
+    console.log('onTagsChange llamado con:', tagIds);
+    console.log('Valor anterior:', this.selectedTagIds());
     this.selectedTagIds.set(tagIds);
-    console.log('✅ Valor actualizado:', this.selectedTagIds());
+    console.log('Valor actualizado:', this.selectedTagIds());
   }
 
   onSaveChanges(): void {
