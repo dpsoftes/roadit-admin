@@ -870,5 +870,70 @@
     "REPAIR_SHOP": "Repair shop",
     "VEHICLE_YARD": "Vehicle yard",
     "WAREHOUSE": "Warehouse"
+  },
+  "drivers": {
+    "title": "Conductores",
+    "create": "CREAR NUEVO CONDUCTOR",
+    "IVAIRPF": "MODIFICAR IVA / IRPF",
+    "list": {
+      "image": "Foto",
+      "name": "Nombre",
+      "dni": "DNI",
+      "cif": "CIF",
+      "dni/cif": "DNI/CIF",
+      "province": "Provincia",
+      "city": "Ciudad",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "created_datetime": "F. Alta",
+      "rating": "Puntuación",
+      "tags": "Tags",
+      "validated": "Validación",
+      "fortnight_earnings": "Factura Quincenal",
+      "status": "Estado",
+      "actions": "Acciones",
+      "searchPlaceholder": "Buscar",
+      "is_active": "Estado",
+      "expiredDocuments": "Conductores con documentos expirados",
+      "newDocuments": "Conductores con nuevos documentos aportados",
+      "create-driver": "Crear nuevo conductor",
+      "name_filter": "Nombre",
+      "email_filter": "Email",
+      "tags_filter": "Etiquetas",
+      "is_active_filter": "Estado Activo",
+      "validated_filter": "Validación",
+      "rating_filter": "Puntuación",
+      "phone_filter": "Teléfono",
+      "city_filter": "Ciudad",
+      "province_filter": "Provincia",
+      "expiredDocuments_filter": "Documentos Caducados",
+      "newDocuments_filter": "Documentos Nuevos"
+    },
+    "profile": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo",
+      "VALIDATE": "Validado",
+      "NO_VALIDATE": "Pendiente",
+      "EXPIRED": "Caducados",
+      "NO_EXPIRED": "Sin Caducar",
+      "NEW_DOCUMENT": "Documento Nuevo",
+      "NO_NEW_DOCUMENT": "Sin Documento Nuevo"
+    },
+    "isActive": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo"
+    },
+    "actions": {
+      "edit": "Editar",
+      "view": "Ver",
+      "delete": "Eliminar"
+    },
+    "messages": {
+      "no_data": "No hay conductores disponibles",
+      "loading": "Cargando conductores...",
+      "delete_confirm": "¿Estás seguro de que deseas eliminar este conductor?",
+      "delete_success": "Conductor eliminado correctamente",
+      "delete_error": "Error al eliminar el conductor"
+    }
   }
 }
