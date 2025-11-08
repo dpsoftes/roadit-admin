@@ -927,6 +927,7 @@
     "generalData": {
       "uploadPhoto": "Upload photo",
       "removePhoto": "Remove photo",
+      "photoUploadInfo": "Allows JPG, GIF or PNG. Max Size 800K",
       "firstName": "First Name",
       "firstNameRequired": "First name is required",
       "lastName": "Last Name",

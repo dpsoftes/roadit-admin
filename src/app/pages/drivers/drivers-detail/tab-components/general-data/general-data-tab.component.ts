@@ -40,7 +40,7 @@ export class GeneralDataTabComponent {
       const file = input.files[0];
 
       //VALIDAR TIPO DE ARCHIVO
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
       if (!allowedTypes.includes(file.type)) {
         alert('Tipo de archivo no válido. Solo se permiten imágenes (JPG, PNG, WEBP).');
         return;
@@ -75,8 +75,13 @@ export class GeneralDataTabComponent {
     }
   }
 
+  onlyNumAndSymnbolInput(event: any) {
+    const regex = /[^0-9!@#$%^&*()_\-+=.,/\\]/g;
+    event.target.value = event.target.value.replace(regex, '');
+  }
+
+
   onSaveChanges(): void {
     console.log('Guardar cambios');
-    //AQUÍ SE IMPLEMENTARÁ LA LÓGICA DE GUARDADO
   }
 }

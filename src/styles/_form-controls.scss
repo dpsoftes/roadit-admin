@@ -1,0 +1,383 @@
+// _form-controls.scss
+// CLASES GLOBALES REUTILIZABLES PARA CONTROLES DE FORMULARIO
+// BASADO EN ESPECIFICACIONES DE FIGMA
+
+// ===================================
+// LABELS DE FORMULARIO
+// ===================================
+.custom-field-label {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 100%;
+  color: #2D3D32;
+  display: block;
+  margin-bottom: 4px;
+
+  //INDICADOR DE CAMPO REQUERIDO
+  .required {
+    color: #DC2626;
+    margin-left: 4px;
+  }
+}
+
+// ===================================
+// INPUTS DE TEXTO
+// ===================================
+.inputText {
+  width: 100%;
+  height: 38px;
+  padding: 9px 12px;
+  border: 1px solid #6F8068 !important;
+  border-radius: 8px;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #2D3D32;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  opacity: 1;
+
+  &:focus {
+    outline: none;
+    border-color: #C7D944;
+    box-shadow: 0 0 0 3px rgba(199, 217, 68, 0.1);
+  }
+
+  &:hover:not(:disabled):not(:focus) {
+    border-color: #5A6B54;
+  }
+
+  &:disabled {
+    background-color: #F9FAFB;
+    color: #9CA3AF;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &::placeholder {
+    color: #9CA3AF;
+    font-style: italic;
+  }
+
+  //ESTADO DE ERROR
+  &.error {
+    border-color: #DC2626;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+  }
+}
+
+// ===================================
+// SELECTS
+// ===================================
+.inputSelect {
+  width: 100%;
+  height: 38px;
+  padding: 9px 12px;
+  padding-right: 40px; //ESPACIO PARA EL ICONO DE FLECHA
+  border: 1px solid #6F8068 !important;
+  border-radius: 8px;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #2D3D32;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  cursor: pointer;
+  appearance: none;
+  opacity: 1;
+
+  //ICONO DE FLECHA HACIA ABAJO
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%236F8068' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+
+  //PREVENIR QUE EL TEXTO SE CORTE
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:focus {
+    outline: none;
+    border-color: #C7D944;
+    box-shadow: 0 0 0 3px rgba(199, 217, 68, 0.1);
+  }
+
+  &:hover:not(:disabled):not(:focus) {
+    border-color: #5A6B54;
+  }
+
+  &:disabled {
+    background-color: #F9FAFB;
+    color: #9CA3AF;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  //OPCIONES DEL SELECT
+  option {
+    padding: 8px 12px;
+    background-color: #FFFFFF;
+    color: #2D3D32;
+
+    &:hover {
+      background-color: #F3F4F6;
+    }
+
+    &:disabled {
+      color: #9CA3AF;
+    }
+  }
+
+  //SELECT MÚLTIPLE
+  &[multiple] {
+    height: auto;
+    min-height: 38px;
+    padding: 8px 12px;
+    background-image: none;
+
+    option {
+      padding: 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+
+      &:checked {
+        background-color: #C7D944;
+        color: #2D3D32;
+        font-weight: 500;
+      }
+    }
+  }
+
+  //MULTISELECT INLINE (UNA SOLA LÍNEA CON SCROLL HORIZONTAL)
+  &.multiselect-inline[multiple] {
+    height: 38px;
+    min-height: 38px;
+    padding: 0 12px;
+    overflow-y: auto;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+
+    option {
+      display: inline-block;
+      padding: 4px 12px;
+      margin: 0 4px;
+      border-radius: 16px;
+
+      &:checked {
+        background-color: #C7D944;
+        color: #2D3D32;
+      }
+    }
+  }
+
+  //ESTADO DE ERROR
+  &.error {
+    border-color: #DC2626;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+  }
+}
+
+// ===================================
+// CHECKBOXES
+// ===================================
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #2D3D32;
+  line-height: 1.4;
+
+  //TEXTO DEL CHECKBOX
+  span {
+    font-weight: 400;
+  }
+}
+
+.inputCheckbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #6F8068;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover:not(:disabled) {
+    border-color: #5A6B54;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #C7D944;
+    box-shadow: 0 0 0 3px rgba(199, 217, 68, 0.1);
+  }
+
+  //ESTADO CHECKED
+  &:checked {
+    background-color: #C7D944;
+    border-color: #C7D944;
+
+    //CHECKMARK (✓)
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 5px;
+      height: 10px;
+      border: solid #2D3D32;
+      border-width: 0 2px 2px 0;
+    }
+  }
+
+  //ESTADO INDETERMINADO
+  &:indeterminate {
+    background-color: #C7D944;
+    border-color: #C7D944;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 2px;
+      background-color: #2D3D32;
+    }
+  }
+
+  //ESTADO DISABLED
+  &:disabled {
+    background-color: #F9FAFB;
+    border-color: #D1D5DB;
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    &:checked {
+      background-color: #E5E7EB;
+      border-color: #D1D5DB;
+
+      &::after {
+        border-color: #9CA3AF;
+      }
+    }
+  }
+}
+
+// ===================================
+// MENSAJE DE ERROR
+// ===================================
+.field-error {
+  color: #DC2626;
+  font-size: 12px;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  //ICONO DE ERROR (OPCIONAL)
+  &::before {
+    content: '⚠';
+    font-size: 14px;
+  }
+}
+
+// ===================================
+// TEXTO DE AYUDA
+// ===================================
+.field-help {
+  color: #6F8068;
+  font-size: 12px;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+// ===================================
+// CONTENEDOR DE CAMPO
+// ===================================
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+
+  //VARIANTES DE ANCHO
+  &.full-width {
+    width: 100%;
+  }
+
+  &.half-width {
+    width: calc(50% - 8px);
+  }
+
+  &.third-width {
+    width: calc(33.333% - 11px);
+  }
+
+  &.quarter-width {
+    width: calc(25% - 12px);
+  }
+
+  //CAMPO CON ERROR
+  &.has-error {
+
+    .inputText,
+    .inputSelect {
+      border-color: #DC2626;
+    }
+  }
+}
+
+// ===================================
+// RESPONSIVE DESIGN
+// ===================================
+@media (max-width: 768px) {
+  .form-field {
+
+    &.half-width,
+    &.third-width,
+    &.quarter-width {
+      width: 100%;
+    }
+  }
+
+  .custom-field-label {
+    font-size: 14px;
+  }
+
+  .inputText,
+  .inputSelect {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .inputText,
+  .inputSelect {
+    height: 42px; //AUMENTAR ALTURA EN MÓVIL PARA MEJOR UX
+    font-size: 16px; //EVITAR ZOOM EN iOS
+  }
+
+  .custom-field-label {
+    font-size: 13px;
+  }
+}

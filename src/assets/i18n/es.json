@@ -918,6 +918,7 @@
     "generalData": {
       "uploadPhoto": "Subir foto",
       "removePhoto": "Eliminar foto",
+      "photoUploadInfo": "Permite JPG, GIF o PNG. Tamaño Máx. 800K",
       "firstName": "Nombre",
       "firstNameRequired": "El nombre es obligatorio",
       "lastName": "Apellidos",
