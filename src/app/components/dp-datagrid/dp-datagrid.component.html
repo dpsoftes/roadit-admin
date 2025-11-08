@@ -4,19 +4,20 @@
     <div class="dp-datagrid-toolbar">
       <div class="toolbar-left">
         <!-- Search -->
+        <!-- Search -->
         @if (searchable()) {
-        <mat-form-field appearance="outline" class="search-field">
-          <mat-label>{{ searchPlaceholder() }}</mat-label>
-          <input matInput [ngModel]="searchTerm()" (ngModelChange)="onSearchChange($event)">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+        <div class="search-container">
+          <img class="search-icon" src="assets/icons/searchIcon.svg" alt="search">
+          <input type="text" class="search-input" [placeholder]="searchPlaceholder()" [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchChange($event)">
+        </div>
         }
 
         <!-- Filters Toggle Button -->
         @if (filters().length > 0) {
-        <button mat-stroked-button (click)="toggleFilters()" class="filter-toggle-button">
-          <mat-icon>filter_list</mat-icon>
-          Filtros
+        <button (click)="toggleFilters()" class="customFilterButton">
+          <span class="filter-button-text">{{ 'common.filters' | translate }}</span>
+          <img class="filter-button-icon" src="assets/icons/chevronIcon.svg" alt="toggle">
         </button>
 
         <!-- Clear Filters Button -->
@@ -26,6 +27,13 @@
           <mat-icon>delete_outline</mat-icon>
         </button>
         }
+        }
+
+        @if (exportable()) {
+        <button (click)="onExportClick()" class="customExportButton">
+          <img class="export-button-icon" src="assets/icons/exportableIcon.svg" alt="export">
+          <span class="export-button-text">{{ 'common.exportable' | translate }}</span>
+        </button>
         }
       </div>
 

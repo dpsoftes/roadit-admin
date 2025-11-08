@@ -5,7 +5,9 @@
     "login": "LOGIN",
     "remember_me": "Remember me",
     "forgot_password": "Forgot password?",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "filters": "FILTERS",
+    "exportable": "EXPORT CSV"
   },
   "paginator": {
     "itemsPerPageLabel": "Items per page:",
@@ -855,7 +857,7 @@
     "viewFile": "View file",
     "deleteFile": "Delete file"
   },
-  "EntityDocumentType":{
+  "EntityDocumentType": {
     "DNI": "Dni (vat number)",
     "CIF": "Cif (vat number)",
     "OTHER": "Other"

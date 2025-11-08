@@ -7,7 +7,7 @@ import { FilterOption } from '../../../../dp-datagrid.interfaces';
 /**
  * COMPONENTE ATOMICO PARA FILTRO DE SELECT
  * RESPONSABILIDAD UNICA: DROPDOWN SIMPLE DE SELECCION CON ESTILOS PERSONALIZADOS DE FIGMA
- * SOPORTA ICONOS COMO SVG INLINE O RUTAS A ARCHIVOS
+ * SOPORTA ICONOS COMO RUTAS A ARCHIVOS DE IMAGEN (SVG, PNG, JPG, ETC)
  */
 @Component({
   selector: 'dp-select-filter',
@@ -36,21 +36,11 @@ import { FilterOption } from '../../../../dp-datagrid.interfaces';
         </select>
 
         <!-- ICONO DE CHEVRON -->
-        @if (isIconPath(chevronIcon)) {
-          <img class="select-arrow" [src]="chevronIcon" alt="chevron">
-        } @else {
-          <div class="select-arrow" [innerHTML]="chevronIcon"></div>
-        }
+        <img class="select-arrow" [src]="chevronIcon" alt="chevron">
 
         <!-- ICONO DE LA OPCION SELECCIONADA (SI EXISTE) -->
         @if (selectedOptionIcon()) {
-          @if (isIconPath(selectedOptionIcon())) {
-            <!-- ICONO DESDE RUTA DE ARCHIVO -->
-            <img class="option-icon" [src]="selectedOptionIcon()" alt="icon">
-          } @else {
-            <!-- ICONO SVG INLINE -->
-            <div class="option-icon" [innerHTML]="selectedOptionIcon()"></div>
-          }
+          <img class="option-icon" [src]="selectedOptionIcon()" alt="icon">
         }
       </div>
     </div>
@@ -122,23 +112,6 @@ import { FilterOption } from '../../../../dp-datagrid.interfaces';
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      color: #5F6368;
-
-      /* PARA SVG INLINE */
-      ::ng-deep svg {
-        width: 16px;
-        height: 16px;
-        fill: currentColor;
-      }
-    }
-
-    /* ESTILOS ESPECIFICOS PARA IMG (CHEVRON) */
-    img.select-arrow {
       width: 16px;
       height: 16px;
       object-fit: contain;
@@ -150,22 +123,6 @@ import { FilterOption } from '../../../../dp-datagrid.interfaces';
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 20px;
-      height: 20px;
-
-      /* PARA SVG INLINE */
-      ::ng-deep svg {
-        width: 20px;
-        height: 20px;
-        fill: currentColor;
-      }
-    }
-
-    /* ESTILOS ESPECIFICOS PARA IMG (OPCION) */
-    img.option-icon {
       width: 20px;
       height: 20px;
       object-fit: contain;
@@ -177,8 +134,8 @@ export class SelectFilterComponent extends FilterBase {
   value = signal<string | null>(null);
   valueInput = input<string | null>(null);
 
-  //ICONO DE CHEVRON DOWN (FONT AWESOME) CON FILL INCLUIDO
-  chevronIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#5F6368"><path d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>`;
+  //RUTA AL ARCHIVO DE ICONO DE CHEVRON DOWN (EN CARPETA ASSETS)
+  chevronIcon = 'assets/icons/chevronIcon.svg';
 
   //COMPUTED: OBTENER EL ICONO DE LA OPCION SELECCIONADA
   selectedOptionIcon = computed(() => {
@@ -217,42 +174,5 @@ export class SelectFilterComponent extends FilterBase {
     const normalizedValue = (value === '' || value === 'null') ? null : value;
     this.value.set(normalizedValue);
     this.emitFilterChange(normalizedValue);
-  }
-
-  /**
-   * DETECTAR SI EL ICONO ES UNA RUTA DE ARCHIVO O SVG INLINE
-   * RETORNA TRUE SI ES UNA RUTA DE ARCHIVO
-   * METODO MEJORADO PARA EVITAR FALSOS POSITIVOS
-   */
-  isIconPath(icon: string): boolean {
-    if (!icon) return false;
-
-    //SI EMPIEZA CON '<' ES DEFINITIVAMENTE SVG INLINE
-    if (icon.trim().startsWith('<')) {
-      return false;
-    }
-
-    //DETECTAR RUTAS ABSOLUTAS Y RELATIVAS
-    if (icon.startsWith('/') ||
-      icon.startsWith('./') ||
-      icon.startsWith('../') ||
-      icon.startsWith('http://') ||
-      icon.startsWith('https://')) {
-      return true;
-    }
-
-    //DETECTAR RUTAS QUE EMPIEZAN CON 'assets'
-    if (icon.startsWith('assets/')) {
-      return true;
-    }
-
-    //DETECTAR EXTENSIONES DE ARCHIVO AL FINAL DEL STRING
-    const fileExtensions = ['.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico'];
-    if (fileExtensions.some(ext => icon.toLowerCase().endsWith(ext))) {
-      return true;
-    }
-
-    //SI NO CUMPLE NINGUNA CONDICION, ASUMIR QUE ES SVG INLINE
-    return false;
   }
 }

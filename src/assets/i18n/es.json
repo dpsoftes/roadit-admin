@@ -5,7 +5,9 @@
     "login": "LOGIN",
     "remember_me": "Recuérdame",
     "forgot_password": "¿Olvidaste contraseña?",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "filters": "FILTROS",
+    "exportable": "EXPORTAR CSV"
   },
   "paginator": {
     "itemsPerPageLabel": "Elementos por página:",
@@ -863,6 +865,7 @@
   "drivers": {
     "title": "Conductores",
     "create": "CREAR NUEVO CONDUCTOR",
+    "IVAIRPF": "MODIFICAR IVA / IRPF",
     "list": {
       "image": "Foto",
       "name": "Nombre",
