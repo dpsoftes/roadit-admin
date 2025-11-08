@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { TabsComponent } from '@components/tabs.component/tabs.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GeneralDataTabComponent } from './tab-components/general-data/general-data-tab.component';
 
 @Component({
   selector: 'app-driver-detail',
@@ -14,7 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     TranslatePipe,
     MatButtonModule,
     MatCardModule,
-    TabsComponent
+    TabsComponent,
+    GeneralDataTabComponent
   ],
   templateUrl: './driver-detail.component.html',
   styleUrl: './driver-detail.component.scss'

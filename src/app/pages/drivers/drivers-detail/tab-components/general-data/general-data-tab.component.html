@@ -1,0 +1,225 @@
+<div class="general-data-tab">
+  <!-- SECCIÓN DE FOTO -->
+  <div class="photo-section">
+    <div class="photo-container">
+      <div class="photo-preview" [class.has-image]="imagePreview()">
+        <img *ngIf="imagePreview()" [src]="imagePreview()" alt="Driver photo" />
+        <div *ngIf="!imagePreview()" class="photo-placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+            <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="#6F8068"/>
+          </svg>
+        </div>
+      </div>
+      <div class="photo-actions">
+        <label for="photoUpload" class="upload-button">
+          {{ 'drivers.generalData.uploadPhoto' | translate }}
+          <input 
+            type="file" 
+            id="photoUpload" 
+            accept="image/jpeg,image/jpg,image/png,image/webp"
+            (change)="onFileSelected($event)"
+            hidden
+          />
+        </label>
+        <button 
+          *ngIf="imagePreview()" 
+          type="button" 
+          class="remove-button"
+          (click)="removePhoto()"
+        >
+          {{ 'drivers.generalData.removePhoto' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULARIO -->
+  <div class="driver-form">
+    <!-- FILA 1: NOMBRE, APELLIDOS, DNI/NIE, CIF -->
+    <div class="form-row">
+      <div class="form-field width-1-4">
+        <label for="firstName" class="field-label">
+          {{ 'drivers.generalData.firstName' | translate }}
+          <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="firstName"
+          class="inputText"
+        />
+      </div>
+
+      <div class="form-field width-1-4">
+        <label for="lastName" class="field-label">
+          {{ 'drivers.generalData.lastName' | translate }}
+          <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="lastName"
+          class="inputText"
+        />
+      </div>
+
+      <div class="form-field width-1-4">
+        <label for="dniNie" class="field-label">
+          {{ 'drivers.generalData.dniNie' | translate }}
+          <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="dniNie"
+          class="inputText"
+        />
+      </div>
+
+      <div class="form-field width-1-4">
+        <label for="cif" class="field-label">
+          {{ 'drivers.generalData.cif' | translate }}
+        </label>
+        <input 
+          type="text" 
+          id="cif"
+          class="inputText"
+        />
+      </div>
+    </div>
+
+    <!-- FILA 2: DIRECCIÓN, CÓDIGO POSTAL, CIUDAD, PROVINCIA, PAÍS -->
+    <div class="form-row">
+      <div class="form-field width-1-2">
+        <label for="fullAddress" class="field-label">
+          {{ 'drivers.generalData.fullAddress' | translate }}
+        </label>
+        <input 
+          type="text" 
+          id="fullAddress"
+          class="inputText"
+        />
+      </div>
+
+      <div class="form-field width-1-8">
+        <label for="postalCode" class="field-label">
+          {{ 'drivers.generalData.postalCode' | translate }}
+        </label>
+        <input 
+          type="text" 
+          id="postalCode"
+          class="inputText"
+        />
+      </div>
+
+      <div class="form-field width-1-8">
+        <label for="city" class="field-label">
+          {{ 'drivers.generalData.city' | translate }}
+        </label>
+        <input 
+          type="text" 
+          id="city"
+          class="inputText"
+        />
+      </div>
+
+      <div class="form-field width-1-8">
+        <label for="province" class="field-label">
+          {{ 'drivers.generalData.province' | translate }}
+        </label>
+        <input 
+          type="text" 
+          id="province"
+          class="inputText"
+        />
+      </div>
+
+      <div class="form-field width-1-8">
+        <label for="country" class="field-label">
+          {{ 'drivers.generalData.country' | translate }}
+        </label>
+        <select 
+          id="country"
+          class="inputSelect"
+        >
+          <option value="">{{ 'drivers.generalData.selectCountry' | translate }}</option>
+          <option *ngFor="let country of countries()" [value]="country.code">
+            {{ country.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- FILA 3: CORREO, TELÉFONO -->
+    <div class="form-row">
+      <div class="form-field width-1-2">
+        <label for="email" class="field-label">
+          {{ 'drivers.generalData.email' | translate }}
+          <span class="required">*</span>
+        </label>
+        <input 
+          type="email" 
+          id="email"
+          class="inputText"
+        />
+      </div>
+
+      <div class="form-field width-1-2">
+        <label for="phone" class="field-label">
+          {{ 'drivers.generalData.phone' | translate }}
+        </label>
+        <input 
+          type="tel" 
+          id="phone"
+          class="inputText"
+        />
+      </div>
+    </div>
+
+    <!-- FILA 4: TAGS, ACTIVAR/DESACTIVAR, BLOQUEAR MISIONES -->
+    <div class="form-row">
+      <div class="form-field width-1-2">
+        <label for="tags" class="field-label">
+          {{ 'drivers.generalData.tags' | translate }}
+        </label>
+        <select 
+          id="tags"
+          class="inputSelect"
+          multiple
+        >
+          <option value="PREMIUM">Premium</option>
+          <option value="VIP">VIP</option>
+          <option value="STANDARD">Standard</option>
+        </select>
+      </div>
+
+      <div class="form-field width-1-8 checkbox-field">
+        <label class="checkbox-label">
+          <input 
+            type="checkbox" 
+            class="inputCheckbox"
+          />
+          <span>{{ 'drivers.generalData.isActive' | translate }}</span>
+        </label>
+      </div>
+
+      <div class="form-field width-1-8 checkbox-field">
+        <label class="checkbox-label">
+          <input 
+            type="checkbox" 
+            class="inputCheckbox"
+          />
+          <span>{{ 'drivers.generalData.blockMissions' | translate }}</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- BOTÓN GUARDAR -->
+    <div class="form-actions">
+      <button 
+        type="button" 
+        class="save-button"
+        (click)="onSaveChanges()"
+      >
+        {{ 'drivers.generalData.saveChanges' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
