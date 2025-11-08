@@ -7,13 +7,9 @@
     <!-- Botón de colapsar (doble flecha como en Figma) -->
     <button class="collapse-btn" (click)="onToggleMenu()" type="button">
       @if (isCollapsed()) {
-      <span class="double-arrow">
-        <span class="arrow-first">›</span><span class="arrow-second">›</span>
-      </span>
+      <img src="assets/icons/whiteChevronRight.svg" alt="Expandir" class="chevron-icon">
       } @else {
-      <span class="double-arrow">
-        <span class="arrow-first">‹</span><span class="arrow-second">‹</span>
-      </span>
+      <img src="assets/icons/whiteChevronLeft.svg" alt="Colapsar" class="chevron-icon chevron-right">
       }
     </button>
   </div>
