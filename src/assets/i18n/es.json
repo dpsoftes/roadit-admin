@@ -48,7 +48,8 @@
     "additional_expenses": "Gastos adicionales",
     "driver_invoice_emission": "Emisión de facturas a conductores",
     "driver_invoices": "Facturas conductores",
-    "client_invoices": "Facturas clientes"
+    "client_invoices": "Facturas clientes",
+    "notifications": "Notificaciones"
   },
   "users": {
     "title": "Usuarios",

@@ -48,7 +48,8 @@
     "additional_expenses": "Additional expenses",
     "driver_invoice_emission": "Driver invoice emission",
     "driver_invoices": "Driver invoices",
-    "client_invoices": "Client invoices"
+    "client_invoices": "Client invoices",
+    "notifications": "Notificaciones"
   },
   "users": {
     "title": "Users",

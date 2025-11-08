@@ -20,8 +20,9 @@
       @for (item of menuItems; track item.route || $index) {
       @if (!item.submenus) {
       <li class="nav-item" [class.active]="item.active">
-        <sidebar-menu-item [label]="item.label" [icon]="item.iconType === 'png' ? item.iconPath : item.icon"
-          [route]="item.route" [hasSubitems]="false"></sidebar-menu-item>
+        <sidebar-menu-item [label]="item.label"
+          [icon]="(item.iconType === 'png' || item.iconType === 'svg') ? item.iconPath : item.icon" [route]="item.route"
+          [hasSubitems]="false"></sidebar-menu-item>
       </li>
       } @else {
       <li class="nav-item " [class.active]="item.active" (click)="toggleSubmenu($index)">
