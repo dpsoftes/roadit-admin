@@ -20,7 +20,8 @@ export const MENU_ITEMS: MenuItem[] = [
   {
     icon: 'work',
     label: 'navigation.clients',
-    route: '/clients',
+    // route: '/clients',
+    collapsed: true,
     submenus: [
       {
         icon: 'groups',
@@ -49,6 +50,7 @@ export const MENU_ITEMS: MenuItem[] = [
   {
     icon: 'directions_car',
     label: 'navigation.transports',
+    collapsed: true,
     submenus: [
       {
         icon: 'add_circle',
