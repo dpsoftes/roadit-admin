@@ -1,166 +1,243 @@
 /* ================================================= */
-/* input-multi-tag.component.scss (AJUSTE FINAL DE FUENTE FLOTANTE) */
+/* input-multi-tag.component.scss */
+/* ESTILOS SIGUIENDO _form-controls.scss */
 /* ================================================= */
 
 :host {
   display: block;
-  --mat-primary-focus: #4460d0; 
-  --mat-secondary-text: #737373; 
-  --mat-border-color: rgba(0, 0, 0, 0.40);
-  --mat-chip-color: #E6E6E6; 
-  --mat-text-color: #333333; 
-  margin: 0 10px;
-  
-  font-family: inherit;
+  width: 100%;
 }
 
-.custom-form-field {
-  position: relative;
+.form-field-wrapper {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--mat-border-color);
-  border-radius: 4px;
-  transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  min-height: 50px; 
-  box-sizing: border-box;
+  gap: 4px;
+  position: relative;
+}
+
+/* ===================================
+   LABEL (SIGUIENDO .custom-field-label)
+   =================================== */
+.custom-field-label {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 100%;
+  color: #2D3D32; //COLOR CONSTANTE, NO CAMBIA EN FOCUS
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ===================================
+   CONTAINER DEL INPUT (SIGUIENDO .inputText)
+   =================================== */
+.input-container {
   width: 100%;
-  
-  padding: 0 10px; 
-  padding-top: 5px; 
-  padding-bottom: 5px; 
-  
+  min-height: 38px;
+  padding: 4px 8px;
+  border: 1px solid #6F8068 !important;
+  border-radius: 8px;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #2D3D32;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  opacity: 1;
+  background-color: #FFFFFF;
+  position: relative;
+  cursor: text;
+
+  &:hover:not(.focused) {
+    border-color: #5A6B54;
+  }
+
   &.focused {
-    border-color: var(--mat-primary-focus); 
-    border-width: 2px;
-    padding: 0 9px; 
-    padding-top: 4px; 
-    padding-bottom: 4px; 
+    outline: none;
+    border-color: #C7D944 !important;
+    box-shadow: 0 0 0 3px rgba(199, 217, 68, 0.1);
   }
 }
 
-/* ------------------------------------------- */
-/* ETIQUETA */
-/* ------------------------------------------- */
-
-.custom-label-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 0 10px; 
-  pointer-events: none;
-}
-
-.custom-label {
-  position: absolute;
-  top: 0;
-  left: 10px; 
-  font-size: 0.9rem; /* Tamaño de fuente en reposo */
-  line-height: 1.125; 
-  color: var(--mat-secondary-text);
-  background-color: transparent; 
-  padding: 0; 
-  
-  font-weight: 300; 
-  
-  transform: translateY(14px); /* Posición de reposo */
-  transform-origin: left top;
-  transition: color 0.15s, transform 0.15s, font-size 0.15s;
-}
-
-.custom-label.floating {
-    /* ¡CORREGIDO! Eliminamos scale(0.75) y mantenemos el font-size */
-    font-size: 0.8rem; 
-    font-weight: 300;
-    
-    /* El desplazamiento debe ser menor que en la versión escalada */
-    transform: translateY(-10px); 
-    
-    left: 10px;
-    padding: 0 4px; 
-    background-color: white; 
-}
-
-.custom-form-field.focused .custom-label {
-    font-weight: 400; 
-    color: var(--mat-primary-focus);
-}
-
-/* ------------------------------------------- */
-/* RESTO DE ESTILOS DE CHIPS E INPUT (sin cambios) */
-/* ------------------------------------------- */
-
-.custom-input-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.custom-chip-list {
+/* ===================================
+   CONTAINER DE CHIPS
+   =================================== */
+.chips-container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  padding: 0;
-  min-height: 40px; 
-  width: 100%;
+  gap: 6px;
+  min-height: 30px;
 }
 
-.custom-chip {
-  display: flex;
+/* ===================================
+   CHIPS SELECCIONADOS
+   =================================== */
+.chip {
+  display: inline-flex;
   align-items: center;
-  background-color: var(--mat-chip-color);
-  border-radius: 4px; 
-  padding: 0 8px;
-  height: 28px; 
-  line-height: 28px;
-  font-size: 14px;
-  color: var(--mat-text-color);
-}
-
-.custom-chip-remove-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 4px;
-  display: flex;
-  align-items: center;
-  color: var(--mat-secondary-text); 
-  transition: color 0.1s;
-}
-
-.material-icons {
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 18px;
-  height: 18px;
-  width: 18px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
+  transition: all 0.2s ease;
+  background-color: #E5E7EB; //COLOR POR DEFECTO SI NO SE PROPORCIONA UNO
+  color: #2D3D32; //COLOR DE TEXTO POR DEFECTO
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 }
 
-.custom-chip-input {
-  flex-grow: 1; 
+.chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* ===================================
+   INPUT DE BÚSQUEDA
+   =================================== */
+.chip-input {
+  flex: 1;
+  min-width: 120px;
+  height: 30px;
   border: none;
   outline: none;
+  background: transparent;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #2D3D32;
   padding: 0;
-  height: 32px;
-  min-width: 100px; 
-  margin: 0; 
-  font: inherit;
-  color: currentColor;
-  background: none;
 
   &::placeholder {
-    color: transparent;
+    color: #9CA3AF;
+    font-style: italic;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* ===================================
+   DROPDOWN DE OPCIONES
+   =================================== */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border: 1px solid #6F8068;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+
+  //SCROLLBAR PERSONALIZADO
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #9CA3AF;
+    border-radius: 4px;
+
+    &:hover {
+      background: #6F8068;
+    }
+  }
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #F9FAFB;
+  }
+
+  &:active {
+    background-color: #F3F4F6;
+  }
+}
+
+.dropdown-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  background-color: #E5E7EB; //COLOR POR DEFECTO SI NO SE PROPORCIONA UNO
+  color: #2D3D32; //COLOR DE TEXTO POR DEFECTO
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media (max-width: 768px) {
+  .custom-field-label {
+    font-size: 14px;
+  }
+
+  .input-container {
+    font-size: 14px;
+  }
+
+  .chip {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-container {
+    min-height: 42px;
+    font-size: 16px; //EVITAR ZOOM EN iOS
+  }
+
+  .custom-field-label {
+    font-size: 13px;
+  }
+
+  .chip-input {
+    font-size: 16px; //EVITAR ZOOM EN iOS
   }
 }

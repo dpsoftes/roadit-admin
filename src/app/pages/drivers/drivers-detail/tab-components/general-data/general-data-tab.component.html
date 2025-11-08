@@ -123,14 +123,8 @@
     <!-- FILA 4: TAGS, ACTIVAR/DESACTIVAR, BLOQUEAR MISIONES -->
     <div class="form-row">
       <div class="form-field width-1-2">
-        <label for="tags" class="custom-field-label">
-          {{ 'drivers.generalData.tags' | translate }}
-        </label>
-        <select id="tags" class="inputSelect multiselect-inline" multiple>
-          <option value="PREMIUM">Premium</option>
-          <option value="VIP">VIP</option>
-          <option value="STANDARD">Standard</option>
-        </select>
+        <input-multi-tag [label]="'drivers.generalData.tags' | translate" [value]="selectedTagIds()"
+          [tagType]="'DRIVER'" (valueChange)="onTagsChange($event)"></input-multi-tag>
       </div>
 
       <div class="form-field width-1-4 checkbox-field">

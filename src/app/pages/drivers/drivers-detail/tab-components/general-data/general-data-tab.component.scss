@@ -80,7 +80,7 @@
       }
 
       .photo-actions {
-        display: flex;
+        // display: flex;
         flex-direction: column;
         gap: 12px;
 
@@ -88,8 +88,8 @@
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          height: 40px;
-          padding: 0 24px;
+          height: 27px;
+          padding: 9px 15px;
           background-color: #C7D944;
           color: #2D3D32;
           border: none;
@@ -99,6 +99,7 @@
           cursor: pointer;
           transition: all 0.2s ease;
           text-transform: uppercase;
+          margin-bottom: 12px;
 
           &:hover {
             background-color: #B5C63C;

@@ -512,11 +512,8 @@ h6,
    ============================================================================= */
 
 // Focus styles consistent with Material Design
-*:focus-visible {
-  outline: 2px solid vars.$primary;
-  outline-offset: 2px;
-  border-radius: vars.$radius-sm;
-}
+
+//SE ELIMINA EL FOCUS POR QUE INTERCEDE CON LOS DISELOS ORIGINALES
 
 // Reduced motion for accessibility
 @media (prefers-reduced-motion: reduce) {

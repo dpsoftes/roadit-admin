@@ -1,37 +1,40 @@
-<div class="custom-form-field" [class.focused]="isFocused">
-  
-  <div class="custom-label-container">
-    <label 
-      class="custom-label"
-      [class.floating]="shouldLabelFloat"> 
-      {{ label }}
-    </label>
-  </div>
-  
-  <div class="custom-input-container">
-    <div class="custom-chip-list">
-      
-      @for (chip of value; track chip) { 
-        <div class="custom-chip">
-          {{ chip }}
-          <button class="custom-chip-remove-button" (click)="removeChip(chip)">
-            <i class="material-icons">close</i>
-          </button>
-        </div>
+<div class="form-field-wrapper">
+  <!-- LABEL -->
+  <label class="custom-field-label">
+    {{ label }}
+  </label>
+
+  <!-- CONTAINER DEL INPUT -->
+  <div class="input-container" [class.focused]="isFocused">
+    <!-- CHIPS SELECCIONADOS -->
+    <div class="chips-container">
+      @for (tag of selectedTags(); track tag.id) {
+      <div class="chip" [style.background-color]="getTagColor(tag)" [style.color]="getTextColor(getTagColor(tag))">
+        {{ getTagName(tag, currentLanguage()) }}
+        <button type="button" class="chip-remove" (click)="removeTag(tag.id!); $event.stopPropagation()"
+          [style.color]="getTextColor(getTagColor(tag))">
+          ✕
+        </button>
+      </div>
       }
-      
-      <input 
-        #chipInput
-        [placeholder]="value.length === 0 && !isFocused ? 'Añadir nueva etiqueta...' : ''"
-        (focus)="onFocus()"
-        (blur)="onBlur()"
-        
-        (keydown)="handleKeydown($event)" 
-        
-        (input)="inputValue = chipInput.value"
-        [value]="inputValue"
-        class="custom-chip-input">
-        
+
+      <!-- INPUT DE BÚSQUEDA -->
+      <input #chipInput type="text" class="chip-input" [placeholder]="value.length === 0 && !isFocused ? '' : ''"
+        (focus)="onFocus()" (blur)="onBlur()" (input)="onSearchInput($event)" [value]="searchTerm" />
     </div>
+
+    <!-- DROPDOWN DE OPCIONES -->
+    @if (showDropdown && filteredTags().length > 0) {
+    <div class="dropdown" (click)="$event.stopPropagation()">
+      @for (tag of filteredTags(); track tag.id) {
+      <div class="dropdown-item" (click)="addTag(tag); $event.stopPropagation()">
+        <div class="dropdown-chip" [style.background-color]="getTagColor(tag)"
+          [style.color]="getTextColor(getTagColor(tag))">
+          {{ getTagName(tag, currentLanguage()) }}
+        </div>
+      </div>
+      }
+    </div>
+    }
   </div>
 </div>

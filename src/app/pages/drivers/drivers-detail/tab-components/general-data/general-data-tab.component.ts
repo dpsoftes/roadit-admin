@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ISO_COUNTRIES } from '@dtos/country-langs.dto';
+import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
 
 @Component({
   selector: 'app-general-data-tab',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, TranslatePipe, InputMultiTagComponent],
   templateUrl: './general-data-tab.component.html',
   styleUrls: ['./general-data-tab.component.scss']
 })
@@ -17,6 +18,9 @@ export class GeneralDataTabComponent {
 
   selectedFile = signal<File | null>(null);
   imagePreview = signal<SafeUrl | null>(null);
+
+  //TAGS SELECCIONADAS (ARRAY DE IDs)
+  selectedTagIds = signal<number[]>([]);
 
   //LISTA DE PAÍSES USANDO ISO_COUNTRIES
   countries = signal(
@@ -80,8 +84,16 @@ export class GeneralDataTabComponent {
     event.target.value = event.target.value.replace(regex, '');
   }
 
+  //MANEJAR CAMBIOS EN LAS TAGS SELECCIONADAS
+  onTagsChange(tagIds: number[]): void {
+    console.log('🔄 onTagsChange llamado con:', tagIds);
+    console.log('📊 Valor anterior:', this.selectedTagIds());
+    this.selectedTagIds.set(tagIds);
+    console.log('✅ Valor actualizado:', this.selectedTagIds());
+  }
 
   onSaveChanges(): void {
     console.log('Guardar cambios');
+    console.log('Tags a guardar:', this.selectedTagIds());
   }
 }
