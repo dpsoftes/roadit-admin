@@ -82,16 +82,16 @@
       <!-- FILTRO POR ESTADO -->
       <dp-datagrid-filter key="validated" label="{{ 'drivers.list.is_active' | translate }}" type="select" [width]="138"
         [options]="[
-          { value: true, label: 'Activo' },
-          { value: false, label: 'Inactivo' }
+          { value: true.toString(), label: 'Activo' },
+          { value: false.toString(), label: 'Inactivo' }
         ]">
       </dp-datagrid-filter>
 
       <!-- FILTRO POR VALIDADO -->
       <dp-datagrid-filter key="validated" label="{{ 'drivers.list.validated_filter' | translate }}" type="select"
         [width]="154" [options]="[
-          { value: true, label: 'Validado' },
-          { value: false, label: 'Pendiente' }
+          { value: true.toString(), label: 'Validado' },
+          { value: false.toString(), label: 'Pendiente' }
         ]">
       </dp-datagrid-filter>
 

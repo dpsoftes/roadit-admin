@@ -69,7 +69,7 @@ export interface FilterConfig {
 }
 
 export interface FilterOption {
-  value: string | boolean;
+  value: string;
   label: string;
   icon?: string;
 }
