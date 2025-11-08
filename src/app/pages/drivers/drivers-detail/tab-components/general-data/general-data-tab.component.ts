@@ -2,11 +2,7 @@ import { Component, signal, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
-interface Country {
-  code: string;
-  name: string;
-}
+import { ISO_COUNTRIES } from '@dtos/country-langs.dto';
 
 @Component({
   selector: 'app-general-data-tab',
@@ -21,15 +17,22 @@ export class GeneralDataTabComponent {
 
   selectedFile = signal<File | null>(null);
   imagePreview = signal<SafeUrl | null>(null);
-  countries = signal<Country[]>([
-    { code: 'ES', name: 'España' },
-    { code: 'FR', name: 'Francia' },
-    { code: 'DE', name: 'Alemania' },
-    { code: 'IT', name: 'Italia' },
-    { code: 'PT', name: 'Portugal' },
-    { code: 'GB', name: 'Reino Unido' },
-    { code: 'US', name: 'Estados Unidos' }
-  ]);
+
+  //LISTA DE PAÍSES USANDO ISO_COUNTRIES
+  countries = signal(
+    Object.entries(ISO_COUNTRIES)
+      .map(([code, data]) => ({
+        code,
+        name: data.description
+      }))
+      .sort((a, b) => {
+        //PRIORIZAR ESPAÑA PRIMERO
+        if (a.code === 'ES') return -1;
+        if (b.code === 'ES') return 1;
+        //LUEGO ORDENAR ALFABÉTICAMENTE
+        return a.name.localeCompare(b.name);
+      })
+  );
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
