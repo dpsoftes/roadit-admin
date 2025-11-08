@@ -57,6 +57,12 @@
     border-color: #C7D944 !important;
     box-shadow: 0 0 0 3px rgba(199, 217, 68, 0.1);
   }
+
+  //ESTILOS ESPECÍFICOS PARA MODO FILTRO (REDUCE PADDING Y MIN-HEIGHT)
+  &.filter-style {
+    min-height: 32px;
+    padding: 2px 6px;
+  }
 }
 
 /* ===================================
@@ -68,6 +74,12 @@
   align-items: center;
   gap: 6px;
   min-height: 30px;
+
+  //CUANDO HAY ANCHO MÁXIMO, NO PERMITIR WRAP
+  &.has-max-width {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
 }
 
 /* ===================================
@@ -87,6 +99,7 @@
   transition: all 0.2s ease;
   background-color: #E5E7EB; //COLOR POR DEFECTO SI NO SE PROPORCIONA UNO
   color: #2D3D32; //COLOR DE TEXTO POR DEFECTO
+  flex-shrink: 0; //NO PERMITIR QUE LOS CHIPS SE COMPRIMAN
 
   &:hover {
     opacity: 0.9;
@@ -122,11 +135,35 @@
 }
 
 /* ===================================
+   INDICADOR DE OVERFLOW
+   =================================== */
+.overflow-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  background-color: #E5E7EB;
+  color: #6F8068;
+  flex-shrink: 0;
+  cursor: default;
+  border: 1px dashed #9CA3AF;
+
+  &:hover {
+    background-color: #D1D5DB;
+  }
+}
+
+/* ===================================
    INPUT DE BÚSQUEDA
    =================================== */
 .chip-input {
   flex: 1;
-  min-width: 120px;
+  min-width: 80px;
   height: 30px;
   border: none;
   outline: none;
@@ -148,7 +185,7 @@
 
 /* ===================================
    DROPDOWN DE OPCIONES
-   =================================== */
+   ===================================== */
 .dropdown {
   position: absolute;
   top: calc(100% + 4px);

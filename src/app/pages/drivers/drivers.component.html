@@ -77,7 +77,7 @@
       <!-- FILTRO POR TAGS -->
       <div class="custom-filter-wrapper">
         <input-multi-tag [label]="'drivers.list.tags' | translate" [value]="selectedTagIds()" [tagType]="'DRIVER'"
-          (valueChange)="onTagsChange($event)">
+          [maxWidth]="'246px'" [filterStyle]="true" (valueChange)="onTagsChange($event)">
         </input-multi-tag>
       </div>
 
