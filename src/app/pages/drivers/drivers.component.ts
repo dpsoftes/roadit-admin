@@ -15,7 +15,7 @@ import { DriversProvider, PaginatedDriversResponse } from 'src/app/core/provider
 import { I18nService } from '@i18n/i18n.service';
 import { GlobalStore } from '@store/global.state';
 import { DriverDto, TagDto } from '@dtos';
-import { TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
+import { FilterOption, TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
 import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
 
 //IMPORTAR COMPONENTES Y TIPOS DE DP-DATAGRID
@@ -232,7 +232,7 @@ export class DriversComponent implements OnInit {
     console.log('🚀 Inicializando DriversComponent en modo servidor');
   }
 
-  //⭐ MANEJAR EVENTO ONLOADDATA DEL DP-DATAGRID (MODO SERVIDOR)
+  //MANEJAR EVENTO ONLOADDATA DEL DP-DATAGRID (MODO SERVIDOR)
   async onLoadDrivers(event: LoadDataEvent): Promise<void> {
     console.log('📡 onLoadDrivers evento recibido:', event);
 
@@ -294,12 +294,12 @@ export class DriversComponent implements OnInit {
         this.drivers.set(driversWithTransformedTags);
         this.totalDrivers.set(response.count);
       } else {
-        console.error('❌ Error: No se recibieron datos del backend');
+        console.error('Error: No se recibieron datos del backend');
         this.drivers.set([]);
         this.totalDrivers.set(0);
       }
     } catch (error) {
-      console.error('❌ Error al cargar conductores:', error);
+      console.error(' Error al cargar conductores:', error);
       this.drivers.set([]);
       this.totalDrivers.set(0);
     } finally {
@@ -344,6 +344,22 @@ export class DriversComponent implements OnInit {
     //O PODEMOS DISPARARLO MANUALMENTE:
     // (El dp-datagrid ya maneja esto internamente)
   }
+
+  driverStatus = computed<FilterOption[]>(() => {
+    return [
+      { value: true.toString(), label: this.i18n.translate('userStatus.ACTIVE') },
+      { value: false.toString(), label: this.i18n.translate('userStatus.INACTIVE') }
+    ]
+
+  });
+
+  driverValidate = computed<FilterOption[]>(() => {
+    return [
+      { value: true.toString(), label: this.i18n.translate('drivers.profile.VALIDATE') },
+      { value: false.toString(), label: this.i18n.translate('drivers.profile.NO_VALIDATE') }
+    ]
+
+  });
 
   //MANEJAR ACCION DE CREAR CONDUCTOR
   onCreateDriver(event: any): void {

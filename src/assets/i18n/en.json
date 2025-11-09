@@ -962,8 +962,8 @@
     "profile": {
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo",
-      "VALIDATE": "Validado",
-      "NO_VALIDATE": "Pendiente",
+      "VALIDATE": "Validate",
+      "NO_VALIDATE": "Pendant",
       "EXPIRED": "Caducados",
       "NO_EXPIRED": "Sin Caducar",
       "NEW_DOCUMENT": "Documento Nuevo",
