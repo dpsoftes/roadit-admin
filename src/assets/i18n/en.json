@@ -7,7 +7,9 @@
     "forgot_password": "Forgot password?",
     "loading": "Loading...",
     "filters": "FILTERS",
-    "exportable": "EXPORT CSV"
+    "exportable": "EXPORT CSV",
+    "textPlaceholder": "Type here...",
+    "selectPlaceholder": "Select..."
   },
   "paginator": {
     "itemsPerPageLabel": "Items per page:",
@@ -879,9 +881,9 @@
     "WAREHOUSE": "Warehouse"
   },
   "drivers": {
-    "title": "Conductores",
-    "create": "CREAR NUEVO CONDUCTOR",
-    "IVAIRPF": "MODIFICAR IVA / IRPF",
+    "title": "Drivers",
+    "create": "Create new driver",
+    "IVAIRPF": "MODIFY IVA / IRPF",
     "tabs": {
       "general-data": "General Data",
       "quality": "Quality",
@@ -892,38 +894,32 @@
       "timeline": "Timeline"
     },
     "list": {
-      "image": "Foto",
-      "name": "Nombre",
+      "searchPlaceholder": "Search...",
+      "image": "Photo",
+      "name": "Name",
       "dni": "DNI",
       "cif": "CIF",
       "dni/cif": "DNI/CIF",
-      "province": "Provincia",
-      "city": "Ciudad",
-      "email": "Correo",
-      "phone": "Teléfono",
-      "created_datetime": "F. Alta",
-      "rating": "Puntuación",
+      "province": "Province",
+      "city": "City",
+      "email": "Email",
+      "phone": "Phone",
+      "created_datetime": "Reg. Date",
+      "rating": "Rating",
       "tags": "Tags",
-      "validated": "Validación",
-      "fortnight_earnings": "Factura Quincenal",
-      "status": "Estado",
-      "actions": "Acciones",
-      "searchPlaceholder": "Buscar",
-      "is_active": "Estado",
-      "expiredDocuments": "Conductores con documentos expirados",
-      "newDocuments": "Conductores con nuevos documentos aportados",
-      "create-driver": "Crear nuevo conductor",
-      "name_filter": "Nombre",
+      "validated": "Validation",
+      "is_active": "Status",
+      "actions": "Actions",
+      "name_filter": "Name",
       "email_filter": "Email",
-      "tags_filter": "Etiquetas",
-      "is_active_filter": "Estado Activo",
-      "validated_filter": "Validación",
-      "rating_filter": "Puntuación",
-      "phone_filter": "Teléfono",
-      "city_filter": "Ciudad",
-      "province_filter": "Provincia",
-      "expiredDocuments_filter": "Documentos Caducados",
-      "newDocuments_filter": "Documentos Nuevos"
+      "tags_filter": "Tags",
+      "validated_filter": "Validation",
+      "rating_filter": "Rating",
+      "phone_filter": "Phone",
+      "city_filter": "City",
+      "province_filter": "Province",
+      "expiredDocuments_filter": "Drivers with expired documents",
+      "newDocuments_filter": "Drivers with newly submitted documents"
     },
     "generalData": {
       "uploadPhoto": "Upload photo",
@@ -964,26 +960,26 @@
       "INACTIVE": "Inactivo",
       "VALIDATE": "Validate",
       "NO_VALIDATE": "Pendant",
-      "EXPIRED": "Caducados",
-      "NO_EXPIRED": "Sin Caducar",
-      "NEW_DOCUMENT": "Documento Nuevo",
-      "NO_NEW_DOCUMENT": "Sin Documento Nuevo"
+      "EXPIRED": "Expired",
+      "NO_EXPIRED": "Current",
+      "NEW_DOCUMENT": "New document",
+      "NO_NEW_DOCUMENT": "Without New Document"
     },
     "isActive": {
-      "ACTIVE": "Activo",
-      "INACTIVE": "Inactivo"
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
     },
     "actions": {
-      "edit": "Editar",
-      "view": "Ver",
-      "delete": "Eliminar"
+      "edit": "Edit",
+      "view": "View",
+      "delete": "Delete"
     },
     "messages": {
-      "no_data": "No hay conductores disponibles",
-      "loading": "Cargando conductores...",
-      "delete_confirm": "¿Estás seguro de que deseas eliminar este conductor?",
-      "delete_success": "Conductor eliminado correctamente",
-      "delete_error": "Error al eliminar el conductor"
+      "no_data": "No drivers available",
+      "loading": "Loading drivers...",
+      "delete_confirm": "Are you sure you want to delete this driver?",
+      "delete_success": "Driver deleted successfully",
+      "delete_error": "Error deleting driver"
     }
   }
 }

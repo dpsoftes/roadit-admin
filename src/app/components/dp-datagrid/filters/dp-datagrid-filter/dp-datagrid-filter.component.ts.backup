@@ -18,7 +18,7 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
       @if (type() === 'text') {
         <div class="filter-field">
           <label class="filter-label">{{ label() }}</label>
-          <input 
+          <input
             type="text"
             class="filter-input"
             placeholder="Escriba aquí..."
@@ -32,7 +32,7 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
         <div class="filter-field">
           <label class="filter-label">{{ label() }}</label>
           <div class="select-wrapper">
-            <select 
+            <select
               class="filter-select"
               [(ngModel)]="selectValue"
               (ngModelChange)="onValueChange($event)">
@@ -51,7 +51,7 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
         <div class="filter-field">
           <label class="filter-label">{{ label() }}</label>
           <div class="chip-select-container">
-            <div 
+            <div
               class="chip-select-display"
               (click)="toggleChipSelectDropdown()"
               [class.open]="chipSelectOpen">
@@ -72,7 +72,7 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
             @if (chipSelectOpen) {
               <div class="chip-select-dropdown">
                 @for (option of options(); track option.value) {
-                  <div 
+                  <div
                     class="dropdown-option"
                     [class.selected]="chipSelectValue.includes(option.value)"
                     (click)="toggleChipSelectOption(option.value)">
@@ -92,7 +92,7 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
       @if (type() === 'date') {
         <div class="filter-field">
           <label class="filter-label">{{ label() }}</label>
-          <input 
+          <input
             type="date"
             class="filter-input filter-date"
             [(ngModel)]="dateValue"
@@ -105,14 +105,14 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
         <div class="filter-field">
           <label class="filter-label">{{ label() }}</label>
           <div class="date-range-wrapper">
-            <input 
+            <input
               type="date"
               class="filter-input filter-date"
               [(ngModel)]="startDateValue"
               (ngModelChange)="onDateRangeChange()"
               placeholder="Inicio">
             <span class="date-separator">-</span>
-            <input 
+            <input
               type="date"
               class="filter-input filter-date"
               [(ngModel)]="endDateValue"
@@ -128,7 +128,7 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
           <label class="filter-label">{{ label() }}</label>
           <div class="chip-select-wrapper">
             @for (option of options(); track option.value) {
-              <button 
+              <button
                 type="button"
                 class="chip-button"
                 [class.selected]="chipValue === option.value"
@@ -146,7 +146,7 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
           <label class="filter-label">{{ label() }}</label>
           <div class="chip-select-wrapper">
             @for (option of options(); track option.value) {
-              <button 
+              <button
                 type="button"
                 class="chip-button"
                 [class.selected]="chipArrayValue.includes(option.value)"
@@ -162,7 +162,7 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
       @if (type() === 'checkbox') {
         <div class="filter-field">
           <label class="filter-checkbox">
-            <input 
+            <input
               type="checkbox"
               [(ngModel)]="checkboxValue"
               (ngModelChange)="onValueChange($event)">
@@ -373,12 +373,12 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
 
       .date-wrapper {
         position: relative;
-        
+
         .filter-date {
           cursor: pointer;
           padding-right: 35px;
         }
-        
+
         .date-icon {
           pointer-events: none;
         }
@@ -389,22 +389,22 @@ import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
         align-items: center;
         gap: 8px;
         position: relative;
-        
+
         .date-input-group {
           flex: 1;
           position: relative;
-          
+
           .filter-date {
             cursor: pointer;
           }
         }
-        
+
         .date-separator {
           color: #5f6368;
           font-size: 14px;
           flex-shrink: 0;
         }
-        
+
         .date-icon {
           position: absolute;
           right: 8px;
@@ -481,7 +481,7 @@ export class DpDatagridFilterComponent {
   multiple = input<boolean>(false);
   width = input<number>();
   emptyOption = input<string>('Seleccione...');
-  
+
   // Output
   filterChange = output<{ key: string; value: any }>();
 
