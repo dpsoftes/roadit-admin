@@ -95,22 +95,42 @@ export class DriversComponent implements OnInit {
   //SIGNAL PARA LOS IDs DE TAGS SELECCIONADOS EN EL FILTRO
   selectedTagIds = signal<number[]>([]);
 
-  //OBTENER TODAS LAS TAGS DEL GLOBALSTORE
-  allTags: TagDto[] = this.globalStore.tags();
+  //COMPUTED: OBTENER TODAS LAS TAGS DEL GLOBALSTORE (REACTIVO)
+  allTags = computed<TagDto[]>(() => {
+    return this.globalStore.tags();
+  });
 
   //COMPUTED: FILTRAR SOLO LAS TAGS TIPO DRIVER
   driverTags = computed<TagDto[]>(() => {
-    return this.allTags.filter((tag: TagDto) => tag.type === 'DRIVER');
+    return this.allTags().filter((tag: TagDto) => tag.type === 'DRIVER');
   });
 
   //COMPUTED: CONVERTIR TAGS A FORMATO DE OPCIONES PARA EL FILTRO
   tagOptions = computed<TagOption[]>(() => {
     const currentLanguage = this.globalStore.language() as 'es' | 'en';
-    return this.driverTags().map((tag: TagDto) => ({
-      value: String(tag.id),
-      label: tag.getName(currentLanguage),
-      color: tag.getColorWithHash()
-    }));
+    return this.driverTags().map((tag: TagDto) => {
+      //VERIFICAR SI EL OBJETO TAG TIENE EL METODO getName
+      if (typeof tag.getName === 'function') {
+        return {
+          value: String(tag.id),
+          label: tag.getName(currentLanguage),
+          color: tag.getColorWithHash()
+        };
+      } else {
+        //FALLBACK: ACCEDER DIRECTAMENTE A LAS PROPIEDADES
+        const tagName = tag.name && typeof tag.name === 'object'
+          ? (tag.name[currentLanguage] || tag.name.es || '')
+          : (tag.name || '');
+
+        const color = tag.color?.startsWith('#') ? tag.color : `#${tag.color || ''}`;
+
+        return {
+          value: String(tag.id),
+          label: tagName,
+          color: color
+        };
+      }
+    });
   });
 
   //CONFIGURACION DE ACCIONES
@@ -295,7 +315,7 @@ export class DriversComponent implements OnInit {
       for (const tagItem of driver.tags) {
         if (typeof tagItem === 'number') {
           //ES UN ID, BUSCAR LA TAG COMPLETA EN allTags
-          const fullTag = this.allTags.find((t: TagDto) => t.id === tagItem);
+          const fullTag = this.allTags().find((t: TagDto) => t.id === tagItem);
           if (fullTag) {
             transformedTags.push(fullTag);
           }
