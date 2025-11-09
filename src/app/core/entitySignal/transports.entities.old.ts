@@ -12,7 +12,7 @@ import {
     Client,
     QuestionType,
     PhaseEnum
-} from '@dtos/transports/transports.dto';
+} from '@dtos/transports/transports.dto.old';
 import { TransportAddress } from '@dtos/transports/transport-address.dto';
 import { TransportAddressEntity } from './transport-address.entities';
 import { TransportPrincipalType, TransportStatus, LegPointType } from '@enums/transport.enum';

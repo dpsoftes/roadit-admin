@@ -28,6 +28,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'src/environments/environment';
 import { Helpers } from '@utils/helpers';
 import { GlobalStore } from '@store/global.state';
+import { I18nService } from '@i18n/i18n.service';
 
 @Component({
   selector: 'app-dynamic-table',

@@ -29,7 +29,6 @@ export class ClientsState {
 export const ClientStore = signalStore(
   { 
     providedIn: 'root',
-    
     // Configuración para Redux DevTools
     ...(typeof window !== 'undefined' && (window as any).__REDUX_DEVTOOLS_EXTENSION__ && {
       devtools: {

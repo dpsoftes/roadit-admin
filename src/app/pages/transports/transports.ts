@@ -1,7 +1,8 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, computed, effect } from '@angular/core';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TabsComponent } from '@components/tabs.component/tabs.component';
+
 import {
   DpDatagridComponent,
   DpDatagridColumnsComponent,
@@ -15,8 +16,13 @@ import {
   FilterChangeEvent
 } from '@components/dp-datagrid';
 import { TransportPrincipalType, TransportStatus } from '../../core/enums/transport.enum';
-import { TransportsRetrieveResponse } from '../../core/dtos/transports/transports.dto';
+import { TransportsRetrieveResponse } from '../../core/dtos/transports/transports.dto.old';
 import { transportsMockData } from './transports.mockdata';
+import { TransportStore } from '@store/transports.state';
+import { TransportHistoryListItemEntity, TransportHistoryListParamsEntity } from '@entities/transport.entities';
+import { TransportHistoryListItemDto } from '@dtos/transports/transport.dto';
+import { GlobalStateData, GlobalStore } from '@store/global.state';
+import { I18nService } from '@i18n/i18n.service';
 
 type TransportData = TransportsRetrieveResponse;
 
@@ -65,8 +71,20 @@ interface FormattedTransportData {
   styleUrl: './transports.scss'
 })
 export class Transports implements OnInit {
+loadTransportsFromServer($event: LoadDataEvent) {
+  var params = this.store.historyParams();
+  params.page = $event.page+1;
+  this.store.loadHistory();  
+  
+}
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private store = inject(TransportStore);
+  private global = inject(GlobalStore);
+  private i18n = inject(I18nService);
+  historyList  = signal<any[]>(this.store.history().map(item => item));
+  historyParams : TransportHistoryListParamsEntity = new TransportHistoryListParamsEntity();
+  transportsTotalRecords = signal<number>(this.store.historyTotalRecords());
 
   activeTab = signal<string>('assignment');
   transports = signal<FormattedTransportData[]>([]);
@@ -77,6 +95,21 @@ export class Transports implements OnInit {
   departureProvinces = signal<Array<{ value: string; label: string }>>([]);
   arrivalProvinces = signal<Array<{ value: string; label: string }>>([]);
 
+constructor() {
+  effect(() => {  
+    this.historyList.set(this.store.history().map(item => {
+      var {tags, ...resto} = item;
+      var tagsNew: string[]=[];
+      for(const t of tags){
+       
+        tagsNew.push(this.global.tags().find(x=>x.id===t)?.name[this.i18n.currentLanguage()]||'');
+      }
+      return ({...resto, tags: tagsNew});
+
+    }));
+    this.transportsTotalRecords.set(this.store.historyTotalRecords());
+  });
+}
   actionsConfig = {
     actions: [
       {
@@ -99,18 +132,52 @@ export class Transports implements OnInit {
   private mockData: TransportData[] = transportsMockData;
 
   ngOnInit() {
+    var params = this.store.historyParams();
+    params.page = 1;
+    params.page_size = 3;
+    this.store.updateState({ historyParams: params });
+    
     this.route.params.subscribe(params => {
       if(params['tab'] === 'create') {
         this.activeTab.set('create');
       } else if(params['tab'] === 'assignment') {
-        this.activeTab.set('assignment');
+        this.setHistoryTab();
       } else if(params['tab'] === 'history') {
-        this.activeTab.set('history');
+        this.setAssignmentTab();
       }
     });
     this.loadInitialData();
     this.updateProvinceOptions();
   }
+  // PACO
+
+  setHistoryTab(){
+
+
+
+
+    this.activeTab.set('history');
+  }
+  setAssignmentTab(){
+    this.store.loadHistory();  
+    this.activeTab.set('assignment');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   private loadInitialData() {
     const formattedData = this.formatTransportsData(this.mockData);
