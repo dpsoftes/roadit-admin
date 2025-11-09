@@ -97,3 +97,4 @@ export const EntityDocumentTypeDescriptions: Record<EntityDocumentType, string> 
   [EntityDocumentType.CIF]:   'EntityDocumentType.CIF',
   [EntityDocumentType.OTHER]: 'EntityDocumentType.OTHER',
 };
+

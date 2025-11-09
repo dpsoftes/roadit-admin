@@ -15,7 +15,7 @@ import { DriverStore } from '@store/driver.state';
 import { I18nService } from '@i18n/i18n.service';
 import { GlobalStore } from '@store/global.state';
 import { DriverDto, TagDto } from '@dtos';
-import { TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
+import { FilterOption, TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
 import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
 
 //IMPORTAR COMPONENTES Y TIPOS DE DP-DATAGRID
@@ -116,6 +116,13 @@ export class DriversComponent implements OnInit {
       label: tag.getName(currentLanguage),
       color: tag.getColorWithHash()
     }));
+  });
+  driverStatus = computed<FilterOption[]>(() => {
+    return  [
+          { value: true.toString(), label: this.i18n.translate('userStatus.ACTIVE') },
+          { value: false.toString(), label: this.i18n.translate('userStatus.INACTIVE') }
+        ]
+
   });
 
   //CONFIGURACION DE ACCIONES

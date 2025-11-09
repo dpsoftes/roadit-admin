@@ -85,13 +85,14 @@ export class GeneralDataTabComponent {
   }
 
   //MANEJAR CAMBIOS EN LAS TAGS SELECCIONADAS
-  onTagsChange(tagIds: number[]): void {
+  onTagsChange(tagIds: number[] | string[]): void {
     console.log('onTagsChange llamado con:', tagIds);
     console.log('Valor anterior:', this.selectedTagIds());
-    this.selectedTagIds.set(tagIds);
+
+    this.selectedTagIds.set(tagIds.map(id => Number(id)));
+    
     console.log('Valor actualizado:', this.selectedTagIds());
   }
-
   onSaveChanges(): void {
     console.log('Guardar cambios');
     console.log('Tags a guardar:', this.selectedTagIds());

@@ -162,36 +162,35 @@ export class ClientsGralEntity {
     }
 
     toPatch<T>(): Partial<T> {
-        const defaults = new ClientsGralEntity();
         const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.at_risk() !== defaults.at_risk()) (patch as any).at_risk = this.at_risk();
-        if (this.billing_type() !== defaults.billing_type()) (patch as any).billing_type = this.billing_type();
-        if (this.cif() !== defaults.cif()) (patch as any).cif = this.cif();
-        if (this.client_group() !== defaults.client_group()) (patch as any).client_group = this.client_group();
-        if (this.client_origin() !== defaults.client_origin()) (patch as any).client_origin = this.client_origin();
-        if (this.client_type() !== defaults.client_type()) (patch as any).client_type = this.client_type();
-        if (this.contact_person_email() !== defaults.contact_person_email()) (patch as any).contact_person_email = this.contact_person_email();
-        if (this.contact_person_name() !== defaults.contact_person_name()) (patch as any).contact_person_name = this.contact_person_name();
-        if (this.contact_person_phone() !== defaults.contact_person_phone()) (patch as any).contact_person_phone = this.contact_person_phone();
-        if (this.deleted_date() !== defaults.deleted_date()) (patch as any).deleted_date = this.deleted_date();
-        if (this.department() !== defaults.department()) (patch as any).department = this.department();
-        if (this.eurotransport_identifier() !== defaults.eurotransport_identifier()) (patch as any).eurotransport_identifier = this.eurotransport_identifier();
-        if (this.html_contact_page1() !== defaults.html_contact_page1()) (patch as any).html_contact_page1 = this.html_contact_page1();
-        if (this.html_contact_page2() !== defaults.html_contact_page2()) (patch as any).html_contact_page2 = this.html_contact_page2();
-        if (this.html_info_page() !== defaults.html_info_page()) (patch as any).html_info_page = this.html_info_page();
-        if (this.invite_delay_minutes() !== defaults.invite_delay_minutes()) (patch as any).invite_delay_minutes = this.invite_delay_minutes();
-        if (this.is_subentity() !== defaults.is_subentity()) (patch as any).is_subentity = this.is_subentity();
-        if (this.logo() !== defaults.logo()) (patch as any).logo = this.logo();
-        if (this.managers() !== defaults.managers()) (patch as any).managers = this.managers();
-        if (this.name() !== defaults.name()) (patch as any).name = this.name();
-        if (this.own_insurance() !== defaults.own_insurance()) (patch as any).own_insurance = this.own_insurance();
-        if (this.parent() !== defaults.parent()) (patch as any).parent = this.parent();
-        if (this.reminder_interval_minutes() !== defaults.reminder_interval_minutes()) (patch as any).reminder_interval_minutes = this.reminder_interval_minutes();
-        if (this.revel_identifier() !== defaults.revel_identifier()) (patch as any).revel_identifier = this.revel_identifier();
-        if (this.send_survey() !== defaults.send_survey()) (patch as any).send_survey = this.send_survey();
-        if (this.state() !== defaults.state()) (patch as any).state = this.state();
-        if (this.tags() !== defaults.tags()) (patch as any).tags = this.tags();
+        if (!Helpers.isEmptyOrZero(this.id())) (patch as any).id = this.id();
+        if (!Helpers.isEmptyOrZero(this.at_risk())) (patch as any).at_risk = this.at_risk();
+        if (!Helpers.isEmptyOrZero(this.billing_type())) (patch as any).billing_type = this.billing_type();
+        if (!Helpers.isEmptyOrZero(this.cif())) (patch as any).cif = this.cif();
+        if (!Helpers.isEmptyOrZero(this.client_group())) (patch as any).client_group = this.client_group();
+        if (!Helpers.isEmptyOrZero(this.client_origin())) (patch as any).client_origin = this.client_origin();
+        if (!Helpers.isEmptyOrZero(this.client_type())) (patch as any).client_type = this.client_type();
+        if (!Helpers.isEmptyOrZero(this.contact_person_email())) (patch as any).contact_person_email = this.contact_person_email();
+        if (!Helpers.isEmptyOrZero(this.contact_person_name())) (patch as any).contact_person_name = this.contact_person_name();
+        if (!Helpers.isEmptyOrZero(this.contact_person_phone())) (patch as any).contact_person_phone = this.contact_person_phone();
+        if (!Helpers.isEmptyOrZero(this.deleted_date())) (patch as any).deleted_date = this.deleted_date();
+        if (!Helpers.isEmptyOrZero(this.department())) (patch as any).department = this.department();
+        if (!Helpers.isEmptyOrZero(this.eurotransport_identifier())) (patch as any).eurotransport_identifier = this.eurotransport_identifier();
+        if (!Helpers.isEmptyOrZero(this.html_contact_page1())) (patch as any).html_contact_page1 = this.html_contact_page1();
+        if (!Helpers.isEmptyOrZero(this.html_contact_page2())) (patch as any).html_contact_page2 = this.html_contact_page2();
+        if (!Helpers.isEmptyOrZero(this.html_info_page())) (patch as any).html_info_page = this.html_info_page();
+        if (!Helpers.isEmptyOrZero(this.invite_delay_minutes())) (patch as any).invite_delay_minutes = this.invite_delay_minutes();
+        if (!Helpers.isEmptyOrZero(this.is_subentity())) (patch as any).is_subentity = this.is_subentity();
+        if (!Helpers.isEmptyOrZero(this.logo())) (patch as any).logo = this.logo();
+        if (!Helpers.isEmptyOrZero(this.managers())) (patch as any).managers = this.managers();
+        if (!Helpers.isEmptyOrZero(this.name())) (patch as any).name = this.name();
+        if (!Helpers.isEmptyOrZero(this.own_insurance())) (patch as any).own_insurance = this.own_insurance();
+        if (!Helpers.isEmptyOrZero(this.parent())) (patch as any).parent = this.parent();
+        if (!Helpers.isEmptyOrZero(this.reminder_interval_minutes())) (patch as any).reminder_interval_minutes = this.reminder_interval_minutes();
+        if (!Helpers.isEmptyOrZero(this.revel_identifier())) (patch as any).revel_identifier = this.revel_identifier();
+        if (!Helpers.isEmptyOrZero(this.send_survey())) (patch as any).send_survey = this.send_survey();
+        if (!Helpers.isEmptyOrZero(this.state())) (patch as any).state = this.state();
+        if (!Helpers.isEmptyOrZero(this.tags())) (patch as any).tags = this.tags();
         return patch;
     }
 }

@@ -82,10 +82,7 @@
 
       <!-- FILTRO POR ESTADO -->
       <dp-datagrid-filter key="is_active" label="{{ 'drivers.list.is_active' | translate }}" type="select" [width]="138"
-        [options]="[
-          { value: true.toString(), label: 'Activo' },
-          { value: false.toString(), label: 'Inactivo' }
-        ]">
+        [options]="driverStatus()">
       </dp-datagrid-filter>
 
       <!-- FILTRO POR VALIDADO -->
