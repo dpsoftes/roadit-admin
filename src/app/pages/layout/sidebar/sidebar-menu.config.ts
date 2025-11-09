@@ -6,19 +6,22 @@ import { MenuItem } from './sidebar.types';
  */
 export const MENU_ITEMS: MenuItem[] = [
   {
-    icon: 'home',
+    icon: 'custom',
+    iconType: 'svg',
+    iconPath: 'assets/icons/sidebar/home.svg',
     label: 'navigation.dashboard',
     route: '/dashboard'
   },
   {
-    icon: 'sentiment_satisfied',
+    icon: 'person',
     label: 'navigation.users',
     route: '/users'
   },
   {
     icon: 'work',
     label: 'navigation.clients',
-    route: '/clients',
+    // route: '/clients',
+    collapsed: true,
     submenus: [
       {
         icon: 'groups',
@@ -33,20 +36,21 @@ export const MENU_ITEMS: MenuItem[] = [
     ]
   },
   {
-    icon: 'sentiment_satisfied',
+    icon: 'person',
     label: 'navigation.client_entity_users',
     route: '/clients/users'
   },
   {
     icon: 'custom',
-    iconType: 'png',
-    iconPath: 'assets/icons/steering-wheel.png',
+    iconType: 'svg',
+    iconPath: 'assets/icons/sidebar/drivers.svg',
     label: 'navigation.drivers',
     route: '/drivers'
   },
   {
     icon: 'directions_car',
     label: 'navigation.transports',
+    collapsed: true,
     submenus: [
       {
         icon: 'add_circle',
@@ -73,7 +77,9 @@ export const MENU_ITEMS: MenuItem[] = [
     route: '/transports/quality'
   },
   {
-    icon: 'warning',
+    icon: 'custom',
+    iconType: 'svg',
+    iconPath: 'assets/icons/sidebar/exclamation.svg',
     label: 'navigation.drivers_incidents',
     route: '/transports/incidents',
     badge: 27
@@ -93,24 +99,32 @@ export const MENU_ITEMS: MenuItem[] = [
     badge: 30
   },
   {
-    icon: 'all_inbox',
+    icon: 'custom',
+    iconType: 'svg',
+    iconPath: 'assets/icons/sidebar/invoicesToDrivers.svg',
     label: 'navigation.driver_invoice_emission',
     route: '/transports/invoice-emission'
   },
   {
-    icon: 'attach_money',
+    icon: 'custom',
+    iconType: 'svg',
+    iconPath: 'assets/icons/sidebar/bills.svg',
     label: 'navigation.driver_invoices',
     route: '/transports/driver-invoices',
     badge: 27
   },
   {
-    icon: 'attach_money',
+    icon: 'custom',
+    iconType: 'svg',
+    iconPath: 'assets/icons/sidebar/bills.svg',
     label: 'navigation.client_invoices',
     route: '/transports/client-invoices'
   },
   {
-    icon: 'chat',
+    icon: 'custom',
+    iconType: 'svg',
+    iconPath: 'assets/icons/sidebar/notifications.svg',
     label: 'navigation.notifications',
     route: '/notifications'
-  }
+  },
 ];

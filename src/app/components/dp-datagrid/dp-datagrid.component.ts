@@ -1,8 +1,8 @@
-import { 
-  Component, 
+import {
+  Component,
   ContentChild,
-  ContentChildren, 
-  QueryList, 
+  ContentChildren,
+  QueryList,
   AfterContentInit,
   OnDestroy,
   inject,
@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@i18n/translate.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,17 +32,17 @@ import { DpDatagridRowComponent } from './rows';
 import { DpDatagridActionComponent } from './actions';
 
 import { TableColumn, FilterConfig, PageChangeEvent, FilterChangeEvent, LoadDataEvent } from './dp-datagrid.interfaces';
-import { 
+import {
   DatagridFilterService,
   DatagridSortService,
   DatagridPaginationService,
-  DatagridSelectionService 
+  DatagridSelectionService
 } from './services';
-import { 
+import {
   DatagridStateStore,
   DEFAULT_PERSISTENCE_CONFIG,
   DatagridPersistenceConfig,
-  DatagridState 
+  DatagridState
 } from './store';
 
 @Component({
@@ -59,52 +60,54 @@ import {
     MatCardModule,
     MatTooltipModule,
     DpDatagridHeaderComponent,
-    DpDatagridRowComponent
+    DpDatagridRowComponent,
+    TranslatePipe,
   ],
   templateUrl: './dp-datagrid.component.html',
   styleUrls: ['./dp-datagrid.component.scss']
 })
 export class DpDatagridComponent implements AfterContentInit, OnDestroy {
   // ========== PERSISTENCE INPUTS ==========
-  
+
   /**
    * ID único para esta instancia del datagrid
    * IMPORTANTE: Debe ser único si hay múltiples datagrids en la misma página
    */
   datagridId = input<string>('default-datagrid');
-  
+
   /**
    * Configuración de persistencia
    */
   persistenceConfig = input<DatagridPersistenceConfig>(DEFAULT_PERSISTENCE_CONFIG);
-  
+
   // ========== STORE INJECTION ==========
-  
+
   private readonly store = inject(DatagridStateStore);
-  
+
   // ========== INPUTS ==========
-  
+
   data = input.required<any[]>();
-  
+
   /**
    * Modo de manejo de datos:
    * - true: El grid maneja los datos localmente (filtrado, ordenamiento, paginación)
    * - false: Los datos se manejan desde el servidor (emite eventos onLoadData)
    */
   localData = input<boolean>(true);
-  
+
   /**
    * Total de registros en el servidor (solo usado cuando localData = false)
    */
   totalRecords = input<number>(0);
-  
+
   selectable = input<boolean>(false);
   searchable = input<boolean>(true);
+  exportable = input<boolean>(false);
   searchPlaceholder = input<string>('Buscar...');
   pagination = input<boolean>(true);
   pageSize = input<number>(10);
   pageSizeOptions = input<number[]>([5, 10, 25, 50, 100]);
-  
+
   // Pagination labels (traducibles)
   paginationItemsPerPageLabel = input<string>('Resultados por página:');
   paginationRangeLabel = input<(page: number, pageSize: number, length: number) => string>(
@@ -118,7 +121,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
   // Outputs - Solo dos eventos principales
   onPageChange = output<PageChangeEvent>();
   onFilterChange = output<FilterChangeEvent>();
-  
+
   /**
    * Evento emitido cuando localData = false
    * El componente padre debe cargar los datos desde el servidor
@@ -151,18 +154,18 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     effect(() => {
       this.currentPageSize.set(this.pageSize());
     });
-    
+
     // 🆕 EFFECT: Sincronizar estado local → store (DESACTIVADO TEMPORALMENTE)
     // TODO: Implementar sincronización manual en los métodos que modifican estado
     // effect(() => {
     //   const config = this.persistenceConfig();
     //   if (!config.enabled) return;
-    //   
+    //
     //   const id = this.datagridId();
-    //   
+    //
     //   const instance = this.store.getInstance(id);
     //   if (!instance) return;
-    //   
+    //
     //   untracked(() => {
     //     this.store.updateInstance(id, {
     //       searchTerm: this.searchTerm(),
@@ -181,11 +184,11 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
   columnWidths = computed(() => {
     const cols = this.columns();
     if (cols.length === 0) return new Map<string, string>();
-    
+
     // Separar columnas con width definido vs columnas sin width (*)
     const columnsWithWidth: { key: string; width: number }[] = [];
     const columnsWithoutWidth: { key: string }[] = [];
-    
+
     cols.forEach(col => {
       if (col.width) {
         const width = typeof col.width === 'number' ? col.width : parseFloat(col.width);
@@ -199,21 +202,21 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
         columnsWithoutWidth.push({ key: col.key });
       }
     });
-    
+
     // Crear mapa de proporciones flex
     const widthMap = new Map<string, string>();
-    
+
     // Asignar proporciones a columnas con width definido
     columnsWithWidth.forEach(col => {
       widthMap.set(col.key, `${col.width}fr`);
     });
-    
+
     // Asignar 1fr a columnas sin width (*)
     // Todas las columnas flexibles comparten el espacio restante equitativamente
     columnsWithoutWidth.forEach(col => {
       widthMap.set(col.key, '1fr');
     });
-    
+
     return widthMap;
   });
 
@@ -223,7 +226,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     if (!this.localData()) {
       return this.data();
     }
-    
+
     // En modo local, aplicamos filtros localmente
     return this.filterService.applyFilters(
       this.data(),
@@ -237,7 +240,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     if (!this.localData()) {
       return this.filteredData();
     }
-    
+
     // En modo local, aplicamos sort localmente
     return this.sortService.sort(
       this.filteredData(),
@@ -251,12 +254,12 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     if (!this.pagination()) {
       return this.sortedData();
     }
-    
+
     // En modo servidor, los datos ya vienen paginados
     if (!this.localData()) {
       return this.sortedData();
     }
-    
+
     // En modo local, aplicamos paginación localmente
     return this.paginationService.paginate(
       this.sortedData(),
@@ -270,7 +273,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     if (!this.localData()) {
       return this.totalRecords();
     }
-    
+
     // En modo local, contar los datos filtrados/ordenados
     return this.sortedData().length;
   });
@@ -298,10 +301,10 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       const globalHeaderFontSize = this.columnsContainer?.headerFontSize();
       const globalHeaderFontWeight = this.columnsContainer?.headerFontWeight();
       const globalHeaderFontFamily = this.columnsContainer?.headerFontFamily();
-      
+
       const cols = this.columnComponents.map(col => {
         const config = col.getColumnConfig();
-        
+
         // Aplicar propiedades globales solo si la columna no tiene sus propias propiedades
         return {
           ...config,
@@ -312,7 +315,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
           headerFontFamily: config.headerFontFamily ?? globalHeaderFontFamily,
         };
       });
-      
+
       this.columns.set(cols);
     }
 
@@ -320,7 +323,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     if (this.filterComponents) {
       const filterConfigs = this.filterComponents.map(filter => filter.config());
       this.filters.set(filterConfigs);
-      
+
       // Subscribe to filter changes
       this.filterComponents.forEach(filter => {
         filter.filterChange.subscribe((event: { key: string; value: any }) => {
@@ -328,31 +331,31 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
         });
       });
     }
-    
+
     // 🆕 NUEVO: Inicializar/Restaurar estado
     this._initializeState();
   }
-  
+
   ngOnDestroy() {
     const config = this.persistenceConfig();
-    
+
     // Limpiar store si está configurado
     if (config.clearOnDestroy) {
       this.store.destroyInstance(this.datagridId());
     }
   }
-  
+
   // ========== MÉTODOS DE PERSISTENCIA ==========
-  
+
   /**
    * Inicializa o restaura el estado desde el store
    */
   private _initializeState() {
     const config = this.persistenceConfig();
     const id = this.datagridId();
-    
+
     console.log(`🔧 Initializing state for datagrid "${id}"`, { config });
-    
+
     if (!config.enabled) {
       console.log(`⏭️ Persistence disabled for datagrid "${id}"`);
       // Si está en modo servidor y no hay persistencia, emitir carga inicial
@@ -364,7 +367,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       }
       return;
     }
-    
+
     // Inicializar instancia en el store
     const state = this.store.initializeInstance(
       id,
@@ -373,9 +376,9 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       },
       config.autoRestore
     );
-    
+
     console.log(`📦 State after initialization:`, state);
-    
+
     // Restaurar signals locales si autoRestore está activado
     if (config.autoRestore && state) {
       console.log(`🔄 Auto-restoring state...`);
@@ -388,13 +391,13 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       }, 150);
     }
   }
-  
+
   /**
    * Restaura los signals locales desde el estado del store
    */
   private _restoreLocalState(state: DatagridState) {
     console.log(`🔄 Restoring local state for "${this.datagridId()}"`, state);
-    
+
     this.searchTerm.set(state.searchTerm);
     this.currentPage.set(state.currentPage);
     this.currentPageSize.set(state.currentPageSize);
@@ -402,10 +405,10 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     this.sortColumn.set(state.sortColumn);
     this.sortDirection.set(state.sortDirection);
     this.activeFilters.set(state.activeFilters);
-    
+
     // 🆕 IMPORTANTE: Propagar valores restaurados a los filtros hijos
     this._updateFilterChildrenValues(state.activeFilters);
-    
+
     // 🆕 Si está en modo servidor, emitir onLoadData para cargar datos con el estado restaurado
     if (!this.localData()) {
       console.log(`🌐 Emitting onLoadData after state restoration (server mode)`);
@@ -415,21 +418,21 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       }, 150);
     }
   }
-  
+
   /**
    * Actualiza los valores de los componentes de filtro hijos
    */
   private _updateFilterChildrenValues(filters: Record<string, any>) {
     if (!this.filterComponents) return;
-    
+
     console.log(`🔄 Updating filter children with values:`, filters);
-    
+
     // Usar setTimeout para asegurar que los componentes hijos están inicializados y tienen ViewChild listo
     setTimeout(() => {
       this.filterComponents.forEach(filterComponent => {
         const key = filterComponent.key();
         const value = filters[key];
-        
+
         if (value !== undefined && value !== null) {
           console.log(`  → Setting filter "${key}" to:`, value);
           // Llamar al método público setValue del orquestador
@@ -438,14 +441,14 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       });
     }, 100); // Aumentamos el timeout para asegurar que ViewChild está listo
   }
-  
+
   /**
    * Resetea el estado del datagrid manteniendo el pageSize
    */
   resetState() {
     const config = this.persistenceConfig();
     const id = this.datagridId();
-    
+
     if (config.enabled) {
       this.store.resetInstance(id, true);
       const state = this.store.getInstance(id);
@@ -461,28 +464,28 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       this.activeFilters.set({});
     }
   }
-  
+
   /**
    * Sincroniza el estado actual con el store (si está habilitado)
    */
   private _syncToStore() {
     const config = this.persistenceConfig();
     if (!config.enabled) return;
-    
+
     const id = this.datagridId();
     const instance = this.store.getInstance(id);
-    
+
     if (!instance) {
       console.warn(`⚠️ Cannot sync - instance "${id}" not found in store`);
       return;
     }
-    
+
     console.log(`💾 Syncing state for "${id}"`, {
       searchTerm: this.searchTerm(),
       currentPage: this.currentPage(),
       currentPageSize: this.currentPageSize()
     });
-    
+
     this.store.updateInstance(id, {
       searchTerm: this.searchTerm(),
       currentPage: this.currentPage(),
@@ -500,12 +503,12 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     this.sortColumn.set(columnKey);
     this.sortDirection.set(direction);
     this._syncToStore(); // Sincronizar con store
-    
+
     // En modo servidor, emitir onLoadData
     if (!this.localData()) {
       this.emitLoadData('sort', columnKey);
     }
-    
+
     // Encontrar el componente de columna y emitir su evento onSort
     const columnComponent = this.columnComponents.find(col => col.key() === columnKey);
     if (columnComponent) {
@@ -545,7 +548,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     this.searchTerm.set(value);
     this.currentPage.set(0);
     this._syncToStore(); // Sincronizar con store
-    
+
     // Solo emitir si hay 3 o más caracteres o está vacío
     if (value.length >= 3 || value.length === 0) {
       // En modo servidor, emitir onLoadData
@@ -563,32 +566,32 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     this.showFilters.update(value => !value);
     this._syncToStore(); // Sincronizar con store
   }
-  
+
   /**
    * Limpia todos los filtros activos
    */
   clearAllFilters() {
     console.log('🧹 Clearing all filters');
-    
+
     // Limpiar activeFilters
     this.activeFilters.set({});
-    
+
     // Limpiar búsqueda
     this.searchTerm.set('');
-    
+
     // Reset página a la primera
     this.currentPage.set(0);
-    
+
     // Sincronizar con store
     this._syncToStore();
-    
+
     // Limpiar valores de los componentes de filtro hijos
     if (this.filterComponents) {
       this.filterComponents.forEach(filterComponent => {
         filterComponent.setValue(null);
       });
     }
-    
+
     // Emitir evento según el modo
     if (!this.localData()) {
       this.emitLoadData('filter');
@@ -596,7 +599,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       this.emitFilterChange();
     }
   }
-  
+
   /**
    * Verifica si hay algún filtro activo
    */
@@ -612,7 +615,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     }));
     this.currentPage.set(0);
     this._syncToStore(); // Sincronizar con store
-    
+
     // En modo servidor, emitir onLoadData
     if (!this.localData()) {
       this.emitLoadData('filter', event.key);
@@ -656,7 +659,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     this.currentPage.set(event.pageIndex);
     this.currentPageSize.set(event.pageSize);
     this._syncToStore(); // Sincronizar con store
-    
+
     // En modo servidor, emitir onLoadData
     if (!this.localData()) {
       this.emitLoadData('page');
@@ -672,7 +675,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     this.currentPageSize.set(newSize);
     this.currentPage.set(0); // Reset to first page
     this._syncToStore(); // Sincronizar con store
-    
+
     // En modo servidor, emitir onLoadData
     if (!this.localData()) {
       this.emitLoadData('page');
@@ -685,7 +688,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
   goToFirstPage() {
     this.currentPage.set(0);
     this._syncToStore(); // Sincronizar con store
-    
+
     // En modo servidor, emitir onLoadData
     if (!this.localData()) {
       this.emitLoadData('page');
@@ -699,7 +702,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     if (this.currentPage() > 0) {
       this.currentPage.update(page => page - 1);
       this._syncToStore(); // Sincronizar con store
-      
+
       // En modo servidor, emitir onLoadData
       if (!this.localData()) {
         this.emitLoadData('page');
@@ -714,7 +717,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     if (this.currentPage() < this.totalPages() - 1) {
       this.currentPage.update(page => page + 1);
       this._syncToStore(); // Sincronizar con store
-      
+
       // En modo servidor, emitir onLoadData
       if (!this.localData()) {
         this.emitLoadData('page');
@@ -729,7 +732,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
     const lastPage = this.totalPages() - 1;
     this.currentPage.set(lastPage);
     this._syncToStore(); // Sincronizar con store
-    
+
     // En modo servidor, emitir onLoadData
     if (!this.localData()) {
       this.emitLoadData('page');
@@ -755,7 +758,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       filters: this.getActiveFilters()
     });
   }
-  
+
   /**
    * Emite evento onLoadData para modo servidor
    */
@@ -775,16 +778,16 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
   private getActiveFilters(): { [key: string]: any } {
     const filters = this.activeFilters();
     const result: { [key: string]: any } = {};
-    
+
     // Solo incluir filtros que tengan valores válidos
     Object.keys(filters).forEach(key => {
       const value = filters[key];
-      
+
       // Filtrar null, undefined, cadenas vacías y la cadena literal "null"
       if (value === null || value === undefined || value === '' || value === 'null') {
         return; // Skip este filtro
       }
-      
+
       // Para arrays, solo incluir si tienen elementos
       if (Array.isArray(value)) {
         if (value.length > 0) {
@@ -795,7 +798,7 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
         result[key] = value;
       }
     });
-    
+
     return result;
   }
 
@@ -807,5 +810,10 @@ export class DpDatagridComponent implements AfterContentInit, OnDestroy {
       searchTerm: this.searchTerm(),
       filters: this.getActiveFilters()
     };
+  }
+
+  //TODO: FUNCION PARA EXPORTAR
+  onExportClick(): void {
+    console.log('Botón exportar csv');
   }
 }

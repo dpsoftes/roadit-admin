@@ -1,7 +1,126 @@
 <div class="drivers-page">
   <h1 class="sectionTitleText">{{ 'drivers.title' | translate }}</h1>
 
-  <!-- TABLA DE CONDUCTORES -->
-  <app-dynamic-table [config]="driversTableConfig()" (tableEvent)="handleTableEvent($event)">
-  </app-dynamic-table>
+  <!-- TABLA DE CONDUCTORES CON DP-DATAGRID -->
+  <dp-datagrid datagridId="drivers-grid" [data]="drivers()" [localData]="true" [selectable]="false" [searchable]="true"
+    searchPlaceholder="{{ 'drivers.list.searchPlaceholder' | translate }}" [pagination]="true" [exportable]="true"
+    [pageSize]="5" [pageSizeOptions]="[5, 10, 20, 50]" (onFilterChange)="onFilterChange($event)">
+
+    <dp-datagrid-columns>
+      <!-- COLUMNA DE IMAGEN -->
+      <dp-datagrid-column key="image" label="{{ 'drivers.list.image' | translate }}" type="image" [width]="5">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE NOMBRE Y APELLIDO -->
+      <dp-datagrid-column key="name" label="{{ 'drivers.list.name' | translate }}" type="custom" [width]="6"
+        [render]="renderFullName">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE DNI/CIF -->
+      <dp-datagrid-column key="dni" label="{{ 'drivers.list.dni/cif' | translate }}" type="custom" [width]="8"
+        [render]="renderDniCif">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE PROVINCIA -->
+      <dp-datagrid-column key="province" label="{{ 'drivers.list.province' | translate }}" type="text" [width]="10">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE CIUDAD -->
+      <dp-datagrid-column key="city" label="{{ 'drivers.list.city' | translate }}" type="text" [width]="10">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE EMAIL -->
+      <dp-datagrid-column key="email" label="{{ 'drivers.list.email' | translate }}" type="text" [width]="15">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE TELÉFONO -->
+      <dp-datagrid-column key="phone" label="{{ 'drivers.list.phone' | translate }}" type="text" [width]="10">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE FECHA DE CREACIÓN -->
+      <dp-datagrid-column key="created_datetime" label="{{ 'drivers.list.created_datetime' | translate }}" type="custom"
+        [width]="6" [render]="renderDate">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE TAGS -->
+      <dp-datagrid-column key="tags" label="{{ 'drivers.list.tags' | translate }}" type="chip-array" [width]="11">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE VALIDADO -->
+      <dp-datagrid-column key="validated" label="{{ 'drivers.list.validated' | translate }}" type="custom" [width]="9"
+        [render]="renderValidated">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE ESTADO -->
+      <dp-datagrid-column key="is_active" label="{{ 'drivers.list.is_active' | translate }}" type="custom" [width]="8"
+        [render]="renderStatus">
+      </dp-datagrid-column>
+
+      <!-- COLUMNA DE ACCIONES -->
+      <dp-datagrid-column key="actions" label="{{ 'drivers.list.actions' | translate }}" type="actions" [width]="10"
+        [actionConfig]="actionsConfig">
+      </dp-datagrid-column>
+    </dp-datagrid-columns>
+
+    <!-- CONTENEDOR DE FILTROS -->
+    <dp-datagrid-filter-container>
+
+      <!-- FILTRO POR NOMBRE -->
+      <dp-datagrid-filter key="name" label="{{ 'drivers.list.name' | translate }}" type="text" [width]="270">
+      </dp-datagrid-filter>
+
+      <!-- FILTRO POR EMAIL -->
+      <dp-datagrid-filter key="email" label="{{ 'drivers.list.email' | translate }}" type="text" [width]="270">
+      </dp-datagrid-filter>
+
+      <!-- FILTRO POR TAGS -->
+      <div class="custom-filter-wrapper">
+        <input-multi-tag [label]="'drivers.list.tags' | translate" [value]="selectedTagIds()" [tagType]="'DRIVER'"
+          [maxWidth]="'246px'" [filterStyle]="true" (valueChange)="onTagsChange($event)">
+        </input-multi-tag>
+      </div>
+
+      <!-- FILTRO POR ESTADO -->
+      <dp-datagrid-filter key="is_active" label="{{ 'drivers.list.is_active' | translate }}" type="select" [width]="138"
+        [options]="driverStatus()">
+      </dp-datagrid-filter>
+
+      <!-- FILTRO POR VALIDADO -->
+      <dp-datagrid-filter key="validated" label="{{ 'drivers.list.validated_filter' | translate }}" type="select"
+        [width]="154" [options]="[
+          { value: true.toString(), label: 'Validado' },
+          { value: false.toString(), label: 'Pendiente' }
+        ]">
+      </dp-datagrid-filter>
+
+      <!-- FILTRO POR PUNTUACIÓN -->
+      <dp-datagrid-filter key="rating" label="{{ 'drivers.list.rating' | translate }}" type="text" [width]="132">
+      </dp-datagrid-filter>
+
+      <!-- FILTRO POR TELÉFONO -->
+      <dp-datagrid-filter key="phone" label="{{ 'drivers.list.phone' | translate }}" type="text" [width]="233">
+      </dp-datagrid-filter>
+
+      <!-- FILTRO POR CIUDAD -->
+      <dp-datagrid-filter key="city" label="{{ 'drivers.list.city_filter' | translate }}" type="text" [width]="270">
+      </dp-datagrid-filter>
+
+      <!-- FILTRO POR PROVINCIA -->
+      <dp-datagrid-filter key="province" label="{{ 'drivers.list.province_filter' | translate }}" type="text"
+        [width]="270">
+      </dp-datagrid-filter>
+
+    </dp-datagrid-filter-container>
+
+    <!-- ACCIONES GLOBALES -->
+    <dp-datagrid-actions>
+      <dp-datagrid-action key="create" text="{{ 'drivers.IVAIRPF' | translate }}" color="accent"
+        (onClick)="onCreateDriver($event)">
+      </dp-datagrid-action>
+      <dp-datagrid-action key="create" text="{{ 'drivers.create' | translate }}" color="primary"
+        (onClick)="onCreateDriver($event)">
+      </dp-datagrid-action>
+    </dp-datagrid-actions>
+
+  </dp-datagrid>
 </div>

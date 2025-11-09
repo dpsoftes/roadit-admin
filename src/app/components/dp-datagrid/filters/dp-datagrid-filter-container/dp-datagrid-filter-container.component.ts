@@ -17,19 +17,19 @@ import { CommonModule } from '@angular/common';
   styles: [`
     .dp-datagrid-filter-container-wrapper {
       margin-top: 24px;
-      
+
       &.hidden {
         display: none;
       }
     }
-    
+
     .dp-datagrid-filter-container {
       margin: 0;
-      
+
       .filters-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
         padding: 0;
       }
     }

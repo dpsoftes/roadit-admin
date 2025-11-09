@@ -1,24 +1,15 @@
 <!-- Sidebar Component -->
 <aside class="sidebar" [class.collapsed]="isCollapsed()">
-  
+
   <!-- Header del sidebar con logo -->
   <div class="sidebar-header">
-    <div class="logo-container">
-      @if (!isCollapsed()) {
-        <img src="assets/images/logo.svg" alt="RoadIt" class="logo">
-      }
-    </div>
-    
+
     <!-- Botón de colapsar (doble flecha como en Figma) -->
     <button class="collapse-btn" (click)="onToggleMenu()" type="button">
       @if (isCollapsed()) {
-        <span class="double-arrow">
-          <span class="arrow-first">›</span><span class="arrow-second">›</span>
-        </span>
+      <img src="assets/icons/whiteChevronRight.svg" alt="Expandir" class="chevron-icon">
       } @else {
-        <span class="double-arrow">
-          <span class="arrow-first">‹</span><span class="arrow-second">‹</span>
-        </span>
+      <img src="assets/icons/whiteChevronLeft.svg" alt="Colapsar" class="chevron-icon chevron-right">
       }
     </button>
   </div>
@@ -27,29 +18,33 @@
   <nav class="sidebar-nav">
     <ul class="nav-list">
       @for (item of menuItems; track item.route || $index) {
-        @if (!item.submenus) {
-          <li class="nav-item" [class.active]="item.active">
-            <sidebar-menu-item [label]="item.label" [icon]="item.iconType === 'png' ? item.iconPath : item.icon" [route]="item.route" [hasSubitems]="false"></sidebar-menu-item>
+      @if (!item.submenus) {
+      <li class="nav-item" [class.active]="item.active">
+        <sidebar-menu-item [label]="item.label"
+          [icon]="(item.iconType === 'png' || item.iconType === 'svg') ? item.iconPath : item.icon" [route]="item.route"
+          [hasSubitems]="false" [isCollapsed]="isCollapsed()"></sidebar-menu-item>
+      </li>
+      } @else {
+      <li class="nav-item" [class.active]="item.active" (click)="toggleSubmenu($index)">
+
+        <sidebar-menu-item [label]="item.label" [icon]="item.iconType === 'png' ? item.iconPath : item.icon"
+          [hasSubitems]="true" [expanded]="!item.collapsed" [isCollapsed]="isCollapsed()"></sidebar-menu-item>
+        <!-- <span class="material-icons submenu-arrow">{{ item.collapsed ? 'expand_more' : 'expand_less' }}</span> -->
+
+        @if (!item.collapsed) {
+        <ul class="submenu">
+          @for (subitem of item.submenus; track subitem.route) {
+          <li class="submenu-item">
+            <sidebar-menu-item [label]="subitem.label" [icon]="undefined" [route]="subitem.route" [hasSubitems]="false"
+              [isSubitem]="true"></sidebar-menu-item>
           </li>
-        } @else {
-          <li class="nav-item " [class.active]="item.active" (click)="toggleSubmenu($index)">
-            
-              <sidebar-menu-item [label]="item.label" [icon]="item.iconType === 'png' ? item.iconPath : item.icon" [hasSubitems]="true" [expanded]="!item.collapsed"></sidebar-menu-item>
-              <span class="material-icons submenu-arrow">{{ item.collapsed ? 'expand_more' : 'expand_less' }}</span>
-            
-            @if (!item.collapsed) {
-              <ul class="submenu">
-                @for (subitem of item.submenus; track subitem.route) {
-                  <li class="submenu-item">
-                    <sidebar-menu-item [label]="subitem.label" [icon]="undefined" [route]="subitem.route" [hasSubitems]="false" [isSubitem]="true"></sidebar-menu-item>
-                  </li>
-                }
-                </ul>
-            }
-            
-          </li>
+          }
+        </ul>
         }
-    }
+
+      </li>
+      }
+      }
     </ul>
   </nav>
 

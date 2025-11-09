@@ -14,6 +14,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { RouterModule } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   TableConfig,
   TableColumn,
@@ -56,7 +57,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
   @Output() tableEvent = new EventEmitter<TableEvent>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   private globalStore = inject(GlobalStore);
-  private i18n = inject(I18nService);
+  private sanitizer = inject(DomSanitizer);
 
   // Signals para el estado del componente
   displayedColumns = signal<string[]>([]);
@@ -90,6 +91,11 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
       this.pageSize.set(configPageSize);
       this.paginator.pageSize = configPageSize;
     }
+  }
+
+  getSafeCustomHtml(row: any, column: TableColumn): SafeHtml {
+    const html = this.getCellValue(row, column);
+    return this.sanitizer.bypassSecurityTrustHtml(html as string);
   }
 
   hasFixedWidthColumns(): boolean {
@@ -229,7 +235,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     if (column.type === 'image') {
       return this.getImageUrl(column, row);
     }
-    if(column.render){
+    if (column.render) {
       return column.render(column, row);
     }
     const value = this.getNestedValue(row, column.key);
@@ -244,7 +250,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     if (!url) {
       return environment.images?.defaultAvatar || 'assets/images/sample_user_icon.png';
     }
-      return Helpers.toUrl(url);
+    return Helpers.toUrl(url);
   }
   private getNestedValue(obj: any, path: string): any {
     if (typeof path !== 'string') {
@@ -269,20 +275,63 @@ export class DynamicTableComponent implements OnInit, AfterViewInit {
     return `chip ${value?.toString().toLowerCase()}`;
   }
 
+  //METODO CORREGIDO PARA EL COMPONENTE dynamic-table.component.ts
+  //REEMPLAZAR EL METODO getChipText EXISTENTE CON ESTE:
+
   getChipText(chipConfig: ChipConfig | {}, value: any): string {
     if ('translateKey' in chipConfig && chipConfig.translateKey) {
       return `${chipConfig.translateKey}.${value}`;
     }
 
-    // Si el valor es un número y el chipConfig es tipo 'tags', buscar el tag por ID
+    //SI EL VALOR ES UN NUMERO Y EL chipConfig ES TIPO 'tags', BUSCAR EL TAG POR ID
     if (typeof value === 'number' && 'type' in chipConfig && chipConfig.type === 'tags') {
       const tag = this.globalStore.tags().find(t => t.id === value);
-      return tag?.name[this.i18n.currentLanguage()] || value.toString();
+
+      if (tag) {
+        //OBTENER EL IDIOMA ACTUAL DEL GLOBALSTORE
+        const currentLanguage = this.globalStore.language() as 'es' | 'en';
+
+        //SI LA TAG TIENE EL METODO getName (ES INSTANCIA DE TagDto)
+        if (typeof tag.getName === 'function') {
+          return tag.getName(currentLanguage);
+        }
+
+        //SI tag.name ES UN OBJETO CON TRADUCCIONES
+        if (tag.name && typeof tag.name === 'object' && !Array.isArray(tag.name)) {
+          return tag.name[currentLanguage] || tag.name.es || '';
+        }
+
+        //SI tag.name ES UN STRING DIRECTO (FALLBACK PARA ESTRUCTURA ANTIGUA)
+        if (typeof tag.name === 'string') {
+          return tag.name;
+        }
+      }
+
+      return value.toString();
     }
 
-    // Si el valor es un objeto, extraer el campo name o username
+    //SI EL VALOR ES UN OBJETO, EXTRAER EL CAMPO name O username
     if (value && typeof value === 'object' && !Array.isArray(value)) {
-      return value.name || value.username || value.label || JSON.stringify(value);
+      //OBTENER EL IDIOMA ACTUAL DEL GLOBALSTORE
+      const currentLanguage = this.globalStore.language() as 'es' | 'en';
+
+      //SI EL OBJETO TIENE getName COMO FUNCION
+      if (typeof value.getName === 'function') {
+        return value.getName(currentLanguage);
+      }
+
+      //SI value.name ES UN OBJETO CON TRADUCCIONES
+      if (value.name && typeof value.name === 'object' && !Array.isArray(value.name)) {
+        return value.name[currentLanguage] || value.name.es || '';
+      }
+
+      //SI value.name ES UN STRING DIRECTO
+      if (typeof value.name === 'string') {
+        return value.name;
+      }
+
+      //OTROS CAMPOS COMUNES
+      return value.username || value.label || JSON.stringify(value);
     }
 
     const tagLabels: { [key: string]: string } = {

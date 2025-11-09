@@ -1,95 +1,121 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ChipValue } from '../../../dp-datagrid.interfaces';
+import { I18nService } from '@i18n/i18n.service';
 
 /**
- * Servicio compartido para lógica de colores de chips
- * Responsabilidad única: Manejo de colores y estilos de chips
+ * SERVICIO COMPARTIDO PARA LOGICA DE COLORES DE CHIPS
+ * RESPONSABILIDAD UNICA: MANEJO DE COLORES Y ESTILOS DE CHIPS
+ *
+ * SOPORTE MULTIIDIOMA: AHORA MANEJA TAGS CON ESTRUCTURA { name: { es: '...', en: '...' } }
  */
 @Injectable({
   providedIn: 'root'
 })
 export class ChipUtilsService {
+  //INYECTAR SERVICIO DE I18N PARA OBTENER IDIOMA ACTUAL
+  private i18n = inject(I18nService);
+
   /**
-   * Calcula el color de texto con mejor contraste para un color de fondo dado
-   * Usa el algoritmo YIQ para determinar luminosidad
+   * CALCULA EL COLOR DE TEXTO CON MEJOR CONTRASTE PARA UN COLOR DE FONDO DADO
+   * USA EL ALGORITMO YIQ PARA DETERMINAR LUMINOSIDAD
    */
   getContrastColor(hexColor: string): string {
-    // Remover # si existe
+    //REMOVER # SI EXISTE
     const hex = hexColor.replace('#', '');
-    
-    // Convertir a RGB
+
+    //CONVERTIR A RGB
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
-    
-    // Calcular luminosidad (YIQ)
+
+    //CALCULAR LUMINOSIDAD (YIQ)
     const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    
-    // Retornar blanco o negro según luminosidad
+
+    //RETORNAR BLANCO O NEGRO SEGUN LUMINOSIDAD
     return yiq >= 128 ? '#000000' : '#ffffff';
   }
 
   /**
-   * Obtiene el valor de display de un chip (string o ChipValue)
-   * Si es un objeto ChipValue, retorna el label (lo que se muestra)
-   * Si es un string, retorna el string directamente
+   * OBTIENE EL VALOR DE DISPLAY DE UN CHIP (STRING O CHIPVALUE)
+   *
+   * SOPORTA MULTIPLES ESTRUCTURAS:
+   * 1. { value: '...', label: '...' } - Formato estandar del sandbox
+   * 2. { name: { es: '...', en: '...' } } - Formato del proyecto con multiidioma
+   * 3. String simple
    */
-  getChipDisplayValue(value: string | ChipValue): string {
+  getChipDisplayValue(value: string | ChipValue | any): string {
     if (typeof value === 'string') {
       return value;
     }
+
     if (value && typeof value === 'object') {
-      // Si tiene label, usarlo (es lo que se muestra visualmente)
+      //CASO 1: TIENE LABEL (FORMATO ESTANDAR DEL SANDBOX)
       if ('label' in value && value.label) {
         return value.label;
       }
-      // Fallback: si solo tiene value sin label, usar el value
+
+      //CASO 2: TIENE NAME CON MULTIIDIOMA (FORMATO DEL PROYECTO)
+      if ('name' in value && typeof value.name === 'object') {
+        const currentLanguage = this.i18n.currentLanguage() as 'es' | 'en';
+        return value.name[currentLanguage] || value.name.es || value.name.en || '';
+      }
+
+      //CASO 3: TIENE NAME COMO STRING
+      if ('name' in value && typeof value.name === 'string') {
+        return value.name;
+      }
+
+      //FALLBACK: SI SOLO TIENE VALUE SIN LABEL, USAR EL VALUE
       if ('value' in value) {
         return String(value.value);
       }
     }
+
     return '';
   }
 
   /**
-   * Obtiene el color de fondo de un chip
+   * OBTIENE EL COLOR DE FONDO DE UN CHIP
+   * AÑADE EL # SI NO LO TIENE
    */
-  getChipBackgroundColor(value: string | ChipValue): string {
+  getChipBackgroundColor(value: string | ChipValue | any): string {
     if (typeof value === 'object' && value.color) {
-      return value.color;
+      //AÑADIR # SI NO LO TIENE
+      const color = value.color;
+      return color.startsWith('#') ? color : `#${color}`;
     }
-    // Si no tiene color, usar blanco
+    //SI NO TIENE COLOR, USAR BLANCO
     return '#ffffff';
   }
 
   /**
-   * Obtiene el borde de un chip
+   * OBTIENE EL BORDE DE UN CHIP
    */
-  getChipBorder(value: string | ChipValue): string {
-    // Si tiene color definido, no mostrar borde
+  getChipBorder(value: string | ChipValue | any): string {
+    //SI TIENE COLOR DEFINIDO, NO MOSTRAR BORDE
     if (typeof value === 'object' && value.color) {
       return 'none';
     }
-    // Si no tiene color, mostrar borde gris claro
+    //SI NO TIENE COLOR, MOSTRAR BORDE GRIS CLARO
     return '1px solid #dadce0';
   }
 
   /**
-   * Obtiene el color de texto de un chip
+   * OBTIENE EL COLOR DE TEXTO DE UN CHIP
    */
-  getChipTextColor(value: string | ChipValue): string {
+  getChipTextColor(value: string | ChipValue | any): string {
     const bgColor = this.getChipBackgroundColor(value);
     if (bgColor && bgColor !== '#ffffff') {
       return this.getContrastColor(bgColor);
     }
-    // Para chips sin color (fondo blanco), usar texto negro
+    //PARA CHIPS SIN COLOR (FONDO BLANCO), USAR TEXTO NEGRO
     return '#000000';
   }
 
   /**
-   * Procesa un array de valores de chips
+   * PROCESA UN ARRAY DE VALORES DE CHIPS
    */
-  getChipArrayValues(value: any): (string | ChipValue)[] {
+  getChipArrayValues(value: any): (string | ChipValue | any)[] {
     return Array.isArray(value) ? value : [];
   }
 }

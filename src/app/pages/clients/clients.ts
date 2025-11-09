@@ -99,6 +99,7 @@ export class Clients implements OnInit {
       }
       if(params.data){
         if(params.data.searchTerm){
+          //TODO search
         }
       if(params.data.filters){
           for(const filterKey of Object.keys(params.data.filters)){

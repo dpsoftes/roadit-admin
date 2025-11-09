@@ -71,6 +71,7 @@ export interface FilterConfig {
 export interface FilterOption {
   value: string;
   label: string;
+  icon?: string;
 }
 
 export interface TableAction {

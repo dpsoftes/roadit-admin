@@ -5,7 +5,9 @@
     "login": "LOGIN",
     "remember_me": "Recuérdame",
     "forgot_password": "¿Olvidaste contraseña?",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "filters": "FILTROS",
+    "exportable": "EXPORTAR CSV"
   },
   "paginator": {
     "itemsPerPageLabel": "Elementos por página:",
@@ -46,7 +48,8 @@
     "additional_expenses": "Gastos adicionales",
     "driver_invoice_emission": "Emisión de facturas a conductores",
     "driver_invoices": "Facturas conductores",
-    "client_invoices": "Facturas clientes"
+    "client_invoices": "Facturas clientes",
+    "notifications": "Notificaciones"
   },
   "users": {
     "title": "Usuarios",
@@ -334,7 +337,13 @@
     "certs": "Certificados",
     "additional-services": "Servicios Adicionales",
     "assignment": "Asignaciones de transportes",
-    "history": "Historial de transportes"
+    "history": "Historial de transportes",
+    "general-data": "Datos generales",
+    "quality": "Calidad",
+    "certifications": "Certificaciones",
+    "blacklist": "Blacklist",
+    "documentation": "Documentación",
+    "timeline": "Timeline"
   },
   "transports": {
     "title": "Transportes",
@@ -855,13 +864,24 @@
     "viewFile": "ver archivo",
     "deleteFile": "Eliminar archivo"
   },
-  "EntityDocumentType":{
+  "EntityDocumentType": {
     "DNI": "Dni",
     "CIF": "Cif",
     "OTHER": "Otro"
   },
   "drivers": {
     "title": "Conductores",
+    "create": "Crear nuevo conductor",
+    "IVAIRPF": "MODIFICAR IVA / IRPF",
+    "tabs": {
+      "general-data": "Datos generales",
+      "quality": "Calidad",
+      "certifications": "Certificaciones",
+      "blacklist": "Blacklist",
+      "documentation": "Documentación",
+      "billing": "Facturación",
+      "timeline": "Timeline"
+    },
     "list": {
       "image": "Foto",
       "name": "Nombre",
@@ -880,7 +900,7 @@
       "status": "Estado",
       "actions": "Acciones",
       "searchPlaceholder": "Buscar",
-      "is_active": "Estado Activo",
+      "is_active": "Estado",
       "expiredDocuments": "Conductores con documentos expirados",
       "newDocuments": "Conductores con nuevos documentos aportados",
       "create-driver": "Crear nuevo conductor",
@@ -896,6 +916,40 @@
       "expiredDocuments_filter": "Documentos Caducados",
       "newDocuments_filter": "Documentos Nuevos"
     },
+    "generalData": {
+      "uploadPhoto": "Subir foto",
+      "removePhoto": "Eliminar foto",
+      "photoUploadInfo": "Permite JPG, GIF o PNG. Tamaño Máx. 800K",
+      "firstName": "Nombre",
+      "firstNameRequired": "El nombre es obligatorio",
+      "lastName": "Apellidos",
+      "lastNameRequired": "Los apellidos son obligatorios",
+      "dniNie": "DNI/NIE",
+      "dniNieRequired": "El DNI/NIE es obligatorio",
+      "cif": "CIF",
+      "fullAddress": "Dirección completa",
+      "postalCode": "Código postal",
+      "city": "Ciudad",
+      "province": "Provincia",
+      "country": "País",
+      "selectCountry": "Seleccionar país",
+      "email": "Correo electrónico",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "phone": "Teléfono de contacto",
+      "tags": "Tags",
+      "isActive": "Activar/Desactivar cuenta",
+      "blockMissions": "Bloquear misiones",
+      "saveChanges": "Guardar cambios",
+      "invalidFileType": "Tipo de archivo no válido. Solo se permiten imágenes (JPG, PNG, WEBP).",
+      "fileTooLarge": "El archivo es demasiado grande. El tamaño máximo es 5MB."
+    },
+    "billing": {
+      "iban": "IBAN",
+      "bic": "BIC",
+      "irpf": "IRPF",
+      "biweeklyBilling": "Facturado en la quincena",
+      "saveChanges": "GUARDAR CAMBIOS"
+    },
     "profile": {
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo",
@@ -909,14 +963,6 @@
     "isActive": {
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo"
-    },
-    "tags": {
-      "Puntual": "Puntual",
-      "Profesional": "Profesional",
-      "Responsable": "Responsable",
-      "Eficiente": "Eficiente",
-      "Experiencia": "Experiencia",
-      "Nuevo": "Nuevo"
     },
     "actions": {
       "edit": "Editar",

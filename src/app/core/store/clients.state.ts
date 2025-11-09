@@ -75,7 +75,7 @@ export const ClientStore = signalStore(
       }
     }),
     withMethods((store) => ({
-      validGralData: (gral: ClientDto) : string[] => {
+      validGralData: (gral: Partial<ClientDto>) : string[] => {
         const errors: string[] = [];
         store.updateState({errors });
         if(Helpers.isEmpty(gral.name) )                             errors.push('errors.client.name-required');
@@ -84,7 +84,7 @@ export const ClientStore = signalStore(
         if(gral.is_subentity && (Helpers.isEmpty(gral.parent) )  )  errors.push('errors.client.principal-client-required');
         if(Helpers.isEmpty(gral.contact_person_email))              errors.push('errors.client.contact-email-invalid');
         if(Helpers.isEmpty(gral.contact_person_name))               errors.push('errors.client.contact-name-required');
-        store.updateState({errors, client: gral });
+        store.updateState({errors, client: {...store.client(), ...gral}  });
         return errors;
       },
 

@@ -1,4 +1,4 @@
- 
+
 import { Component, EventEmitter, Input, Output, signal, computed, ChangeDetectionStrategy, inject, OnInit, WritableSignal, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { TranslatePipe } from '@i18n/translate.pipe';
-import { roleAdminDescriptions, UserRole, UserStatus,  userStatusDescriptions } from '@enums/user.enum';
+import { roleAdminDescriptions, UserRole, UserStatus, userStatusDescriptions } from '@enums/user.enum';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { UsersState } from '@store/users.state';
 import { GlobalStore } from '@store/global.state';
@@ -38,11 +38,11 @@ import { AdminProvider } from '@providers';
     MatAutocompleteModule,
     ReactiveFormsModule,
     FormsModule,
-    InputMultiTagComponent, 
+    InputMultiTagComponent,
     ImageDropComponent
-    
-    
-],
+
+
+  ],
   templateUrl: './user-form.html',
   styleUrls: ['./user-form.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -50,9 +50,9 @@ import { AdminProvider } from '@providers';
 export class UserForm implements OnInit {
   private readonly adminProvider = inject(AdminProvider);
   private readonly globalState = inject(GlobalStore);
-  profile = input.required<AdminSignal>(); 
+  profile = input.required<AdminSignal>();
   departments = input<string[]>(['Comercial', 'Marketing', 'Producción', 'Diseño', 'IT', 'RRHH']);
-  showPhotoSection =  input<boolean>(true);
+  showPhotoSection = input<boolean>(true);
   showPasswordField = input<boolean>(true);
   showFooterButtons = input<boolean>(true);
   isCreating = computed(() => !this.profile().id());
@@ -69,9 +69,9 @@ export class UserForm implements OnInit {
 
   showPassword = signal(false);
   password = signal('');
-  
+
   async ngOnInit() {
-  //  this.profile =  await this.userState.getAdminProfile(StoreService.instance?.global.user()?.user.id!) as AdminSignalsModel;
+    //  this.profile =  await this.userState.getAdminProfile(StoreService.instance?.global.user()?.user.id!) as AdminSignalsModel;
   }
 
 
@@ -82,14 +82,18 @@ export class UserForm implements OnInit {
   // ...existing code...
 
   onPhotoDeleted(photo: string): void {
-  //  this.updateUserData({ image: 'assets/images/sample_user_icon.png' });
-  this.profile().image.set(new File([''], ''));
-//    this.photoDeleted.emit(photo);
+    //  this.updateUserData({ image: 'assets/images/sample_user_icon.png' });
+    this.profile().image.set(new File([''], ''));
+    //    this.photoDeleted.emit(photo);
   }
 
   async onSave() {
     this.save.emit();
     return;
+  }
+
+  onDepartmentsChange(newDepartments: number[] | string[]): void {
+    this.profile().departments.set(newDepartments as string[]);
   }
 
   onCancel(): void {
@@ -112,7 +116,7 @@ export class UserForm implements OnInit {
       (profile as any)[field].set(value);
     }
   }
- 
+
   onImageAccepted(event: { base64: string, file: File }) {
     this.profile().image.set(event.file);
   }
@@ -131,7 +135,7 @@ export class UserForm implements OnInit {
     }
     this.profile().image.set(file);
   }
- 
+
 
 
 }

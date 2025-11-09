@@ -1,7 +1,8 @@
 /* Sidebar Component Styles */
 
 .sidebar {
-  background: #2D3D32; /* roadit-primary */
+  background: #2D3D32;
+  /* roadit-primary */
   width: 280px;
   height: 100vh;
   position: fixed;
@@ -18,14 +19,22 @@
   }
 }
 
+.chevron-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.chevron-right {
+  margin-left: auto;
+}
+
 .sidebar-header {
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 64px;
-  
+
   .collapsed & {
     justify-content: center;
     padding: 1rem 0.5rem;
@@ -37,7 +46,7 @@
   align-items: center;
   gap: 0.5rem;
   flex: 1;
-  
+
   .collapsed & {
     display: none;
   }
@@ -60,28 +69,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px; /* Duplicado: 22px x 2 = 44px */
-  height: 44px; /* Duplicado: 22px x 2 = 44px */
+  width: 44px;
+  height: 44px;
+
+  // CUANDO NO ESTÁ COLAPSADO, ALINEAR A LA DERECHA
+  :not(.collapsed) & {
+    margin-left: auto;
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
-  }
-
-  .double-arrow {
-    display: flex;
-    align-items: center;
-    font-size: 28px;
-    font-weight: normal; /* Quito el bold para que no se vea tan grueso */
-    line-height: 1;
-    
-    .arrow-first {
-      color: rgba(255, 255, 255, 0.6); /* Gris claro para la primera flecha */
-      margin-right: -2px; /* Superponer ligeramente */
-    }
-    
-    .arrow-second {
-      color: rgba(255, 255, 255, 0.3); /* Gris más oscuro para la segunda flecha */
-    }
   }
 }
 
@@ -98,11 +95,11 @@
   &::-webkit-scrollbar {
     width: 4px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 2px;
@@ -116,7 +113,12 @@
 }
 
 .nav-item {
-  margin: 0.25rem 1rem;
+  margin: 0.35rem 1rem; // ANTES ERA 0.25rem
+
+  // CUANDO ESTÁ COLAPSADO, CENTRAR LOS ICONOS
+  .collapsed & {
+    margin: 0.35rem 0.35rem; // CENTRAR HORIZONTALMENTE
+  }
 }
 
 .nav-link {
@@ -124,140 +126,77 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  color: rgba(255, 255, 255, 0.87); /* var(--Dark-Text-Primary) del Figma */
+  color: rgba(255, 255, 255, 0.87);
   text-decoration: none;
   border-radius: 0.5rem;
-  transition: all 0.3s ease;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
   cursor: pointer;
-  
-  /* Tipografía exacta del Figma - usando Geist como primera opción */
-  font-feature-settings: 'liga' off, 'clig' off;
-  font-family: 'Geist Sans', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 200; /* Extra Light - más ligero que Light para mejor match con Figma */
-  line-height: 24px; /* 150% */
-  letter-spacing: 0.15px;
-  
-  /* Mejorar renderizado de fuente */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  position: relative;
+  transition: all 0.3s ease;
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
-    color: #C7D944; /* roadit-accent */
-    
-    .nav-icon {
-      color: #C7D944; /* roadit-accent */
-    }
   }
 
   &.active {
-    background: #C7D944; /* roadit-accent */
-    color: #2D3D32; /* roadit-primary */
-    
-    .nav-icon {
-      color: #2D3D32; /* roadit-primary */
-    }
+    background: rgba(199, 217, 68, 0.2);
+    color: #C7D944;
   }
-}
-
-.nav-button {
-  // Estilos específicos para botones (heredan de .nav-link)
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 
 .nav-icon {
-  font-size: 24px; /* Tamaño exacto del Figma: 24px x 24px */
-  width: 24px;
-  height: 24px;
-  color: #C7D944; /* roadit-accent - ICONOS EN VERDE CLARO como el diseño */
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.3s ease;
-  
-  .material-icons {
-    font-size: 24px;
-  }
-  
-  .custom-icon {
-    width: 24px;
-    height: 24px;
-    
-    &.steering-wheel {
-      /* Uso la ruta correcta para assets en Angular */
-      -webkit-mask: url('/assets/icons/steering-wheel-icon.png') no-repeat center;
-      mask: url('/assets/icons/steering-wheel-icon.png') no-repeat center;
-      -webkit-mask-size: contain;
-      mask-size: contain;
-      background-color: #C7D944; /* Color directo de Roadit */
-    }
-  }
-  
-  .custom-icon-img {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  color: #C7D944;
+  font-size: 24px;
+
+  img {
     width: 24px;
     height: 24px;
     object-fit: contain;
-  }
-  
-  .custom-svg-icon {
-    width: 24px;
-    height: 24px;
-    /* SVG ya tiene el color correcto, no necesita filtros */
   }
 }
 
 .nav-text {
   flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  transition: opacity 0.3s ease;
-  
-  /* Heredar tipografía del Figma del nav-link */
-  font-feature-settings: 'liga' off, 'clig' off;
-  font-family: inherit;
-  font-size: inherit;
-  font-style: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  // PERMITIR MULTILINEA PARA NOMBRES LARGOS
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 
   .collapsed & {
-    opacity: 0;
+    display: none;
   }
 }
 
-.nav-badge {
-  background: #ef4444; /* red-500 */
+.badge {
+  background: #FF3B30;
   color: white;
-  font-size: 0.625rem;
+  border-radius: 10px;
+  padding: 2px 6px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.75rem;
-  min-width: 1rem;
-  height: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
+  min-width: 20px;
+  text-align: center;
+
+  .collapsed & {
+    display: none;
+  }
 }
 
 .submenu-arrow {
-  margin-left: auto;
+  color: rgba(255, 255, 255, 0.87);
+  font-size: 24px;
   transition: transform 0.3s ease;
-  font-size: 1rem;
-  
+  position: absolute;
+  right: 1rem;
+
   .collapsed & {
     display: none;
   }
@@ -266,63 +205,52 @@
 .submenu {
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 0 0;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 0.5rem;
-  overflow: hidden;
+  margin: 0;
+  // REDUCIR PADDING SUPERIOR PARA AHORRAR ESPACIO
+  padding-top: 0; // ANTES ERA MAS
+
+  .collapsed & {
+    display: none;
+  }
 }
 
 .submenu-item {
-  margin: 0;
-}
+  // REDUCIR ESPACIADO ENTRE SUBITEMS
+  margin: 0; // ANTES ERA MAS
 
-.submenu-link {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  color: rgba(255, 255, 255, 0.6); /* color atenuado como en el diseño */
-  text-decoration: none;
-  transition: all 0.3s ease;
-  
-  /* Tipografía del Figma - usando Geist como primera opción */
-  font-feature-settings: 'liga' off, 'clig' off;
-  font-family: 'Geist Sans', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 200; /* Extra Light para que se vea más delgado que el diseño actual */
-  line-height: 24px; /* 150% */
-  letter-spacing: 0.15px;
-  
-  /* Mejorar renderizado de fuente */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    // REDUCIR PADDING VERTICAL PARA AHORRAR ESPACIO
+    // padding: 0.5rem 1rem 0.5rem 3rem; // ANTES ERA 0.75rem
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    transition: all 0.3s ease;
+    // PERMITIR MULTILINEA PARA NOMBRES LARGOS
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.87);
-    
-    .submenu-bullet,
-    .submenu-icon {
-      color: #C7D944; /* roadit-accent */
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.87);
     }
-  }
 
-  &.active {
-    background: rgba(199, 217, 68, 0.2); /* roadit-accent con transparencia */
-    color: #C7D944; /* roadit-accent */
-    
-    .submenu-bullet,
-    .submenu-icon {
-      color: #C7D944; /* roadit-accent */
+    &.active {
+      background: rgba(199, 217, 68, 0.2);
+      color: #C7D944;
     }
   }
 }
 
 .submenu-bullet {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.4); /* color muy atenuado para los puntos */
+  color: rgba(255, 255, 255, 0.4);
   flex-shrink: 0;
   width: 0.875rem;
   text-align: center;
@@ -330,8 +258,8 @@
 }
 
 .submenu-icon {
-  font-size: 20px; /* Tamaño para iconos de submenú */
-  color: rgba(255, 255, 255, 0.4); /* color muy atenuado inicialmente */
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.4);
   flex-shrink: 0;
   width: 0.875rem;
   text-align: center;
@@ -343,17 +271,6 @@
   height: 20px;
   object-fit: contain;
   filter: brightness(0) saturate(100%) invert(91%) sepia(66%) saturate(346%) hue-rotate(37deg) brightness(91%) contrast(90%);
-  /* Filtro para convertir a #C7D944 */
-  flex-shrink: 0;
-  transition: filter 0.3s ease;
-}
-
-.custom-submenu-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  filter: brightness(0) saturate(100%) invert(91%) sepia(66%) saturate(346%) hue-rotate(37deg) brightness(91%) contrast(90%);
-  /* Filtro para convertir a #C7D944 */
   opacity: 0.4;
   transition: opacity 0.3s ease;
 }
@@ -373,7 +290,7 @@
 @media (max-width: 480px) {
   .sidebar {
     width: 100%;
-    
+
     &.collapsed {
       width: 100%;
     }

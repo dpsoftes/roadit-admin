@@ -1,56 +1,53 @@
 @if(profile!=null){
 <mat-card>
-    @if(showPhotoSection()){
-    <mat-card-header>
-        <div class="photo-section">
-            <image-drop
-                [src]="profile().image()"
-                [width]="'120px'"
-                [height]="'120px'"
-                [formats]="['JPG','JPEG','GIF','PNG']"
-                [maxWeight]="800"
-                (imageAccepted)="onImageAccepted($event)"
-            ></image-drop>
-            <div class="actions">
-                <input type="file" accept=".jpg,.jpeg,.png,.gif" style="display:none" #fileInput (change)="onFileSelected($event)">
-                <button class="upload_photo_btn" matButton="filled" (click)="fileInput.click()">{{'users.profile.upload-photo' | translate}}</button>
+  @if(showPhotoSection()){
+  <mat-card-header>
+    <div class="photo-section">
+      <image-drop [src]="profile().image()" [width]="'120px'" [height]="'120px'" [formats]="['JPG','JPEG','GIF','PNG']"
+        [maxWeight]="800" (imageAccepted)="onImageAccepted($event)"></image-drop>
+      <div class="actions">
+        <input type="file" accept=".jpg,.jpeg,.png,.gif" style="display:none" #fileInput
+          (change)="onFileSelected($event)">
+        <button class="upload_photo_btn" matButton="filled" (click)="fileInput.click()">{{'users.profile.upload-photo' |
+          translate}}</button>
 
-                
-                <button class="delete_photo_btn" matButton="outlined" (click)="onPhotoDeleted('')">{{'users.profile.delete' | translate}}</button>
-                <p class="upload_photo_p">{{'users.profile.photo-upload-explanation' | translate}}</p>
-            </div>
-        </div>
-    </mat-card-header>
+
+        <button class="delete_photo_btn" matButton="outlined" (click)="onPhotoDeleted('')">{{'users.profile.delete' |
+          translate}}</button>
+        <p class="upload_photo_p">{{'users.profile.photo-upload-explanation' | translate}}</p>
+      </div>
+    </div>
+  </mat-card-header>
+  }
+  <mat-card-content>
+    @if(isCreating()){
+    <mat-form-field appearance="outline" class="half_field">
+      <mat-label>{{'users.profile.userName' | translate}}</mat-label>
+      <input matInput [value]="profile().username()" (input)="profile().username.set($event.target.value)">
+    </mat-form-field>
     }
-    <mat-card-content>
-        @if(isCreating()){
-        <mat-form-field appearance="outline" class="half_field">
-            <mat-label>{{'users.profile.userName' | translate}}</mat-label>
-            <input matInput [value]="profile().username()" (input)="profile().username.set($event.target.value)">
-        </mat-form-field>
-        }
-        <mat-form-field appearance="outline" class="half_field">
-            <mat-label>{{'users.profile.name' | translate}}</mat-label>
-            <input matInput [value]="profile().name()" (input)="profile().name.set($event.target.value)">
-        </mat-form-field>
-        
-        <mat-form-field appearance="outline" class="half_field">
-            <mat-label>{{'users.profile.lastname' | translate}}</mat-label>
-            <input matInput [value]="profile().last_name()" (input)="profile().last_name.set($event.target.value)">
-        </mat-form-field>
-        
-        <mat-form-field appearance="outline" class="half_field">
-            <mat-label>{{'users.profile.email' | translate}}</mat-label>
-            <input matInput [value]="profile().email()" (input)="profile().email.set($event.target.value)">
-        </mat-form-field>
-        
-<!--         @if (showPasswordField()) {
+    <mat-form-field appearance="outline" class="half_field">
+      <mat-label>{{'users.profile.name' | translate}}</mat-label>
+      <input matInput [value]="profile().name()" (input)="profile().name.set($event.target.value)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="half_field">
+      <mat-label>{{'users.profile.lastname' | translate}}</mat-label>
+      <input matInput [value]="profile().last_name()" (input)="profile().last_name.set($event.target.value)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="half_field">
+      <mat-label>{{'users.profile.email' | translate}}</mat-label>
+      <input matInput [value]="profile().email()" (input)="profile().email.set($event.target.value)">
+    </mat-form-field>
+
+    <!--         @if (showPasswordField()) {
         <div class="form-field half_field">
             <label class="field-label">{{'users.profile.password' | translate}}</label>
             <div class="password-container">
                 <mat-form-field appearance="outline" class="field-input password-input">
                     <input matInput [type]="showPassword() ? 'text' : 'password'" [value]="password()" (input)="password.set($event.target.value)" placeholder="Escriba aquí...">
-                    <button class="pass_icon" mat-icon-button matSuffix type="button" (click)="togglePassword()" 
+                    <button class="pass_icon" mat-icon-button matSuffix type="button" (click)="togglePassword()"
                             [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
                         <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
@@ -60,47 +57,46 @@
             <p class="placeholder-text">Placeholder text</p>
         </div>
         } -->
-        
-        <div class="form-field half_field">
-            <label class="field-label">{{'users.profile.role' | translate}}</label>
-            <mat-form-field appearance="outline" class="field-input">
-                <mat-select [value]="profile().roles()" multiple (selectionChange)="profile().roles.set($event.value)">
-                    <mat-select-trigger>
-                        <div class="selected-values">
-                            @for(r of (profile().roles()); track r) {
-                                <span class="selected-chip">{{ userRolesDescriptions[r] | translate}}</span>
-                            }
-                        </div>
-                    </mat-select-trigger>
-                    @for (roleTuple of Object.entries(userRolesDescriptions); track roleTuple[0]) {
-                    <mat-option [value]="roleTuple[0]">
-                        {{ roleTuple[1] | translate }}
-                    </mat-option>
-                    }
-                </mat-select>
-            </mat-form-field>
-        </div>
-        
-        <mat-form-field class="third_field" appearance="outline">
-            <mat-label>{{'users.profile.status' | translate}}</mat-label>
-            <mat-select [value]="profile().is_active()" (selectionChange)="profile().is_active.set($event.value)">
-                    <mat-option [value]="true">{{ 'userStatus.ACTIVE' | translate }}</mat-option>
-                    <mat-option [value]="false">{{ 'userStatus.INACTIVE' | translate }}</mat-option>
-                    
-            </mat-select>
-        </mat-form-field>
-        <div class="half_field ">
-            <input-multi-tag 
-            [label]="'users.profile.department' | translate" 
-            [value]="profile().departments()"
-            (valueChange)="profile().departments.set($event)" />
-        </div>
 
-    </mat-card-content>
-    
-    <mat-card-footer *ngIf="showFooterButtons">
-        <button class="save_btn" matButton="filled" (click)="onSave()">{{'users.profile.save-changes' | translate}}</button>
-        <button class="cancel_btn" matButton="outlined" (click)="onCancel()">{{'users.profile.cancel' | translate}}</button>
-    </mat-card-footer>
+    <div class="form-field half_field">
+      <label class="field-label">{{'users.profile.role' | translate}}</label>
+      <mat-form-field appearance="outline" class="field-input">
+        <mat-select [value]="profile().roles()" multiple (selectionChange)="profile().roles.set($event.value)">
+          <mat-select-trigger>
+            <div class="selected-values">
+              @for(r of (profile().roles()); track r) {
+              <span class="selected-chip">{{ userRolesDescriptions[r] | translate}}</span>
+              }
+            </div>
+          </mat-select-trigger>
+          @for (roleTuple of Object.entries(userRolesDescriptions); track roleTuple[0]) {
+          <mat-option [value]="roleTuple[0]">
+            {{ roleTuple[1] | translate }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="third_field" appearance="outline">
+      <mat-label>{{'users.profile.status' | translate}}</mat-label>
+      <mat-select [value]="profile().is_active()" (selectionChange)="profile().is_active.set($event.value)">
+        <mat-option [value]="true">{{ 'userStatus.ACTIVE' | translate }}</mat-option>
+        <mat-option [value]="false">{{ 'userStatus.INACTIVE' | translate }}</mat-option>
+
+      </mat-select>
+    </mat-form-field>
+    <div class="half_field ">
+      <input-multi-tag [value]="profile().departments()" [tagType]="'CUSTOM'" [customOptions]="departments()"
+        (valueChange)="onDepartmentsChange($event)">
+      </input-multi-tag>
+    </div>
+
+  </mat-card-content>
+
+  <mat-card-footer *ngIf="showFooterButtons">
+    <button class="save_btn" matButton="filled" (click)="onSave()">{{'users.profile.save-changes' | translate}}</button>
+    <button class="cancel_btn" matButton="outlined" (click)="onCancel()">{{'users.profile.cancel' | translate}}</button>
+  </mat-card-footer>
 </mat-card>
 }

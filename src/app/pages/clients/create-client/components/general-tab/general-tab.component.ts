@@ -101,7 +101,7 @@ export class GeneralTabComponent  implements OnInit{
       }
   }
   onSave(): void {
-    const dto = this.client.toDto();
+    const dto = this.client.toPatch();
     const errors = this.store.validGralData(dto);
     if(errors.length == 0){
       this.store.saveGralData();
