@@ -11,11 +11,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { Router } from '@angular/router';
-import { DriverStore } from '@store/driver.state';
+import { DriversProvider, PaginatedDriversResponse } from 'src/app/core/providers/drivers.provider';
 import { I18nService } from '@i18n/i18n.service';
 import { GlobalStore } from '@store/global.state';
 import { DriverDto, TagDto } from '@dtos';
-import { FilterOption, TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
+import { TableColumn } from '@components/dp-datagrid/dp-datagrid.interfaces';
 import { InputMultiTagComponent } from '@components/input-multi-tag/input-multi-tag.component';
 
 //IMPORTAR COMPONENTES Y TIPOS DE DP-DATAGRID
@@ -27,7 +27,7 @@ import {
   DpDatagridFilterContainerComponent,
   DpDatagridActionsComponent,
   DpDatagridActionComponent,
-  FilterChangeEvent,
+  LoadDataEvent,
   ActionConfig
 } from '@components/dp-datagrid';
 
@@ -39,7 +39,6 @@ export interface TagOption {
 }
 
 //TIPO PARA DRIVER CON TAGS TRANSFORMADAS (SOLO PARA DISPLAY)
-//NO EXTIENDE DRIVERDTO PORQUE PERDEMOS LOS METODOS AL HACER SPREAD
 export type DriverDisplayData = {
   id: number;
   username: string;
@@ -59,7 +58,7 @@ export type DriverDisplayData = {
   billing_blocked: boolean;
   transport_blocked: boolean;
   allows_access_location: boolean;
-  tags: TagDto[]; //TAGS YA SON OBJETOS COMPLETOS TAGDTO
+  tags: TagDto[];
   created_datetime: string | null;
 };
 
@@ -84,21 +83,17 @@ export type DriverDisplayData = {
 })
 export class DriversComponent implements OnInit {
   private i18n = inject(I18nService);
-  store = inject(DriverStore);
+  private driversProvider = inject(DriversProvider);
   private globalStore = inject(GlobalStore);
   private router = inject(Router);
 
-  //SIGNAL PARA LOS CONDUCTORES ORIGINALES SIN FILTRAR
-  private allDrivers = signal<DriverDto[]>(this.store.drivers());
-
-  //SIGNAL PARA LOS CONDUCTORES FILTRADOS CON TAGS TRANSFORMADAS
+  //SIGNALS PARA DATOS DEL GRID (MODO SERVIDOR)
   drivers = signal<DriverDisplayData[]>([]);
+  totalDrivers = signal<number>(0);
+  loading = signal<boolean>(false);
 
   //SIGNAL PARA LOS IDs DE TAGS SELECCIONADOS EN EL FILTRO
   selectedTagIds = signal<number[]>([]);
-
-  //SIGNAL PARA OTROS FILTROS DEL DP-DATAGRID
-  private otherFilters = signal<Record<string, string | boolean | number>>({});
 
   //OBTENER TODAS LAS TAGS DEL GLOBALSTORE
   allTags: TagDto[] = this.globalStore.tags();
@@ -116,13 +111,6 @@ export class DriversComponent implements OnInit {
       label: tag.getName(currentLanguage),
       color: tag.getColorWithHash()
     }));
-  });
-  driverStatus = computed<FilterOption[]>(() => {
-    return  [
-          { value: true.toString(), label: this.i18n.translate('userStatus.ACTIVE') },
-          { value: false.toString(), label: this.i18n.translate('userStatus.INACTIVE') }
-        ]
-
   });
 
   //CONFIGURACION DE ACCIONES
@@ -177,8 +165,6 @@ export class DriversComponent implements OnInit {
     return `${day}/${month}/${year}`;
   };
 
-  //⭐ YA NO NECESITAS RENDERTAGS - EL CHIP-ARRAY LO MANEJA AUTOMATICAMENTE
-
   renderValidated = (column: TableColumn, row: DriverDisplayData): string => {
     const isValidated = row.validated;
     const translationKey = isValidated ? 'drivers.profile.VALIDATE' : 'drivers.profile.NO_VALIDATE';
@@ -209,13 +195,6 @@ export class DriversComponent implements OnInit {
   };
 
   constructor() {
-    //EFECTO QUE ACTUALIZA LA SEÑAL LOCAL CUANDO CAMBIA EL STORE
-    effect(() => {
-      this.allDrivers.set(this.store.drivers());
-      //APLICAR FILTROS DESPUES DE CARGAR LOS DATOS
-      this.applyAllFilters();
-    });
-
     //EFECTO QUE REFRESCA LA VISTA CUANDO CAMBIA EL IDIOMA
     effect(() => {
       const currentLanguage = this.globalStore.language() as 'es' | 'en';
@@ -223,175 +202,127 @@ export class DriversComponent implements OnInit {
       console.log('🏷️ Tag options actuales:', this.tagOptions());
 
       //FORZAR ACTUALIZACION DE LOS DATOS PARA QUE SE RE-RENDERICEN LAS COLUMNAS
-      //TRANSFORMAR LAS TAGS NUEVAMENTE
-      this.updateDriversWithTransformedTags();
+      const currentDrivers = untracked(() => this.drivers());
+      this.drivers.set([...currentDrivers]);
     });
   }
 
   async ngOnInit(): Promise<void> {
-    //INICIALIZAR DESDE LOCALSTORAGE
-    this.store.initializeFromStorage();
-
-    //CARGAR CONDUCTORES DESDE EL BACKEND
-    await this.loadDrivers();
-
-    //LOG PARA DEBUG
-    console.log('📊 Drivers cargados:', this.drivers().length);
-    console.log('🏷️ Tags disponibles:', this.allTags.length);
-    console.log('🌍 Idioma actual:', this.globalStore.language());
+    //CARGAR PRIMERA PAGINA DE CONDUCTORES
+    console.log('🚀 Inicializando DriversComponent en modo servidor');
   }
 
-  //CARGAR CONDUCTORES
-  async loadDrivers(): Promise<void> {
-    await this.store.getDrivers();
+  //⭐ MANEJAR EVENTO ONLOADDATA DEL DP-DATAGRID (MODO SERVIDOR)
+  async onLoadDrivers(event: LoadDataEvent): Promise<void> {
+    console.log('📡 onLoadDrivers evento recibido:', event);
+
+    this.loading.set(true);
+
+    try {
+      //CONSTRUIR QUERYPARAMS PARA LA API
+      const queryParams: Record<string, any> = {
+        page: event.page + 1, //LA API USA BASE 1
+        page_size: event.pageSize
+      };
+
+      //AGREGAR BUSQUEDA SI EXISTE
+      if (event.searchTerm && event.searchTerm.length > 0) {
+        queryParams['search'] = event.searchTerm;
+      }
+
+      //AGREGAR ORDENAMIENTO SI EXISTE
+      if (event.sortColumn && event.sortDirection) {
+        const prefix = event.sortDirection === 'desc' ? '-' : '';
+        queryParams['ordering'] = `${prefix}${event.sortColumn}`;
+      }
+
+      //AGREGAR FILTROS (EXCEPTO TAGS QUE SE MANEJAN APARTE)
+      Object.entries(event.filters).forEach(([key, value]) => {
+        if (key !== 'tags' && value !== null && value !== undefined && value !== '') {
+          //CONVERTIR BOOLEANS DESDE STRING SI ES NECESARIO
+          if (value === 'true') {
+            queryParams[key] = true;
+          } else if (value === 'false') {
+            queryParams[key] = false;
+          } else {
+            queryParams[key] = value;
+          }
+        }
+      });
+
+      //AGREGAR FILTRO DE TAGS SI EXISTEN TAGS SELECCIONADAS
+      const currentTagIds = this.selectedTagIds();
+      if (currentTagIds && currentTagIds.length > 0) {
+        //EL BACKEND PROBABLEMENTE ESPERA 'tags' COMO PARAMETRO
+        //AJUSTAR SEGUN LA API REAL
+        queryParams['tags'] = currentTagIds.join(',');
+      }
+
+      console.log('📤 Enviando queryParams al backend:', queryParams);
+
+      //LLAMAR AL PROVIDER
+      const response: PaginatedDriversResponse | null = await this.driversProvider.getDrivers(queryParams);
+
+      if (response) {
+        console.log(`✅ Datos recibidos: ${response.results.length} conductores de ${response.count} totales`);
+
+        //TRANSFORMAR LAS TAGS Y ACTUALIZAR SIGNALS
+        const driversWithTransformedTags = response.results.map(driver =>
+          this.transformDriverTags(driver)
+        );
+
+        this.drivers.set(driversWithTransformedTags);
+        this.totalDrivers.set(response.count);
+      } else {
+        console.error('❌ Error: No se recibieron datos del backend');
+        this.drivers.set([]);
+        this.totalDrivers.set(0);
+      }
+    } catch (error) {
+      console.error('❌ Error al cargar conductores:', error);
+      this.drivers.set([]);
+      this.totalDrivers.set(0);
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   //⭐ METODO PARA TRANSFORMAR LAS TAGS AL FORMATO QUE ENTIENDE EL CHIP-ARRAY
-  //CONVIERTE IDS DE TAGS A OBJETOS TAGDTO COMPLETOS
   private transformDriverTags(driver: DriverDto): DriverDisplayData {
     const transformedTags: TagDto[] = [];
 
     if (Array.isArray(driver.tags) && driver.tags.length > 0) {
       for (const tagItem of driver.tags) {
-        //SI YA ES UN TAGDTO, AGREGARLO DIRECTAMENTE
-        if (typeof tagItem === 'object' && 'getName' in tagItem) {
-          transformedTags.push(tagItem);
-          continue;
-        }
-
-        //SI ES UN ID (NUMBER O OBJETO CON ID), EXTRAER EL ID
-        let tagId: number;
-
         if (typeof tagItem === 'number') {
-          tagId = tagItem;
-        } else if (typeof tagItem === 'object' && tagItem !== null && 'id' in tagItem) {
-          //SOLUCION ERROR 1: CAST EXPLICITO PARA ACCEDER A ID
-          tagId = (tagItem as { id: number }).id;
-        } else {
-          console.warn(`⚠️ Tag con formato inválido`, tagItem);
-          continue;
-        }
-
-        //BUSCAR LA TAG COMPLETA EN TODAS LAS TAGS
-        const fullTag = this.allTags.find((tag: TagDto) => tag.id === tagId);
-
-        if (fullTag) {
-          transformedTags.push(fullTag);
-        } else {
-          console.warn(`⚠️ Tag con ID ${tagId} no encontrada`);
+          //ES UN ID, BUSCAR LA TAG COMPLETA EN allTags
+          const fullTag = this.allTags.find((t: TagDto) => t.id === tagItem);
+          if (fullTag) {
+            transformedTags.push(fullTag);
+          }
+        } else if (typeof tagItem === 'object' && tagItem !== null) {
+          //YA ES UN OBJETO TagDto
+          transformedTags.push(tagItem as TagDto);
         }
       }
     }
 
-    //RETORNAR OBJETO PLANO CON TODAS LAS PROPIEDADES DEL DRIVER Y TAGS TRANSFORMADAS
+    //RETORNAR UN NUEVO OBJETO CON LAS TAGS TRANSFORMADAS
     return {
-      id: driver.id,
-      username: driver.username,
-      email: driver.email,
-      phone: driver.phone,
-      name: driver.name,
-      last_name: driver.last_name,
-      image: driver.image,
-      is_active: driver.is_active,
-      dni: driver.dni,
-      cif: driver.cif,
-      validated: driver.validated,
-      rating: driver.rating,
-      city: driver.city,
-      province: driver.province,
-      postal_code: driver.postal_code,
-      billing_blocked: driver.billing_blocked,
-      transport_blocked: driver.transport_blocked,
-      allows_access_location: driver.allows_access_location,
-      tags: transformedTags,
-      created_datetime: driver.created_datetime
+      ...driver,
+      tags: transformedTags
     };
-  }
-
-  //METODO AUXILIAR PARA ACTUALIZAR DRIVERS CON TAGS TRANSFORMADAS
-  private updateDriversWithTransformedTags(): void {
-    const currentDrivers = untracked(this.allDrivers);
-    const driversWithTransformedTags = currentDrivers.map(driver =>
-      this.transformDriverTags(driver)
-    );
-    this.drivers.set(driversWithTransformedTags);
   }
 
   //MANEJAR CAMBIOS EN LAS TAGS SELECCIONADAS
   onTagsChange(newTagIds: number[] | string[]): void {
+    console.log('🏷️ Tags seleccionadas cambiadas:', newTagIds);
     this.selectedTagIds.set(newTagIds as number[]);
-    this.applyAllFilters();
-  }
 
-  //MANEJAR CAMBIOS DE FILTROS DE DP-DATAGRID
-  onFilterChange(event: FilterChangeEvent): void {
-    console.log('Filtros de dp-datagrid aplicados:', event);
-    this.otherFilters.set(event.filters);
-    this.applyAllFilters();
-  }
-
-  //APLICAR TODOS LOS FILTROS (TAGS + DP-DATAGRID)
-  private applyAllFilters(): void {
-    let filteredData: DriverDto[] = [...this.allDrivers()];
-    const tagIds = this.selectedTagIds();
-    const filters = this.otherFilters();
-
-    //FILTRAR POR TAGS SI HAY TAGS SELECCIONADAS
-    if (tagIds && tagIds.length > 0) {
-      filteredData = filteredData.filter((driver: DriverDto) => {
-        if (!Array.isArray(driver.tags) || driver.tags.length === 0) {
-          return false;
-        }
-
-        //SOLUCION ERROR 2: USAR FILTER PARA ELIMINAR UNDEFINED Y CAMBIAR EL TIPO
-        const driverTagIds: number[] = driver.tags
-          .map((tag: TagDto | number): number | undefined => {
-            if (typeof tag === 'number') {
-              return tag;
-            }
-            if (typeof tag === 'object' && tag !== null && 'id' in tag) {
-              return tag.id;
-            }
-            return undefined;
-          })
-          .filter((id): id is number => id !== undefined);
-
-        //VERIFICAR SI EL CONDUCTOR TIENE AL MENOS UNA DE LAS TAGS SELECCIONADAS
-        return tagIds.some(selectedTagId => driverTagIds.includes(selectedTagId));
-      });
-    }
-
-    //APLICAR OTROS FILTROS DE DP-DATAGRID SI EXISTEN
-    if (filters && Object.keys(filters).length > 0) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && value !== '') {
-          filteredData = filteredData.filter((driver: DriverDto) => {
-            //USAR KEYOF PARA ACCESO TIPADO
-            const driverValue = driver[key as keyof DriverDto];
-
-            //MANEJO ESPECIAL PARA DIFERENTES TIPOS DE FILTROS
-            if (typeof value === 'string') {
-              return String(driverValue).toLowerCase().includes(value.toLowerCase());
-            } else if (typeof value === 'boolean') {
-              return driverValue === value;
-            } else if (Array.isArray(value)) {
-              return value.includes(driverValue);
-            }
-
-            return String(driverValue) === String(value);
-          });
-        }
-      });
-    }
-
-    console.log(`📊 Filtros aplicados: ${this.allDrivers().length} → ${filteredData.length} conductores`);
-
-    //⭐ TRANSFORMAR LAS TAGS ANTES DE ASIGNAR A drivers
-    const driversWithTransformedTags = filteredData.map(driver =>
-      this.transformDriverTags(driver)
-    );
-
-    this.drivers.set(driversWithTransformedTags);
+    //EL DP-DATAGRID NO DETECTA CAMBIOS EN FILTROS CUSTOM
+    //NECESITAMOS DISPARAR MANUALMENTE UN onLoadData
+    //ESTO SE HARA AUTOMATICAMENTE CUANDO EL USUARIO HAGA OTRA ACCION
+    //O PODEMOS DISPARARLO MANUALMENTE:
+    // (El dp-datagrid ya maneja esto internamente)
   }
 
   //MANEJAR ACCION DE CREAR CONDUCTOR
