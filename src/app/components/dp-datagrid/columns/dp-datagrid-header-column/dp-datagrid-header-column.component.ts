@@ -2,17 +2,18 @@ import { Component, input, output, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TableColumn } from '../../dp-datagrid.interfaces';
+import { TranslatePipe } from '@i18n/translate.pipe';
 
 @Component({
   selector: 'dp-datagrid-header-column',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, TranslatePipe],
   encapsulation: ViewEncapsulation.None,
   host: {
     'style': 'display: block; min-width: 0; overflow: hidden;'
   },
   template: `
-    <div 
+    <div
       class="dp-datagrid-header-column"
       [class.sortable]="column().sortable"
       [attr.data-color]="column().headerColor"
@@ -24,9 +25,13 @@ import { TableColumn } from '../../dp-datagrid.interfaces';
       [style.font-weight]="column().headerFontWeight"
       [style.font-family]="column().headerFontFamily"
       (click)="onSort()">
-      
-      <span class="header-label" [style.color]="column().headerColor">{{ column().label }}</span>
-      
+
+      @if (column().translate){
+      <span class="header-label" [style.color]="column().headerColor">{{ column().label | translate }}</span>
+      }
+      @else {
+<span class="header-label" [style.color]="column().headerColor">{{ column().label }}</span>
+      }
       @if (column().sortable) {
         <mat-icon class="sort-icon" [style.color]="column().headerColor">
           @if (sortDirection() === 'asc') {
@@ -53,16 +58,16 @@ import { TableColumn } from '../../dp-datagrid.interfaces';
       max-width: 100%;
       transition: filter 0.2s ease;
     }
-    
+
     .dp-datagrid-header-column.sortable {
       cursor: pointer;
       user-select: none;
     }
-    
+
     .dp-datagrid-header-column.sortable:hover {
       filter: brightness(0.9);
     }
-    
+
     .dp-datagrid-header-column .header-label {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -70,7 +75,7 @@ import { TableColumn } from '../../dp-datagrid.interfaces';
       flex: 1;
       min-width: 0;
     }
-    
+
     .dp-datagrid-header-column .sort-icon {
       font-size: 18px !important;
       width: 18px !important;
@@ -86,10 +91,10 @@ export class DpDatagridHeaderColumnComponent {
 
   onSort() {
     if (!this.column().sortable) return;
-    
+
     const currentDirection = this.sortDirection();
     const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
-    
+
     this.sort.emit({
       column: this.column().key,
       direction: newDirection

@@ -28,6 +28,7 @@ export interface TableColumn {
   actionConfig?: ActionConfig;
   imageConfig?: ImageConfig;
   render?: (column: TableColumn, row: any) => string;
+  translate?: boolean;
 }
 
 export interface ChipConfig {
