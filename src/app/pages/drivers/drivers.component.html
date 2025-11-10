@@ -9,16 +9,16 @@
 
     <dp-datagrid-columns>
       <!-- COLUMNA DE IMAGEN -->
-      <dp-datagrid-column key="image" [label]="'drivers.list.image' | translate" type="image" [width]="5">
+      <dp-datagrid-column key="image" [label]="'drivers.list.image'" [translate]="true" type="image" [width]="5">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE NOMBRE Y APELLIDO -->
-      <dp-datagrid-column key="name" [label]="'drivers.list.name' | translate" type="custom" [width]="6"
+      <dp-datagrid-column key="name" [label]="'drivers.list.name'" [translate]="true" type="custom" [width]="6"
         [render]="renderFullName">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE DNI/CIF -->
-      <dp-datagrid-column key="dni" [label]="'drivers.list.dni/cif' | translate" type="custom" [width]="8"
+      <dp-datagrid-column key="dni" [label]="'drivers.list.dni/cif'" [translate]="true" type="custom" [width]="8"
         [render]="renderDniCif">
       </dp-datagrid-column>
 
@@ -27,38 +27,38 @@
       </dp-datagrid-column>
 
       <!-- COLUMNA DE CIUDAD -->
-      <dp-datagrid-column key="city" [label]="'drivers.list.city' | translate" type="text" [width]="10">
+      <dp-datagrid-column key="city" [label]="'drivers.list.city'" [translate]="true" type="text" [width]="10">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE EMAIL -->
-      <dp-datagrid-column key="email" [label]="'drivers.list.email' | translate" type="text" [width]="15">
+      <dp-datagrid-column key="email" [label]="'drivers.list.email'" [translate]="true" type="text" [width]="15">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE TELÉFONO -->
-      <dp-datagrid-column key="phone" [label]="'drivers.list.phone' | translate" type="text" [width]="10">
+      <dp-datagrid-column key="phone" [label]="'drivers.list.phone'" [translate]="true" type="text" [width]="10">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE FECHA DE CREACIÓN -->
-      <dp-datagrid-column key="created_datetime" [label]="'drivers.list.created_datetime' | translate" type="custom"
+      <dp-datagrid-column key="created_datetime" [label]="'drivers.list.created_datetime'" [translate]="true" type="custom"
         [width]="6" [render]="renderDate">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE TAGS -->
-      <dp-datagrid-column key="tags" [label]="'drivers.list.tags' | translate" type="chip-array" [width]="11">
+      <dp-datagrid-column key="tags" [label]="'drivers.list.tags'" [translate]="true" type="chip-array" [width]="11">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE VALIDADO -->
-      <dp-datagrid-column key="validated" [label]="'drivers.list.validated' | translate" type="custom" [width]="9"
+      <dp-datagrid-column key="validated" [label]="'drivers.list.validated'" [translate]="true" type="custom" [width]="9"
         [render]="renderValidated">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE ESTADO -->
-      <dp-datagrid-column key="is_active" [label]="'drivers.list.is_active' | translate" type="custom" [width]="8"
+      <dp-datagrid-column key="is_active" [label]="'drivers.list.is_active'" [translate]="true" type="custom" [width]="8"
         [render]="renderStatus">
       </dp-datagrid-column>
 
       <!-- COLUMNA DE ACCIONES -->
-      <dp-datagrid-column key="actions" [label]="'drivers.list.actions' | translate" type="actions" [width]="10"
+      <dp-datagrid-column key="actions" [label]="'drivers.list.actions'" [translate]="true" type="actions" [width]="10"
         [actionConfig]="actionsConfig">
       </dp-datagrid-column>
     </dp-datagrid-columns>

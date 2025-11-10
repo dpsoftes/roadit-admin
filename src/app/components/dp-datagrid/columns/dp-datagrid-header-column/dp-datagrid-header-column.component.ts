@@ -30,7 +30,7 @@ import { TranslatePipe } from '@i18n/translate.pipe';
       <span class="header-label" [style.color]="column().headerColor">{{ column().label | translate }}</span>
       }
       @else {
-<span class="header-label" [style.color]="column().headerColor">{{ column().label }}</span>
+        <span class="header-label" [style.color]="column().headerColor">{{ column().label }}</span>
       }
       @if (column().sortable) {
         <mat-icon class="sort-icon" [style.color]="column().headerColor">

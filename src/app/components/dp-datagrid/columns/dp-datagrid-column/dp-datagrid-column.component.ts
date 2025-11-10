@@ -51,6 +51,7 @@ export class DpDatagridColumnComponent {
       chipConfig: this.chipConfig(),
       actionConfig: this.actionConfig(),
       imageConfig: this.imageConfig(),
+      translate: this.translate(),
       render: this.render(),
     };
   }
