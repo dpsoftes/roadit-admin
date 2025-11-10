@@ -137,8 +137,8 @@ export class DriversComponent implements OnInit {
   actionsConfig: ActionConfig = {
     actions: [
       {
-        action: 'view',
-        icon: 'visibility',
+        action: 'Edit',
+        icon: 'edit',
         label: 'Ver',
         color: 'primary',
         condition: (row: DriverDisplayData) => true,
