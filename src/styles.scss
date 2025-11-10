@@ -8,9 +8,9 @@
 
 
 // 3. Material Design Theme (using our custom colors)
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@use '@angular/material/prebuilt-themes/indigo-pink.css';
 
-@import 'styles/form-controls';
+@use 'styles/form-controls';
 
 // Override Angular Material theme CSS custom properties
 :root {

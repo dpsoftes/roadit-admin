@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, ViewEncapsulation, input, output, inject, OnInit, computed } from '@angular/core';
+import { Component, signal, ViewEncapsulation, input, output, inject, OnInit, computed, effect } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -47,6 +47,7 @@ export class GeneralTabComponent  implements OnInit{
   clientsTypeArray = Object.entries(clientTypeDescriptions).map(([key, value]) => ({ key, value }));
   originsArray = Object.entries(clientOriginDescriptions).map(([key, value]) => ({ key, value }));
   groups = this.global.groups;
+  
   clients = signal<SimpleDataDto[]>([]);
   clientGroups = input<any[]>([]);
   managersInput = input<any[]>([]);
@@ -62,6 +63,15 @@ export class GeneralTabComponent  implements OnInit{
   formDataChange = output<any>();
 
   parseInt = parseInt;
+
+
+  constructor() { 
+    effect(() => {
+      this.client = ClientsGralEntity.fromDto(this.store.client());
+    });
+
+  }
+
 
   ngOnInit(): void {
    this.loadClientsByGroup();
