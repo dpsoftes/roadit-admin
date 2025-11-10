@@ -1,6 +1,7 @@
-import { Component, input, output, computed, ViewChild } from '@angular/core';
+import { Component, input, output, computed, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterConfig, FilterOption } from '../../dp-datagrid.interfaces';
+import { I18nService } from 'src/app/core/i18n/i18n.service';
 import {
   TextFilterComponent,
   SelectFilterComponent,
@@ -29,7 +30,7 @@ import {
     CheckboxFilterComponent,
     ChipSelectFilterComponent,
     ChipsFilterComponent,
-    ChipArrayFilterComponent
+    ChipArrayFilterComponent,
   ],
   template: `
     <div class="dp-datagrid-filter">
@@ -117,6 +118,7 @@ import {
   `]
 })
 export class DpDatagridFilterComponent {
+  private i18n = inject(I18nService);
   // Inputs individuales (enfoque declarativo)
   key = input.required<string>();
   label = input.required<string>();
@@ -124,7 +126,7 @@ export class DpDatagridFilterComponent {
   options = input<FilterOption[]>([]);
   multiple = input<boolean>(false);
   width = input<number>();
-  emptyOption = input<string>('Seleccione...');
+  emptyOption = input<string>('common.selectPlaceholder');
   value = input<any>(null); // Nuevo input para el valor del filtro
 
   // Output
@@ -140,6 +142,10 @@ export class DpDatagridFilterComponent {
   @ViewChild(ChipsFilterComponent) chipsFilter?: ChipsFilterComponent;
   @ViewChild(ChipArrayFilterComponent) chipArrayFilter?: ChipArrayFilterComponent;
 
+  emptyOptionTranslated = computed(() => {
+    return this.i18n.translate(this.emptyOption());
+  });
+
   // Computed config para pasar a los componentes atómicos
   filterConfig = computed<FilterConfig>(() => ({
     key: this.key(),
@@ -148,7 +154,7 @@ export class DpDatagridFilterComponent {
     options: this.options(),
     multiple: this.multiple(),
     width: this.width(),
-    emptyOption: this.emptyOption()
+    emptyOption: this.emptyOptionTranslated()
   }));
 
   // Alias para mantener compatibilidad con el componente principal
@@ -160,10 +166,10 @@ export class DpDatagridFilterComponent {
    */
   setValue(newValue: any): void {
     console.log(`  → DpDatagridFilterComponent.setValue("${this.key()}")`, newValue);
-    
+
     // Delegar al filtro atómico correspondiente según el tipo
     const filterType = this.type();
-    
+
     switch (filterType) {
       case 'text':
         this.textFilter?.setValue(newValue);

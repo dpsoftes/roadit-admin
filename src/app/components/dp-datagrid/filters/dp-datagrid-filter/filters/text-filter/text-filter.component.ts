@@ -2,6 +2,7 @@ import { Component, signal, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterBase } from '../../shared/filter-base';
+import { TranslatePipe } from '@i18n/translate.pipe';
 
 /**
  * COMPONENTE ATOMICO PARA FILTRO DE TEXTO
@@ -11,7 +12,7 @@ import { FilterBase } from '../../shared/filter-base';
 @Component({
   selector: 'dp-text-filter',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   template: `
     <div class="filter-field" [style.width]="getWidth()">
       <!-- LABEL OPCIONAL -->
@@ -41,7 +42,7 @@ import { FilterBase } from '../../shared/filter-base';
           class="filter-input"
           [class.with-icon-left]="iconLeft()"
           [class.with-icon-right]="iconRight()"
-          placeholder="Escriba aquí..."
+          [placeholder]="'common.textPlaceholder' | translate"
           [(ngModel)]="value"
           (ngModelChange)="onValueChange($event)">
 

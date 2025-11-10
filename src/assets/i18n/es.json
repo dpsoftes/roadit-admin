@@ -7,7 +7,9 @@
     "forgot_password": "¿Olvidaste contraseña?",
     "loading": "Cargando...",
     "filters": "FILTROS",
-    "exportable": "EXPORTAR CSV"
+    "exportable": "EXPORTAR CSV",
+    "textPlaceholder": "Escriba aquí...",
+    "selectPlaceholder": "Seleccione..."
   },
   "paginator": {
     "itemsPerPageLabel": "Elementos por página:",
@@ -400,7 +402,7 @@
       "publish-transport": "Publicar transporte",
       "cancel-transport": "Cancelar transporte",
       "save": "Guardar",
-      "address-search-placeholder": "Escriba aqui...",
+      "address-search-placeholder": "Escriba aquí...",
       "add-new-address": "AÑADIR NUEVA DIRECCION",
       "pickup-address-hint": "Escribe manualmente o busca en tus favoritos",
       "name": "Nombre",
@@ -913,8 +915,8 @@
       "phone_filter": "Teléfono",
       "city_filter": "Ciudad",
       "province_filter": "Provincia",
-      "expiredDocuments_filter": "Documentos Caducados",
-      "newDocuments_filter": "Documentos Nuevos"
+      "expiredDocuments_filter": "Conductores con documentos expirados",
+      "newDocuments_filter": "Conductores con nuevos documentos aportados"
     },
     "generalData": {
       "uploadPhoto": "Subir foto",

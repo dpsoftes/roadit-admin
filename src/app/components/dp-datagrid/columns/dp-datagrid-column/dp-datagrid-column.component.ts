@@ -25,6 +25,7 @@ export class DpDatagridColumnComponent {
   actionConfig = input<TableColumn['actionConfig']>();
   imageConfig = input<TableColumn['imageConfig']>();
   render = input<TableColumn['render']>();
+  translate = input<boolean>(false);
 
   // Outputs - Eventos de columna
   onRender = output<ColumnRenderEvent>();
