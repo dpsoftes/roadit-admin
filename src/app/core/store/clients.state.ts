@@ -201,6 +201,10 @@ export const ClientStore = signalStore(
             }
 
             let {id, ...billing} = store.currentBillingAccount();
+            let isNew = false;
+            if(Helpers.isEmptyOrZero(id)){
+              isNew = true;
+            }
             billing.client = store.client().id!;
             delete(billing.deleted_date);
             billing.state = true;
@@ -211,7 +215,11 @@ export const ClientStore = signalStore(
             }
              result = await prov.updateBilling(billing, id);
             if(result){
-              store.updateState({ currentBillingAccount: result, errors: [] });
+              var newState: Partial<ClientsState> = { currentBillingAccount: result, errors: [] };
+              if(isNew){
+                newState = { ...newState, billingsAccounts: [...store.billingsAccounts(), BillingAccountItemDto.fromJson(result)] };
+              }
+              store.updateState(newState);
               return result;
             }
             return null;

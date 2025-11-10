@@ -224,10 +224,12 @@ export class ApiService {
         url = this.buildFullUrl(url);
         if (fileParams || formParams) {
             const formData = new FormData();
-            if (formParams) {
+            this.objectToFormData(formParams, formData);
+/*             if (formParams) {
                 Object.entries(formParams).forEach(([key, value]) => formData.append(key, value));
             }
-            if (fileParams) {
+ */ 
+           if (fileParams) {
                 Object.entries(fileParams).forEach(([key, file]) => formData.append(key, file));
             }
             requestBody = formData;
@@ -253,5 +255,72 @@ export class ApiService {
             }
         });
         return { url: newUrl, remainingQueryParams };
+    }
+
+        /**
+     * Convierte un objeto JavaScript complejo (con anidamiento, arrays y archivos)
+     * en un objeto FormData, utilizando recursividad para aplanar la estructura.
+     *
+     * @param obj El objeto JavaScript a convertir.
+     * @param [form] Objeto FormData existente (opcional).
+     * @param [namespace] Clave base para la recursividad (opcional), usada para construir la notación de corchetes.
+     * @returns El objeto FormData poblado.
+     */
+    objectToFormData(
+    obj: any,
+    form?: FormData,
+    namespace?: string
+    ): FormData {
+    const fd = form || new FormData();
+    let formKey: string;
+
+    for (const property in obj) {
+        // 1. Control de Propiedades
+        // Ignorar propiedades heredadas, nulas o indefinidas.
+        if (!Object.prototype.hasOwnProperty.call(obj, property) || obj[property] === undefined || obj[property] === null) {
+        continue;
+        }
+
+        const value = obj[property];
+
+        // 2. Construcción de la Clave
+        // Usa notación de corchetes para anidamiento (Ej: 'config[activo]').
+        if (namespace) {
+        formKey = namespace + '[' + property + ']';
+        } else {
+        formKey = property;
+        }
+
+        // 3. Caso Base: Primitivos y Archivos
+        if (value instanceof File || value instanceof Blob || typeof value !== 'object') {
+        // Caso de archivo (File/Blob) o valor primitivo (string, number, boolean)
+        // Se hace append directo con la clave construida (incluyendo anidamiento si existe).
+        fd.append(formKey, value);
+
+        } 
+        // 4. Caso Recursivo: Array
+        else if (Array.isArray(value)) {
+        value.forEach((element: any, index: number) => {
+            
+            // Si el elemento del array es un objeto anidado (Ej: un array de productos)
+            if (typeof element === 'object' && element !== null && !(element instanceof File) && !(element instanceof Blob)) {
+                // Usa el índice en la clave para la recursión (Ej: 'detalles[0][id]')
+                this.objectToFormData(element, fd, `${formKey}[${index}]`);
+            } else {
+                // Si el array contiene primitivos (Ej: un array de etiquetas ['a', 'b'])
+                // Se usa '[]' al final para que el backend lo agrupe. (Ej: 'etiquetas[]')
+                fd.append(`${formKey}[]`, element);
+            }
+        });
+        }
+        // 5. Caso Recursivo: Objeto Anidado
+        else if (typeof value === 'object' && !(value instanceof File) && !(value instanceof Blob)) {
+        // Llamada recursiva usando la clave actual como nuevo namespace
+        // (Ej: 'config' se convierte en el namespace para los campos dentro de 'config')
+        this.objectToFormData(value, fd, formKey);
+        }
+    }
+
+    return fd;
     }
 }
