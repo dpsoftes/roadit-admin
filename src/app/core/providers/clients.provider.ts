@@ -8,6 +8,9 @@ import { DocumentsClientsDto } from '@dtos/clients/documents.dto';
 import { BillingAccountItemDto, ClientBillingAccountDto } from '@dtos/clients/billingsAccounts.dto';
 import { PriceRulesClientDto } from '@dtos/clients/priceRules.dtos';
 import { ClientCertification } from '@dtos/clients/clientsCertifications.dto';
+import { Helpers } from '@utils/helpers';
+import { ErrorBase } from '@dtos/errors.dtos';
+import { TransportPrincipalType } from '@enums/client.enum';
 
 @Injectable({ providedIn: 'root' })
 export class ClientsProvider {
@@ -169,6 +172,31 @@ export class ClientsProvider {
             return null;
         }
     }      
-    
+    async updatePriceRules(data: Partial<PriceRulesClientDto>): Promise<PriceRulesClientDto | ErrorBase> {
+        try {
+
+            var options: ApiRequestOptions = { url: EndPoints.createPriceRule.replace("{scope}", "client"), body: data };
+            let result: PriceRulesClientDto; 
+            if (!Helpers.isEmptyOrZero(data.id)) {
+                options.url = EndPoints.updatePriceRule.replace("{scope}", "client").replace("{ruleId}", data.id!.toString());
+                result = await this.api.patch<PriceRulesClientDto>(options );
+            }else{
+                result = await this.api.post<PriceRulesClientDto>(options );
+            }
+            return result;
+        } catch (error:any) {
+            console.error('Error al obtener admins:', error);
+            return new ErrorBase(error, 500);
+        }
+    }
+     async getProtocolsTemplates(type: TransportPrincipalType): Promise<ClientDto | null> {
+        try {
+            return await this.api.get<ClientDto>({ url: EndPoints.getProtocols, queryParams: { transport_principal_type: type, is_template: true } });
+        } catch (error) {
+            console.error('Error al obtener admins:', error);
+            return null;
+        }
+    }
+         
 
 }

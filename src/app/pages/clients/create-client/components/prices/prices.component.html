@@ -1,7 +1,6 @@
 <mat-card>
     <mat-card-content>
         <h1>{{'clients.create-client.fuel' | translate}}</h1>
-        <form class="form" (ngSubmit)="onSave()">
             <div class="form-field twenty_field">
                 <mat-checkbox [checked]="curPrices.is_fuel_included()" (change)="curPrices.is_fuel_included.set($event.checked)">
                     {{'clients.create-client.included-fuel' | translate}}
@@ -32,7 +31,7 @@
             <h1>{{'clients.create-client.ev' | translate}}</h1>
             <div class="form-field forty_field">
                 <label class="field-label">{{'clients.create-client.ev-client-price' | translate}}</label>
-                <mat-form-field appearance="outline" class="field-input">
+                <mat-form-field apprearance="outline" class="field-input">
                     <input type="number" matInput [value]="curPrices.client_charging_price()" (input)="curPrices.client_charging_price.set(+$event.target.value)">
                 </mat-form-field>
             </div>
@@ -57,6 +56,7 @@
                     <input type="number" matInput [value]="curPrices.stage_discount_percentage()" (input)="curPrices.stage_discount_percentage.set(+$event.target.value)">
                 </mat-form-field>
             </div>
+            <app-buttons type="save-changes-noform" text="clients.create-client.save-price" (onClick)="onPrice()"></app-buttons>
 
             <mat-divider></mat-divider>
             <h1>{{'clients.create-client.km-bands' | translate}}</h1>
@@ -103,8 +103,7 @@
                     <input type="number" matInput [value]="curBracket.big_vehicle_price()" (input)="curBracket.big_vehicle_price.set(+$event.target.value)">
                 </mat-form-field>
             </div>
-        </form>
-        <app-buttons type="save-changes" text="clients.create-client.validate-add" (onClick)="onSave()"></app-buttons>
+        <app-buttons [disabled]="!canSave()" type="add" text="clients.create-client.validate-add" (onClick)="onSave()"></app-buttons>
     </mat-card-content>
 </mat-card>
 <app-dynamic-table [config]="pricesTableConfig"></app-dynamic-table>

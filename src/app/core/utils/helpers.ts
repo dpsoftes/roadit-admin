@@ -479,4 +479,58 @@ export class Helpers {
       isStaging: this.isStaging()
     };
   }
+
+  /**
+   * Verificar que los rangos de un array no se superpongan
+   * Los objetos deben tener exactamente 2 propiedades: la primera es el inicio, la segunda el fin
+   * @param ranges Array de objetos con dos propiedades (inicio y fin)
+   * @returns true si no hay superposiciones, false si hay alguna superposición
+   * @example
+   * Helpers.checkNoRangeOverlap([{init: 4, end: 8}, {init: 9, end: 10}]) // true
+   * Helpers.checkNoRangeOverlap([{init: 4, end: 8}, {init: 7, end: 10}]) // false
+   * Helpers.checkNoRangeOverlap([{start: 4, finish: 8}, {start: 9, finish: 10}]) // true
+   */
+  static checkNoRangeOverlap<T extends Record<string, any>>(ranges: T[]): boolean {
+    // Si el array está vacío o tiene un solo elemento, no hay superposiciones
+    if (ranges.length <= 1) return true;
+
+    // Obtener las propiedades del primer objeto
+    const keys = Object.keys(ranges[0]);
+    if (keys.length !== 2) {
+      console.error('Los objetos deben tener exactamente 2 propiedades');
+      return false;
+    }
+
+    const [initKey, endKey] = keys;
+
+    // Validar que todos los objetos tengan las mismas propiedades y valores válidos
+    for (const range of ranges) {
+      const rangeKeys = Object.keys(range);
+      if (rangeKeys.length !== 2 || rangeKeys[0] !== initKey || rangeKeys[1] !== endKey) {
+        console.error('Todos los objetos deben tener las mismas propiedades en el mismo orden');
+        return false;
+      }
+      // Validar que init <= end
+      if (range[initKey] > range[endKey]) {
+        console.error(`Rango inválido (inicio > fin):`, range);
+        return false;
+      }
+    }
+
+    // Ordenar los rangos por el valor de inicio
+    const sortedRanges = [...ranges].sort((a, b) => a[initKey] - b[initKey]);
+
+    // Comparar cada rango con el siguiente
+    for (let i = 0; i < sortedRanges.length - 1; i++) {
+      const current = sortedRanges[i];
+      const next = sortedRanges[i + 1];
+
+      // Hay superposición si el fin del rango actual es >= al inicio del siguiente
+      if (current[endKey] >= next[initKey]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }

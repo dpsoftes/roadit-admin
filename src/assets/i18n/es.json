@@ -217,6 +217,7 @@
       "price-vu-gt-12": "Precio VU > 12m3",
       "distance-interval": "Intervalo de distancia",
       "validate-add": "Validar y añadir",
+      "save-price": "Guardar datos de precios",
       "doc-type": "Tipo de documento",
       "cert_list": "Lista de certificados",
       "certs-created": "Lista de certificaciones creadas",
@@ -987,5 +988,8 @@
     "REPAIR_SHOP": "Taller",
     "VEHICLE_YARD": "Campamento de vehículos",
     "WAREHOUSE": "Almacén"
+  },
+  "confirmMessages":{
+    "RengeKm": "¿Estás seguro de que deseas eliminar este tramo de distancia?"
   }
 }

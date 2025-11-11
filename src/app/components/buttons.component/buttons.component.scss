@@ -125,3 +125,10 @@
       margin-right: 6px;
   }
 }
+
+// Clase para atenuar botones deshabilitados
+button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

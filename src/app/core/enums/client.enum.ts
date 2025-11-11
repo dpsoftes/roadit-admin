@@ -52,3 +52,19 @@ export const clientOriginDescriptions: Record<ClientOrigin, string> = {
     [ClientOrigin.UNDEFINED]: 'clientOrigin.UNDEFINED',
     [ClientOrigin.EVENT]: 'clientOrigin.EVENT'
 };
+
+export enum TransportPrincipalType {
+    SIMPLE_MOVEMENT = 'SIMPLE_MOVEMENT',
+    PICKUP_TO_FINAL_CUSTOMER = 'PICKUP_TO_FINAL_CUSTOMER',
+    DELIVERY_TO_FINAL_CUSTOMER = 'DELIVERY_TO_FINAL_CUSTOMER',
+    PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER = 'PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER',
+    WITH_STOPOVER = 'WITH_STOPOVER'
+}
+
+export const transportPrincipalTypeDescriptions: Record<TransportPrincipalType, string> = {
+    [TransportPrincipalType.SIMPLE_MOVEMENT]: 'clients.create-client.simple-movement',
+    [TransportPrincipalType.PICKUP_TO_FINAL_CUSTOMER]: 'clients.create-client.pickup-to-final-customer',
+    [TransportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER]: 'clients.create-client.delivery-to-final-customer',
+    [TransportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER]: 'clients.create-client.pickup-and-delivery-to-final-customer',
+    [TransportPrincipalType.WITH_STOPOVER]: 'clients.create-client.with-stopover'
+};

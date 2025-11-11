@@ -3,13 +3,12 @@
         <h2>{{'clients.create-client.certs-created' | translate}}</h2>
         <mat-label>{{'clients.create-client.intern-movement-type' | translate}}</mat-label>
         <mat-form-field appearance="outline">
-            <mat-select>
-                <mat-option value="SIMPLE_MOVEMENT">{{'clients.create-client.simple-movement' | translate}}</mat-option>
-                <mat-option value="PICKUP_TO_FINAL_CUSTOMER">{{'clients.create-client.pickup-to-final-customer' | translate}}</mat-option>
-                <mat-option value="DELIVERY_TO_FINAL_CUSTOMER">{{'clients.create-client.delivery-to-final-customer' | translate}}</mat-option>
-                <mat-option value="PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER">{{'clients.create-client.pickup-and-delivery-to-final-customer' | translate}}</mat-option>
-                <mat-option value="WITH_STOPOVER">{{'clients.create-client.with-stopover' | translate}}</mat-option>
+            <mat-select [value]="currentType()" (selectionChange)="currentType.set($event.value)">
+                @for(transportType of transportPrincipalTypes; track transportType.key) {
+                    <mat-option [value]="transportType.key">{{'transportPrincipalType.' + transportType.key | translate}}</mat-option>
+                }
             </mat-select>
+
         </mat-form-field>
         <app-dynamic-table [config]="protocolTableConfig"></app-dynamic-table>
     </mat-card>

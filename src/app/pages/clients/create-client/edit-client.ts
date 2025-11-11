@@ -52,7 +52,7 @@ export class EditClient  implements OnInit{
     if(this.clientStore.client().id){
       return this.tabs();
     }
-    return ['general', 'protocol', 'slogans', 'documents', 'extra-contact', 'billing', 'prices', 'certs', 'additional-services'];
+    return ['general'];
    });
 
 

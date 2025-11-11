@@ -4,6 +4,7 @@ import { BillingAccountItemDto, ClientBillingAccountDto } from "@dtos/clients/bi
 import { ClientCertification } from "@dtos/clients/clientsCertifications.dto";
 import { DocumentsClientsDto } from "@dtos/clients/documents.dto";
 import { PriceRulesClientDto } from "@dtos/clients/priceRules.dtos";
+import { ErrorBase } from "@dtos/errors.dtos";
 import { ClientDto } from "@dtos/index";
 import { ClientBillingAccountEntity, DocumentTemplateTransportEntity } from "@entities/clients.entities";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
@@ -228,6 +229,20 @@ export const ClientStore = signalStore(
             throw error;
           }
         },
+        updatePrices: async (price: PriceRulesClientDto) => {
+          try {
+            if(Helpers.isEmptyOrZero(price.client))  price.client = store.client().id!;
+            const result = await prov.updatePriceRules(price);
+            if(result && !(result instanceof ErrorBase)) {
+              store.updateState({ priceRules: result });
+              return result;
+            }
+
+            return result;
+          } catch (error) {
+            return error;
+          }
+        }
         
       }
     }

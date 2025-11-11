@@ -217,6 +217,7 @@
       "price-vu-gt-12": "Price VU > 12m3",
       "distance-interval": "Distance interval",
       "validate-add": "Validate and add",
+      "save-price": "Save price data",
       "doc-type": "Document type",
       "cert_list": "Cert list",
       "certs-created": "Certs created list",
@@ -981,5 +982,8 @@
       "delete_success": "Driver deleted successfully",
       "delete_error": "Error deleting driver"
     }
+  },
+  "confirmMessages":{
+    "RengeKm": "Are you sure you want to delete this distance range?"
   }
 }

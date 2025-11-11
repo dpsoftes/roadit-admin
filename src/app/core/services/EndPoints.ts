@@ -180,7 +180,10 @@ export enum EndPoints {
     getClientCertifications = "/certifications/client-certifications/",
     updateClientCertification = "/certifications/client-certifications/{certificationId}/", // PATCH UpdateCertificationRequestDto -> Certification
     
-
+    // ======================
+    // PROTOCOLOS
+    // ======================
+    getProtocols = "/protocols/", // GET -> PaginatedResponse<Protocol>
 
     // ======================
     // DOCUMENTOS DE CONDUCTOR
