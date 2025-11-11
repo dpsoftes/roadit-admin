@@ -127,7 +127,7 @@ export enum EndPoints {
     // Reglas por scope (client/transport)
     getPriceRules = "/price-rules/{scope}/", // GET scope=client|transport -> PaginatedResponse<PriceRuleSet>
     createPriceRule = "/price-rules/{scope}/", // POST scope=client|transport CreatePriceRuleSetRequestDto -> PriceRuleSet
-    getPriceRule = "/price-rules/{scope}/", // GET scope=client|transport -> PriceRuleSet
+    getPriceRule = "/price-rules/{scope}/{clientId}", // GET scope=client|transport -> PriceRuleSet
     updatePriceRule = "/price-rules/{scope}/{ruleId}/", // PATCH scope=client|transport UpdatePriceRuleSetRequestDto -> PriceRuleSet
     deletePriceRule = "/price-rules/{scope}/{ruleId}/", // DELETE scope=client|transport -> ApiResponse
 

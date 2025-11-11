@@ -511,11 +511,9 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
 
 export class DistanceBracketRuleEntity {
     big_vehicle_price = signal<number | null | undefined>(undefined);
-    created_date = signal<Date | null | undefined>(undefined);
     id = signal<number | undefined>(undefined);
     max_km = signal<number>(0);
     min_km = signal<number | undefined>(undefined);
-    modified_date = signal<Date | null | undefined>(undefined);
     pricing_type = signal<PricingType | undefined>(undefined);
     small_vehicle_price = signal<number | null | undefined>(undefined);
     standard_price = signal<number>(0);
@@ -523,11 +521,9 @@ export class DistanceBracketRuleEntity {
     static fromDto(dto: DistanceBracketRule): DistanceBracketRuleEntity {
         const entity = new DistanceBracketRuleEntity();
         entity.big_vehicle_price.set(dto.big_vehicle_price);
-        entity.created_date.set(dto.created_date);
         entity.id.set(dto.id);
         entity.max_km.set(dto.max_km ?? 0);
         entity.min_km.set(dto.min_km);
-        entity.modified_date.set(dto.modified_date);
         entity.pricing_type.set(dto.pricing_type);
         entity.small_vehicle_price.set(dto.small_vehicle_price);
         entity.standard_price.set(dto.standard_price ?? 0);
@@ -537,11 +533,9 @@ export class DistanceBracketRuleEntity {
     toDto(): DistanceBracketRule {
         return {
             big_vehicle_price: this.big_vehicle_price(),
-            created_date: this.created_date(),
             id: this.id(),
             max_km: this.max_km(),
             min_km: this.min_km(),
-            modified_date: this.modified_date(),
             pricing_type: this.pricing_type(),
             small_vehicle_price: this.small_vehicle_price(),
             standard_price: this.standard_price(),
@@ -550,11 +544,9 @@ export class DistanceBracketRuleEntity {
 
     copyFromDto(dto: Partial<DistanceBracketRule>): void {
         if (dto.big_vehicle_price != undefined) this.big_vehicle_price.set(dto.big_vehicle_price);
-        if (dto.created_date != undefined) this.created_date.set(dto.created_date);
         if (dto.id != undefined) this.id.set(dto.id);
         if (dto.max_km != undefined) this.max_km.set(dto.max_km);
         if (dto.min_km != undefined) this.min_km.set(dto.min_km);
-        if (dto.modified_date != undefined) this.modified_date.set(dto.modified_date);
         if (dto.pricing_type != undefined) this.pricing_type.set(dto.pricing_type);
         if (dto.small_vehicle_price != undefined) this.small_vehicle_price.set(dto.small_vehicle_price);
         if (dto.standard_price != undefined) this.standard_price.set(dto.standard_price);
@@ -564,11 +556,9 @@ export class DistanceBracketRuleEntity {
         const defaults = new DistanceBracketRuleEntity();
         const patch: Partial<T> = {};
         if (this.big_vehicle_price() !== defaults.big_vehicle_price()) (patch as any).big_vehicle_price = this.big_vehicle_price();
-        if (this.created_date() !== defaults.created_date()) (patch as any).created_date = this.created_date();
         if (this.id() !== defaults.id()) (patch as any).id = this.id();
         if (this.max_km() !== defaults.max_km()) (patch as any).max_km = this.max_km();
         if (this.min_km() !== defaults.min_km()) (patch as any).min_km = this.min_km();
-        if (this.modified_date() !== defaults.modified_date()) (patch as any).modified_date = this.modified_date();
         if (this.pricing_type() !== defaults.pricing_type()) (patch as any).pricing_type = this.pricing_type();
         if (this.small_vehicle_price() !== defaults.small_vehicle_price()) (patch as any).small_vehicle_price = this.small_vehicle_price();
         if (this.standard_price() !== defaults.standard_price()) (patch as any).standard_price = this.standard_price();
@@ -576,12 +566,11 @@ export class DistanceBracketRuleEntity {
     }
 }
 
-export class PriceRulesRetrieveRequestEntity {
+export class PriceRulesEntity {
     charging_requires_ticket = signal<boolean | undefined>(undefined);
     client = signal<number | null | undefined>(undefined);
     client_charging_price = signal<number | undefined>(undefined);
     client_fuel_price = signal<number | undefined>(undefined);
-    created_date = signal<Date | null | undefined>(undefined);
     distance_brackets = signal<DistanceBracketRuleEntity[]>([]);
     driver_charging_price = signal<number | undefined>(undefined);
     driver_fuel_price = signal<number | undefined>(undefined);
@@ -589,17 +578,15 @@ export class PriceRulesRetrieveRequestEntity {
     ferry_fixed_cost = signal<number | undefined>(undefined);
     id = signal<number | undefined>(undefined);
     is_fuel_included = signal<boolean | undefined>(undefined);
-    modified_date = signal<Date | null | undefined>(undefined);
     stage_discount_percentage = signal<number | undefined>(undefined);
     transport = signal<number | null | undefined>(undefined);
 
-    static fromDto(dto: PriceRulesClientDto): PriceRulesRetrieveRequestEntity {
-        const entity = new PriceRulesRetrieveRequestEntity();
+    static fromDto(dto: PriceRulesClientDto): PriceRulesEntity {
+        const entity = new PriceRulesEntity();
         entity.charging_requires_ticket.set(dto.charging_requires_ticket);
         entity.client.set(dto.client);
         entity.client_charging_price.set(dto.client_charging_price);
         entity.client_fuel_price.set(dto.client_fuel_price);
-        entity.created_date.set(dto.created_date);
         entity.distance_brackets.set((dto.distance_brackets || []).map(d => DistanceBracketRuleEntity.fromDto(d)));
         entity.driver_charging_price.set(dto.driver_charging_price);
         entity.driver_fuel_price.set(dto.driver_fuel_price);
@@ -607,7 +594,6 @@ export class PriceRulesRetrieveRequestEntity {
         entity.ferry_fixed_cost.set(dto.ferry_fixed_cost);
         entity.id.set(dto.id);
         entity.is_fuel_included.set(dto.is_fuel_included);
-        entity.modified_date.set(dto.modified_date);
         entity.stage_discount_percentage.set(dto.stage_discount_percentage);
         entity.transport.set(dto.transport);
         return entity;
@@ -619,7 +605,6 @@ export class PriceRulesRetrieveRequestEntity {
             client: this.client(),
             client_charging_price: this.client_charging_price(),
             client_fuel_price: this.client_fuel_price(),
-            created_date: this.created_date(),
             distance_brackets: this.distance_brackets().map(d => d.toDto()),
             driver_charging_price: this.driver_charging_price(),
             driver_fuel_price: this.driver_fuel_price(),
@@ -627,7 +612,6 @@ export class PriceRulesRetrieveRequestEntity {
             ferry_fixed_cost: this.ferry_fixed_cost(),
             id: this.id(),
             is_fuel_included: this.is_fuel_included(),
-            modified_date: this.modified_date(),
             stage_discount_percentage: this.stage_discount_percentage(),
             transport: this.transport(),
         };
@@ -638,7 +622,6 @@ export class PriceRulesRetrieveRequestEntity {
         if (dto.client != undefined) this.client.set(dto.client);
         if (dto.client_charging_price != undefined) this.client_charging_price.set(dto.client_charging_price);
         if (dto.client_fuel_price != undefined) this.client_fuel_price.set(dto.client_fuel_price);
-        if (dto.created_date != undefined) this.created_date.set(dto.created_date);
         if (dto.distance_brackets != undefined) this.distance_brackets.set(dto.distance_brackets.map(d => DistanceBracketRuleEntity.fromDto(d)));
         if (dto.driver_charging_price != undefined) this.driver_charging_price.set(dto.driver_charging_price);
         if (dto.driver_fuel_price != undefined) this.driver_fuel_price.set(dto.driver_fuel_price);
@@ -646,19 +629,17 @@ export class PriceRulesRetrieveRequestEntity {
         if (dto.ferry_fixed_cost != undefined) this.ferry_fixed_cost.set(dto.ferry_fixed_cost);
         if (dto.id != undefined) this.id.set(dto.id);
         if (dto.is_fuel_included != undefined) this.is_fuel_included.set(dto.is_fuel_included);
-        if (dto.modified_date != undefined) this.modified_date.set(dto.modified_date);
         if (dto.stage_discount_percentage != undefined) this.stage_discount_percentage.set(dto.stage_discount_percentage);
         if (dto.transport != undefined) this.transport.set(dto.transport);
     }
 
     toPatch<T>(): Partial<T> {
-        const defaults = new PriceRulesRetrieveRequestEntity();
+        const defaults = new PriceRulesEntity();
         const patch: Partial<T> = {};
         if (this.charging_requires_ticket() !== defaults.charging_requires_ticket()) (patch as any).charging_requires_ticket = this.charging_requires_ticket();
         if (this.client() !== defaults.client()) (patch as any).client = this.client();
         if (this.client_charging_price() !== defaults.client_charging_price()) (patch as any).client_charging_price = this.client_charging_price();
         if (this.client_fuel_price() !== defaults.client_fuel_price()) (patch as any).client_fuel_price = this.client_fuel_price();
-        if (this.created_date() !== defaults.created_date()) (patch as any).created_date = this.created_date();
         if (JSON.stringify(this.distance_brackets()) !== JSON.stringify(defaults.distance_brackets())) (patch as any).distance_brackets = this.distance_brackets().map(d => d.toDto());
         if (this.driver_charging_price() !== defaults.driver_charging_price()) (patch as any).driver_charging_price = this.driver_charging_price();
         if (this.driver_fuel_price() !== defaults.driver_fuel_price()) (patch as any).driver_fuel_price = this.driver_fuel_price();
@@ -666,7 +647,6 @@ export class PriceRulesRetrieveRequestEntity {
         if (this.ferry_fixed_cost() !== defaults.ferry_fixed_cost()) (patch as any).ferry_fixed_cost = this.ferry_fixed_cost();
         if (this.id() !== defaults.id()) (patch as any).id = this.id();
         if (this.is_fuel_included() !== defaults.is_fuel_included()) (patch as any).is_fuel_included = this.is_fuel_included();
-        if (this.modified_date() !== defaults.modified_date()) (patch as any).modified_date = this.modified_date();
         if (this.stage_discount_percentage() !== defaults.stage_discount_percentage()) (patch as any).stage_discount_percentage = this.stage_discount_percentage();
         if (this.transport() !== defaults.transport()) (patch as any).transport = this.transport();
         return patch;

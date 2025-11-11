@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, input, signal } from '@angular/core';
+import { Component, ViewEncapsulation, effect, inject, input, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,8 @@ import { ButtonsComponent } from '@components/buttons.component/buttons.componen
 import { pricesTableConfig } from './pricesTableConfig';
 import { TableConfig } from '@components/dynamic-table/dynamic-table.interfaces';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
+import { ClientStore } from '@store/clients.state';
+import { DistanceBracketRuleEntity, PriceRulesEntity } from '@entities/clients.entities';
 
 @Component({
   selector: 'app-prices',
@@ -31,6 +33,9 @@ import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.c
   encapsulation: ViewEncapsulation.None
 })
 export class PricesComponent {
+  store = inject(ClientStore);
+  curPrices: PriceRulesEntity = PriceRulesEntity.fromDto(this.store.priceRules());
+  curBracket: DistanceBracketRuleEntity = new DistanceBracketRuleEntity();
   pricesData = input<any | null>(null);
   pricesTableConfig: TableConfig = pricesTableConfig;
 
@@ -58,6 +63,13 @@ export class PricesComponent {
     created_date: new Date().toISOString(),
     modified_date: new Date().toISOString()
   }]);
+
+
+  constructor() {
+    effect(() => {
+      this.curPrices = PriceRulesEntity.fromDto(this.store.priceRules());
+    });
+  }
 
   updateDistanceBracket(field: string, value: any) {
     const currentBrackets = this.distance_brackets();
