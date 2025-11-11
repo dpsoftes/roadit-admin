@@ -1,0 +1,13 @@
+stages:
+  - Desarrollo
+
+Desarrollo:
+  stage: Desarrollo
+  only:
+    - develop
+
+  script:
+    - echo "Cambiando al directorio del proyecto"
+    - cd /home/roadit-admin/admin
+    - echo "Ejecutamos el build"
+    - sudo npx ng build --configuration development --optimization --aot
