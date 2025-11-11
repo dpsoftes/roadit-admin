@@ -1,0 +1,530 @@
+@use '../../../../styles/variables' as vars;
+
+:host {
+  display: block;
+  margin: -1.5rem; 
+}
+
+@media (max-width: 768px) {
+  :host {
+    margin: -1rem; 
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    margin: -0.75rem; 
+  }
+}
+
+.header-container{
+    padding: 16px;
+    background-color: vars.$primary-100;
+    .logo-title{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        img{
+            width: 100px;
+        }
+        h1{
+            font-size: 32px;
+            margin-top: 25px;
+            font-weight: 600;
+            color: vars.$black;
+        }
+    }
+}
+.header-info{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    background-color: vars.$primary-600;
+    color: vars.$white;
+    flex-direction: row;
+    align-items: center;
+    font-size: 26px;
+    gap: 20px;
+    padding: 10px 0;
+    p{
+        font-weight: 600;
+        margin-bottom: 0;
+        color: vars.$white;
+    }
+}
+
+.content-container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    h2{
+        font-size: 28px;
+        font-weight: 600;
+        color: vars.$black;
+    }
+    .stages{
+        position: relative;
+        display: flex;
+        padding: 0px 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 20px;
+        .fixed-address-card{
+            height: 250px;
+        }
+        .pickup{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 40%;
+            .pickup-address-hint{
+                font-size: 12px;
+                color: vars.$gray-700;
+                margin-top: 6px;
+            }
+        }
+        .delivery{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 40%;
+            .title-with-action{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                h2{ margin: 0; }
+            }
+        }
+        .address-display-card {
+            background-color: vars.$white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            
+            mat-card-content {
+                padding: 24px;
+                position: relative;
+                
+                .address-card-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 12px;
+                    
+                    .address-name {
+                        font-size: 24px;
+                        font-weight: 700;
+                        color: vars.$primary-700;
+                        margin: 0;
+                        flex: 1;
+                    }
+                    
+                    .edit-button {
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        padding: 4px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: vars.$primary-700;
+                        transition: color 0.2s;
+                        
+                        &:hover {
+                            color: vars.$primary-900;
+                        }
+                        
+                        mat-icon {
+                            font-size: 20px;
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                }
+                
+                .address-full {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: vars.$primary-700;
+                    margin: 0 0 20px 0;
+                    line-height: 1.5;
+                }
+                
+                .address-contact-section {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    margin-bottom: 16px;
+                    
+                    .contact-icon {
+                        color: vars.$primary-700;
+                        font-size: 20px;
+                        width: 20px;
+                        height: 20px;
+                        margin-top: 4px;
+                    }
+                    
+                    .contact-info {
+                        flex: 1;
+                        
+                        .contact-label {
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: vars.$primary-700;
+                            margin: 0 0 4px 0;
+                        }
+                        
+                        .contact-name {
+                            font-size: 16px;
+                            font-weight: 400;
+                            color: vars.$primary-700;
+                            margin: 0 0 4px 0;
+                        }
+                        
+                        .contact-phone {
+                            font-size: 16px;
+                            font-weight: 400;
+                            color: vars.$primary-700;
+                            margin: 0;
+                        }
+                    }
+                }
+                
+                .address-schedule-section {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    
+                    .schedule-icon {
+                        color: vars.$primary-700;
+                        font-size: 20px;
+                        width: 20px;
+                        height: 20px;
+                        margin-top: 4px;
+                    }
+                    
+                    .schedule-info {
+                        flex: 1;
+                        
+                        .schedule-label {
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: vars.$primary-700;
+                            margin: 0 0 4px 0;
+                        }
+                        
+                        .schedule-time {
+                            font-size: 16px;
+                            font-weight: 400;
+                            color: vars.$primary-700;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+        .swap-at-title{
+            position: absolute;
+            top: 6px; // alineado a la altura aproximada del título de Entrega
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+    }
+    mat-form-field{
+        width: 100%;
+    }
+    .pickup-address-field {
+        cursor: pointer;
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+        }
+    }
+}
+.form-field-label{
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: vars.$gray-700;
+}
+
+// Aspecto de tarjetas similar al mock
+::ng-deep mat-card{
+    border-radius: 16px !important;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08) !important;
+}
+
+.schedule{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 20px;
+    h3{
+        font-size: 18px;
+        font-weight: 700;
+        color: vars.$black;
+        margin: 0 0 10px 0;
+    }
+    .departure, .arrival{
+        width: 48%;
+    }
+    .row{
+        display: grid;
+        grid-template-columns: 1fr 160px 160px;
+        gap: 16px;
+        align-items: end;
+    }
+    .field{
+        mat-form-field{
+            cursor: pointer;
+        }
+    }
+    .helper.error{
+        margin-top: 6px;
+        color: #e53935;
+        font-size: 12px;
+    }
+}
+.vehicles{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .title-with-action{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    .vehicle{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        background-color: vars.$white;
+        border-radius: 20px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        p {
+            margin: 0;
+        }
+        &.active{
+            border-color: vars.$primary-600;
+        }
+        &:hover:not(.active){
+            border-color: vars.$gray-300;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .delete{
+            cursor: pointer;
+            color: vars.$error;
+            &:hover{
+                opacity: 0.8;
+            }
+        }
+        .vehicle-info{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            img{
+                width: 80px;
+                height: 80px;
+            }
+            mat-form-field{
+                width: 100%;
+            }
+            ::ng-deep .mat-mdc-form-field-subscript-wrapper{
+                display: none;
+            }
+            .plate-search-add{
+                width: 100%;
+                margin-left: 90px;
+            }
+        }
+        
+        .name{
+            font-size: 16px;
+            font-weight: 600;
+            color: vars.$black;
+        }
+        .type{
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: vars.$gray-700;
+            mat-icon{
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                color: vars.$gray-700;
+            }
+        }
+    }
+}
+.complementary-services-container{ 
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    .complementary-service-card{
+        width: 33%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        &.disabled{
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        &.active{
+            border-color: vars.$primary-600;
+        }
+        &:hover:not(.disabled):not(.active){
+            border-color: vars.$gray-300;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        mat-card-content{
+            width: 100%;
+        }
+        .complementary-service{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            position: relative;
+            h3{
+                font-size: 20px;
+                font-weight: 600;
+                color: vars.$black;
+                width: 100%;
+                margin: 0;
+            }
+            .price{
+                font-size: 14px;
+                font-weight: 600;
+                color: vars.$primary-600;
+                margin: 0;
+            }
+            .added-badge{
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                color: vars.$primary-600;
+                font-weight: 600;
+                font-size: 14px;
+                mat-icon{
+                    color: vars.$primary-600;
+                    font-size: 20px;
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+}
+
+.required-documents{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    h2{
+        font-size: 28px;
+        font-weight: 600;
+        color: vars.$black;
+        margin: 0;
+    }
+    .documents-container{
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        .document-card{
+            flex: 1;
+            mat-card-content{
+                padding: 20px;
+            }
+            .document-header{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                h3{
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: vars.$black;
+                    margin: 0;
+                }
+            }
+            .documents-list{
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                .document-item{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 12px;
+                    background-color: vars.$gray-50;
+                    border-radius: 8px;
+                    gap: 12px;
+                    .document-name{
+                        flex: 1;
+                        font-size: 14px;
+                        color: vars.$gray-700;
+                        word-break: break-word;
+                    }
+                    .document-actions{
+                        display: flex;
+                        gap: 8px;
+                        align-items: center;
+                        .action-button{
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 50%;
+                            border: none;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            mat-icon{
+                                font-size: 20px;
+                                width: 20px;
+                                height: 20px;
+                            }
+                            &.download-button{
+                                background-color: vars.$primary-100;
+                                color: vars.$primary-600;
+                                &:hover{
+                                    background-color: vars.$primary-200;
+                                }
+                            }
+                            &.delete-button{
+                                background-color: transparent;
+                                color: vars.$error;
+                                &:hover{
+                                    background-color: rgba(vars.$error, 0.1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.buttons-container{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+}

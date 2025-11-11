@@ -1,0 +1,12 @@
+<h1>{{'users.create-user' | translate}}</h1>
+<app-user-form 
+    [departments]="departments"
+    [showPhotoSection]="true"
+    [showPasswordField]="true"
+    [showFooterButtons]="true"
+    [isCreating]="true"
+    (cancel)="onCancel()"
+    [profile]="profile"
+    (photoChanged)="onPhotoChanged($event)"
+    (photoDeleted)="onPhotoDeleted($event)">
+</app-user-form>

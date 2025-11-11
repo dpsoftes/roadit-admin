@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // 1. CONFIGURACIÓN DEL SERVIDOR (Node) - YA ESTÁS USANDO ESTA
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Node: Attach to ng serve",
+      "port": 9229,
+      "address": "localhost",
+      // ... otros parámetros
+    },
+    
+    // 2. CONFIGURACIÓN DEL CLIENTE (Navegador) - NECESITAS USAR ESTA
+    {
+      "type": "chrome", // O "chrome" si usas Google Chrome
+      "request": "launch",
+      "name": "Angular: Launch Browser Debug",
+      "url": "http://localhost:3000", // Asegúrate de que el puerto sea el correcto
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true, // Es crucial que esto esté activado
+       "sourceMapPathOverrides": {
+        "webpack:///./*": "${webRoot}/*" // Asegura el mapeo correcto
+      }
+    }
+  ],
+  
+  // 3. CONFIGURACIÓN COMPUESTA (Compound)
+  "compounds": [
+    {
+      "name": "Full Stack Debug (Compound)",
+      "configurations": [
+        "Node: Attach to ng serve",
+        "Angular: Launch Browser Debug"
+      ]
+    }
+  ]
+}

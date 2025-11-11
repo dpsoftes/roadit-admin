@@ -1,0 +1,66 @@
+<!-- Header Component -->
+<header class="header">
+  <div class="logo-container">
+    <img src="assets/images/logo.svg" alt="RoadIt" class="logo">
+  </div>
+  <!-- Botón menú móvil -->
+  <button class="mobile-menu-btn" (click)="onToggleMenu()" type="button">
+    <span class="material-icons">menu</span>
+  </button>
+
+  <!-- Espaciador -->
+  <div class="header-spacer"></div>
+
+  <!-- Sección derecha del header -->
+  <div class="header-actions">
+
+    <!-- Información del usuario -->
+    <div class="user-info" (click)="onProfile()">
+      @if (currentUser().name) {
+      <span class="user-name">{{ currentUser().name }}</span>
+      } @else {
+      <span class="user-name">Nombre de usuario</span>
+      }
+
+      <!-- Avatar del usuario -->
+      <div class="user-avatar">
+        @if (avatar()) {
+        <img [src]="avatar()" [alt]="currentUser().image || 'Avatar'" class="avatar-image" />
+        } @else {
+        <div class="avatar-placeholder">
+          <span class="material-icons">person</span>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Selector de idioma -->
+    <div class="language-selector">
+      <button class="language-btn" type="button" (click)="showLangs.set(!showLangs())" aria-haspopup="listbox"
+        [attr.aria-expanded]="showLangs()">
+        <span class="language-code">{{ currentLang() | uppercase }}</span>
+        <span class="material-icons dropdown-arrow">expand_more</span>
+      </button>
+      @if (showLangs()) {
+      <ul class="language-dropdown" role="listbox">
+        @for (lang of languages; track lang.code) {
+        <li role="option" [attr.aria-selected]="currentLang() === lang.code">
+          <button type="button" class="dropdown-item" (click)="onChangeLanguage(lang.code)"
+            [class.selected]="currentLang() === lang.code">
+            {{ lang.label }}
+          </button>
+        </li>
+        }
+      </ul>
+      }
+    </div>
+
+
+    <!-- Botón de logout -->
+    <button class="logout-btn" (click)="onLogout()" type="button" title="Cerrar sesión">
+      <span class="material-icons">logout</span>
+    </button>
+
+  </div>
+
+</header>

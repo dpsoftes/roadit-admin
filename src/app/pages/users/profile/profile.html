@@ -1,0 +1,11 @@
+<h1>{{titlLabel() | translate}}</h1>
+<app-user-form 
+    [departments]="departments"
+    [showPhotoSection]="true"
+    [showPasswordField]="true"
+    [showFooterButtons]="true"
+    (cancel)="onCancel()"
+    (save)="onSave()"
+    [profile]="profile"
+    (photoDeleted)="onPhotoDeleted($event)">
+</app-user-form>

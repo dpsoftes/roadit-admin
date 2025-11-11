@@ -1,0 +1,103 @@
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  color: #333;
+  flex: 1;
+  text-align: left;
+}
+
+.close-button {
+  color: #666;
+  margin-left: auto;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+}
+
+mat-dialog-content {
+  overflow-y: auto;
+  max-height: calc(90vh - 120px);
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  
+  ng-container {
+    display: block;
+    width: 100%;
+    overflow: visible;
+  }
+  
+  > div {
+    overflow-y: visible;
+    width: 100%;
+    background: transparent;
+    height: 100%;
+  }
+}
+
+// Estilos específicos para el modal edit-address-dialog
+::ng-deep .cdk-overlay-pane.edit-address-dialog {
+  .mat-mdc-dialog-container {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  
+  .mat-mdc-dialog-surface {
+    padding: 0 !important;
+    border: none !important;
+  }
+  
+  .mat-mdc-dialog-inner-container {
+    padding: 0 !important;
+  }
+  
+  .mat-mdc-dialog-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    --mat-dialog-content-padding: 0 !important;
+  }
+  
+  &.cdk-overlay-pane {
+    padding: 0 !important;
+  }
+}
+
+// Estilos específicos para el modal schedule-dialog
+::ng-deep .cdk-overlay-pane.schedule-dialog {
+  .mat-mdc-dialog-container {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  
+  .mat-mdc-dialog-surface {
+    padding: 0 !important;
+    border: none !important;
+  }
+  
+  .mat-mdc-dialog-inner-container {
+    padding: 0 !important;
+  }
+  
+  .mat-mdc-dialog-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    --mat-dialog-content-padding: 0 !important;
+  }
+  
+  &.cdk-overlay-pane {
+    padding: 0 !important;
+  }
+}

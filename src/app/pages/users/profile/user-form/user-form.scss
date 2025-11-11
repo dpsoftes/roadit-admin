@@ -1,0 +1,253 @@
+@use '../styles/variables' as vars;
+
+mat-card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+    
+    .photo-section {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+    }
+}
+
+.user_logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 20%;
+    object-fit: cover;
+}
+
+.actions {
+    button {
+        margin-top: 20px;
+        &.upload_photo_btn {
+            background-color: vars.$roadit-accent;
+            color: vars.$roadit-primary;
+        }
+        &.delete_photo_btn {
+            margin-left: 20px;
+            background-color: transparent;
+            color: vars.$error;
+            border: 1px solid vars.$error;
+        }
+    }
+    .upload_photo_p {
+        font-size: 12px;
+        color: vars.$text-secondary;
+        margin-top: 10px;
+    }
+}
+
+mat-card-content {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    
+    mat-form-field {
+        border-radius: 50%;
+    }
+    
+    .form-field.half_field {
+        width: 50%;
+        padding: 0px 10px;
+    }
+    
+    .form-field.full_field {
+        width: 100%;
+        padding: 0px 10px;
+    }
+    
+    .form-field.quarter_field {
+        width: 25%;
+        padding: 0px 10px;
+    }
+    
+    .form-field.third_field {
+        width: 33.33%;
+        padding: 0px 10px;
+
+        .field-input {
+            .selected-values {
+                display: flex;
+                gap: 6px;
+                align-items: center;
+                flex-wrap: wrap;
+                min-height: 28px;
+            }
+
+            .selected-chip {
+                background-color: vars.$primary-300;
+                color: vars.$black;
+                border-radius: 4px;
+                height: 24px;
+                line-height: 24px;
+                padding: 0 8px;
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
+    }
+    
+    .form-field.half_field,
+    .form-field.quarter_field {
+        .field-input {
+            .selected-values {
+                display: flex;
+                gap: 6px;
+                align-items: center;
+                flex-wrap: wrap;
+                min-height: 28px;
+            }
+
+            .selected-chip {
+                background-color: vars.$primary-300;
+                color: vars.$black;
+                border-radius: 4px;
+                height: 24px;
+                line-height: 24px;
+                padding: 0 8px;
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
+        
+        .placeholder-text {
+            font-size: 12px;
+            color: vars.$gray-500;
+            margin: 4px 0 0 0;
+            font-style: italic;
+        }
+    }
+    
+    .form-field.half_field {
+        .password-container {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            
+            .password-input {
+                flex: 1;
+            }
+            
+            .gen_password_btn {
+                flex-shrink: 0;
+                font-size: 12px;
+                background-color: vars.$black;
+                color: vars.$white;
+                height: 48px;
+                border-radius: 6px;
+                font-weight: 500;
+                padding: 0 16px;
+                white-space: nowrap;
+            }
+        }
+    }
+    
+    .pass_icon {
+        color: vars.$text-secondary;
+        background-color: vars.$white;
+        cursor: pointer;
+        border: none;
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+        }
+    }
+}
+
+mat-card-footer {
+    display: flex;
+    justify-content: flex-start;
+    padding: 20px;
+    
+    button {
+        &.save_btn {
+            background-color: vars.$roadit-accent;
+            color: vars.$roadit-primary;
+            margin-left: 10px;
+        }
+        &.cancel_btn {
+            margin-left: 10px;
+            background-color: transparent;
+            color: vars.$text-secondary;
+            border: 1px solid vars.$text-secondary;
+        }
+    }
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    
+    .field-label {
+        font-weight: 600;
+        font-size: 14px;
+        color: vars.$gray-700;
+        margin: 0;
+        line-height: 1.2;
+    }
+    
+    .field-input {
+        width: 100%;
+        
+        ::ng-deep .mat-mdc-form-field {
+            height: 48px !important;
+            max-height: 48px !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-wrapper {
+            height: 48px !important;
+            max-height: 48px !important;
+            padding-bottom: 0 !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-infix {
+            min-height: 48px !important;
+            height: 48px !important;
+            max-height: 48px !important;
+            padding: 8px 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+        }
+        
+        ::ng-deep .mat-mdc-form-field-outline {
+            border-radius: 8px;
+        }
+        
+        // Alineación vertical para selects
+        ::ng-deep .mat-mdc-select {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        // Alineación vertical para inputs
+        ::ng-deep .mat-mdc-input-element {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+    }
+}

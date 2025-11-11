@@ -1,0 +1,10 @@
+<mat-card>
+    <mat-card-content>
+        <h2>{{'clients.create-client.client-process' | translate}}</h2>
+        <app-text-editor [content]="client().html_info_page" (contentChange)="client().html_info_page = $event"></app-text-editor>
+        <div class="action-buttons">
+            <app-buttons type="save-changes-noform" text="clients.create-client.save-changes" (click)="saveChanges()"></app-buttons>
+            <app-buttons type="cancel" text="clients.create-client.cancel"></app-buttons>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,133 @@
+/* Footer Component Styles */
+
+.footer {
+  background: #2D3D32; /* roadit-primary - fondo verde como en el diseño */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 1.5rem;
+  margin-top: auto;
+  position: relative;
+  z-index: 50;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+}
+
+/* Sección izquierda */
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.copyright {
+  color: #C7D944; /* roadit-accent - mismo color amarillo que el logo */
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.version {
+  color: #C7D944; /* roadit-accent - mismo color amarillo que el logo */
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: #f3f4f6; /* gray-100 */
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb; /* gray-200 */
+}
+
+/* Sección derecha */
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+.footer-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.footer-link {
+  color: #C7D944; /* roadit-accent - mismo color amarillo que el logo */
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 400;
+  transition: color 0.3s ease;
+  position: relative;
+
+  &:hover {
+    color: rgba(199, 217, 68, 0.8); /* roadit-accent más claro en hover */
+  }
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer {
+    padding: 1rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .footer-left {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-nav {
+    gap: 1rem;
+  }
+
+  .footer-link {
+    font-size: 0.8rem;
+
+    &:not(:last-child)::after {
+      right: -0.5rem;
+      height: 10px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 0.75rem;
+  }
+
+  .footer-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-link {
+    &:not(:last-child)::after {
+      display: none;
+    }
+  }
+
+  .copyright,
+  .footer-link {
+    font-size: 0.75rem;
+  }
+
+  .version {
+    font-size: 0.7rem;
+  }
+}

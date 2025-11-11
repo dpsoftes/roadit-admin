@@ -1,0 +1,620 @@
+import { Component, input, output, signal, effect, computed, HostListener, ElementRef, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { FilterConfig, FilterOption } from '../dp-datagrid.interfaces';
+
+@Component({
+  selector: 'dp-datagrid-filter',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatIconModule
+  ],
+  template: `
+    <div class="dp-datagrid-filter" [style.width]="getWidth()">
+      <!-- Text Filter -->
+      @if (type() === 'text') {
+        <div class="filter-field">
+          <label class="filter-label">{{ label() }}</label>
+          <input
+            type="text"
+            class="filter-input"
+            placeholder="Escriba aquí..."
+            [(ngModel)]="textValue"
+            (ngModelChange)="onValueChange($event)">
+        </div>
+      }
+
+      <!-- Select Filter -->
+      @if (type() === 'select') {
+        <div class="filter-field">
+          <label class="filter-label">{{ label() }}</label>
+          <div class="select-wrapper">
+            <select
+              class="filter-select"
+              [(ngModel)]="selectValue"
+              (ngModelChange)="onValueChange($event)">
+              <option [value]="null">{{ emptyOptionText() }}</option>
+              @for (option of options(); track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+            <mat-icon class="select-arrow">arrow_drop_down</mat-icon>
+          </div>
+        </div>
+      }
+
+      <!-- Chip Select Filter (Dropdown con chips) -->
+      @if (type() === 'chip-select') {
+        <div class="filter-field">
+          <label class="filter-label">{{ label() }}</label>
+          <div class="chip-select-container">
+            <div
+              class="chip-select-display"
+              (click)="toggleChipSelectDropdown()"
+              [class.open]="chipSelectOpen">
+              <div class="selected-chips">
+                @if (chipSelectValue.length === 0) {
+                  <span class="placeholder">{{ emptyOptionText() }}</span>
+                } @else {
+                  @for (value of chipSelectValue; track value) {
+                    <span class="display-chip">
+                      {{ getOptionLabel(value) }}
+                      <mat-icon class="chip-remove" (click)="removeChipSelectValue(value, $event)">close</mat-icon>
+                    </span>
+                  }
+                }
+              </div>
+              <mat-icon class="dropdown-arrow">arrow_drop_down</mat-icon>
+            </div>
+            @if (chipSelectOpen) {
+              <div class="chip-select-dropdown">
+                @for (option of options(); track option.value) {
+                  <div
+                    class="dropdown-option"
+                    [class.selected]="chipSelectValue.includes(option.value)"
+                    (click)="toggleChipSelectOption(option.value)">
+                    <span>{{ option.label }}</span>
+                    @if (chipSelectValue.includes(option.value)) {
+                      <mat-icon class="check-icon">check</mat-icon>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Date Filter -->
+      @if (type() === 'date') {
+        <div class="filter-field">
+          <label class="filter-label">{{ label() }}</label>
+          <input
+            type="date"
+            class="filter-input filter-date"
+            [(ngModel)]="dateValue"
+            (ngModelChange)="onValueChange($event)">
+        </div>
+      }
+
+      <!-- Date Range Filter -->
+      @if (type() === 'date-range') {
+        <div class="filter-field">
+          <label class="filter-label">{{ label() }}</label>
+          <div class="date-range-wrapper">
+            <input
+              type="date"
+              class="filter-input filter-date"
+              [(ngModel)]="startDateValue"
+              (ngModelChange)="onDateRangeChange()"
+              placeholder="Inicio">
+            <span class="date-separator">-</span>
+            <input
+              type="date"
+              class="filter-input filter-date"
+              [(ngModel)]="endDateValue"
+              (ngModelChange)="onDateRangeChange()"
+              placeholder="Fin">
+          </div>
+        </div>
+      }
+
+      <!-- Chips Filter (Single selection) -->
+      @if (type() === 'chips') {
+        <div class="filter-field">
+          <label class="filter-label">{{ label() }}</label>
+          <div class="chip-select-wrapper">
+            @for (option of options(); track option.value) {
+              <button
+                type="button"
+                class="chip-button"
+                [class.selected]="chipValue === option.value"
+                (click)="toggleChipValue(option.value)">
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Chip Array Filter (Multiple selection) -->
+      @if (type() === 'chip-array') {
+        <div class="filter-field">
+          <label class="filter-label">{{ label() }}</label>
+          <div class="chip-select-wrapper">
+            @for (option of options(); track option.value) {
+              <button
+                type="button"
+                class="chip-button"
+                [class.selected]="chipArrayValue.includes(option.value)"
+                (click)="toggleChipArrayValue(option.value)">
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Checkbox Filter -->
+      @if (type() === 'checkbox') {
+        <div class="filter-field">
+          <label class="filter-checkbox">
+            <input
+              type="checkbox"
+              [(ngModel)]="checkboxValue"
+              (ngModelChange)="onValueChange($event)">
+            <span>{{ label() }}</span>
+          </label>
+        </div>
+      }
+    </div>
+  `,
+  styles: [`
+    .dp-datagrid-filter {
+      width: 100%;
+
+      .filter-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .filter-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #5f6368;
+        margin: 0;
+      }
+
+      .filter-input,
+      .filter-select {
+        width: 100%;
+        height: 40px;
+        padding: 8px 12px;
+        border: 1px solid #dadce0;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: inherit;
+        color: #202124;
+        background-color: #ffffff;
+        outline: none;
+        transition: all 0.2s;
+        box-sizing: border-box;
+
+        &:hover {
+          border-color: #bdc1c6;
+        }
+
+        &:focus {
+          border-color: #1a73e8;
+          box-shadow: 0 0 0 1px #1a73e8;
+        }
+
+        &::placeholder {
+          color: #9aa0a6;
+        }
+      }
+
+      .select-wrapper,
+      .date-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .filter-select {
+        appearance: none;
+        padding-right: 36px;
+        cursor: pointer;
+      }
+
+      .filter-date {
+        cursor: pointer;
+        padding-right: 36px;
+      }
+
+      .select-arrow,
+      .date-icon {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: #5f6368;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .date-icon {
+        pointer-events: auto;
+        cursor: pointer;
+      }
+
+      // Chip Select Styles
+      .chip-select-container {
+        position: relative;
+      }
+
+      .chip-select-display {
+        height: 40px;
+        padding: 0 36px 0 12px;
+        border: 1px solid #dadce0;
+        border-radius: 8px;
+        background-color: #ffffff;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s;
+        box-sizing: border-box;
+
+        &:hover {
+          border-color: #bdc1c6;
+        }
+
+        &.open {
+          border-color: #1a73e8;
+          box-shadow: 0 0 0 1px #1a73e8;
+        }
+
+        .selected-chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          flex: 1;
+          align-items: center;
+        }
+
+        .placeholder {
+          color: #9aa0a6;
+          font-size: 13px;
+        }
+
+        .display-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 8px;
+          background-color: #e8e8e8;
+          border: 1px solid #a0a0a0;
+          border-radius: 16px;
+          font-size: 12px;
+          color: #202124;
+
+          .chip-remove {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            color: #5f6368;
+
+            &:hover {
+              color: #202124;
+            }
+          }
+        }
+
+        .dropdown-arrow {
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #5f6368;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+          pointer-events: none;
+        }
+      }
+
+      .chip-select-dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background-color: #ffffff;
+        border: 1px solid #dadce0;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 1000;
+
+        .dropdown-option {
+          padding: 10px 16px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 13px;
+          color: #202124;
+          transition: background-color 0.15s;
+
+          &:hover {
+            background-color: #f5f5f5;
+          }
+
+          &.selected {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+          }
+
+          .check-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            color: #1a73e8;
+          }
+        }
+      }
+
+      .date-wrapper {
+        position: relative;
+
+        .filter-date {
+          cursor: pointer;
+          padding-right: 35px;
+        }
+
+        .date-icon {
+          pointer-events: none;
+        }
+      }
+
+      .date-range-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+
+        .date-input-group {
+          flex: 1;
+          position: relative;
+
+          .filter-date {
+            cursor: pointer;
+          }
+        }
+
+        .date-separator {
+          color: #5f6368;
+          font-size: 14px;
+          flex-shrink: 0;
+        }
+
+        .date-icon {
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+          color: #5f6368;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .chip-select-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip-button {
+        padding: 8px 16px;
+        border: 1px solid #d0d0d0;
+        border-radius: 20px;
+        background-color: #ffffff;
+        font-size: 13px;
+        font-family: inherit;
+        color: #202124;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        outline: none;
+        font-weight: 400;
+        white-space: nowrap;
+
+        &:hover {
+          background-color: #f5f5f5;
+          border-color: #b0b0b0;
+        }
+
+        &.selected {
+          background-color: #e8e8e8;
+          border-color: #a0a0a0;
+          color: #202124;
+          font-weight: 500;
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
+
+      .filter-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 13px;
+        color: #202124;
+
+        input[type="checkbox"] {
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+        }
+      }
+    }
+  `]
+})
+export class DpDatagridFilterComponent {
+  // Inputs individuales (enfoque declarativo)
+  key = input.required<string>();
+  label = input.required<string>();
+  type = input.required<FilterConfig['type']>();
+  options = input<FilterOption[]>([]);
+  multiple = input<boolean>(false);
+  width = input<number>();
+  emptyOption = input<string>('Seleccione...');
+
+  // Output
+  filterChange = output<{ key: string; value: any }>();
+
+  // Computed para el texto de la opción vacía
+  emptyOptionText = computed(() => this.emptyOption());
+
+  // Computed config para mantener compatibilidad
+  config = computed<FilterConfig>(() => ({
+    key: this.key(),
+    label: this.label(),
+    type: this.type(),
+    options: this.options(),
+    multiple: this.multiple(),
+    width: this.width()
+  }));
+
+  textValue = '';
+  selectValue: any = null;
+  dateValue: string = '';
+  startDateValue: string = '';
+  endDateValue: string = '';
+  chipValue: string | null = null;
+  chipArrayValue: string[] = [];
+  chipSelectValue: string[] = [];
+  chipSelectOpen = false;
+  checkboxValue = false;
+
+  private elementRef = inject(ElementRef);
+
+  constructor() {
+    effect(() => {
+      // Reset values when config changes
+      const cfg = this.config();
+      if (cfg.type === 'chip-array') {
+        this.chipArrayValue = [];
+      }
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    // Cerrar el dropdown si se hace click fuera del componente
+    if (this.chipSelectOpen && !this.elementRef.nativeElement.contains(event.target)) {
+      this.chipSelectOpen = false;
+    }
+  }
+
+  onValueChange(value: any) {
+    this.filterChange.emit({
+      key: this.key(),
+      value: value
+    });
+  }
+
+  toggleChipValue(value: string) {
+    if (this.chipValue === value) {
+      this.chipValue = null;
+      this.onValueChange(null);
+    } else {
+      this.chipValue = value;
+      this.onValueChange(value);
+    }
+  }
+
+  toggleChipArrayValue(value: string) {
+    const index = this.chipArrayValue.indexOf(value);
+    if (index > -1) {
+      this.chipArrayValue = this.chipArrayValue.filter(v => v !== value);
+    } else {
+      this.chipArrayValue = [...this.chipArrayValue, value];
+    }
+    this.onValueChange(this.chipArrayValue);
+  }
+
+  onDateRangeChange() {
+    if (this.startDateValue && this.endDateValue) {
+      this.onValueChange({
+        start: this.startDateValue,
+        end: this.endDateValue
+      });
+    } else if (this.startDateValue) {
+      this.onValueChange({ start: this.startDateValue });
+    } else if (this.endDateValue) {
+      this.onValueChange({ end: this.endDateValue });
+    } else {
+      this.onValueChange(null);
+    }
+  }
+
+  removeChip() {
+    this.chipValue = null;
+    this.onValueChange(null);
+  }
+
+  removeChipFromArray(valueToRemove: string) {
+    this.chipArrayValue = this.chipArrayValue.filter(v => v !== valueToRemove);
+    this.onValueChange(this.chipArrayValue);
+  }
+
+  getChipLabel(value: string): string {
+    const option = this.options().find(opt => opt.value === value);
+    return option ? option.label : value;
+  }
+
+  // Métodos para chip-select
+  toggleChipSelectDropdown() {
+    this.chipSelectOpen = !this.chipSelectOpen;
+  }
+
+  toggleChipSelectOption(value: string) {
+    const index = this.chipSelectValue.indexOf(value);
+    if (index > -1) {
+      this.chipSelectValue = this.chipSelectValue.filter(v => v !== value);
+    } else {
+      this.chipSelectValue = [...this.chipSelectValue, value];
+    }
+    this.onValueChange(this.chipSelectValue.length > 0 ? this.chipSelectValue : null);
+  }
+
+  removeChipSelectValue(value: string, event: Event) {
+    event.stopPropagation();
+    this.chipSelectValue = this.chipSelectValue.filter(v => v !== value);
+    this.onValueChange(this.chipSelectValue.length > 0 ? this.chipSelectValue : null);
+  }
+
+  getOptionLabel(value: string): string {
+    const option = this.options().find(opt => opt.value === value);
+    return option ? option.label : value;
+  }
+
+  getWidth(): string {
+    const w = this.width();
+    if (!w) return '100%';
+    return `${w}%`;
+  }
+}

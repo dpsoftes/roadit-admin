@@ -1,0 +1,11 @@
+<h1>{{'users.edit-user' | translate}}</h1>
+<app-user-form 
+    [showPhotoSection]="true"
+    [showPasswordField]="true"
+    [showFooterButtons]="true"
+    [isCreating]="false"
+    (cancel)="onCancel()"
+    [profile]="profile"
+    (photoChanged)="onPhotoChanged($event)"
+    (photoDeleted)="onPhotoDeleted($event)">
+</app-user-form>

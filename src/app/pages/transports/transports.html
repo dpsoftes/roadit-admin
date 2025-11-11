@@ -1,0 +1,219 @@
+<h1>{{'transports.title' | translate}}</h1>
+
+<app-tabs [tabs]="['assignment', 'history']" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)"></app-tabs>
+
+@if (activeTab() === 'assignment') {
+  <dp-datagrid
+    datagridId="transports-assignment-grid"
+    [data]="historyList()"
+    [localData]="false"
+    [selectable]="false"
+    [searchable]="true"
+    searchPlaceholder="{{'transports.assignments.searchPlaceholder' | translate}}"
+    [pagination]="true"
+    [pageSize]="3"
+    [totalRecords]="transportsTotalRecords()"
+    [pageSizeOptions]="[3, 5, 10, 20]"
+    (onLoadData)="loadTransportsFromServer($event)"
+  >
+
+    <dp-datagrid-columns>
+      <dp-datagrid-column
+        key="id"
+        label="Id"
+        type="text"
+        [width]="3">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="reference_number"
+        label="{{'transports.assignments.reference' | translate}}"
+        type="text"
+        [width]="5">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="client_info"
+        label="{{'transports.assignments.client_sub' | translate}}"
+        type="text"
+        [width]="8">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="transport_principal_type"
+        label="{{'transports.assignments.movement' | translate}}"
+        type="text"
+        [width]="10">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="init_date"
+        label="{{'transports.assignments.date_time' | translate}}"
+        type="text"
+        [width]="10">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="max_price"
+        label="{{'transports.assignments.client_price' | translate}}"
+        type="text"
+        [width]="8">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="min_price"
+        label="{{'transports.assignments.best_price' | translate}}"
+        type="text"
+        [width]="8">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="appointment_management"
+        label="{{'transports.assignments.appointment' | translate}}"
+        type="text"
+        [width]="6">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="tags"
+        label="{{'transports.assignments.tags' | translate}}"
+        type="chip-array"
+        [width]="8"
+        [chipConfig]="{ type: 'tags' }">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="kilometers"
+        label="{{'transports.assignments.km_duration' | translate}}"
+        type="text"
+        [width]="8">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="reservation_number"
+        label="{{'transports.assignments.budget_number' | translate}}"
+        type="text"
+        [width]="8">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="driver_name"
+        label="{{'transports.assignments.responsible' | translate}}"
+        type="text"
+        [width]="8">
+      </dp-datagrid-column>
+
+      <dp-datagrid-column
+        key="actions"
+        label="{{'transports.assignments.actions' | translate}}"
+        type="actions"
+        [width]="8"
+        [actionConfig]="actionsConfig">
+      </dp-datagrid-column>
+    </dp-datagrid-columns>
+
+    <dp-datagrid-filter-container>
+      <dp-datagrid-filter
+        key="reference_number"
+        label="{{'transports.assignments.reference_filter' | translate}}"
+        type="text"
+        [width]="250">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="transport_number"
+        label="{{'transports.assignments.transport_number_filter' | translate}}"
+        type="text"
+        [width]="250">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="reservation_number"
+        label="{{'transports.assignments.reservation_number_filter' | translate}}"
+        type="text"
+        [width]="250">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="created_from"
+        label="{{'transports.assignments.creation_date_filter' | translate}}"
+        type="date"
+        [width]="250">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="departure_province"
+        label="{{'transports.assignments.departure_province_filter' | translate}}"
+        type="select"
+        [width]="250"
+        [options]="departureProvinces()">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="arrival_province"
+        label="{{'transports.assignments.arrival_province_filter' | translate}}"
+        type="select"
+        [width]="250"
+        [options]="arrivalProvinces()">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="driver_email"
+        label="{{'transports.assignments.email_filter' | translate}}"
+        type="text"
+        [width]="250">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="date_range"
+        label="{{'transports.assignments.date_range_filter' | translate}}"
+        type="date-range"
+        [width]="250">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="transport_principal_type"
+        label="{{'transports.list.movement_type_filter' | translate}}"
+        type="select"
+        [width]="250"
+        [options]="[
+          { value: TransportPrincipalType.SIMPLE_MOVEMENT, label: 'transportPrincipalType.SIMPLE_MOVEMENT' },
+          { value: TransportPrincipalType.PICKUP_TO_FINAL_CUSTOMER, label: 'transportPrincipalType.PICKUP_TO_FINAL_CUSTOMER' },
+          { value: TransportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER, label: 'transportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER' },
+          { value: TransportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER, label: 'transportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER' },
+          { value: TransportPrincipalType.WITH_STOPOVER, label: 'transportPrincipalType.WITH_STOPOVER' }
+        ]">
+      </dp-datagrid-filter>
+
+      <dp-datagrid-filter
+        key="tags"
+        label="{{'transports.assignments.tags_filter' | translate}}"
+        type="chip-select"
+        [width]="250"
+        [options]="[
+          { value: 'urgent', label: 'Urgente' },
+          { value: 'fragile', label: 'Frágil' },
+          { value: 'heavy', label: 'Pesado' },
+          { value: 'oversized', label: 'Gran volumen' },
+          { value: 'hazardous', label: 'Peligroso' },
+          { value: 'temperature', label: 'Temperatura controlada' },
+          { value: 'express', label: 'Express' },
+          { value: 'standard', label: 'Estándar' }
+        ]">
+      </dp-datagrid-filter>
+    </dp-datagrid-filter-container>
+
+    <dp-datagrid-actions>
+      <dp-datagrid-action
+        key="create"
+        text="{{'transports.assignments.create_transport' | translate}}"
+        icon="add"
+        color="primary"
+        (onClick)="onCreateClick($event)">
+      </dp-datagrid-action>
+    </dp-datagrid-actions>
+
+  </dp-datagrid>
+} @else if (activeTab() === 'history') {
+  <p>History</p>
+}

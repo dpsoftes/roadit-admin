@@ -1,0 +1,48 @@
+<div class="form-field-wrapper" [style.max-width]="maxWidth()">
+  <!-- LABEL -->
+  <label class="custom-field-label">
+    {{ label() }}
+  </label>
+
+  <!-- CONTAINER DEL INPUT -->
+  <div class="input-container" [class.focused]="isFocused" [class.filter-style]="filterStyle()">
+    <!-- CHIPS SELECCIONADOS -->
+    <div #chipsContainer class="chips-container" [class.has-max-width]="!!maxWidth()">
+      @for (item of selectedItems(); track item.id; let i = $index) {
+      @if (shouldShowChip(i)) {
+      <div class="chip" [style.background-color]="item.color" [style.color]="getTextColor(item.color)">
+        {{ item.name }}
+        <button type="button" class="chip-remove" (click)="removeItem(item.id); $event.stopPropagation()"
+          [style.color]="getTextColor(item.color)">
+          ✕
+        </button>
+      </div>
+      }
+      }
+
+      <!-- INDICADOR DE TAGS OCULTAS -->
+      @if (maxWidth() && hiddenTagsCount() > 0 && !isFocused) {
+      <div class="overflow-indicator">
+        +{{ hiddenTagsCount() }}
+      </div>
+      }
+
+      <!-- INPUT DE BÚSQUEDA -->
+      <input #chipInput type="text" class="chip-input" [placeholder]="value().length === 0 && !isFocused ? '' : ''"
+        (focus)="onFocus()" (blur)="onBlur()" (input)="onSearchInput($event)" [value]="searchTerm" />
+    </div>
+
+    <!-- DROPDOWN DE OPCIONES -->
+    @if (showDropdown && dropdownItems().length > 0) {
+    <div class="dropdown" (click)="$event.stopPropagation()">
+      @for (item of dropdownItems(); track item.id) {
+      <div class="dropdown-item" (click)="addItem(item); $event.stopPropagation()">
+        <div class="dropdown-chip" [style.background-color]="item.color" [style.color]="getTextColor(item.color)">
+          {{ item.name }}
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

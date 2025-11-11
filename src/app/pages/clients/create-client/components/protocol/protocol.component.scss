@@ -1,0 +1,72 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: 100%;
+}
+
+.tables {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 40%;
+    mat-card {
+        width: 100%;
+        margin-bottom: 16px;
+        padding: 20px;
+        app-dynamic-table {
+            width: 100%;
+            ::ng-deep mat-card {
+                padding: 0 !important;
+            }
+            ::ng-deep .mat-mdc-card-content {
+                padding: 0 !important;
+            }
+            ::ng-deep .mat-mdc-card-header {
+                padding: 0 !important;
+            }
+        }
+    }
+}
+
+.card {
+    width: 60%;
+    mat-card {
+        width: 100%;
+        padding: 20px;
+        
+        h3 {
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+        }
+        
+        mat-form-field {
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        
+        .type-section {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 16px;
+            
+            mat-form-field {
+                flex: 1;
+                margin-bottom: 0;
+            }
+            
+            app-buttons {
+                margin-bottom: 35px;
+            }
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+    }
+}

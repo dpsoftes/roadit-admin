@@ -1,0 +1,290 @@
+/* ================================================= */
+/* input-multi-tag.component.scss */
+/* ESTILOS SIGUIENDO _form-controls.scss */
+/* ================================================= */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.form-field-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+/* ===================================
+   LABEL (SIGUIENDO .custom-field-label)
+   =================================== */
+.custom-field-label {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 100%;
+  color: #2D3D32; //COLOR CONSTANTE, NO CAMBIA EN FOCUS
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ===================================
+   CONTAINER DEL INPUT (SIGUIENDO .inputText)
+   =================================== */
+.input-container {
+  width: 100%;
+  min-height: 38px;
+  padding: 4px 8px;
+  border: 1px solid #6F8068 !important;
+  border-radius: 8px;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #2D3D32;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  opacity: 1;
+  background-color: #FFFFFF;
+  position: relative;
+  cursor: text;
+
+  &:hover:not(.focused) {
+    border-color: #5A6B54;
+  }
+
+  &.focused {
+    outline: none;
+    border-color: #C7D944 !important;
+    box-shadow: 0 0 0 3px rgba(199, 217, 68, 0.1);
+  }
+
+  //ESTILOS ESPECÍFICOS PARA MODO FILTRO (COINCIDE CON LOS OTROS FILTROS)
+  &.filter-style {
+    min-height: 38px;
+    padding: 4px 8px;
+    border: 1px solid #D0D0D0 !important;
+
+    &:hover:not(.focused) {
+      border-color: #B0B0B0;
+    }
+
+    &.focused {
+      border-color: #2D3D32 !important;
+      box-shadow: 0 0 0 2px rgba(45, 61, 50, 0.1);
+    }
+  }
+}
+
+/* ===================================
+   CONTAINER DE CHIPS
+   =================================== */
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+
+  //CUANDO HAY ANCHO MÁXIMO, NO PERMITIR WRAP
+  &.has-max-width {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+}
+
+/* ===================================
+   CHIPS SELECCIONADOS
+   =================================== */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  background-color: #E5E7EB; //COLOR POR DEFECTO SI NO SE PROPORCIONA UNO
+  color: #2D3D32; //COLOR DE TEXTO POR DEFECTO
+  flex-shrink: 0; //NO PERMITIR QUE LOS CHIPS SE COMPRIMAN
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* ===================================
+   INDICADOR DE OVERFLOW
+   =================================== */
+.overflow-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  background-color: #E5E7EB;
+  color: #6F8068;
+  flex-shrink: 0;
+  cursor: default;
+  border: 1px dashed #9CA3AF;
+
+  &:hover {
+    background-color: #D1D5DB;
+  }
+}
+
+/* ===================================
+   INPUT DE BÚSQUEDA
+   =================================== */
+.chip-input {
+  flex: 1;
+  min-width: 80px;
+  height: 30px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #2D3D32;
+  padding: 0;
+
+  &::placeholder {
+    color: #9CA3AF;
+    font-style: italic;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* ===================================
+   DROPDOWN DE OPCIONES
+   ===================================== */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border: 1px solid #6F8068;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+
+  //SCROLLBAR PERSONALIZADO
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #9CA3AF;
+    border-radius: 4px;
+
+    &:hover {
+      background: #6F8068;
+    }
+  }
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #F9FAFB;
+  }
+
+  &:active {
+    background-color: #F3F4F6;
+  }
+}
+
+.dropdown-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+  background-color: #E5E7EB; //COLOR POR DEFECTO SI NO SE PROPORCIONA UNO
+  color: #2D3D32; //COLOR DE TEXTO POR DEFECTO
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media (max-width: 768px) {
+  .custom-field-label {
+    font-size: 14px;
+  }
+
+  .input-container {
+    font-size: 14px;
+  }
+
+  .chip {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-container {
+    min-height: 42px;
+    font-size: 16px; //EVITAR ZOOM EN iOS
+  }
+
+  .custom-field-label {
+    font-size: 13px;
+  }
+
+  .chip-input {
+    font-size: 16px; //EVITAR ZOOM EN iOS
+  }
+}

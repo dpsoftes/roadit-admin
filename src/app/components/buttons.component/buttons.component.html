@@ -1,0 +1,58 @@
+@if (type() == 'save-changes-noform') {
+    <button mat-button  class="primary_btn save_changes_btn" (click)="onClick.emit()">
+        {{text() | translate}}
+    </button>
+}
+@if (type() == 'save-changes') {
+    <button mat-button type="submit" class="primary_btn save_changes_btn" (click)="onClick.emit()">
+        {{text() | translate}}
+    </button>
+}
+@if (type() == 'cancel'){
+    <button mat-button type="button" class="primary_btn cancel_btn" (click)="onClick.emit()">
+        {{text() | translate}}
+    </button>
+}
+
+@if (type() == 'save-small'){
+    <button mat-button class="primary_btn save-small" (click)="onClick.emit()">{{text() | translate}}</button>
+}
+
+@if (type() == 'cancel-small'){
+    <button mat-button class="primary_btn cancel-small" (click)="onClick.emit()">{{text() | translate}}</button>
+}
+@if (type() == 'back'){
+    <button mat-button class="primary_btn back-btn" (click)="onClick.emit()">
+        <mat-icon>arrow_back_ios</mat-icon>
+        {{text() | translate}}</button>
+}
+@if (type() == 'swap'){
+    <button mat-icon-button matRipple [matRippleColor]="'rgba(255,255,255,0.3)'" class="primary_btn swap-btn" (click)="onClick.emit()">
+        <mat-icon>swap_horiz</mat-icon>
+        <span>{{text() | translate}}</span>
+    </button>
+}
+@if (type() == 'add-stage'){
+    <button mat-button class="primary_btn  add-stage" (click)="onClick.emit()">
+        <mat-icon>add</mat-icon>
+        {{text() | translate}}
+    </button>
+}
+@if (type() == 'import-csv'){
+    <button mat-button class="primary_btn import-csv" (click)="onClick.emit()">
+        <mat-icon>upload</mat-icon>
+        {{text() | translate}}
+    </button>
+}
+@if (type() == 'add-vehicle'){
+    <button mat-button class="primary_btn add-vehicle" (click)="onClick.emit()">
+        <mat-icon>add</mat-icon>
+        {{text() | translate}}
+    </button>
+}
+@if (type() == 'add'){
+    <button mat-button class="primary_btn add-btn" (click)="onClick.emit()">
+        <mat-icon>add</mat-icon>
+        {{text() | translate}}
+    </button>
+}

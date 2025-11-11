@@ -1,0 +1,100 @@
+.drivers-page {
+  padding: 20px;
+
+  .sectionTitleText {
+    margin-bottom: 24px;
+  }
+
+  //SECCIÓN DE FILTROS PERSONALIZADOS (FUERA DEL DP-DATAGRID)
+  .custom-filters-section {
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+
+    .custom-filter-wrapper {
+      max-width: 246px;
+    }
+  }
+
+  //ESTILOS PARA LA CELDA DE NOMBRE
+  ::ng-deep .name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .last-name {
+      font-size: 12px;
+      color: #666;
+    }
+  }
+
+  //ESTILOS PARA LA CELDA DE DNI/CIF
+  ::ng-deep .dni-cif-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .dni-line,
+    .cif-line {
+      font-size: 14px;
+    }
+
+    .dni-line {
+      font-weight: 700 !important;
+    }
+
+    .cif-line {
+      color: #666;
+    }
+  }
+
+  //ESTILOS PARA CONTENEDOR DE TAGS
+  ::ng-deep .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    width: 246px;
+    max-width: 246px;
+
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .unknown-tag {
+      font-style: italic;
+      opacity: 0.7;
+    }
+
+    .no-tags {
+      color: #999;
+      font-style: italic;
+    }
+  }
+
+  //ESTILOS PARA LA CELDA DE VALIDADO
+  ::ng-deep .validated-cell-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .validated-icon-24 {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .validated-text-span {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+// Layout Variables
+:root {
+  // Background and Colors
+  --layoutBackGroundColor: #2D3D32;
+  --layoutIconColor: #C7D944;
+  
+  // Text Colors
+  --Dark-Text-Primary: rgba(255, 255, 255, 0.87);
+}
+
+// Layout Menu Font Default
+@mixin layoutMenuFontDefault {
+  color: var(--Dark-Text-Primary, rgba(255, 255, 255, 0.87));
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: 'Geist Sans', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 200; /* Extra Light para mejor match con Figma */
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.15px;
+}
+
+// Layout SubMenu Font Default
+@mixin layoutSubMenuFontDefault {
+  color: var(--Dark-Text-Primary, rgba(255, 255, 255, 0.87));
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: 'Geist Sans', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 200; /* Extra Light para mejor match con Figma */
+  line-height: 24px; /* 150% */
+  letter-spacing: 0.15px;
+}
+
+// CSS Custom Properties for easy access
+.layout-bg {
+  background-color: var(--layoutBackGroundColor);
+}
+
+.layout-icon {
+  color: var(--layoutIconColor);
+}
+
+.layout-menu-font {
+  @include layoutMenuFontDefault;
+}
+
+.layout-submenu-font {
+  @include layoutSubMenuFontDefault;
+}

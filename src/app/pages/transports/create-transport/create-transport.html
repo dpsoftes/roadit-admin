@@ -1,0 +1,60 @@
+<div class="header-container">
+<app-buttons type="back" text="transports.create.back" (click)="onBack()"></app-buttons>
+    <h1>{{'transports.create.title' | translate}}</h1>
+</div>
+
+<div class="content-container">
+    <mat-card class="card-container">
+        <mat-card-content>
+            <h2>{{'transports.create.client-user' | translate}}</h2>
+            <mat-label>{{'transports.create.client-user-assigned' | translate}}</mat-label>
+            <mat-form-field appearance="outline">
+                <mat-select>
+                    <mat-option value="1">{{'transports.create.client-user-assigned-1' | translate}}</mat-option>
+                    <mat-option value="2">{{'transports.create.client-user-assigned-2' | translate}}</mat-option>
+                    <mat-option value="3">{{'transports.create.client-user-assigned-3' | translate}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <h2>{{'transports.create.manager' | translate}}</h2>
+            <mat-label>{{'transports.create.panel-user-assigned' | translate}}</mat-label>
+            <mat-form-field appearance="outline">
+                <mat-select>
+                    <mat-option value="1">{{'transports.create.client-user-assigned-1' | translate}}</mat-option>
+                    <mat-option value="2">{{'transports.create.client-user-assigned-2' | translate}}</mat-option>
+                    <mat-option value="3">{{'transports.create.client-user-assigned-3' | translate}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="checkbox-container">
+                <mat-checkbox>{{'transports.create.budget-visible' | translate}}</mat-checkbox>
+                <mat-checkbox>{{'transports.create.premium-transport' | translate}}</mat-checkbox>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <div class="options-container">
+        <h1>{{'transports.create.transport-type' | translate}}</h1>
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.SIMPLE_MOVEMENT" (click)="onTransportType(TransportPrincipalType.SIMPLE_MOVEMENT)">
+            <mat-icon>directions_car</mat-icon>
+            <h2>{{'transports.create.simple-movement' | translate}}</h2>
+        </div>
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.PICKUP_TO_FINAL_CUSTOMER" (click)="onTransportType(TransportPrincipalType.PICKUP_TO_FINAL_CUSTOMER)">
+            <mat-icon fontSet="material-symbols-outlined">approval_delegation</mat-icon>
+            <h2>{{'transports.create.pickup-to-final-customer' | translate}}</h2>
+        </div>
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER" (click)="onTransportType(TransportPrincipalType.DELIVERY_TO_FINAL_CUSTOMER)">
+            <mat-icon>key</mat-icon>
+            <h2>{{'transports.create.delivery-to-final-customer' | translate}}</h2>
+        </div>
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER" (click)="onTransportType(TransportPrincipalType.PICKUP_AND_DELIVERY_TO_FINAL_CUSTOMER)">
+            <mat-icon>repeat</mat-icon>
+            <h2>{{'transports.create.pickup-and-delivery-to-final-customer' | translate}}</h2>
+        </div>
+        <div class="type-item" [class.active]="selectedTransportType() === TransportPrincipalType.WITH_STOPOVER" (click)="onTransportType(TransportPrincipalType.WITH_STOPOVER)">
+            <mat-icon fontSet="material-symbols-outlined">search_hands_free</mat-icon>
+            <h2>{{'transports.create.with-stopover' | translate}}</h2>
+        </div>
+    </div>
+</div>
+<div class="buttons-container">
+    <app-buttons type="save-changes" text="transports.create.continue" (onClick)="onContinue()"></app-buttons>
+    <app-buttons type="cancel" text="transports.create.cancel" (onClick)="onCancel()"></app-buttons>
+</div>

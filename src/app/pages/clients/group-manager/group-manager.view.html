@@ -1,0 +1,58 @@
+<h1>{{titleView() | translate}}</h1>
+
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="groupForm" (ngSubmit)="onSave()">
+        <mat-form-field appearance="outline">
+            <mat-label>{{'clients.create-group.name' | translate}}</mat-label>
+            <input type="text" matInput formControlName="name">
+            @if (groupForm.get('name')?.invalid && groupForm.get('name')?.touched) {
+                <mat-error>
+                    El nombre es requerido
+                </mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>{{'clients.create-group.country' | translate}}</mat-label>
+            <input type="text" matInput formControlName="country">
+            @if (groupForm.get('country')?.invalid && groupForm.get('country')?.touched) {
+                <mat-error>
+                    El país es requerido
+                </mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="users-field">
+            <mat-label>{{'clients.create-group.assigned-admins' | translate}}</mat-label>
+            <mat-select 
+                multiple 
+                formControlName="assigned_admins"
+                class="users-select">
+                @for (admin of availableAdmins(); track admin.id) {
+                    <mat-option [value]="admin.id">{{ admin.name }} </mat-option>
+                }
+            </mat-select>
+            
+            @if (selectedAdmins.length > 0) {
+                <div class="chips-spacer">
+                    @for (admin of selectedAdmins; track admin.id) {
+                        <div class="chip-placeholder">{{ admin.name }} </div>
+                    }
+                </div>
+                <div class="chips-container">
+                    @for (admin of selectedAdmins; track admin.id) {
+                        <mat-chip class="user-chip">
+                            {{ admin.name }} 
+                        </mat-chip>
+                    }
+                </div>
+            }
+        </mat-form-field>
+        </form>
+    </mat-card-content>
+    <mat-card-footer>
+        <div class="buttons-container">
+            <app-buttons type="save-changes" text="clients.create-group.save" (onClick)="onSave()"></app-buttons>
+            <app-buttons type="cancel" text="clients.create-group.cancel" (onClick)="onCancel()"></app-buttons>
+        </div>
+    </mat-card-footer>
+</mat-card>

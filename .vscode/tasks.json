@@ -1,0 +1,14 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ng: serve development",
+      "type": "shell",
+      "command": "ng",
+      "args": ["serve", "--configuration=development"],
+  "isBackground": false,
+  "problemMatcher": ["$tsc-watch"],
+      "group": "build"
+    }
+  ]
+}

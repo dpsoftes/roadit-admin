@@ -1,0 +1,127 @@
+<div class="tables">
+    <mat-card>
+        <h2>{{'clients.create-client.additional-services' | translate}}</h2>
+        <app-dynamic-table [config]="additionalServicesTableConfig"></app-dynamic-table>
+    </mat-card>
+    <mat-card>
+        <h2>{{'clients.create-client.additional-services-assigned' | translate}}</h2>
+        <app-dynamic-table [config]="additionalServicesAssignedTableConfig"></app-dynamic-table>
+    </mat-card>
+</div>
+
+<div class="form">
+    <mat-card>
+        <div class="form-section">
+            <h3>{{'clients.create-client.action-details' | translate}}</h3>
+            
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'clients.create-client.action-title' | translate}}</mat-label>
+                    <input 
+                        matInput 
+                        [value]="service().title"
+                        (input)="updateTitle($event.target.value)"
+                        placeholder="Limpieza">
+                </mat-form-field>
+            </div>
+            
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'clients.create-client.client-price' | translate}}</mat-label>
+                    <input 
+                        matInput 
+                        type="number"
+                        [value]="service().clientPrice"
+                        (input)="updateClientPrice(+$event.target.value)"
+                        placeholder="25,26">
+                </mat-form-field>
+            </div>
+            
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'clients.create-client.driver-payment' | translate}}</mat-label>
+                    <input 
+                        matInput 
+                        type="number"
+                        [value]="service().driverPayment"
+                        (input)="updateDriverPayment(+$event.target.value)"
+                        placeholder="15,32">
+                </mat-form-field>
+            </div>
+            
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'clients.create-client.application-moment' | translate}}</mat-label>
+                    <mat-select 
+                        [value]="service().applicationMoment"
+                        (selectionChange)="updateApplicationMoment($event.value)">
+                        @for (moment of applicationMoments(); track moment.value) {
+                            <mat-option [value]="moment.value">
+                                {{moment.label | translate}}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>{{'clients.create-client.certification-config' | translate}}</h3>
+            
+            <div class="certification-layout">
+                <div class="checkbox-group">
+                    <mat-checkbox 
+                        [checked]="service().requiresCertification"
+                        (change)="updateRequiresCertification($event.checked)">
+                        {{'clients.create-client.requires-certification' | translate}}
+                    </mat-checkbox>
+                    
+                    <mat-checkbox 
+                        [checked]="service().selectedByDefault"
+                        (change)="updateSelectedByDefault($event.checked)">
+                        {{'clients.create-client.selected-by-default' | translate}}
+                    </mat-checkbox>
+                    
+                    <mat-checkbox 
+                        [checked]="service().visibleToDriver"
+                        (change)="updateVisibleToDriver($event.checked)">
+                        {{'clients.create-client.visible-to-driver' | translate}}
+                    </mat-checkbox>
+                    
+                    <mat-checkbox 
+                        [checked]="service().requiresImageAndLocation"
+                        (change)="updateRequiresImageAndLocation($event.checked)">
+                        {{'clients.create-client.requires-image-location' | translate}}
+                    </mat-checkbox>
+                </div>
+                
+                <mat-form-field appearance="outline" class="certification-name">
+                    <mat-label>{{'clients.create-client.certification-name' | translate}}</mat-label>
+                    <input 
+                        matInput 
+                        [value]="service().certificationName"
+                        (input)="updateCertificationName($event.target.value)"
+                        placeholder="Titulo certificación">
+                </mat-form-field>
+                
+                <app-buttons type="cancel-small" text="clients.create-client.edit-certification" (onClick)="onEditCertification()"></app-buttons>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="form-actions">
+            <app-buttons 
+                type="save-small" 
+                text="clients.create-client.assign"
+                (onClick)="onAssign()">
+            </app-buttons>
+            
+            <app-buttons 
+                class="cancel-btn" 
+                type="cancel-small" 
+                text="clients.create-client.cancel"
+                (onClick)="onCancel()">
+            </app-buttons>
+        </div>
+    </mat-card>
+</div>

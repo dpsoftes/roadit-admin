@@ -1,0 +1,34 @@
+Contexto conversacional con IA:
+
+Solo lee y analiza, no modifiques nada hasta que te lo pida explícitamente
+Pregúntame antes de asumir cualquier estructura de código
+Verifica todo antes de proceder
+Solicita permiso para cada archivo que quieras modificar
+
+tener en cuenta que usamos yarn no NPM
+el powershell para concatenar instruccinenes usamos punto y coma y no &&
+
+El proyecto es un proyecto Angular 20
+
+    - Tipo back-office que realiza la administración interna de una aplicación de transportes.
+    - Tiene una pantalla inicial de login y recuperación de contraseña, estas pantallas son limpias.
+    - Una vez logueado se entra en un panel de administración con cuatro zonas:
+        - lateral con el menu de opciones
+        - Header con selector de idioma, usuario, avatar y menú desplegable de usuario.
+        - Footer, tradicional con los enlaces legales
+        - Zona central que debe ser la que contenga el route-outlet
+    - Debe tener un theme css con la definición de los colores, tipos de letra y demás.
+    - El tema está basado en Free Material Design 2 UI Kit
+    Dtos (son clases no interfaces)
+    Entites (son un duplicado de los dtos, pero sus propiedades son signals para usarse en las vistas)
+    Enums (usado en los dtos)
+    Servicios (para llamadas a api)
+    providers (son los servicios de actualización, obtención de datos de cada vista )
+    Store (basado en signals tiene el estado global)
+    el contexto de ia del proyecto shared está en el archivo {workspace}/shared/copilot.txt para mas información.
+    el sistema usa i18n
+    
+
+
+
+     

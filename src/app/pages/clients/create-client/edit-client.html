@@ -1,0 +1,39 @@
+<h1>{{'clients.create-client-title' | translate}}</h1>
+
+
+<app-tabs [tabs]="displayedTabs()" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)"></app-tabs>
+
+<div class="tab-content">
+    @switch (activeTab()) {
+        @case ('general') {
+            <app-general-tab-component 
+                [clientGroups]="clientGroups()"
+                (formDataChange)="onFormDataChange($event)">
+            </app-general-tab-component>
+        }
+        @case ('protocol') {
+            <app-protocol></app-protocol>
+        }
+        @case ('slogans'){
+            <app-driver-consigns></app-driver-consigns>
+        }
+        @case ('documents') {
+            <app-document-tab></app-document-tab>
+        }
+        @case ('extra-contact') {
+            <app-extra-contact></app-extra-contact>
+        }
+        @case ('billing') {
+            <app-billing></app-billing>
+        }
+        @case ('prices') {
+            <app-prices></app-prices>
+        }
+        @case ('certs') {
+            <app-certs></app-certs>
+        }
+        @case ('additional-services') {
+            <app-additional-services></app-additional-services>
+        }
+    }
+</div>

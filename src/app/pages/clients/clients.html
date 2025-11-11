@@ -1,0 +1,26 @@
+<h1>{{ 'clients.title' | translate }}</h1>
+
+<div class="buttons-container">
+  <!-- <button (click)="onClientsGroup()" mat-button class="button-primary" [class.active]="activeButton() === 'groups'">
+    {{ 'clients.list.clients_group' | translate }}
+  </button>
+  <button (click)="onClientsList()" mat-button class="button-primary" [class.active]="activeButton() === 'list'">
+    {{ 'clients.list.clients_list' | translate }}
+  </button> -->
+  <app-tabs [tabs]="['groups', 'list']" [activeTab]="activeTab()" (activeTabChange)="onTabChange($event)"></app-tabs>
+</div>
+
+
+@if (showGroupsTable()) {
+  <app-dynamic-table 
+    [config]="groupsTableConfig()" 
+    (tableEvent)="onTableEvent($event, 'groups')">
+  </app-dynamic-table>
+}
+
+@if (showListTable()) {
+  <app-dynamic-table 
+    [config]="clientTableConfig()" 
+    (tableEvent)="onTableEvent($event, 'client')">
+  </app-dynamic-table>
+}

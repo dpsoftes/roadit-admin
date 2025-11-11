@@ -1,0 +1,210 @@
+<mat-card>
+    <mat-card-content>
+        <div class="logo">
+            <image-drop
+                [src]="logoUrl()"
+                [width]="'120px'"
+                [height]="'120px'"
+                [formats]="['JPG','JPEG','GIF','PNG']"
+                [maxWeight]="800"
+                (imageAccepted)="onImageAccepted($event)"
+            ></image-drop>
+            <div class="logo-actions">
+                <div class="actions">
+                     <input type="file" accept=".jpg,.jpeg,.png,.gif" style="display:none" #fileInput (change)="onFileSelected($event)">
+                     <button class="upload_photo_btn" matButton="filled" (click)="fileInput.click()">{{'users.profile.upload-photo' | translate}}</button>
+                     <!-- <app-buttons type="save-changes" text="clients.create-client.upload-logo" (onClick)="onPhotoChanged()"></app-buttons> -->
+                </div>
+                <p class="upload_photo_p">{{'clients.create-client.upload-logo-explanation' | translate}}</p>
+            </div>
+        </div>
+        
+            <div class="form">
+
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.name' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput [value]="client.name()" (input)="client.name.set($event.target.value)">
+                
+                </mat-form-field>
+                @if(errorsItems()['errors.client.name-required']) {
+                <small class="error-message">
+                    {{ 'errors.client.name-required' | translate }}
+                </small>
+                }
+            </div>
+
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.group' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="client.client_group()" (selectionChange)="onGroupChage($event.value)">
+                        @for (group of groups(); track group.id) {
+                        <mat-option [value]="group.id">{{ group.name }}</mat-option>
+                    }
+                    </mat-select>
+                    
+                </mat-form-field>
+                @if(errorsItems()['errors.client.group-required']) {
+                    <small class="error-message">
+                        {{ 'errors.client.group-required' | translate }}
+                    </small>
+                }
+                <mat-checkbox [checked]="client.is_subentity()" (change)="client.is_subentity.set($event.checked);loadClientsByGroup()"> 
+                    {{'clients.create-client.subentity' | translate}}
+                </mat-checkbox>
+            </div>
+            
+            
+        @if(client.is_subentity()) {
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.client' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="client.parent()" (selectionChange)="client.parent.set($event.value)">
+                        @for (client of clients(); track client.id) {
+                        <mat-option [value]="client.id">{{ client.name }}</mat-option>
+                    }
+                    </mat-select>
+                    
+                </mat-form-field>
+                @if(errorsItems()['errors.client.principal-client-required']) {
+                    <small class="error-message">
+                        {{ 'errors.client.principal-client-required' | translate }}
+                    </small>
+                }
+    
+            </div>
+        }
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.department' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput [value]="client.department()" (input)="client.department.set($event.target.value)">
+                </mat-form-field>
+            </div>
+            
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.id-eurotransport' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput [value]="client.eurotransport_identifier()" (input)="client.eurotransport_identifier.set($event.target.value)">
+                </mat-form-field>
+            </div>
+            
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.id-revel' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput [value]="client.revel_identifier()" (input)="client.revel_identifier.set($event.target.value)">
+                </mat-form-field>
+            </div>
+            
+            <div class="form-field two_third_field">
+                <label class="field-label">{{'clients.create-client.billing-type' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="client.billing_type()" (selectionChange)="client.billing_type.set($event.value)">
+                        @for (billingType of billingTypeArray; track billingType) {
+                        <mat-option [value]="billingType.key">{{ billingType.value | translate}}</mat-option>
+                    }
+                    </mat-select>
+                    
+                </mat-form-field>
+                <div class="checkboxes-container">
+                    <mat-checkbox [checked]="client.own_insurance()" (change)="client.own_insurance.set($event.checked)">
+                        {{'clients.create-client.check-own-insurance' | translate}}
+                    </mat-checkbox>
+                    <mat-checkbox [checked]="client.at_risk()" (change)="client.at_risk.set($event.checked)">
+                        {{'clients.create-client.check-at-risk' | translate}}
+                    </mat-checkbox>
+                </div>
+            </div>
+            
+            <div class="forty_field">
+                <button mat-button class="primary_btn third_field">{{'clients.create-client.send-manual-invoice' | translate}}</button>                
+            </div>
+
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.appointment-time' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="number" matInput [value]="client.invite_delay_minutes()" (input)="client.invite_delay_minutes.set(parseInt($event.target.value))">
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.appointment-time-between' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="number" matInput [value]="client.reminder_interval_minutes()" (input)="client.reminder_interval_minutes.set(parseInt($event.target.value))">
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.department-incidences' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select multiple [value]="client.managers()" (selectionChange)="client.managers.set($event.value)">
+                        @for (dept of departments(); track dept) {
+                        <mat-option [value]="dept">
+                            {{ 'clients.list.department.' + dept | translate }}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-field quarter_field final_customer_field">
+                <mat-checkbox [checked]="client.send_survey()" (change)="client.send_survey.set($event.checked)">
+                    {{'clients.create-client.send-final-customer' | translate}}
+                </mat-checkbox>
+            </div>
+
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.client-type' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="client.client_type()" (selectionChange)="client.client_type.set($event.value)">
+                        @for (clientType of clientsTypeArray; track clientType) {
+                        <mat-option [value]="clientType.key">{{ clientType.value | translate }}</mat-option>
+                    }
+                    </mat-select>
+                    
+                </mat-form-field>
+            </div>
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.client-origin' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <mat-select [value]="client.client_origin()" (selectionChange)="client.client_origin.set($event.value)">
+                        @for (clientOrigin of originsArray; track clientOrigin) {
+                        <mat-option [value]="clientOrigin.key">{{ clientOrigin.value | translate }}</mat-option>
+                    }
+                    </mat-select>
+                    
+                </mat-form-field>
+            </div>
+            <h1 class="main-contact-title">{{'clients.create-client.main-contact' | translate}} :</h1>
+            <div class="form-field half_field">
+                <label class="field-label">{{'clients.create-client.main-contact-name' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="text" matInput [value]="client.contact_person_name()" (input)="client.contact_person_name.set($event.target.value)">
+                </mat-form-field>
+                 @if(errorsItems()['errors.client.contact-name-required']) {
+                    <small class="error-message">
+                        {{ 'errors.client.contact-name-required' | translate }}
+                    </small>
+                }
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.main-contact-email' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="email" matInput [value]="client.contact_person_email()" (input)="client.contact_person_email.set($event.target.value)">
+                </mat-form-field>
+                 @if(errorsItems()['errors.client.contact-email-invalid']) {
+                    <small class="error-message">
+                        {{ 'errors.client.contact-email-invalid' | translate }}
+                    </small>
+                }
+            </div>
+            <div class="form-field quarter_field">
+                <label class="field-label">{{'clients.create-client.main-contact-phone' | translate}}</label>
+                <mat-form-field appearance="outline" class="field-input">
+                    <input type="tel" matInput [value]="client.contact_person_phone()" (input)="client.contact_person_phone.set($event.target.value)">
+                </mat-form-field>
+            </div>
+            <div class="action-buttons-container">
+                <app-buttons type="save-changes-noform" text="clients.create-client.save-changes" (onClick)="onSave()"></app-buttons>
+                <app-buttons type="cancel" text="clients.create-client.cancel" (onClick)="onCancel()"></app-buttons>
+            </div>
+        </div>
+        
+    </mat-card-content>
+</mat-card>
