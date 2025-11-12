@@ -15,10 +15,12 @@ export class ModalService {
     cancelText?: string;
     showActions?: boolean;
     width?: string;
+    hideTitle?: boolean;
   }) {
     return this.dialog.open(ModalComponent, {
       width: config.width ?? '400px',
       data: config,
+      panelClass: config.hideTitle ? 'modal-hide-title' : undefined,
     });
   }
 }

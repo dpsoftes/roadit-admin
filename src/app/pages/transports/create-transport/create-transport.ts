@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonsComponent } from '@components/buttons.component/buttons.component';
 import { TranslatePipe } from '@i18n/translate.pipe';
@@ -8,6 +8,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TransportPrincipalType } from '@enums/transport.enum';
+import { GlobalStore } from '@store/global.state';
+import { RoleAdmin } from '@enums/user.enum';
+import { SimpleDataDto } from '@dtos/simpleData.dto';
 
 @Component({
   selector: 'app-create-transport',
@@ -25,10 +28,25 @@ import { TransportPrincipalType } from '@enums/transport.enum';
 })
 export class CreateTransport {
   private router = inject(Router);
+  private global = inject(GlobalStore);
 
   selectedTransportType = signal<TransportPrincipalType | ''>('');
+  selectedManager = signal<number | null>(null);
+  selectedClientGroup = signal<number | null>(null);
   
   TransportPrincipalType = TransportPrincipalType;
+  
+  managers = computed<SimpleDataDto[]>(() => {
+    return this.global.usersAdmin().filter(admin => 
+      [RoleAdmin.SALES_MANAGER, RoleAdmin.OPERATIONS_MANAGER].some(role => 
+        admin.otherData?.['roles']?.includes(role)
+      )
+    ).map(admin => ({ id: admin.id, name: admin.name }));
+  });
+  
+  clientGroups = computed<SimpleDataDto[]>(() => {
+    return this.global.groups();
+  });
   
   onBack() {
     this.router.navigate(['/transports/assignment']);

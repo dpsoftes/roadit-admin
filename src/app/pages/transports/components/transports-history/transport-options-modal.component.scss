@@ -1,0 +1,83 @@
+@use 'variables' as *;
+
+.transport-options-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+  padding: $spacing-4;
+  width: 100%;
+  min-width: 100%;
+  background-color: $primary-100;
+  border-radius: 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.option-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: $spacing-3 $spacing-4;
+  background: $white;
+  border: none;
+  border-radius: $border-radius-medium;
+  cursor: pointer;
+  transition: $transition-all;
+  text-align: left;
+  font-size: $font-size-body2;
+  color: $text-primary;
+
+  &:hover {
+    background: $gray-50;
+  }
+
+  &:active {
+    background: $gray-200;
+  }
+
+  &.has-icon {
+    padding-left: $spacing-3;
+  }
+
+  &.has-chevron {
+    padding-right: $spacing-3;
+  }
+}
+
+.option-icon {
+  margin-right: $spacing-3;
+  font-size: $font-size-h6;
+  width: $font-size-h6;
+  height: $font-size-h6;
+
+  &.icon-primary {
+    color: $info;
+  }
+
+  &.icon-accent {
+    color: $warning;
+  }
+
+  &.icon-warn {
+    color: $error;
+  }
+
+  &.icon-info {
+    color: $success;
+  }
+}
+
+.option-label {
+  flex: 1;
+  font-weight: 400;
+}
+
+.chevron-icon {
+  margin-left: auto;
+  font-size: $font-size-h6;
+  width: $font-size-h6;
+  height: $font-size-h6;
+  color: $gray-600;
+}
+

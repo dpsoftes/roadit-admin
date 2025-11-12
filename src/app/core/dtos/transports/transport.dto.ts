@@ -1,6 +1,25 @@
 export class TransportHistoryListParamsDto{
     page?: number;
     page_size?: number;
+    search?: string;
+    reference_number?: string;
+    transport_number?: string;
+    reservation_number?: string;
+    created_from?: string;
+    departure_province?: string;
+    arrival_province?: string;
+    driver_email?: string;
+    date_range_start?: string;
+    date_range_end?: string;
+    transport_principal_type?: string;
+    tags?: number[];
+    client_name?: string;
+    transport_status?: string;
+    driver_name?: string;
+    duration_hours?: string;
+    admin_name?: string;
+    sort_column?: string;
+    sort_direction?: 'asc' | 'desc';
 }
 
 

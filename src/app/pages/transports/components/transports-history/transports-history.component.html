@@ -1,0 +1,177 @@
+<dp-datagrid
+  datagridId="transports-history-grid"
+  [data]="historyList()"
+  [localData]="false"
+  [selectable]="false"
+  [searchable]="true"
+  searchPlaceholder="{{'transports.history.searchPlaceholder' | translate}}"
+  [pagination]="true"
+  [pageSize]="3"
+  [totalRecords]="transportsTotalRecords()"
+  [pageSizeOptions]="[3, 5, 10, 20]"
+  (onLoadData)="loadTransportsFromServer($event)"
+>
+
+  <dp-datagrid-columns>
+    <dp-datagrid-column
+      key="id"
+      label="Id"
+      type="text"
+      [width]="3">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="reference_number"
+      label="{{'transports.history.reference' | translate}}"
+      type="text"
+      [width]="5">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="client_name"
+      label="{{'transports.history.client_sub' | translate}}"
+      type="text"
+      [width]="8">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="transport_principal_type"
+      label="{{'transports.history.movement' | translate}}"
+      type="custom"
+      [width]="8"
+      [render]="renderTransportType">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="status"
+      label="{{'transports.history.status' | translate}}"
+      type="chip-array"
+      [width]="8"
+      [chipConfig]="{ type: 'status' }">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="date_range"
+      label="{{'transports.history.date_range' | translate}}"
+      type="text"
+      [width]="8">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="tags"
+      label="{{'transports.history.tags' | translate}}"
+      type="chip-array"
+      [width]="8"
+      [chipConfig]="{ type: 'tags' }">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="driver_name"
+      label="{{'transports.history.driver' | translate}}"
+      type="text"
+      [width]="8">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="duration_hours"
+      label="{{'transports.history.duration' | translate}}"
+      type="custom"
+      [width]="8"
+      [render]="renderDuration">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="admin_name"
+      label="{{'transports.history.admin' | translate}}"
+      type="text"
+      [width]="8">
+    </dp-datagrid-column>
+
+    <dp-datagrid-column
+      key="actions"
+      label="{{'transports.history.actions' | translate}}"
+      type="actions"
+      [width]="8"
+      [actionConfig]="actionsConfig">
+    </dp-datagrid-column>
+  </dp-datagrid-columns>
+
+  <dp-datagrid-filter-container>
+    <dp-datagrid-filter
+      key="reference_number"
+      label="{{'transports.history.reference_filter' | translate}}"
+      type="text"
+      [width]="250">
+    </dp-datagrid-filter>
+
+    <dp-datagrid-filter
+      key="client_name"
+      label="{{'transports.history.client_filter' | translate}}"
+      type="text"
+      [width]="250">
+    </dp-datagrid-filter>
+
+    <dp-datagrid-filter
+      key="transport_principal_type"
+      label="{{'transports.list.movement_type_filter' | translate}}"
+      type="select"
+      [width]="250"
+      [options]="transportPrincipalTypeOptions()">
+    </dp-datagrid-filter>
+
+    <dp-datagrid-filter
+      key="status"
+      label="{{'transports.history.status_filter' | translate}}"
+      type="chip-select"
+      [width]="250"
+      [options]="transportStatusOptions()">
+    </dp-datagrid-filter>
+
+    <dp-datagrid-filter
+      key="date_range"
+      label="{{'transports.history.date_range_filter' | translate}}"
+      type="date-range"
+      [width]="250">
+    </dp-datagrid-filter>
+
+    <dp-datagrid-filter
+      key="tags"
+      label="{{'transports.history.tags_filter' | translate}}"
+      type="chip-select"
+      [width]="250"
+      [options]="[
+        { value: 'urgent', label: 'Urgente' },
+        { value: 'fragile', label: 'Frágil' },
+        { value: 'heavy', label: 'Pesado' },
+        { value: 'oversized', label: 'Gran volumen' },
+        { value: 'hazardous', label: 'Peligroso' },
+        { value: 'temperature', label: 'Temperatura controlada' },
+        { value: 'express', label: 'Express' },
+        { value: 'standard', label: 'Estándar' }
+      ]">
+    </dp-datagrid-filter>
+
+    <dp-datagrid-filter
+      key="driver_name"
+      label="{{'transports.history.driver' | translate}}"
+      type="text"
+      [width]="250">
+    </dp-datagrid-filter>
+
+    <dp-datagrid-filter
+      key="duration_hours"
+      label="{{'transports.history.duration_filter' | translate}}"
+      type="text"
+      [width]="250">
+    </dp-datagrid-filter>
+
+    <dp-datagrid-filter
+      key="admin_name"
+      label="{{'transports.history.admin_filter' | translate}}"
+      type="text"
+      [width]="250">
+    </dp-datagrid-filter>
+  </dp-datagrid-filter-container>
+
+</dp-datagrid>
+

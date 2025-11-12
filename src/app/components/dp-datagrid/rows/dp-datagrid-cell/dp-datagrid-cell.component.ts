@@ -176,8 +176,9 @@ export class DpDatagridCellComponent implements OnInit {
    * Maneja el click en una acción
    */
   handleActionClick(event: { action: any; rowData: any; event: MouseEvent }): void {
-    // Las acciones ya tienen su propio handler onClick en el ActionButton
-    // Este método se mantiene para compatibilidad futura si se necesita propagación
+    if (event.action && event.action.onClick && typeof event.action.onClick === 'function') {
+      event.action.onClick(event.rowData);
+    }
   }
 
   /**

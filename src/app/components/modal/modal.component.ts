@@ -101,5 +101,12 @@ export class ModalComponent<T = any> {
         }
       });
     }
+
+    // Si el componente tiene onOptionClick, suscribirse
+    if (component && component.onOptionClick && component.onOptionClick.subscribe) {
+      component.onOptionClick.subscribe((event: any) => {
+        this.close(event);
+      });
+    }
   }
 }

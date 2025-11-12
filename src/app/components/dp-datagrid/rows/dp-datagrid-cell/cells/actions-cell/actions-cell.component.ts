@@ -14,7 +14,7 @@ import { TableColumn } from '../../../../dp-datagrid.interfaces';
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
   template: `
-    <div class="actions-cell">
+    <div class="actions-cell" [style.--actions-count]="actions.length">
       @for (action of actions; track action.label) {
         <button 
           mat-icon-button
@@ -28,23 +28,47 @@ import { TableColumn } from '../../../../dp-datagrid.interfaces';
   `,
   styles: [`
     .actions-cell {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      width: 100%;
-      min-width: 0;
-      flex-shrink: 0;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 4px !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      flex-wrap: nowrap !important;
+      box-sizing: border-box !important;
     }
-    button {
-      width: 32px;
-      height: 32px;
-      flex-shrink: 0;
+    .actions-cell button {
+      width: calc((100% - (var(--actions-count, 1) - 1) * 4px) / var(--actions-count, 1)) !important;
+      min-width: 24px !important;
+      max-width: 32px !important;
+      height: 28px !important;
+      flex-shrink: 1 !important;
+      flex-grow: 0 !important;
+      flex-basis: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
       
       mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
+        font-size: 16px !important;
+        width: 16px !important;
+        height: 16px !important;
+        line-height: 16px !important;
+        display: inline-block !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .actions-cell button {
+        min-width: 20px !important;
+        max-width: 28px !important;
+        height: 24px !important;
+        
+        mat-icon {
+          font-size: 14px !important;
+          width: 14px !important;
+          height: 14px !important;
+        }
       }
     }
   `]
