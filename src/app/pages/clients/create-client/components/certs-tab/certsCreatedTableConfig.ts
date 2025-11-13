@@ -3,7 +3,7 @@ import { signal } from '@angular/core';
 
 export const certsCreatedTableConfig: TableConfig = {
     columns: [
-        { key: 'cert_list', label: 'clients.create-client.cert_list', type: 'text', width: 70 },
+        { key: 'title', label: 'clients.create-client.cert_list', type: 'text', width: 70 },
         { key: 'actions', label: 'clients.list.actions', type: 'actions', width: 30, actionConfig: {
             actions: [
                 {
@@ -16,13 +16,10 @@ export const certsCreatedTableConfig: TableConfig = {
         }
     }
     ],
-    data: signal([
-        { cert_list: 'Cert 1' },
-        { cert_list: 'Cert 2' },
-        { cert_list: 'Cert 3' },
-    ]),
+    data: signal([]),
+    pageSize: 5,
     exportable: false,
     selectable: false,
-    pagination: false,
+    pagination: true,
     
 }

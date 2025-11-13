@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, inject, OnDestroy, signal } from '@angular/core';
 import { DynamicTableComponent } from '@components/dynamic-table/dynamic-table.component';
 import { certsCreatedTableConfig } from './certsCreatedTableConfig';
 import { TableConfig } from '@components/dynamic-table/dynamic-table.interfaces';
@@ -9,7 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { CertificationComponent, Certification } from '../certification/certification.component';
+import { CertificationComponent} from '../certification/certification.component';
+import { CertificationsDto } from '@dtos/certifications.dto';
+import { ClientStore } from '@store/clients.state';
+import { ClientCertification, ClientCertificationFromTemplate } from '@dtos/clients/clientsCertifications.dto';
 
 interface Cert {
   title: string;
@@ -33,35 +36,64 @@ interface Cert {
   templateUrl: './certs.component.html',
   styleUrl: './certs.component.scss'
 })
-export class CertsComponent {
-
+export class CertsComponent implements OnDestroy{
+  store = inject(ClientStore);
+  certificationsTemplate = signal<CertificationsDto[]>([]);
+  certifications = signal<ClientCertification[]>([]);
   certsCreatedTableConfig: TableConfig = certsCreatedTableConfig;
   certsAssignedTableConfig: TableConfig = certsAssignedTableConfig;
+  currentCertification = signal<ClientCertification>({} as ClientCertification);
+  curAction = signal< 'nothing' | 'edit' | 'create'>('nothing');
+  updateTempletes = effect(() => {
+      var certs = this.store.certificationsTemplates();
+      this.certificationsTemplate.set(certs)
+    });
+  updateCertifications = effect(() => {
+      var certs = this.store.certifications();
+      this.certifications.set(certs)
+    });
+    
+  constructor() {
+    this.confingTables();
+  }
+  ngOnDestroy(): void {
+    this.updateTempletes.destroy();
+    this.updateCertifications.destroy();
+  }
+  confingTables(){
+    certsCreatedTableConfig.data = this.certificationsTemplate;
+    certsAssignedTableConfig.data = this.certifications;
+    var actionsTemplates = certsCreatedTableConfig.columns.find(c => c.key == 'actions')?.actionConfig?.actions;
+    var actionsAssigned = certsAssignedTableConfig.columns.find(c => c.key == 'actions')?.actionConfig?.actions;
+    actionsTemplates![0].onClick = (cert: CertificationsDto) => {
+      this.currentCertification.set(ClientCertificationFromTemplate(cert));
+      this.store.updateState({currentCertification: this.currentCertification()});
+      this.curAction.set('create');
+    };
+    actionsAssigned![0].onClick = (cert: ClientCertification) => {
+      this.currentCertification.set(cert);
+      this.store.updateState({currentCertification: this.currentCertification()});
+      this.curAction.set('edit');
+    };
+  }
 
-  currentCertification = signal<Certification>({
-    id: '',
-    title: '',
-    questions: [
-      {
-        id: '1',
-        text: '',
-        answers: [
-          { id: 'A', text: '', isCorrect: true },
-          { id: 'B', text: '', isCorrect: false },
-          { id: 'C', text: '', isCorrect: false }
-        ]
+  onSaveCertification(certification: ClientCertification): void {
+    if(this.curAction() === 'create'){
+      delete(certification.id);
+    }
+    certification.client = this.store.client().id;
+    delete(certification.exam.id);
+    for(const e of certification.exam.questions){
+      delete(e.id);
+      for(const o of e.options){
+        delete(o.id);
       }
-    ],
-    attemptsPerWeek: 1,
-    availableForNewDrivers: false
-  });
-
-  onCertificationChange(certification: Certification): void {
-    this.currentCertification.set(certification);
+    }
+    var result = this.store.saveCertification(certification);
+    if(result instanceof Error){
+      return;
+    }
+    this.curAction.set('nothing');
   }
-
-  onSaveCertification(certification: Certification): void {
-    console.log('Guardando certificación:', certification);
-  }
-
+ 
 }

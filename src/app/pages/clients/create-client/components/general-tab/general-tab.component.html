@@ -154,8 +154,8 @@
                 <mat-form-field appearance="outline" class="field-input">
                     <mat-select [value]="client.client_type()" (selectionChange)="client.client_type.set($event.value)">
                         @for (clientType of clientsTypeArray; track clientType) {
-                        <mat-option [value]="clientType.key">{{ clientType.value | translate }}</mat-option>
-                    }
+                            <mat-option [value]="clientType.key">{{ clientType.value | translate }}</mat-option>
+                        }
                     </mat-select>
                     
                 </mat-form-field>

@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, effect, inject, input, OnDestroy, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,26 +8,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@i18n/translate.pipe';
 import { ButtonsComponent } from '@components/buttons.component/buttons.component';
+import { ClientStore } from '@store/clients.state';
+import { ClientCertification } from '@dtos/clients/clientsCertifications.dto';
+import { ClientCertificationEntity } from '@entities/clients.entities';
+import { Helpers } from '@utils/helpers';
 
-export interface Answer {
-  id: string;
-  text: string;
-  isCorrect: boolean;
-}
-
-export interface Question {
-  id: string;
-  text: string;
-  answers: Answer[];
-}
-
-export interface Certification {
-  id: string;
-  title: string;
-  questions: Question[];
-  attemptsPerWeek: number;
-  availableForNewDrivers: boolean;
-}
 
 @Component({
   selector: 'app-certification',
@@ -45,103 +30,29 @@ export interface Certification {
   templateUrl: './certification.component.html',
   styleUrl: './certification.component.scss'
 })
-export class CertificationComponent {
-  certification = input<Certification>(this.getDefaultCertification());
-  certificationChange = output<Certification>();
-  save = output<Certification>();
+export class CertificationComponent implements OnDestroy{
 
-  getDefaultCertification(): Certification {
-    return {
-      id: '',
-      title: '',
-      questions: [
-        {
-          id: '1',
-          text: '',
-          answers: [
-            { id: 'A', text: '', isCorrect: true },
-            { id: 'B', text: '', isCorrect: false },
-            { id: 'C', text: '', isCorrect: false }
-          ]
-        },
-        {
-          id: '2',
-          text: '',
-          answers: [
-            { id: 'A', text: '', isCorrect: true },
-            { id: 'B', text: '', isCorrect: false },
-            { id: 'C', text: '', isCorrect: false }
-          ]
-        }
-      ],
-      attemptsPerWeek: 1,
-      availableForNewDrivers: false
-    };
+  store = inject(ClientStore);
+  curAction = input.required< 'nothing' | 'edit' | 'create'>();
+  save = output<ClientCertification>();
+  certification = ClientCertificationEntity.fromDto(this.store.currentCertification());
+  max_tries_per_week_is_empty = signal<boolean>(false);
+  certificationStoreChange = effect(() => {
+    this.certification.copyFromDto(this.store.currentCertification());
+  });
+  
+  ngOnDestroy(): void {
+    this.certificationStoreChange.destroy();
   }
 
-
-
-  toggleCorrectAnswer(questionId: string, answerId: string): void {
-    const currentCert = this.certification();
-    const question = currentCert.questions.find(q => q.id === questionId);
-    if (question) {
-      const answer = question.answers.find(a => a.id === answerId);
-      if (answer) {
-        question.answers.forEach(a => a.isCorrect = false);
-        answer.isCorrect = true;
-        this.emitChanges();
-      }
-    }
-  }
-
-  updateTitle(title: string): void {
-    const currentCert = this.certification();
-    currentCert.title = title;
-    this.emitChanges();
-  }
-
-  updateQuestionText(questionId: string, text: string): void {
-    const currentCert = this.certification();
-    const question = currentCert.questions.find(q => q.id === questionId);
-    if (question) {
-      question.text = text;
-      this.emitChanges();
-    }
-  }
-
-  updateAnswerText(questionId: string, answerId: string, text: string): void {
-    const currentCert = this.certification();
-    const question = currentCert.questions.find(q => q.id === questionId);
-    if (question) {
-      const answer = question.answers.find(a => a.id === answerId);
-      if (answer) {
-        answer.text = text;
-        this.emitChanges();
-      }
-    }
-  }
-
-  updateAttemptsPerWeek(attempts: number): void {
-    const currentCert = this.certification();
-    currentCert.attemptsPerWeek = attempts;
-    this.emitChanges();
-  }
-
-  updateAvailableForNewDrivers(available: boolean): void {
-    const currentCert = this.certification();
-    currentCert.availableForNewDrivers = available;
-    this.emitChanges();
-  }
-
+ 
   onSave(): void {
-    this.save.emit(this.certification());
-    this.certificationChange.emit({
-      type: 'save',
-      certification: this.certification()
-    } as any);
-  }
-
-  private emitChanges(): void {
-    this.certificationChange.emit(this.certification());
+    if(Helpers.isEmptyOrZero(this.certification.max_tries_per_week())){
+      this.max_tries_per_week_is_empty.set(true);
+      return;
+    }else{
+      this.max_tries_per_week_is_empty.set(false);
+    }
+    this.save.emit(this.certification.toDto());
   }
 }

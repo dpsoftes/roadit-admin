@@ -1,7 +1,7 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, DOCUMENT } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { I18nService } from '@i18n/i18n.service';
 import { TranslatePipe } from '@i18n//translate.pipe';
@@ -22,18 +22,17 @@ export class LoginComponent {
   loginForm: FormGroup;
   showPassword = signal(false);
   isLoading = signal(false);
-  
+  private document = inject(DOCUMENT);
   private globalStore = inject(GlobalStore);
   private store = inject(StoreService);
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private i18nService: I18nService,
-    private envService: EnvironmentService,
     private apiService: ApiService
   ) {
     this.loginForm = this.fb.group({
-      email: [this.store.isDebug ? 'admin1@example.com' : '', [Validators.required, this.emailOrUsernameValidator]],
+      email: [this.store.isDebug  && this.document.location.hostname === 'localhost' ? 'admin1@example.com' : '', [Validators.required, this.emailOrUsernameValidator]],
       password: [this.store.isDebug ? 'admin1password' : '', [Validators.required, Validators.minLength(6)]],
       rememberMe: [false]
     });

@@ -8,7 +8,7 @@ export class ProtocolOptionDto {
 
 export class ProtocolDto {
     id?: number;
-    title?: string;
+    title?: string  = "";
     protocol_type?: ProtocolType;
     direction_type?: DirectionType;
     transport_principal_types?: TransportPrincipalType[];
@@ -16,5 +16,4 @@ export class ProtocolDto {
     transport?: number | null;
     is_template?: boolean;
     options?: ProtocolOptionDto[];
-
 }

@@ -11,6 +11,9 @@ import { ClientCertification } from '@dtos/clients/clientsCertifications.dto';
 import { Helpers } from '@utils/helpers';
 import { ErrorBase } from '@dtos/errors.dtos';
 import { TransportPrincipalType } from '@enums/client.enum';
+import { ProtocolDto } from '@dtos/clients/protocols.dto';
+import { CertificationsDto } from '@dtos/certifications.dto';
+import { Client } from '@dtos/index';
 
 @Injectable({ providedIn: 'root' })
 export class ClientsProvider {
@@ -107,11 +110,12 @@ export class ClientsProvider {
             return null;
         }
     }
-    async getClientFullData(id: number | string): Promise<{documents: DocumentsClientsDto[], billings: BillingAccountItemDto[], priceRules: PriceRulesClientDto, certifications: ClientCertification[]} | null> {
+    async getClientFullData(id: number | string): Promise<{documents: DocumentsClientsDto[], billings: BillingAccountItemDto[], priceRules: PriceRulesClientDto, certifications: ClientCertification[], protocols: ProtocolDto[], certificationsTemplates: CertificationsDto[]} | null> {
         try {
             var a = await this.api.get<any>({ url: EndPoints.getDocumentTemplates, queryParams: {client: id}  });
             var documents: DocumentsClientsDto[] = (await this.api.get<DocumentsClientsDto[]>({ url: EndPoints.getDocumentTemplates, queryParams: {client: id}  }));
             var billings: BillingAccountItemDto[] = (await this.api.get<BillingAccountItemDto[]>({ url: EndPoints.getClientBillingAccounts, queryParams: {client: id}  }));
+            var protocols: ProtocolDto[] = (await this.api.get<any>({ url: EndPoints.getProtocols, queryParams: {client: id, is_template: false}  }))["results"] as ProtocolDto[];;
             let priceRules: PriceRulesClientDto  = new PriceRulesClientDto();
             try{
                 priceRules = (await this.api.get<PriceRulesClientDto>({ url: EndPoints.getPriceRule.replace("{scope}", "client").replace("{clientId}", id.toString())  })) ?? new PriceRulesClientDto();
@@ -121,11 +125,14 @@ export class ClientsProvider {
             priceRules.client = priceRules.id ?? Number(id);
             var certifications: ClientCertification[] = (await this.api.get<any>({ url: EndPoints.getClientCertifications, queryParams: {client: id}  }))["results"] as ClientCertification[];
 
+            var certificationsTemplates: CertificationsDto[] = (await this.api.get<any>({ url: EndPoints.getCertificationsTemlates}))["results"] as CertificationsDto[];
             return {
                 documents,
                 billings,
                 priceRules,
-                certifications
+                certifications, 
+                protocols,
+                certificationsTemplates
             };
 
         } catch (error) {
@@ -189,7 +196,7 @@ export class ClientsProvider {
             return new ErrorBase(error, 500);
         }
     }
-     async getProtocolsTemplates(type: TransportPrincipalType): Promise<ClientDto | null> {
+    async getProtocolsTemplates(type: TransportPrincipalType): Promise<ClientDto | null> {
         try {
             return await this.api.get<ClientDto>({ url: EndPoints.getProtocols, queryParams: { transport_principal_type: type, is_template: true } });
         } catch (error) {
@@ -197,6 +204,41 @@ export class ClientsProvider {
             return null;
         }
     }
-         
+    async updateProtocol(data: Partial<ProtocolDto>): Promise<ProtocolDto | ErrorBase> {
+        try {
+
+            var options: ApiRequestOptions = { url: EndPoints.createProtocols, body: data };
+            let result: PriceRulesClientDto; 
+            if (!Helpers.isEmptyOrZero(data.id)) {
+                options.url = EndPoints.createProtocols + data.id + '/';
+                result = await this.api.patch<PriceRulesClientDto>(options );
+            }else{
+                result = await this.api.post<PriceRulesClientDto>(options );
+            }
+            return result;
+        } catch (error:any) {
+            console.error('Error al obtener admins:', error);
+            return new ErrorBase(error, 500);
+        }
+    }
+    async updateCertification(data: Partial<ClientCertification>): Promise<ClientCertification | ErrorBase> {
+        try {
+
+            var options: ApiRequestOptions = { url: EndPoints.updateClientCertification, body: data };
+            let result: ClientCertification; 
+            if(!Helpers.isEmptyOrZero(data.id)){
+                options.url = EndPoints.updateClientCertification.replace("{certificationId}", data.id!.toString());
+                result = await this.api.patch<ClientCertification>(options );
+            }else{
+                options.url = EndPoints.updateClientCertification.replace("{certificationId}/", "");
+                result = await this.api.post<ClientCertification>(options );
+            }
+            
+            return result;
+        } catch (error:any) {
+            console.error('Error al obtener admins:', error);
+            return new ErrorBase(error, 500);
+        }
+    }    
 
 }

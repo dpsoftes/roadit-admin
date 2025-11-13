@@ -3,8 +3,8 @@ import { signal } from "@angular/core";
 
 export const protocolAssignedTableConfig: TableConfig = {
     columns: [
-        { key: 'protocols', label: 'clients.create-client.protocols', type: 'text', width: 40 },
-        { key: 'type', label: 'clients.create-client.type', type: 'text', width: 40 },
+        { key: 'title', label: 'clients.create-client.protocols', type: 'text', width: 40 },
+        { key: 'protocol_type', label: 'clients.create-client.type', type: 'text', width: 40 },
         { key: 'actions', label: 'clients.list.actions', type: 'actions', width: 30, actionConfig: {
             actions: [
                 { icon: 'material-symbols-outlined/edit_square', label: 'Editar', color: 'primary', action: 'edit' },
@@ -13,10 +13,7 @@ export const protocolAssignedTableConfig: TableConfig = {
         }
     }
     ],
-    data: signal([
-        { protocols: 'Protocol 1', type: 'Type 1' },
-        { protocols: 'Protocol 2', type: 'Type 2' },   
-    ]),
+    data: signal([]),
     exportable: false,
     selectable: false,
     pagination: false,

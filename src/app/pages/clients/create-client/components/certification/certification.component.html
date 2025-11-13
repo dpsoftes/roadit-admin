@@ -5,12 +5,12 @@
         <input 
             type="text" 
             matInput 
-            [value]="certification().title"
-            (input)="updateTitle($event.target.value)"
+            [value]="certification.title()"
+            [disabled]="true"
             [placeholder]="'clients.create-client.certification-title' | translate">
     </mat-form-field>
     
-    @for (question of certification().questions; track question.id; let i = $index) {
+    @for (question of certification.exam().questions(); track question.id!; let i = $index) {
         <div class="question-container">
             <div class="question-header">
                 <h3>{{'clients.create-client.cert-question' | translate}} {{i + 1}}</h3>
@@ -20,29 +20,29 @@
                 <input 
                     type="text" 
                     matInput 
-                    [value]="question.text"
-                    (input)="updateQuestionText(question.id, $event.target.value)"
+                    [value]="question.title()"
+                    [disabled]="true"
                     [placeholder]="'clients.create-client.question-placeholder' | translate">
             </mat-form-field>
             
             <div class="answers-container">
-                @for (answer of question.answers; track answer.id) {
+                @for (answer of question.options(); track answer.id()!; let j = $index) {
                     <div class="answer-row">
                         <div 
                             class="answer-indicator" 
-                            [class.correct]="answer.isCorrect"
-                            [class.incorrect]="!answer.isCorrect"
-                            (click)="toggleCorrectAnswer(question.id, answer.id)">
-                            <mat-icon>{{answer.isCorrect ? 'check' : 'close'}}</mat-icon>
+                            [class.correct]="answer.is_correct()"  
+                            [class.incorrect]="!answer.is_correct()"
+                            >
+                            <mat-icon>{{answer.is_correct() ? 'check' : 'close'}}</mat-icon>
                         </div>
                         <div class="answer-content">
-                            <span class="answer-label">{{'clients.create-client.answer' | translate}} {{answer.id}}</span>
+                            <span class="answer-label">{{'clients.create-client.answer' | translate}} {{$index + 1}}</span>
                             <mat-form-field appearance="outline" class="answer-input">
                                 <input 
                                     type="text" 
                                     matInput 
-                                    [value]="answer.text"
-                                    (input)="updateAnswerText(question.id, answer.id, $event.target.value)"
+                                    [value]="answer.title()"
+                                    [disabled]="true"
                                     [placeholder]="'clients.create-client.answer-placeholder' | translate">
                             </mat-form-field>
                         </div>
@@ -62,19 +62,26 @@
             <input 
                 type="number" 
                 matInput 
-                [value]="certification().attemptsPerWeek"
-                (input)="updateAttemptsPerWeek(+$event.target.value)"
+                [value]="certification.max_tries_per_week()"
+                [disabled]="curAction() == 'nothing'"
+                (input)="certification.max_tries_per_week.set(+$event.target.value)"
                 [placeholder]="'1'">
+                @if(max_tries_per_week_is_empty()){
+                    <small class="field-error">{{'errorsGlobal.required-field' | translate}}</small>
+                }
         </mat-form-field>
+        
     </div>
     
     <div class="checkbox-section">
         <mat-checkbox 
-            [checked]="certification().availableForNewDrivers"
-            (change)="updateAvailableForNewDrivers($event.checked)">
+            [checked]="certification.allow_new_drivers()"
+            (change)="certification.allow_new_drivers.set($event.checked)"
+            [disabled]="curAction() == 'nothing'">
             {{'clients.create-client.available-new-drivers' | translate}}
         </mat-checkbox>
     </div>
-    
-    <app-buttons type="save-changes" text="clients.create-client.save-cert" (click)="onSave()"></app-buttons>
+    @if(curAction() != 'nothing'){
+        <app-buttons type="save-changes" [text]="curAction() == 'edit' ? 'clients.create-client.save-cert' : 'clients.create-client.assign'" (click)="onSave()"></app-buttons>
+    }    
 </mat-card>

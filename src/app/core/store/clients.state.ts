@@ -1,9 +1,11 @@
 import { updateState, withDevtools } from "@angular-architects/ngrx-toolkit";
 import { inject } from "@angular/core";
+import { CertificationsDto } from "@dtos/certifications.dto";
 import { BillingAccountItemDto, ClientBillingAccountDto } from "@dtos/clients/billingsAccounts.dto";
 import { ClientCertification } from "@dtos/clients/clientsCertifications.dto";
 import { DocumentsClientsDto } from "@dtos/clients/documents.dto";
 import { PriceRulesClientDto } from "@dtos/clients/priceRules.dtos";
+import { ProtocolDto } from "@dtos/clients/protocols.dto";
 import { ErrorBase } from "@dtos/errors.dtos";
 import { ClientDto } from "@dtos/index";
 import { ClientBillingAccountEntity, DocumentTemplateTransportEntity } from "@entities/clients.entities";
@@ -15,15 +17,18 @@ import { environment } from "src/environments/environment";
 export class ClientsState {
     client: ClientDto = new ClientDto();
     documents: DocumentsClientsDto[] = [];
-    currentDocument: DocumentsClientsDto = {} as DocumentsClientsDto;
+    protocols: ProtocolDto[] = [];
     priceRules: PriceRulesClientDto = new PriceRulesClientDto();
     billingsAccounts: BillingAccountItemDto[] = [];
     currentBillingAccount: ClientBillingAccountDto = new ClientBillingAccountDto();
     certifications: ClientCertification[] = [];
-    currentCertification: ClientCertification = new ClientCertification();
+    certificationsTemplates: CertificationsDto[] = [];
     curImage: File | null = null;
+    currentDocument: DocumentsClientsDto = {} as DocumentsClientsDto;
+    currentProtocol: ProtocolDto = new ProtocolDto();
+    currentCertification: ClientCertification = new ClientCertification();
     errors: string[] = [];
-}
+  }
 
 
 
@@ -73,6 +78,9 @@ export const ClientStore = signalStore(
             patchState(store, loadedStore);
           }
         },
+        destroy: () => {
+         patchState(store, new ClientsState()); 
+        }
       }
     }),
     withMethods((store) => ({
@@ -131,7 +139,19 @@ export const ClientStore = signalStore(
               // Cargar datos adicionales
               const fullData = await prov.getClientFullData(clientData.id);
               if(fullData){
-                store.updateState({ documents: fullData.documents, billingsAccounts: fullData.billings, priceRules: fullData.priceRules, certifications: fullData.certifications });
+                store.updateState({ 
+                  documents: fullData.documents, 
+                  billingsAccounts: fullData.billings, 
+                  priceRules: fullData.priceRules, 
+                  certifications: fullData.certifications, 
+                  certificationsTemplates: fullData.certificationsTemplates,
+                  protocols: fullData.protocols,
+                  curImage:  null,
+                  currentDocument: {} as  DocumentsClientsDto,
+                  currentProtocol: new ProtocolDto(),
+                  currentCertification: new ClientCertification(),
+                  errors: [],
+                });
               }
             }
           }catch(error){
@@ -242,13 +262,61 @@ export const ClientStore = signalStore(
           } catch (error) {
             return error;
           }
-        }
-        
+        },
+        setCurrentProtocol: (protocol?: ProtocolDto) => {
+          if(!protocol){
+            store.updateState({ currentProtocol: new ProtocolDto() });
+            return;
+          }
+          if(protocol.is_template){
+            var {id, ...rest} = protocol;
+            store.updateState({ currentProtocol: rest });
+            return;
+          }else{
+            store.updateState({ currentProtocol: protocol });
+          }
+        },
+        saveCurrentProtocol: async (protocol: ProtocolDto) => {
+          try {
+            
+              // Crear nuevo
+              let protocolToSave = { ...protocol, client: store.client().id! };
+              protocolToSave.is_template = false; 
+              protocolToSave.options = protocolToSave.options?.map(opt => {
+                delete(opt.id);
+                return opt;
+              });
+              const result = await prov.updateProtocol(protocolToSave);
+              if(result && !(result instanceof ErrorBase)) {
+                // Actualizar lista
+                let updatedProtocols = store.protocols().filter(p => p.id !== result.id);
+                updatedProtocols.push(result);
+                store.updateState({ protocols: updatedProtocols, currentProtocol: new ProtocolDto() });
+                
+              }
+              return result;
+
+          } catch (error) {
+            return error;
+          }           
+        },
+        saveCertification: async (certification: ClientCertification) => {
+          try {
+            const result = await prov.updateCertification(certification);
+            if(result && !(result instanceof ErrorBase)) {
+                // Actualizar lista
+                let updatedCertifications = store.certifications().filter(p => p.id !== result.id);
+                updatedCertifications.push(result);
+                store.updateState({ certifications: updatedCertifications, currentCertification: new ClientCertification() });
+            }
+            return result;
+          } catch (error) {
+            return error;             
+          }
       }
     }
-  ),
-
-);
+    })
+  );
   
 
 

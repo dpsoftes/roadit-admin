@@ -46,7 +46,7 @@ export class DocumentTabComponent implements OnInit {
   selectedFileUploadType = signal<FileUploadType>(FileUploadType.URL);
   store = inject(ClientStore);
   documents = signal(this.store.documents());
-  curDocument = new DocumentTemplateTransportEntity()
+  curDocument =  DocumentTemplateTransportEntity.fromDto({link: ''});
   file = signal<File|null>(null);
   i18n = inject(I18nService);
   

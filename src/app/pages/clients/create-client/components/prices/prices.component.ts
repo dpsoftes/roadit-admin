@@ -75,10 +75,13 @@ export class PricesComponent {
       this.curPrices = PriceRulesEntity.fromDto(this.store.priceRules());
       this.pricesTableConfig.data.set(this.store.priceRules().distance_brackets || []);
     });
+    this.initTables();  
+  }
+
+  initTables(){
     var actions = pricesTableConfig.columns.filter(col => col.key === 'actions')
     actions[0].actionConfig!.actions[0].onClick = this.editBracket;
     actions[0].actionConfig!.actions[1].onClick = this.deleteBracket;
-    
   }
   canSave = computed(() => {
     return !(Helpers.isEmptyOrZero(this.curBracket.max_km()) || Helpers.isEmptyOrZero(this.curBracket.standard_price()))

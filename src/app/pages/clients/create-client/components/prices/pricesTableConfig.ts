@@ -7,8 +7,8 @@ export const pricesTableConfig: TableConfig = {
     { key: 'max_km', label: 'clients.create-client.km-to', type: 'text', width: '12%' },
     { key: 'pricing_type', label: 'clients.create-client.price-type', type: 'text', width: '16%' },
     { key: 'standard_price', label: 'clients.create-client.standard-price-eur', type: 'text', width: '20%' },
-    { key: 'small_vehicule_price', label: 'clients.create-client.price-vu-lt-12', type: 'text', width: '20%' },
-    { key: 'big_vehicule_price', label: 'clients.create-client.price-vu-gt-12', type: 'text', width: '20%' },
+    { key: 'small_vehicle_price', label: 'clients.create-client.price-vu-lt-12', type: 'text', width: '20%' },
+    { key: 'big_vehicle_price', label: 'clients.create-client.price-vu-gt-12', type: 'text', width: '20%' },
     { key: 'actions', label: 'clients.list.actions', type: 'actions', width: '10%',actionConfig: {
           actions: [
             {

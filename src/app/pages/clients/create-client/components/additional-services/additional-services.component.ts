@@ -13,7 +13,7 @@ import { additionalServicesTableConfig } from './additionalServicesTableConfig';
 import { additionalServicesAssignedTableConfig } from './additionalServicesAssignedTableConfig';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '@components/modal/modal.component';
-import { CertificationComponent, Certification } from '../certification/certification.component';
+import { CertificationComponent } from '../certification/certification.component';
   
 export interface AdditionalService {
   id: string;
@@ -122,9 +122,6 @@ export class AdditionalServicesComponent {
       data: {
         title: 'clients.create-client.edit-certification',
         component: CertificationComponent,
-        componentInputs: {
-          certification: this.getDefaultCertification()
-        },
         showActions: false
       }
     });
@@ -136,13 +133,13 @@ export class AdditionalServicesComponent {
     });
   }
 
-  private getDefaultCertification(): Certification {
+  /* private getDefaultCertification(): Certification {
     return {
       id: '',
       title: '',
       questions: [
         {
-          id: '1',
+          id: '1',ov
           text: '',
           answers: [
             { id: 'A', text: '', isCorrect: true },
@@ -163,5 +160,5 @@ export class AdditionalServicesComponent {
       attemptsPerWeek: 1,
       availableForNewDrivers: false
     };
-  }
+  } */
 }

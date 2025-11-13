@@ -1,6 +1,6 @@
 <div class="tables">
     <mat-card>
-        <h2>{{'clients.create-client.certs-created' | translate}}</h2>
+        <h2>{{'clients.create-client.protocols-templates' | translate}}</h2>
         <mat-label>{{'clients.create-client.intern-movement-type' | translate}}</mat-label>
         <mat-form-field appearance="outline">
             <mat-select [value]="currentType()" (selectionChange)="currentType.set($event.value)">
@@ -22,33 +22,37 @@
     <mat-card>
         <h3>{{'clients.create-client.action-title' | translate}}</h3>
         <mat-form-field appearance="outline">
-            <input type="text" matInput placeholder="Título certificación">
+            <input type="text" matInput placeholder="Título certificación" [value]="curProtocol.title()" (input)="curProtocol.title.set($event.target.value)" [disabled]="curAction()==='nothing'">
         </mat-form-field>
         
         <h3>{{'clients.create-client.type' | translate}}</h3>
         <div class="type-section">
             <mat-form-field appearance="outline">
-                <mat-select>
-                    <mat-option value="SINGLE_CHECK">{{'clients.create-client.single-check' | translate}}</mat-option>
-                    <mat-option value="MULTI_CHECK">{{'clients.create-client.multi-check' | translate}}</mat-option>
-                    <mat-option value="IMAGE">{{'clients.create-client.image' | translate}}</mat-option>
+                <mat-select  [value]="curProtocol.protocol_type()" (selectionChange)="curProtocol.protocol_type.set($event.value)" [disabled]="curAction()==='nothing'">
+                    @for (curType of protocolsType; track curType.key) {
+                        <mat-option [value]="curType.key">{{ curType.value | translate }}</mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
-            <app-buttons (click)="openOptionModal()" type="save-changes" text="clients.create-client.edit-options"></app-buttons>
+            @if(curProtocol.protocol_type() !== 'IMAGE') {
+                <app-buttons (click)="openOptionModal()" type="save-changes" text="clients.create-client.edit-options" [disabled]="curAction()==='nothing'"></app-buttons>
+            }
+            
         </div>
         
         <h3>{{'clients.create-client.application-moment' | translate}}</h3>
         <mat-form-field appearance="outline">
-            <mat-select>
-                <mat-option value="BOTH">{{'clients.create-client.both-departure-both' | translate}}</mat-option>
-                <mat-option value="DEPARTURE">{{'clients.create-client.departure' | translate}}</mat-option>
-                <mat-option value="ARRIVAL">{{'clients.create-client.arrival' | translate}}</mat-option>
+            <mat-select  [value]="curProtocol.direction_type()" (selectionChange)="curProtocol.direction_type.set($event.value)" [disabled]="curAction()==='nothing'">
+                    @for (curType of directionType; track curType.key) {
+                        <mat-option [value]="curType.key">{{ curType.value | translate }}</mat-option>
+                    }
             </mat-select>
         </mat-form-field>
-        
-        <div class="action-buttons">
-            <app-buttons type="save-changes" text="clients.create-client.assign"></app-buttons>
-            <app-buttons type="cancel" text="clients.create-client.cancel"></app-buttons>
-        </div>
+        @if(curAction() === 'create' || curAction() === 'edit') {
+            <div class="action-buttons">
+                <app-buttons type="save-changes" (onClick)="Asign()" [text]="saveLabel() | translate"></app-buttons>
+                <app-buttons type="cancel" (onClick)="cancel()" text="clients.create-client.cancel"></app-buttons>
+            </div>
+        }
     </mat-card>
 </div>

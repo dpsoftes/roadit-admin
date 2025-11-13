@@ -4,14 +4,25 @@ import { PricingType } from '@enums/additional.enum';
 import { BaseBillingAccountDto, ClientBillingAccountDto } from '@dtos/clients/billingsAccounts.dto';
 
 import { DocumentsClientsDto } from '@dtos/clients/documents.dto';
-import { DirectionType } from '@enums/additional.enum';
-import { TransportPrincipalType } from '@enums/transport.enum';
+import { DirectionType, ProtocolType } from '@enums/additional.enum';
+import { TransportPrincipalType } from '@enums/client.enum';
 
 import { signal, Signal } from '@angular/core';
 import { ClientsGroupCreateRequest } from '@dtos/clients/clients.dto';
 import { ClientDto } from '@dtos/clients/clients.dto';
 import { BillingType, ClientOrigin, ClientType } from '@enums/client.enum';
 import { Helpers } from '@utils/helpers';
+import { ProtocolDto, ProtocolOptionDto } from '@dtos/clients/protocols.dto';
+import { 
+    CertificationsDto, 
+    CertificationExam, 
+    ExamQuestion, 
+    ExamOption 
+} from '@dtos/certifications.dto';
+import { ClientCertification } from '@dtos/clients/clientsCertifications.dto';
+import { ExamQuestionType } from '@enums/additional.enum';
+import { ClientAdditionalServiceDto } from '@dtos/clients/clientAdditional-services.dto';
+import { TransportStatus } from '@enums/transport.enum';
 
 
 export class ClientsGralEntity {
@@ -257,15 +268,10 @@ export class DocumentTemplateTransportEntity {
     title = signal<string | undefined>(undefined);
     transport_principal_type = signal<TransportPrincipalType | undefined>(undefined);
 
-    static fromDto(dto: DocumentsClientsDto): DocumentTemplateTransportEntity {
+    static fromDto(dto: Partial<DocumentsClientsDto>): DocumentTemplateTransportEntity {
         const entity = new DocumentTemplateTransportEntity();
-        entity.application_time.set(dto.application_time);
-        entity.client.set(dto.client);
-        entity.file.set(dto.file);
-        entity.id.set(dto.id);
-        entity.link.set(dto.link);
-        entity.title.set(dto.title);
-        entity.transport_principal_type.set(dto.transport_principal_type);
+        entity.copyFromDto(dto);
+        
         return entity;
     }
 
@@ -649,6 +655,467 @@ export class PriceRulesEntity {
         if (this.is_fuel_included() !== defaults.is_fuel_included()) (patch as any).is_fuel_included = this.is_fuel_included();
         if (this.stage_discount_percentage() !== defaults.stage_discount_percentage()) (patch as any).stage_discount_percentage = this.stage_discount_percentage();
         if (this.transport() !== defaults.transport()) (patch as any).transport = this.transport();
+        return patch;
+    }
+}
+
+export class ProtocolOptionEntity {
+    id = signal<number | undefined>(undefined);
+    title = signal<string | undefined>(undefined);
+
+    static fromDto(dto: ProtocolOptionDto): ProtocolOptionEntity {
+        const entity = new ProtocolOptionEntity();
+        entity.id.set(dto.id);
+        entity.title.set(dto.title);
+        return entity;
+    }
+
+    toDto(): ProtocolOptionDto {
+        return {
+            id: this.id(),
+            title: this.title()
+        };
+    }
+
+    copyFromDto(dto: Partial<ProtocolOptionDto>): void {
+        if (dto.id !== undefined) this.id.set(dto.id);
+        if (dto.title !== undefined) this.title.set(dto.title);
+    }
+
+    toPatch<T>(): Partial<T> {
+        const defaults = new ProtocolOptionEntity();
+        const patch: Partial<T> = {};
+        if (this.id() !== defaults.id()) (patch as any).id = this.id();
+        if (this.title() !== defaults.title()) (patch as any).title = this.title();
+        return patch;
+    }
+}
+
+export class ProtocolEntity {
+    id = signal<number | undefined>(undefined);
+    title = signal<string | undefined>(undefined);
+    protocol_type = signal<ProtocolType | undefined>(undefined);
+    direction_type = signal<DirectionType | undefined>(undefined);
+    transport_principal_types = signal<TransportPrincipalType[]>([]);
+    client = signal<number | null | undefined>(undefined);
+    transport = signal<number | null | undefined>(undefined);
+    is_template = signal<boolean | undefined>(undefined);
+    options = signal<ProtocolOptionEntity[]>([]);
+
+    static fromDto(dto: ProtocolDto): ProtocolEntity {
+        const entity = new ProtocolEntity();
+        entity.id.set(dto.id);
+        entity.title.set(dto.title);
+        entity.protocol_type.set(dto.protocol_type);
+        entity.direction_type.set(dto.direction_type);
+        entity.transport_principal_types.set(dto.transport_principal_types ?? []);
+        entity.client.set(dto.client);
+        entity.transport.set(dto.transport);
+        entity.is_template.set(dto.is_template);
+        entity.options.set((dto.options || []).map(opt => ProtocolOptionEntity.fromDto(opt)));
+        return entity;
+    }
+
+    toDto(): ProtocolDto {
+        return {
+            id: this.id(),
+            title: this.title(),
+            protocol_type: this.protocol_type(),
+            direction_type: this.direction_type(),
+            transport_principal_types: this.transport_principal_types(),
+            client: this.client(),
+            transport: this.transport(),
+            is_template: this.is_template(),
+            options: this.options().map(opt => opt.toDto())
+        };
+    }
+
+    copyFromDto(dto: Partial<ProtocolDto>): void {
+        if (dto.id !== undefined) this.id.set(dto.id);
+        if (dto.title !== undefined) this.title.set(dto.title);
+        if (dto.protocol_type !== undefined) this.protocol_type.set(dto.protocol_type);
+        if (dto.direction_type !== undefined) this.direction_type.set(dto.direction_type);
+        if (dto.transport_principal_types !== undefined) this.transport_principal_types.set(dto.transport_principal_types);
+        if (dto.client !== undefined) this.client.set(dto.client);
+        if (dto.transport !== undefined) this.transport.set(dto.transport);
+        if (dto.is_template !== undefined) this.is_template.set(dto.is_template);
+        if (dto.options !== undefined) this.options.set(dto.options.map(opt => ProtocolOptionEntity.fromDto(opt)));
+    }
+
+    toPatch<T>(): Partial<T> {
+        const defaults = new ProtocolEntity();
+        const patch: Partial<T> = {};
+        if (this.id() !== defaults.id()) (patch as any).id = this.id();
+        if (this.title() !== defaults.title()) (patch as any).title = this.title();
+        if (this.protocol_type() !== defaults.protocol_type()) (patch as any).protocol_type = this.protocol_type();
+        if (this.direction_type() !== defaults.direction_type()) (patch as any).direction_type = this.direction_type();
+        if (JSON.stringify(this.transport_principal_types()) !== JSON.stringify(defaults.transport_principal_types())) (patch as any).transport_principal_types = this.transport_principal_types();
+        if (this.client() !== defaults.client()) (patch as any).client = this.client();
+        if (this.transport() !== defaults.transport()) (patch as any).transport = this.transport();
+        if (this.is_template() !== defaults.is_template()) (patch as any).is_template = this.is_template();
+        if (JSON.stringify(this.options()) !== JSON.stringify(defaults.options())) (patch as any).options = this.options().map(opt => opt.toDto());
+        return patch;
+    }
+}
+
+export class ExamOptionEntity {
+    id = signal<number>(0);
+    title = signal<string>("");
+    is_correct = signal<boolean>(false);
+
+    static fromDto(dto: ExamOption): ExamOptionEntity {
+        const entity = new ExamOptionEntity();
+        entity.id.set(dto.id ?? 0);
+        entity.title.set(dto.title ?? "");
+        entity.is_correct.set(dto.is_correct ?? false);
+        return entity;
+    }
+
+    toDto(): ExamOption {
+        return {
+            id: this.id(),
+            title: this.title(),
+            is_correct: this.is_correct(),
+        };
+    }
+
+    copyFromDto(dto: Partial<ExamOption>): void {
+        if (dto.id !== undefined) this.id.set(dto.id);
+        if (dto.title !== undefined) this.title.set(dto.title);
+        if (dto.is_correct !== undefined) this.is_correct.set(dto.is_correct);
+    }
+
+    toPatch<T>(): Partial<T> {
+        const defaults = new ExamOptionEntity();
+        const patch: Partial<T> = {};
+        if (this.id() !== defaults.id()) (patch as any).id = this.id();
+        if (this.title() !== defaults.title()) (patch as any).title = this.title();
+        if (this.is_correct() !== defaults.is_correct()) (patch as any).is_correct = this.is_correct();
+        return patch;
+    }
+}
+
+export class ExamQuestionEntity {
+    id = signal<number>(0);
+    title = signal<string>("");
+    type = signal<ExamQuestionType>(ExamQuestionType.SINGLE);
+    required = signal<boolean>(true);
+    order = signal<number>(0);
+    requires_manual_review = signal<boolean>(false);
+    options = signal<ExamOptionEntity[]>([]);
+
+    static fromDto(dto: ExamQuestion): ExamQuestionEntity {
+        const entity = new ExamQuestionEntity();
+        entity.id.set(dto.id ?? 0);
+        entity.title.set(dto.title ?? "");
+        entity.type.set(dto.type ?? ExamQuestionType.SINGLE);
+        entity.required.set(dto.required ?? true);
+        entity.order.set(dto.order ?? 0);
+        entity.requires_manual_review.set(dto.requires_manual_review ?? false);
+        entity.options.set((dto.options || []).map(opt => ExamOptionEntity.fromDto(opt)));
+        return entity;
+    }
+
+    toDto(): ExamQuestion {
+        return {
+            id: this.id(),
+            title: this.title(),
+            type: this.type(),
+            required: this.required(),
+            order: this.order(),
+            requires_manual_review: this.requires_manual_review(),
+            options: this.options().map(opt => opt.toDto()),
+        };
+    }
+
+    copyFromDto(dto: Partial<ExamQuestion>): void {
+        if (dto.id !== undefined) this.id.set(dto.id);
+        if (dto.title !== undefined) this.title.set(dto.title);
+        if (dto.type !== undefined) this.type.set(dto.type);
+        if (dto.required !== undefined) this.required.set(dto.required);
+        if (dto.order !== undefined) this.order.set(dto.order);
+        if (dto.requires_manual_review !== undefined) this.requires_manual_review.set(dto.requires_manual_review);
+        if (dto.options !== undefined) this.options.set(dto.options.map(opt => ExamOptionEntity.fromDto(opt)));
+    }
+
+    toPatch<T>(): Partial<T> {
+        const defaults = new ExamQuestionEntity();
+        const patch: Partial<T> = {};
+        if (this.id() !== defaults.id()) (patch as any).id = this.id();
+        if (this.title() !== defaults.title()) (patch as any).title = this.title();
+        if (this.type() !== defaults.type()) (patch as any).type = this.type();
+        if (this.required() !== defaults.required()) (patch as any).required = this.required();
+        if (this.order() !== defaults.order()) (patch as any).order = this.order();
+        if (this.requires_manual_review() !== defaults.requires_manual_review()) (patch as any).requires_manual_review = this.requires_manual_review();
+        if (JSON.stringify(this.options()) !== JSON.stringify(defaults.options())) (patch as any).options = this.options().map(opt => opt.toDto());
+        return patch;
+    }
+}
+
+export class CertificationExamEntity {
+    id = signal<number>(0);
+    title = signal<string>("");
+    max_tries_per_week = signal<number>(0);
+    questions = signal<ExamQuestionEntity[]>([]);
+
+    static fromDto(dto: CertificationExam): CertificationExamEntity {
+        const entity = new CertificationExamEntity();
+        entity.id.set(dto.id ?? 0);
+        entity.title.set(dto.title ?? "");
+        entity.max_tries_per_week.set(dto.max_tries_per_week ?? 0);
+        entity.questions.set((dto.questions || []).map(q => ExamQuestionEntity.fromDto(q)));
+        return entity;
+    }
+
+    toDto(): CertificationExam {
+        return {
+            id: this.id(),
+            title: this.title(),
+            max_tries_per_week: this.max_tries_per_week(),
+            questions: this.questions().map(q => q.toDto()),
+        };
+    }
+
+    copyFromDto(dto: Partial<CertificationExam>): void {
+        if (dto.id !== undefined) this.id.set(dto.id);
+        if (dto.title !== undefined) this.title.set(dto.title);
+        if (dto.max_tries_per_week !== undefined) this.max_tries_per_week.set(dto.max_tries_per_week);
+        if (dto.questions !== undefined) this.questions.set(dto.questions.map(q => ExamQuestionEntity.fromDto(q)));
+    }
+
+    toPatch<T>(): Partial<T> {
+        const defaults = new CertificationExamEntity();
+        const patch: Partial<T> = {};
+        if (this.id() !== defaults.id()) (patch as any).id = this.id();
+        if (this.title() !== defaults.title()) (patch as any).title = this.title();
+        if (this.max_tries_per_week() !== defaults.max_tries_per_week()) (patch as any).max_tries_per_week = this.max_tries_per_week();
+        if (JSON.stringify(this.questions()) !== JSON.stringify(defaults.questions())) (patch as any).questions = this.questions().map(q => q.toDto());
+        return patch;
+    }
+}
+
+export class CertificationEntity {
+    id = signal<number>(0);
+    title = signal<string>("");
+    description = signal<string>("");
+    default_max_tries = signal<number>(0);
+    allow_new_drivers = signal<boolean>(false);
+    exam = signal<CertificationExamEntity>(new CertificationExamEntity());
+
+    static fromDto(dto: CertificationsDto): CertificationEntity {
+        const entity = new CertificationEntity();
+        entity.id.set(dto.id ?? 0);
+        entity.title.set(dto.title ?? "");
+        entity.description.set(dto.description ?? "");
+        entity.default_max_tries.set(dto.default_max_tries ?? 0);
+        entity.allow_new_drivers.set(dto.allow_new_drivers ?? false);
+        entity.exam.set(CertificationExamEntity.fromDto(dto.exam));
+        return entity;
+    }
+
+    toDto(): CertificationsDto {
+        return {
+            id: this.id(),
+            title: this.title(),
+            description: this.description(),
+            default_max_tries: this.default_max_tries(),
+            allow_new_drivers: this.allow_new_drivers(),
+            exam: this.exam().toDto(),
+        };
+    }
+
+    copyFromDto(dto: Partial<CertificationsDto>): void {
+        if (dto.id !== undefined) this.id.set(dto.id);
+        if (dto.title !== undefined) this.title.set(dto.title);
+        if (dto.description !== undefined) this.description.set(dto.description);
+        if (dto.default_max_tries !== undefined) this.default_max_tries.set(dto.default_max_tries);
+        if (dto.allow_new_drivers !== undefined) this.allow_new_drivers.set(dto.allow_new_drivers);
+        if (dto.exam !== undefined) this.exam.set(CertificationExamEntity.fromDto(dto.exam));
+    }
+
+    toPatch<T>(): Partial<T> {
+        const defaults = new CertificationEntity();
+        const patch: Partial<T> = {};
+        if (this.id() !== defaults.id()) (patch as any).id = this.id();
+        if (this.title() !== defaults.title()) (patch as any).title = this.title();
+        if (this.description() !== defaults.description()) (patch as any).description = this.description();
+        if (this.default_max_tries() !== defaults.default_max_tries()) (patch as any).default_max_tries = this.default_max_tries();
+        if (this.allow_new_drivers() !== defaults.allow_new_drivers()) (patch as any).allow_new_drivers = this.allow_new_drivers();
+        if (JSON.stringify(this.exam()) !== JSON.stringify(defaults.exam())) (patch as any).exam = this.exam().toDto();
+        return patch;
+    }
+}
+
+export class ClientCertificationEntity {
+    id = signal<number>(0);
+    title = signal<string>("");
+    description = signal<string>("");
+    allow_new_drivers = signal<boolean>(false);
+    exam = signal<CertificationExamEntity>(new CertificationExamEntity());
+    client = signal<number>(0);
+    max_tries_per_week = signal<number>(0);
+
+    static fromDto(dto: ClientCertification): ClientCertificationEntity {
+        const entity = new ClientCertificationEntity();
+        entity.id.set(dto.id ?? 0);
+        entity.title.set(dto.title ?? "");
+        entity.description.set(dto.description ?? "");
+        entity.allow_new_drivers.set(dto.allow_new_drivers ?? false);
+        entity.exam.set(CertificationExamEntity.fromDto(dto.exam));
+        entity.client.set(dto.client ?? 0);
+        entity.max_tries_per_week.set(dto.max_tries_per_week ?? 0);
+        return entity;
+    }
+
+    toDto(): ClientCertification {
+        const dto = new ClientCertification();
+        dto.id = this.id();
+        dto.title = this.title();
+        dto.description = this.description();
+        dto.allow_new_drivers = this.allow_new_drivers();
+        dto.exam = this.exam().toDto();
+        dto.client = this.client();
+        dto.max_tries_per_week = this.max_tries_per_week();
+        return dto;
+    }
+
+    copyFromDto(dto: Partial<ClientCertification>): void {
+        if (dto.id !== undefined) this.id.set(dto.id);
+        if (dto.title !== undefined) this.title.set(dto.title);
+        if (dto.description !== undefined) this.description.set(dto.description);
+        if (dto.allow_new_drivers !== undefined) this.allow_new_drivers.set(dto.allow_new_drivers);
+        if (dto.exam !== undefined) this.exam.set(CertificationExamEntity.fromDto(dto.exam));
+        if (dto.client !== undefined) this.client.set(dto.client);
+        if (dto.max_tries_per_week !== undefined) this.max_tries_per_week.set(dto.max_tries_per_week);
+    }
+
+    toPatch<T>(): Partial<T> {
+        const defaults = new ClientCertificationEntity();
+        const patch: Partial<T> = {};
+        if (this.id() !== defaults.id()) (patch as any).id = this.id();
+        if (this.title() !== defaults.title()) (patch as any).title = this.title();
+        if (this.description() !== defaults.description()) (patch as any).description = this.description();
+        if (this.allow_new_drivers() !== defaults.allow_new_drivers()) (patch as any).allow_new_drivers = this.allow_new_drivers();
+        if (JSON.stringify(this.exam()) !== JSON.stringify(defaults.exam())) (patch as any).exam = this.exam().toDto();
+        if (this.client() !== defaults.client()) (patch as any).client = this.client();
+        if (this.max_tries_per_week() !== defaults.max_tries_per_week()) (patch as any).max_tries_per_week = this.max_tries_per_week();
+        return patch;
+    }
+}
+
+export class ClientAdditionalServiceEntity {
+    id = signal<number>(0);
+    client = signal<ClientsGralEntity | null>(null);
+    certification = signal<ClientCertificationEntity | null>(null);
+    state = signal<boolean>(true);
+    default_selected = signal<boolean>(false);
+    name = signal<string>("");
+    description = signal<string>("");
+    is_appointment_management = signal<boolean>(false);
+    client_price = signal<string>("0.00");
+    driver_payment = signal<string>("0.00");
+    visible_by_driver = signal<boolean>(true);
+    transport_status = signal<TransportStatus>(TransportStatus.PENDING);
+    applyment_moment = signal<string>("ALL");
+    requires_certification = signal<boolean>(false);
+    requires_image = signal<boolean>(false);
+    requires_location = signal<boolean>(false);
+    is_common = signal<boolean>(false);
+    charging_time = signal<number>(0);
+    legs = signal<number[]>([]);
+
+    static fromDto(dto: ClientAdditionalServiceDto): ClientAdditionalServiceEntity {
+        const entity = new ClientAdditionalServiceEntity();
+        entity.id.set(dto.id ?? 0);
+        entity.client.set(dto.client ? ClientsGralEntity.fromDto(dto.client) : null);
+        entity.certification.set(dto.certification ? ClientCertificationEntity.fromDto(dto.certification) : null);
+        entity.state.set(dto.state ?? true);
+        entity.default_selected.set(dto.default_selected ?? false);
+        entity.name.set(dto.name ?? "");
+        entity.description.set(dto.description ?? "");
+        entity.is_appointment_management.set(dto.is_appointment_management ?? false);
+        entity.client_price.set(dto.client_price ?? "0.00");
+        entity.driver_payment.set(dto.driver_payment ?? "0.00");
+        entity.visible_by_driver.set(dto.visible_by_driver ?? true);
+        entity.transport_status.set(dto.transport_status ?? TransportStatus.PENDING);
+        entity.applyment_moment.set(dto.applyment_moment ?? "ALL");
+        entity.requires_certification.set(dto.requires_certification ?? false);
+        entity.requires_image.set(dto.requires_image ?? false);
+        entity.requires_location.set(dto.requires_location ?? false);
+        entity.is_common.set(dto.is_common ?? false);
+        entity.charging_time.set(dto.charging_time ?? 0);
+        entity.legs.set(dto.legs ?? []);
+        return entity;
+    }
+
+    toDto(): ClientAdditionalServiceDto {
+        const dto = new ClientAdditionalServiceDto();
+        dto.id = this.id();
+        dto.client = this.client() ? this.client()!.toDto() : null;
+        dto.certification = this.certification() ? this.certification()!.toDto() : null;
+        dto.state = this.state();
+        dto.default_selected = this.default_selected();
+        dto.name = this.name();
+        dto.description = this.description();
+        dto.is_appointment_management = this.is_appointment_management();
+        dto.client_price = this.client_price();
+        dto.driver_payment = this.driver_payment();
+        dto.visible_by_driver = this.visible_by_driver();
+        dto.transport_status = this.transport_status();
+        dto.applyment_moment = this.applyment_moment();
+        dto.requires_certification = this.requires_certification();
+        dto.requires_image = this.requires_image();
+        dto.requires_location = this.requires_location();
+        dto.is_common = this.is_common();
+        dto.charging_time = this.charging_time();
+        dto.legs = this.legs();
+        return dto;
+    }
+
+    copyFromDto(dto: Partial<ClientAdditionalServiceDto>): void {
+        if (dto.id !== undefined) this.id.set(dto.id);
+        if (dto.client !== undefined) this.client.set(dto.client ? ClientsGralEntity.fromDto(dto.client) : null);
+        if (dto.certification !== undefined) this.certification.set(dto.certification ? ClientCertificationEntity.fromDto(dto.certification) : null);
+        if (dto.state !== undefined) this.state.set(dto.state);
+        if (dto.default_selected !== undefined) this.default_selected.set(dto.default_selected);
+        if (dto.name !== undefined) this.name.set(dto.name);
+        if (dto.description !== undefined) this.description.set(dto.description);
+        if (dto.is_appointment_management !== undefined) this.is_appointment_management.set(dto.is_appointment_management);
+        if (dto.client_price !== undefined) this.client_price.set(dto.client_price);
+        if (dto.driver_payment !== undefined) this.driver_payment.set(dto.driver_payment);
+        if (dto.visible_by_driver !== undefined) this.visible_by_driver.set(dto.visible_by_driver);
+        if (dto.transport_status !== undefined) this.transport_status.set(dto.transport_status);
+        if (dto.applyment_moment !== undefined) this.applyment_moment.set(dto.applyment_moment);
+        if (dto.requires_certification !== undefined) this.requires_certification.set(dto.requires_certification);
+        if (dto.requires_image !== undefined) this.requires_image.set(dto.requires_image);
+        if (dto.requires_location !== undefined) this.requires_location.set(dto.requires_location);
+        if (dto.is_common !== undefined) this.is_common.set(dto.is_common);
+        if (dto.charging_time !== undefined) this.charging_time.set(dto.charging_time);
+        if (dto.legs !== undefined) this.legs.set(dto.legs);
+    }
+
+    toPatch<T>(): Partial<T> {
+        const defaults = new ClientAdditionalServiceEntity();
+        const patch: Partial<T> = {};
+        if (this.id() !== defaults.id()) (patch as any).id = this.id();
+        if (JSON.stringify(this.client()) !== JSON.stringify(defaults.client())) (patch as any).client = this.client() ? this.client()!.toDto() : null;
+        if (JSON.stringify(this.certification()) !== JSON.stringify(defaults.certification())) (patch as any).certification = this.certification() ? this.certification()!.toDto() : null;
+        if (this.state() !== defaults.state()) (patch as any).state = this.state();
+        if (this.default_selected() !== defaults.default_selected()) (patch as any).default_selected = this.default_selected();
+        if (this.name() !== defaults.name()) (patch as any).name = this.name();
+        if (this.description() !== defaults.description()) (patch as any).description = this.description();
+        if (this.is_appointment_management() !== defaults.is_appointment_management()) (patch as any).is_appointment_management = this.is_appointment_management();
+        if (this.client_price() !== defaults.client_price()) (patch as any).client_price = this.client_price();
+        if (this.driver_payment() !== defaults.driver_payment()) (patch as any).driver_payment = this.driver_payment();
+        if (this.visible_by_driver() !== defaults.visible_by_driver()) (patch as any).visible_by_driver = this.visible_by_driver();
+        if (this.transport_status() !== defaults.transport_status()) (patch as any).transport_status = this.transport_status();
+        if (this.applyment_moment() !== defaults.applyment_moment()) (patch as any).applyment_moment = this.applyment_moment();
+        if (this.requires_certification() !== defaults.requires_certification()) (patch as any).requires_certification = this.requires_certification();
+        if (this.requires_image() !== defaults.requires_image()) (patch as any).requires_image = this.requires_image();
+        if (this.requires_location() !== defaults.requires_location()) (patch as any).requires_location = this.requires_location();
+        if (this.is_common() !== defaults.is_common()) (patch as any).is_common = this.is_common();
+        if (this.charging_time() !== defaults.charging_time()) (patch as any).charging_time = this.charging_time();
+        if (JSON.stringify(this.legs()) !== JSON.stringify(defaults.legs())) (patch as any).legs = this.legs();
         return patch;
     }
 }

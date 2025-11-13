@@ -246,7 +246,9 @@
       "visible-to-driver": "Visible for the driver",
       "requires-image-location": "Requires image and location",
       "assign": "ASSIGN",
+      "protocolo-save": "Save protocol",
       "protocols-assigned": "Protocols assigned",
+      "protocols-templates": "Protocols templates",
       "intern-movement-type": "Intern movement type",
       "schemas": "Schemas",
       "protocols": "Protocols",
@@ -985,5 +987,11 @@
   },
   "confirmMessages":{
     "RengeKm": "Are you sure you want to delete this distance range?"
+  }, 
+  "generalLabels":{
+    "option": "Option"
+  }, 
+  "errorsGlobal":{
+    "required-field": "Required field"
   }
 }

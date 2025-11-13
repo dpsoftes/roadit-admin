@@ -176,14 +176,17 @@ export enum EndPoints {
     getCertificationByDriverAndClient = "/certifications/certification-by-client/{driverId}/", // GET -> PaginatedResponse<Certification>
     // ======================
     // CERTIFICACIONES
-    // ======================
+    // ======================s
     getClientCertifications = "/certifications/client-certifications/",
     updateClientCertification = "/certifications/client-certifications/{certificationId}/", // PATCH UpdateCertificationRequestDto -> Certification
+    getCertificationsTemlates = "/certifications/templates-certifications/", // GET -> PaginatedResponse<Certifications>
     
     // ======================
     // PROTOCOLOS
     // ======================
     getProtocols = "/protocols/", // GET -> PaginatedResponse<Protocol>
+    createProtocols = "/protocols/", // GET -> PaginatedResponse<Protocol>
+    updateProtocols = "/protocols/{id}´", // GET -> PaginatedResponse<Protocol>
 
     // ======================
     // DOCUMENTOS DE CONDUCTOR

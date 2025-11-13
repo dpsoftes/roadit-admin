@@ -32,7 +32,9 @@
   --mat-checkbox-selected-icon-color: #{vars.$roadit-accent};
   --mat-checkbox-selected-pressed-icon-color: #{vars.$roadit-accent};
 }
-
+.field-error {
+  color: vars.$error !important;
+}
 /* =============================================================================
    GLOBAL RESET & BASE STYLES
    ============================================================================= */

@@ -248,7 +248,9 @@
       "visible-to-driver": "Visible para el conductor",
       "requires-image-location": "Requiere imagen y localización",
       "assign": "ASIGNAR",
+      "protocolo-save": "Guardar protocolo",
       "protocols-assigned": "Protocolos asignados",
+      "protocols-templates": "Plantilla de protocolos",
       "intern-movement-type": "Tipo de movimiento interno",
       "schemas": "Plantillas",
       "protocols": "Protocolos",
@@ -991,5 +993,11 @@
   },
   "confirmMessages":{
     "RengeKm": "¿Estás seguro de que deseas eliminar este tramo de distancia?"
+  }, 
+  "generalLabels":{
+    "option": "Opción"
+  }, 
+  "errorsGlobal":{
+    "required-field": "Este campo es obligatorio"
   }
 }

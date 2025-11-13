@@ -1,21 +1,25 @@
 <div class="modal-content">
+  @if(canAddMore()){
   <app-buttons 
     type="cancel" 
     text="modals.multiselection.addNewOption"
     (onClick)="addNewOption()">
   </app-buttons>
-
+  }
   <div class="options-container">
-    @for (option of options(); track option.id) {
+    @for (option of options(); track option.id; let i = $index) {
       <div class="option-item">
-        <label class="option-label">{{ option.label }}</label>
+        <label class="option-label">{{ 'generalLabels.option' | translate }} {{ i+1 }}</label>
         <div class="input-container">
           <input 
             matInput 
-            [(ngModel)]="option.value"
+            [value]="option[propertyValue()]"
+            (input)="onOptionChange(option, $event)"
             placeholder="{{ 'modals.multiselection.placeholder' | translate }}"
             class="option-input">
-          <mat-icon class="dropdown-icon">keyboard_arrow_down</mat-icon>
+          @if(withDelete()) {
+            <mat-icon (click)="deleteOption(option)" class="dropdown-icon">delete</mat-icon>
+          }
         </div>
       </div>
     }
