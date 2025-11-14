@@ -422,7 +422,17 @@
       "time-slot": "Time slot",
       "add-time-slot": "ADD TIME SLOT",
       "schedule-label": "Schedule:",
-      "contact": "Contact"
+      "contact": "Contact",
+      "transport-not-found": "Transport not found",
+      "stopover": "Stopover",
+      "license-plate": "License plate",
+      "brand": "Brand",
+      "model": "Model",
+      "fuel-type": "Fuel type",
+      "documents-pickup-ab": "Pickup documents A → B",
+      "documents-delivery-ab": "Delivery documents A → B",
+      "documents-pickup-bc": "Pickup documents B → C",
+      "documents-delivery-bc": "Delivery documents B → C"
     },
     "assignments": {
       "id": "ID",

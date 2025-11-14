@@ -422,7 +422,18 @@
       "time-slot": "Franja horaria",
       "add-time-slot": "AÑADIR FRANJA HORARIA",
       "schedule-label": "Horario:",
-      "contact": "Contacto"
+      "contact": "Contacto",
+      "transport-not-found": "Transporte no encontrado",
+      "stopover": "Escala",
+      "license-plate": "Matrícula",
+      "brand": "Marca",
+      "model": "Modelo",
+      "fuel-type": "Tipo de combustible",
+      "documents-pickup-ab": "Documentos para recogida desde A → B",
+      "documents-delivery-ab": "Documentos para entrega desde A → B",
+      "documents-pickup-bc": "Documentos para recogida desde B → C",
+      "documents-delivery-bc": "Documentos para entrega desde B → C"
+
     },
     "assignments": {
       "id": "ID",

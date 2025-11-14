@@ -1,6 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { DriverDto } from "@dtos/driver.dto";
 import { TransportHistoryListItemDto, TransportHistoryListParamsDto } from "@dtos/transports/transport.dto";
+import { TransportsRetrieveResponse } from "@dtos/transports/transports.dto.old";
 import { ApiService } from "@services/api.service";
 import { EndPoints } from "@services/EndPoints";
 import { Helpers } from "@utils/helpers";
@@ -22,6 +23,16 @@ export class TransportProvider {
         } catch (error) {
             return null;
         }        
+    }
+
+    async getTransport(id: number | string): Promise<TransportsRetrieveResponse | null> {
+        try {
+            const url = EndPoints.getTransport.replace("{transportId}", id.toString());
+            return await this.api.get<TransportsRetrieveResponse>({ url });
+        } catch (error) {
+            console.error('Error al obtener transporte:', error);
+            return null;
+        }
     }
 
 }

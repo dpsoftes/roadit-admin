@@ -17,6 +17,11 @@ export interface ScheduleData {
     fromTime: string;
     toTime: string;
   };
+  stopover?: {
+    date: Date | null;
+    fromTime: string;
+    toTime: string;
+  };
   arrival: {
     date: Date | null;
     fromTime: string;
@@ -53,13 +58,28 @@ export class ScheduleModalComponent {
   departureFromTime = signal<string>('08:00');
   departureToTime = signal<string>('10:00');
 
+  // Datos de etapa (opcional)
+  stopoverDate = signal<Date | null>(null);
+  stopoverFromTime = signal<string>('08:00');
+  stopoverToTime = signal<string>('10:00');
+  
   // Datos de llegada
   arrivalDate = signal<Date | null>(null);
   arrivalFromTime = signal<string>('08:00');
   arrivalToTime = signal<string>('10:00');
+  
+  // Verificar si hay etapa
+  hasStopover = computed(() => {
+    const data = this.initialData();
+    return data?.stopover !== undefined;
+  });
 
   // Validar si ambas fechas están seleccionadas
   isValidToSave = computed(() => {
+    const hasStopover = this.hasStopover();
+    if (hasStopover) {
+      return this.departureDate() !== null && this.stopoverDate() !== null && this.arrivalDate() !== null;
+    }
     return this.departureDate() !== null && this.arrivalDate() !== null;
   });
 
@@ -74,6 +94,11 @@ export class ScheduleModalComponent {
         this.departureDate.set(data.departure.date);
         this.departureFromTime.set(data.departure.fromTime);
         this.departureToTime.set(data.departure.toTime);
+        if (data.stopover) {
+          this.stopoverDate.set(data.stopover.date);
+          this.stopoverFromTime.set(data.stopover.fromTime);
+          this.stopoverToTime.set(data.stopover.toTime);
+        }
         this.arrivalDate.set(data.arrival.date);
         this.arrivalFromTime.set(data.arrival.fromTime);
         this.arrivalToTime.set(data.arrival.toTime);
@@ -86,6 +111,11 @@ export class ScheduleModalComponent {
       this.departureDate.set(initialData.departure.date);
       this.departureFromTime.set(initialData.departure.fromTime);
       this.departureToTime.set(initialData.departure.toTime);
+      if (initialData.stopover) {
+        this.stopoverDate.set(initialData.stopover.date);
+        this.stopoverFromTime.set(initialData.stopover.fromTime);
+        this.stopoverToTime.set(initialData.stopover.toTime);
+      }
       this.arrivalDate.set(initialData.arrival.date);
       this.arrivalFromTime.set(initialData.arrival.fromTime);
       this.arrivalToTime.set(initialData.arrival.toTime);
@@ -93,7 +123,7 @@ export class ScheduleModalComponent {
   }
 
   onSave() {
-    // Validar que ambas fechas estén seleccionadas
+    // Validar que todas las fechas estén seleccionadas
     if (!this.isValidToSave()) {
       this.showDateError.set(true);
       return;
@@ -107,6 +137,13 @@ export class ScheduleModalComponent {
         fromTime: this.departureFromTime(),
         toTime: this.departureToTime()
       },
+      ...(this.hasStopover() ? {
+        stopover: {
+          date: this.stopoverDate(),
+          fromTime: this.stopoverFromTime(),
+          toTime: this.stopoverToTime()
+        }
+      } : {}),
       arrival: {
         date: this.arrivalDate(),
         fromTime: this.arrivalFromTime(),
@@ -147,10 +184,34 @@ export class ScheduleModalComponent {
 
   onArrivalDateChange(date: Date | null) {
     this.arrivalDate.set(date);
-    // Ocultar error si se selecciona la fecha
-    if (date !== null && this.departureDate() !== null) {
+    // Ocultar error si se seleccionan todas las fechas necesarias
+    const hasStopover = this.hasStopover();
+    if (hasStopover) {
+      if (date !== null && this.departureDate() !== null && this.stopoverDate() !== null) {
+        this.showDateError.set(false);
+      }
+    } else {
+      if (date !== null && this.departureDate() !== null) {
+        this.showDateError.set(false);
+      }
+    }
+  }
+
+  onStopoverDateChange(date: Date | null) {
+    this.stopoverDate.set(date);
+    if (date !== null && this.departureDate() !== null && this.arrivalDate() !== null) {
       this.showDateError.set(false);
     }
+  }
+
+  onStopoverFromTimeChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.stopoverFromTime.set(target.value);
+  }
+
+  onStopoverToTimeChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.stopoverToTime.set(target.value);
   }
 
   onClose() {

@@ -58,11 +58,13 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
     h2{
         font-size: 28px;
         font-weight: 600;
         color: vars.$black;
+        margin: 0 0 16px 0;
+        padding: 0 20px;
     }
     .stages{
         position: relative;
@@ -70,6 +72,7 @@
         padding: 0px 20px;
         flex-direction: row;
         justify-content: space-between;
+        align-items: flex-start;
         gap: 20px;
         .fixed-address-card{
             height: 250px;
@@ -78,7 +81,34 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            width: 40%;
+            flex: 1;
+            min-width: 0;
+            align-items: stretch;
+            h2{
+                margin: 0;
+                font-size: 28px;
+                font-weight: 600;
+                color: vars.$black;
+            }
+            .pickup-address-hint{
+                font-size: 12px;
+                color: vars.$gray-700;
+                margin-top: 6px;
+            }
+        }
+        .stopover{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+            min-width: 0;
+            align-items: stretch;
+            h2{
+                margin: 0;
+                font-size: 28px;
+                font-weight: 600;
+                color: vars.$black;
+            }
             .pickup-address-hint{
                 font-size: 12px;
                 color: vars.$gray-700;
@@ -89,13 +119,20 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            width: 40%;
+            flex: 1;
+            min-width: 0;
+            align-items: stretch;
             .title-with-action{
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 gap: 12px;
-                h2{ margin: 0; }
+                h2{ 
+                    margin: 0;
+                    font-size: 28px;
+                    font-weight: 600;
+                    color: vars.$black;
+                }
             }
         }
         .address-display-card {
@@ -262,110 +299,546 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 20px;
     padding: 0 20px;
     h3{
         font-size: 18px;
         font-weight: 700;
         color: vars.$black;
-        margin: 0 0 10px 0;
+        margin: 0 0 16px 0;
+        height: 28px;
+        display: flex;
+        align-items: center;
     }
-    .departure, .arrival{
-        width: 48%;
+    .departure, .arrival, .stopover-schedule{
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        max-width: 100%;
+    }
+    mat-card{
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    mat-card-content{
+        padding: 16px !important;
+        width: 100%;
+        box-sizing: border-box;
     }
     .row{
         display: grid;
-        grid-template-columns: 1fr 160px 160px;
-        gap: 16px;
-        align-items: end;
+        grid-template-columns: 1fr 100px 100px;
+        gap: 12px;
+        align-items: start;
     }
     .field{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
         mat-form-field{
             cursor: pointer;
+            width: 100%;
+            max-width: 100%;
+            ::ng-deep {
+                .mat-mdc-text-field-wrapper {
+                    background-color: vars.$white;
+                    padding-bottom: 0;
+                }
+                .mat-mdc-form-field-subscript-wrapper {
+                    display: none;
+                }
+                .mdc-notched-outline {
+                    border-color: vars.$gray-300;
+                    border-width: 1px;
+                }
+                .mdc-notched-outline__leading,
+                .mdc-notched-outline__notch,
+                .mdc-notched-outline__trailing {
+                    border-color: vars.$gray-300;
+                }
+                .mat-mdc-form-field-focus-overlay {
+                    background-color: transparent;
+                }
+                .mat-mdc-form-field-infix {
+                    min-height: 40px;
+                    padding: 8px 0 !important;
+                    width: 100%;
+                }
+                input {
+                    font-size: 14px;
+                    color: vars.$black;
+                    padding: 8px 12px;
+                    height: auto;
+                    width: 100%;
+                    box-sizing: border-box;
+                    &::placeholder {
+                        color: vars.$gray-400;
+                    }
+                    &[type="date"],
+                    &[type="time"] {
+                        &::-webkit-calendar-picker-indicator {
+                            opacity: 0;
+                            position: absolute;
+                            right: 0;
+                            width: 100%;
+                            height: 100%;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .mat-mdc-form-field-icon-suffix {
+                    color: vars.$gray-600;
+                    padding-right: 4px;
+                }
+                .mat-mdc-form-field-icon-prefix,
+                .mat-mdc-form-field-icon-suffix {
+                    .mat-icon {
+                        font-size: 18px;
+                        width: 18px;
+                        height: 18px;
+                    }
+                }
+            }
+        }
+        .form-field-label{
+            font-size: 14px;
+            font-weight: 500;
+            color: vars.$gray-700;
+            margin-bottom: 0;
+            line-height: 1.4;
         }
     }
     .helper.error{
-        margin-top: 6px;
+        margin-top: 4px;
         color: #e53935;
         font-size: 12px;
+        grid-column: 1 / -1;
+        line-height: 1.4;
     }
 }
 .vehicles{
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 0 20px;
+    h2{
+        margin: 0;
+        padding: 0;
+    }
     .title-with-action{
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
+        margin-bottom: 0;
+    }
+    .vehicles-columns{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        align-items: start;
+    }
+    .vehicles-column{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        h3{
+            font-size: 18px;
+            font-weight: 700;
+            color: vars.$black;
+            margin: 0 0 16px 0;
+        }
+    }
+    .vehicles-list{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .vehicle-single{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            .vehicle-img{
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 8px;
+                flex-shrink: 0;
+            }
+            .plate-field{
+                width: 140px;
+                flex-shrink: 0;
+                ::ng-deep {
+                    .mat-mdc-form-field-subscript-wrapper{
+                        display: none;
+                    }
+                    .mat-mdc-text-field-wrapper{
+                        padding-bottom: 0;
+                    }
+                    .mat-mdc-form-field-infix{
+                        min-height: 36px;
+                        padding: 6px 0 !important;
+                    }
+                    input{
+                        font-size: 14px;
+                        padding: 6px 12px;
+                        height: auto;
+                    }
+                }
+            }
+            .name{
+                font-size: 16px;
+                font-weight: 600;
+                color: vars.$black;
+                line-height: 1.4;
+                margin: 0;
+                white-space: nowrap;
+            }
+            .fuel-type{
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 14px;
+                color: vars.$gray-700;
+                line-height: 1.4;
+                margin: 0;
+                white-space: nowrap;
+                mat-icon{
+                    font-size: 18px;
+                    width: 18px;
+                    height: 18px;
+                    color: vars.$gray-700;
+                }
+            }
+            .complementary-services{
+                font-size: 14px;
+                color: vars.$gray-700;
+                line-height: 1.4;
+                margin: 0;
+                white-space: nowrap;
+            }
+            .vehicle-actions-single{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+                flex-shrink: 0;
+                margin-left: auto;
+                .edit, .delete{
+                    cursor: pointer;
+                    font-size: 20px;
+                    width: 20px;
+                    height: 20px;
+                    &:hover{
+                        opacity: 0.8;
+                    }
+                }
+                .edit{
+                    color: vars.$gray-600;
+                }
+                .delete{
+                    color: vars.$error;
+                }
+            }
+        }
+        .vehicle-form{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            .vehicle-img{
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 8px;
+                flex-shrink: 0;
+            }
+            .vehicle-form-fields{
+                flex: 1;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+            .form-field-group{
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                .form-field-label{
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: vars.$gray-700;
+                }
+                .form-field-small{
+                    width: 180px;
+                    ::ng-deep {
+                        .mat-mdc-form-field-subscript-wrapper{
+                            display: none;
+                        }
+                        .mat-mdc-text-field-wrapper{
+                            padding-bottom: 0;
+                        }
+                        .mat-mdc-form-field-infix{
+                            min-height: 36px;
+                            padding: 6px 0 !important;
+                        }
+                        input{
+                            font-size: 14px;
+                            padding: 6px 12px;
+                            height: auto;
+                        }
+                    }
+                }
+            }
+            .fuel-type-buttons{
+                display: flex;
+                flex-direction: row;
+                gap: 0;
+                align-items: center;
+                .fuel-type-button{
+                    width: 40px;
+                    height: 40px;
+                    border: 1px solid vars.$gray-300;
+                    background-color: vars.$white;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
+                    &:first-child{
+                        border-radius: 8px 0 0 8px;
+                        border-right: none;
+                    }
+                    &:last-child{
+                        border-radius: 0 8px 8px 0;
+                    }
+                    mat-icon{
+                        font-size: 20px;
+                        width: 20px;
+                        height: 20px;
+                        color: vars.$gray-600;
+                    }
+                    &.active{
+                        background-color: vars.$primary-600;
+                        border-color: vars.$primary-600;
+                        mat-icon{
+                            color: vars.$white;
+                        }
+                    }
+                    &:hover:not(.active){
+                        background-color: vars.$gray-600;
+                    }
+                }
+            }
+            .complementary-services-count{
+                font-size: 14px;
+                color: vars.$gray-700;
+                margin: 0;
+            }
+            app-buttons{
+                margin-left: auto;
+            }
+        }
     }
     .vehicle{
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
         gap: 12px;
-        padding: 10px;
+        padding: 16px;
+        border: 1px solid vars.$gray-300;
+        border-radius: 12px;
         background-color: vars.$white;
-        border-radius: 20px;
-        border: 2px solid transparent;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
+        position: relative;
         p {
             margin: 0;
         }
+        &:hover{
+            border-color: vars.$primary-400;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
         &.active{
             border-color: vars.$primary-600;
+            background-color: vars.$primary-50;
         }
-        &:hover:not(.active){
+        &.add-vehicle{
+            border-style: dashed;
             border-color: vars.$gray-300;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .delete{
-            cursor: pointer;
-            color: vars.$error;
+            background-color: vars.$gray-50;
+            cursor: default;
             &:hover{
-                opacity: 0.8;
+                border-color: vars.$primary-400;
+                background-color: vars.$primary-50;
+            }
+            &.vehicle-single{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 16px;
+                .vehicle-img-placeholder{
+                    width: 80px;
+                    height: 80px;
+                    flex-shrink: 0;
+                }
+                .plate-search-add{
+                    width: 140px;
+                    flex-shrink: 0;
+                    ::ng-deep {
+                        .mat-mdc-form-field-subscript-wrapper{
+                            display: none;
+                        }
+                        .mat-mdc-text-field-wrapper{
+                            padding-bottom: 0;
+                        }
+                        .mat-mdc-form-field-infix{
+                            min-height: 36px;
+                            padding: 6px 0 !important;
+                        }
+                        input{
+                            font-size: 14px;
+                            padding: 6px 12px;
+                            height: auto;
+                        }
+                    }
+                }
+                p{
+                    margin: 0;
+                    font-size: 14px;
+                    color: vars.$gray-700;
+                }
+                app-buttons{
+                    margin-left: auto;
+                }
             }
         }
-        .vehicle-info{
+        .vehicle-actions-top{
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+            .edit, .delete{
+                cursor: pointer;
+                font-size: 20px;
+                width: 20px;
+                height: 20px;
+                &:hover{
+                    opacity: 0.8;
+                }
+            }
+            .edit{
+                color: vars.$gray-600;
+            }
+            .delete{
+                color: vars.$error;
+            }
+        }
+        .vehicle-content{
+            display: grid;
+            grid-template-columns: 4fr 4fr;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .vehicle-image-column{
             display: flex;
             flex-direction: row;
             align-items: center;
             gap: 12px;
             img{
-                width: 80px;
-                height: 80px;
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+                border-radius: 8px;
+                flex-shrink: 0;
             }
-            mat-form-field{
-                width: 100%;
-            }
-            ::ng-deep .mat-mdc-form-field-subscript-wrapper{
-                display: none;
-            }
-            .plate-search-add{
-                width: 100%;
-                margin-left: 90px;
+            .plate-field{
+                flex: 1;
+                ::ng-deep {
+                    .mat-mdc-form-field-subscript-wrapper{
+                        display: none;
+                    }
+                    .mat-mdc-text-field-wrapper{
+                        padding-bottom: 0;
+                    }
+                    .mat-mdc-form-field-infix{
+                        min-height: 36px;
+                        padding: 6px 0 !important;
+                    }
+                    input{
+                        font-size: 14px;
+                        padding: 6px 12px;
+                        height: auto;
+                    }
+                }
             }
         }
-        
+        .vehicle-info-column{
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
         .name{
             font-size: 16px;
             font-weight: 600;
             color: vars.$black;
+            line-height: 1.4;
         }
-        .type{
+        .vehicle-type{
+            font-size: 14px;
+            color: vars.$gray-700;
+            line-height: 1.4;
+        }
+        .fuel-type{
             display: flex;
             align-items: center;
             gap: 6px;
             font-size: 14px;
             color: vars.$gray-700;
+            line-height: 1.4;
             mat-icon{
                 font-size: 18px;
                 width: 18px;
                 height: 18px;
                 color: vars.$gray-700;
+            }
+        }
+        .stage-selection{
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            margin: 8px 0;
+            .stage-button{
+                flex: 1;
+                padding: 6px 12px;
+                border: 1px solid vars.$gray-300;
+                border-radius: 8px;
+                background-color: vars.$white;
+                color: vars.$gray-700;
+                font-size: 12px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                &:hover{
+                    border-color: vars.$primary-400;
+                    background-color: vars.$primary-50;
+                }
+                &.active{
+                    border-color: vars.$primary-600;
+                    background-color: vars.$primary-100;
+                    color: vars.$primary-700;
+                    font-weight: 600;
+                }
             }
         }
     }
@@ -374,8 +847,9 @@
     display: flex;
     flex-direction: row;
     gap: 20px;
+    padding: 0 20px;
     .complementary-service-card{
-        width: 33%;
+        flex: 1;
         cursor: pointer;
         transition: all 0.3s ease;
         border: 2px solid transparent;
@@ -444,11 +918,12 @@
         margin: 0;
     }
     .documents-container{
-        display: flex;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
+        padding: 0 20px;
         .document-card{
-            flex: 1;
+            min-width: 0;
             mat-card-content{
                 padding: 20px;
             }
