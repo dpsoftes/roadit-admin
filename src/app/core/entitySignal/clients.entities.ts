@@ -7,11 +7,10 @@ import { DocumentsClientsDto } from '@dtos/clients/documents.dto';
 import { DirectionType, ProtocolType } from '@enums/additional.enum';
 import { TransportPrincipalType } from '@enums/client.enum';
 
-import { signal, Signal } from '@angular/core';
+import { signal } from '@angular/core';
 import { ClientsGroupCreateRequest } from '@dtos/clients/clients.dto';
 import { ClientDto } from '@dtos/clients/clients.dto';
 import { BillingType, ClientOrigin, ClientType } from '@enums/client.enum';
-import { Helpers } from '@utils/helpers';
 import { ProtocolDto, ProtocolOptionDto } from '@dtos/clients/protocols.dto';
 import { 
     CertificationsDto, 
@@ -23,9 +22,10 @@ import { ClientCertification } from '@dtos/clients/clientsCertifications.dto';
 import { ExamQuestionType } from '@enums/additional.enum';
 import { ClientAdditionalServiceDto } from '@dtos/clients/clientAdditional-services.dto';
 import { TransportStatus } from '@enums/transport.enum';
+import { BaseEntity } from './base.entity';
 
 
-export class ClientsGralEntity {
+export class ClientsGralEntity extends BaseEntity<ClientDto> {
     /** Identificador único */
     id = signal<number>(0);
     at_risk = signal<boolean>(false);
@@ -77,137 +77,17 @@ export class ClientsGralEntity {
 
     static fromDto(dto: ClientDto): ClientsGralEntity {
         const entity = new ClientsGralEntity();
-        entity.id.set(dto.id);
-        entity.at_risk.set(dto.at_risk);
-        entity.billing_type.set(dto.billing_type);
-        entity.cif.set(dto.cif ?? "");
-        entity.client_group.set(dto.client_group ?? 0);
-        entity.client_origin.set(dto.client_origin ?? ClientOrigin.UNDEFINED);
-        entity.client_type.set(dto.client_type ?? ClientType.COMPANY);
-        entity.contact_person_email.set(dto.contact_person_email);
-        entity.contact_person_name.set(dto.contact_person_name);
-        entity.contact_person_phone.set(dto.contact_person_phone);
-        entity.deleted_date.set(dto.deleted_date);
-        entity.department.set(dto.department);
-        entity.eurotransport_identifier.set(dto.eurotransport_identifier);
-        entity.html_contact_page1.set(dto.html_contact_page1);
-        entity.html_contact_page2.set(dto.html_contact_page2);
-        entity.html_info_page.set(dto.html_info_page);
-        entity.invite_delay_minutes.set(dto.invite_delay_minutes);
-        entity.is_subentity.set(dto.is_subentity);
-        entity.logo.set(dto.logo);
-        entity.managers.set(dto.managers);
-        entity.name.set(dto.name ?? "");
-        entity.own_insurance.set(dto.own_insurance);
-        entity.parent.set(dto.parent);
-        entity.reminder_interval_minutes.set(dto.reminder_interval_minutes);
-        entity.revel_identifier.set(dto.revel_identifier);
-        entity.send_survey.set(dto.send_survey);
-        entity.state.set(dto.state);
-        entity.tags.set(dto.tags);
+        entity.populateFromDto(dto);
         return entity;
     }
 
-    toDto(): ClientDto {
-        return {
-            id: this.id(),
-            at_risk: this.at_risk(),
-            billing_type: this.billing_type(),
-            cif: this.cif(),
-            client_group: this.client_group(),
-            client_origin: this.client_origin(),
-            client_type: this.client_type(),
-            contact_person_email: this.contact_person_email(),
-            contact_person_name: this.contact_person_name(),
-            contact_person_phone: this.contact_person_phone(),
-            deleted_date: this.deleted_date(),
-            department: this.department(),
-            eurotransport_identifier: this.eurotransport_identifier(),
-            html_contact_page1: this.html_contact_page1(),
-            html_contact_page2: this.html_contact_page2(),
-            html_info_page: this.html_info_page(),
-            invite_delay_minutes: this.invite_delay_minutes(),
-            is_subentity: this.is_subentity(),
-            logo: this.logo(),
-            managers: this.managers(),
-            name: this.name(),
-            own_insurance: this.own_insurance(),
-            parent: this.parent(),
-            reminder_interval_minutes: this.reminder_interval_minutes(),
-            revel_identifier: this.revel_identifier(),
-            send_survey: this.send_survey(),
-            state: this.state(),
-            tags: this.tags(),
-        };
-    }
-
-    copyFromDto(dto: Partial<ClientDto>): void {
-    if (!Helpers.isEmpty(dto.id)) this.id.set(dto.id!);
-    if (!Helpers.isEmpty(dto.at_risk)) this.at_risk.set(dto.at_risk!);
-    if (!Helpers.isEmpty(dto.billing_type)) this.billing_type.set(dto.billing_type!);
-    if (!Helpers.isEmpty(dto.cif)) this.cif.set(dto.cif!);
-    if (!Helpers.isEmpty(dto.client_group)) this.client_group.set(dto.client_group!);
-    if (!Helpers.isEmpty(dto.client_origin)) this.client_origin.set(dto.client_origin!);
-    if (!Helpers.isEmpty(dto.client_type)) this.client_type.set(dto.client_type!);
-    if (!Helpers.isEmpty(dto.contact_person_email)) this.contact_person_email.set(dto.contact_person_email!);
-    if (!Helpers.isEmpty(dto.contact_person_name)) this.contact_person_name.set(dto.contact_person_name!);
-    if (!Helpers.isEmpty(dto.contact_person_phone)) this.contact_person_phone.set(dto.contact_person_phone!);
-    if (!Helpers.isEmpty(dto.deleted_date)) this.deleted_date.set(dto.deleted_date!);
-    if (!Helpers.isEmpty(dto.department)) this.department.set(dto.department!);
-    if (!Helpers.isEmpty(dto.eurotransport_identifier)) this.eurotransport_identifier.set(dto.eurotransport_identifier!);
-    if (!Helpers.isEmpty(dto.html_contact_page1)) this.html_contact_page1.set(dto.html_contact_page1!);
-    if (!Helpers.isEmpty(dto.html_contact_page2)) this.html_contact_page2.set(dto.html_contact_page2!);
-    if (!Helpers.isEmpty(dto.html_info_page)) this.html_info_page.set(dto.html_info_page!);
-    if (!Helpers.isEmpty(dto.invite_delay_minutes)) this.invite_delay_minutes.set(dto.invite_delay_minutes!);
-    if (!Helpers.isEmpty(dto.is_subentity)) this.is_subentity.set(dto.is_subentity!);
-    if (!Helpers.isEmpty(dto.logo)) this.logo.set(dto.logo!);
-    if (!Helpers.isEmpty(dto.managers)) this.managers.set(dto.managers!);
-    if (!Helpers.isEmpty(dto.name)) this.name.set(dto.name!);
-    if (!Helpers.isEmpty(dto.own_insurance)) this.own_insurance.set(dto.own_insurance!);
-    if (!Helpers.isEmpty(dto.parent)) this.parent.set(dto.parent!);
-    if (!Helpers.isEmpty(dto.reminder_interval_minutes)) this.reminder_interval_minutes.set(dto.reminder_interval_minutes!);
-    if (!Helpers.isEmpty(dto.revel_identifier)) this.revel_identifier.set(dto.revel_identifier!);
-    if (!Helpers.isEmpty(dto.send_survey)) this.send_survey.set(dto.send_survey!);
-    if (!Helpers.isEmpty(dto.state)) this.state.set(dto.state!);
-    if (!Helpers.isEmpty(dto.tags)) this.tags.set(dto.tags!);
-    }
-
-    toPatch<T>(): Partial<T> {
-        const patch: Partial<T> = {};
-        if (!Helpers.isEmptyOrZero(this.id())) (patch as any).id = this.id();
-        if (!Helpers.isEmptyOrZero(this.at_risk())) (patch as any).at_risk = this.at_risk();
-        if (!Helpers.isEmptyOrZero(this.billing_type())) (patch as any).billing_type = this.billing_type();
-        if (!Helpers.isEmptyOrZero(this.cif())) (patch as any).cif = this.cif();
-        if (!Helpers.isEmptyOrZero(this.client_group())) (patch as any).client_group = this.client_group();
-        if (!Helpers.isEmptyOrZero(this.client_origin())) (patch as any).client_origin = this.client_origin();
-        if (!Helpers.isEmptyOrZero(this.client_type())) (patch as any).client_type = this.client_type();
-        if (!Helpers.isEmptyOrZero(this.contact_person_email())) (patch as any).contact_person_email = this.contact_person_email();
-        if (!Helpers.isEmptyOrZero(this.contact_person_name())) (patch as any).contact_person_name = this.contact_person_name();
-        if (!Helpers.isEmptyOrZero(this.contact_person_phone())) (patch as any).contact_person_phone = this.contact_person_phone();
-        if (!Helpers.isEmptyOrZero(this.deleted_date())) (patch as any).deleted_date = this.deleted_date();
-        if (!Helpers.isEmptyOrZero(this.department())) (patch as any).department = this.department();
-        if (!Helpers.isEmptyOrZero(this.eurotransport_identifier())) (patch as any).eurotransport_identifier = this.eurotransport_identifier();
-        if (!Helpers.isEmptyOrZero(this.html_contact_page1())) (patch as any).html_contact_page1 = this.html_contact_page1();
-        if (!Helpers.isEmptyOrZero(this.html_contact_page2())) (patch as any).html_contact_page2 = this.html_contact_page2();
-        if (!Helpers.isEmptyOrZero(this.html_info_page())) (patch as any).html_info_page = this.html_info_page();
-        if (!Helpers.isEmptyOrZero(this.invite_delay_minutes())) (patch as any).invite_delay_minutes = this.invite_delay_minutes();
-        if (!Helpers.isEmptyOrZero(this.is_subentity())) (patch as any).is_subentity = this.is_subentity();
-        if (!Helpers.isEmptyOrZero(this.logo())) (patch as any).logo = this.logo();
-        if (!Helpers.isEmptyOrZero(this.managers())) (patch as any).managers = this.managers();
-        if (!Helpers.isEmptyOrZero(this.name())) (patch as any).name = this.name();
-        if (!Helpers.isEmptyOrZero(this.own_insurance())) (patch as any).own_insurance = this.own_insurance();
-        if (!Helpers.isEmptyOrZero(this.parent())) (patch as any).parent = this.parent();
-        if (!Helpers.isEmptyOrZero(this.reminder_interval_minutes())) (patch as any).reminder_interval_minutes = this.reminder_interval_minutes();
-        if (!Helpers.isEmptyOrZero(this.revel_identifier())) (patch as any).revel_identifier = this.revel_identifier();
-        if (!Helpers.isEmptyOrZero(this.send_survey())) (patch as any).send_survey = this.send_survey();
-        if (!Helpers.isEmptyOrZero(this.state())) (patch as any).state = this.state();
-        if (!Helpers.isEmptyOrZero(this.tags())) (patch as any).tags = this.tags();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ClientsGralEntity() as this;
     }
 }
 
 
-export class ClientsGroupEntity {
+export class ClientsGroupEntity extends BaseEntity<ClientsGroupCreateRequest & { id?: number }> {
     /**
      * Identificador único (opcional)
      */
@@ -224,42 +104,17 @@ export class ClientsGroupEntity {
 
     static fromDto(dto: ClientsGroupCreateRequest & { id?: number }): ClientsGroupEntity {
         const entity = new ClientsGroupEntity();
-        entity.id.set(dto.id);
-        entity.assigned_admins.set(dto.assigned_admins ?? []);
-        entity.country.set(dto.country ?? "");
-        entity.name.set(dto.name ?? "");
+        entity.populateFromDto(dto);
         return entity;
     }
 
-    toDto(): ClientsGroupCreateRequest & { id?: number } {
-        return {
-            id: this.id(),
-            assigned_admins: this.assigned_admins(),
-            country: this.country(),
-            name: this.name(),
-        };
-    }
-
-    copyFromDto(dto: Partial<ClientsGroupCreateRequest> & { id?: number }): void {
-        this.id.set(dto.id != null ? dto.id : this.id());
-        this.assigned_admins.set(dto.assigned_admins != null ? dto.assigned_admins : this.assigned_admins());
-        this.country.set(dto.country != null ? dto.country : this.country());
-        this.name.set(dto.name != null ? dto.name : this.name());
-    }
-
-    toPatch<T>(): Partial<T> {
-        const defaults = new ClientsGroupEntity();
-        const patch: Partial<T> = {};
-        //if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (JSON.stringify(this.assigned_admins()) !== JSON.stringify(defaults.assigned_admins())) (patch as any).assigned_admins = this.assigned_admins();
-        if (this.country() !== defaults.country()) (patch as any).country = this.country();
-        if (this.name() !== defaults.name()) (patch as any).name = this.name();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ClientsGroupEntity() as this;
     }
 }
 
 
-export class DocumentTemplateTransportEntity {
+export class DocumentTemplateTransportEntity extends BaseEntity<DocumentsClientsDto> {
     application_time = signal<DirectionType | undefined>(undefined);
     client = signal<number | undefined>(undefined);
     file = signal<string | null | undefined>(undefined);
@@ -271,49 +126,17 @@ export class DocumentTemplateTransportEntity {
     static fromDto(dto: Partial<DocumentsClientsDto>): DocumentTemplateTransportEntity {
         const entity = new DocumentTemplateTransportEntity();
         entity.copyFromDto(dto);
-        
         return entity;
     }
 
-    toDto(): DocumentsClientsDto {
-        return {
-            application_time: this.application_time(),
-            client: this.client()!,
-            file: this.file(),
-            id: this.id()!,
-            link: this.link(),
-            title: this.title(),
-            transport_principal_type: this.transport_principal_type()!,
-        };
-    }
-
-    copyFromDto(dto: Partial<DocumentsClientsDto>): void {
-        if (dto.application_time != undefined) this.application_time.set(dto.application_time);
-        if (dto.client != undefined) this.client.set(dto.client);
-        if (dto.file != undefined) this.file.set(dto.file);
-        if (dto.id != undefined) this.id.set(dto.id);
-        if (dto.link != undefined) this.link.set(dto.link);
-        if (dto.title != undefined) this.title.set(dto.title);
-        if (dto.transport_principal_type != undefined) this.transport_principal_type.set(dto.transport_principal_type);
-    }
-
-    toPatch<T>(): Partial<T> {
-        const defaults = new DocumentTemplateTransportEntity();
-        const patch: Partial<T> = {};
-        if (this.application_time() !== defaults.application_time()) (patch as any).application_time = this.application_time();
-        if (this.client() !== defaults.client()) (patch as any).client = this.client();
-        if (this.file() !== defaults.file()) (patch as any).file = this.file();
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.link() !== defaults.link()) (patch as any).link = this.link();
-        if (this.title() !== defaults.title()) (patch as any).title = this.title();
-        if (this.transport_principal_type() !== defaults.transport_principal_type()) (patch as any).transport_principal_type = this.transport_principal_type();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new DocumentTemplateTransportEntity() as this;
     }
 }
 
 
 
-export class BaseBillingAccountEntity {
+export class BaseBillingAccountEntity extends BaseEntity<BaseBillingAccountDto> {
     id = signal<number | undefined>(undefined);
     state = signal<boolean | undefined>(undefined);
     created_date = signal<Date | null | undefined>(undefined);
@@ -327,66 +150,33 @@ export class BaseBillingAccountEntity {
 
     static fromDto(dto: BaseBillingAccountDto): BaseBillingAccountEntity {
         const entity = new BaseBillingAccountEntity();
-        entity.id.set(dto.id);
-        entity.state.set(dto.state);
-        entity.created_date.set(dto.created_date);
-        entity.modified_date.set(dto.modified_date);
-        entity.deleted_date.set(dto.deleted_date);
-        entity.iban.set(dto.iban ?? "");
-        entity.iva.set(dto.iva ?? "");
-        entity.irpf.set(dto.irpf ?? "");
-        entity.bic.set(dto.bic ?? "");
-        entity.is_favourite.set(dto.is_favourite ?? false);
+        entity.populateFromDto(dto);
         return entity;
     }
 
-    toDto(): BaseBillingAccountDto {
-        return new BaseBillingAccountDto({
-            id: this.id(),
-            state: this.state(),
-            created_date: this.created_date(),
-            modified_date: this.modified_date(),
-            deleted_date: this.deleted_date(),
-            iban: this.iban(),
-            iva: this.iva(),
-            irpf: this.irpf(),
-            bic: this.bic(),
-            is_favourite: this.is_favourite(),
-        });
+    override toDto(): BaseBillingAccountDto {
+        return new BaseBillingAccountDto(super.toDto());
     }
 
-    copyFromDto(dto: Partial<BaseBillingAccountDto>): void {
-        if (dto.id != undefined) this.id.set(dto.id);
-        if (dto.state != undefined) this.state.set(dto.state);
-        if (dto.created_date != undefined) this.created_date.set(dto.created_date);
-        if (dto.modified_date != undefined) this.modified_date.set(dto.modified_date);
-        if (dto.deleted_date != undefined) this.deleted_date.set(dto.deleted_date);
-        if (dto.iban != undefined) this.iban.set(dto.iban);
-        if (dto.iva != undefined) this.iva.set(dto.iva);
-        if (dto.irpf != undefined) this.irpf.set(dto.irpf);
-        if (dto.bic != undefined) this.bic.set(dto.bic);
-        if (dto.is_favourite != undefined) this.is_favourite.set(dto.is_favourite);
-    }
-
-    toPatch<T>(): Partial<T> {
-        const defaults = new BaseBillingAccountEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.state() !== defaults.state()) (patch as any).state = this.state();
-        if (this.created_date() !== defaults.created_date()) (patch as any).created_date = this.created_date();
-        if (this.modified_date() !== defaults.modified_date()) (patch as any).modified_date = this.modified_date();
-        if (this.deleted_date() !== defaults.deleted_date()) (patch as any).deleted_date = this.deleted_date();
-        if (this.iban() !== defaults.iban()) (patch as any).iban = this.iban();
-        if (this.iva() !== defaults.iva()) (patch as any).iva = this.iva();
-        if (this.irpf() !== defaults.irpf()) (patch as any).irpf = this.irpf();
-        if (this.bic() !== defaults.bic()) (patch as any).bic = this.bic();
-        if (this.is_favourite() !== defaults.is_favourite()) (patch as any).is_favourite = this.is_favourite();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new BaseBillingAccountEntity() as this;
     }
 }
 
-export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
-   
+export class ClientBillingAccountEntity extends BaseEntity<ClientBillingAccountDto> {
+    // Propiedades de base
+    id = signal<number | undefined>(undefined);
+    state = signal<boolean | undefined>(undefined);
+    created_date = signal<Date | null | undefined>(undefined);
+    modified_date = signal<Date | null | undefined>(undefined);
+    deleted_date = signal<Date | null | undefined>(undefined);
+    iban = signal<string>("");
+    iva = signal<string>("");
+    irpf = signal<string>("");
+    bic = signal<string>("");
+    is_favourite = signal<boolean>(false);
+    
+    // Propiedades específicas de cliente
     business_name = signal<string>("");
     entity_number = signal<string>("");
     document = signal<string>("");
@@ -403,48 +193,16 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
     eurotransport_identifier = signal<string>("");
     revel_identifier = signal<string>("");
 
-    static override fromDto(dto: ClientBillingAccountDto): ClientBillingAccountEntity {
+    static fromDto(dto: ClientBillingAccountDto): ClientBillingAccountEntity {
         const entity = new ClientBillingAccountEntity();
-        // Llama a copyFromDto para heredar la lógica base
-        entity.copyFromDto(dto);
-        if (dto.business_name != undefined) entity.business_name.set(dto.business_name);
-        if (dto.entity_number != undefined) entity.entity_number.set(dto.entity_number);
-        if (dto.document != undefined) entity.document.set(dto.document);
-        if (dto.document_type != undefined) entity.document_type.set(dto.document_type);
-        if (dto.address != undefined) entity.address.set(dto.address);
-        if (dto.address_complement != undefined) entity.address_complement.set(dto.address_complement);
-        if (dto.postal_code != undefined) entity.postal_code.set(dto.postal_code);
-        if (dto.country != undefined) entity.country.set(dto.country);
-        if (dto.city != undefined) entity.city.set(dto.city);
-        if (dto.email_send_invoice != undefined) entity.email_send_invoice.set(dto.email_send_invoice);
-        if (dto.phone != undefined) entity.phone.set(dto.phone);
-        if (dto.expire_period_days != undefined) entity.expire_period_days.set(dto.expire_period_days);
-        if (dto.client != undefined) entity.client.set(dto.client);
-        if (dto.eurotransport_identifier != undefined) entity.eurotransport_identifier.set(dto.eurotransport_identifier);
-        if (dto.revel_identifier != undefined) entity.revel_identifier.set(dto.revel_identifier);
+        entity.populateFromDto(dto);
         return entity;
     }
 
     override toDto(): ClientBillingAccountDto {
-        return new ClientBillingAccountDto({
-            ...super.toDto(),
-            business_name: this.business_name(),
-            entity_number: this.entity_number(),
-            document: this.document(),
-            document_type: this.document_type(),
-            address: this.address(),
-            address_complement: this.address_complement(),
-            postal_code: this.postal_code(),
-            country: this.country(),
-            city: this.city(),
-            email_send_invoice: this.email_send_invoice(),
-            phone: this.phone(),
-            expire_period_days: this.expire_period_days(),
-            client: this.client(),
-            eurotransport_identifier: this.eurotransport_identifier(),
-            revel_identifier: this.revel_identifier(),
-        });
+        return new ClientBillingAccountDto(super.toDto());
     }
+
     /**
      * Devuelve un DTO solo con los campos requeridos para POST, según el JSON de ejemplo proporcionado.
      */
@@ -474,48 +232,13 @@ export class ClientBillingAccountEntity extends BaseBillingAccountEntity {
             client: this.client(),
         };
     }
-    override copyFromDto(dto: Partial<ClientBillingAccountDto>): void {
-        super.copyFromDto(dto);
-        if (dto.business_name != undefined) this.business_name.set(dto.business_name);
-        if (dto.entity_number != undefined) this.entity_number.set(dto.entity_number);
-        if (dto.document != undefined) this.document.set(dto.document);
-        if (dto.document_type != undefined) this.document_type.set(dto.document_type);
-        if (dto.address != undefined) this.address.set(dto.address);
-        if (dto.address_complement != undefined) this.address_complement.set(dto.address_complement);
-        if (dto.postal_code != undefined) this.postal_code.set(dto.postal_code);
-        if (dto.country != undefined) this.country.set(dto.country);
-        if (dto.city != undefined) this.city.set(dto.city);
-        if (dto.email_send_invoice != undefined) this.email_send_invoice.set(dto.email_send_invoice);
-        if (dto.phone != undefined) this.phone.set(dto.phone);
-        if (dto.expire_period_days != undefined) this.expire_period_days.set(dto.expire_period_days);
-        if (dto.client != undefined) this.client.set(dto.client);
-        if (dto.eurotransport_identifier != undefined) this.eurotransport_identifier.set(dto.eurotransport_identifier);
-        if (dto.revel_identifier != undefined) this.revel_identifier.set(dto.revel_identifier);
-    }
 
-    override toPatch<T>(): Partial<T> {
-        const defaults = new ClientBillingAccountEntity();
-        const patch: Partial<T> = { ...super.toPatch<T>() };
-        if (this.business_name() !== defaults.business_name()) (patch as any).business_name = this.business_name();
-        if (this.entity_number() !== defaults.entity_number()) (patch as any).entity_number = this.entity_number();
-        if (this.document() !== defaults.document()) (patch as any).document = this.document();
-        if (this.document_type() !== defaults.document_type()) (patch as any).document_type = this.document_type();
-        if (this.address() !== defaults.address()) (patch as any).address = this.address();
-        if (this.address_complement() !== defaults.address_complement()) (patch as any).address_complement = this.address_complement();
-        if (this.postal_code() !== defaults.postal_code()) (patch as any).postal_code = this.postal_code();
-        if (this.country() !== defaults.country()) (patch as any).country = this.country();
-        if (this.city() !== defaults.city()) (patch as any).city = this.city();
-        if (this.email_send_invoice() !== defaults.email_send_invoice()) (patch as any).email_send_invoice = this.email_send_invoice();
-        if (this.phone() !== defaults.phone()) (patch as any).phone = this.phone();
-        if (this.expire_period_days() !== defaults.expire_period_days()) (patch as any).expire_period_days = this.expire_period_days();
-        if (this.client() !== defaults.client()) (patch as any).client = this.client();
-        if (this.eurotransport_identifier() !== defaults.eurotransport_identifier()) (patch as any).eurotransport_identifier = this.eurotransport_identifier();
-        if (this.revel_identifier() !== defaults.revel_identifier()) (patch as any).revel_identifier = this.revel_identifier();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ClientBillingAccountEntity() as this;
     }
 }
 
-export class DistanceBracketRuleEntity {
+export class DistanceBracketRuleEntity extends BaseEntity<DistanceBracketRule> {
     big_vehicle_price = signal<number | null | undefined>(undefined);
     id = signal<number | undefined>(undefined);
     max_km = signal<number>(0);
@@ -526,53 +249,16 @@ export class DistanceBracketRuleEntity {
 
     static fromDto(dto: DistanceBracketRule): DistanceBracketRuleEntity {
         const entity = new DistanceBracketRuleEntity();
-        entity.big_vehicle_price.set(dto.big_vehicle_price);
-        entity.id.set(dto.id);
-        entity.max_km.set(dto.max_km ?? 0);
-        entity.min_km.set(dto.min_km);
-        entity.pricing_type.set(dto.pricing_type);
-        entity.small_vehicle_price.set(dto.small_vehicle_price);
-        entity.standard_price.set(dto.standard_price ?? 0);
+        entity.populateFromDto(dto);
         return entity;
     }
 
-    toDto(): DistanceBracketRule {
-        return {
-            big_vehicle_price: this.big_vehicle_price(),
-            id: this.id(),
-            max_km: this.max_km(),
-            min_km: this.min_km(),
-            pricing_type: this.pricing_type(),
-            small_vehicle_price: this.small_vehicle_price(),
-            standard_price: this.standard_price(),
-        };
-    }
-
-    copyFromDto(dto: Partial<DistanceBracketRule>): void {
-        if (dto.big_vehicle_price != undefined) this.big_vehicle_price.set(dto.big_vehicle_price);
-        if (dto.id != undefined) this.id.set(dto.id);
-        if (dto.max_km != undefined) this.max_km.set(dto.max_km);
-        if (dto.min_km != undefined) this.min_km.set(dto.min_km);
-        if (dto.pricing_type != undefined) this.pricing_type.set(dto.pricing_type);
-        if (dto.small_vehicle_price != undefined) this.small_vehicle_price.set(dto.small_vehicle_price);
-        if (dto.standard_price != undefined) this.standard_price.set(dto.standard_price);
-    }
-
-    toPatch<T>(): Partial<T> {
-        const defaults = new DistanceBracketRuleEntity();
-        const patch: Partial<T> = {};
-        if (this.big_vehicle_price() !== defaults.big_vehicle_price()) (patch as any).big_vehicle_price = this.big_vehicle_price();
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.max_km() !== defaults.max_km()) (patch as any).max_km = this.max_km();
-        if (this.min_km() !== defaults.min_km()) (patch as any).min_km = this.min_km();
-        if (this.pricing_type() !== defaults.pricing_type()) (patch as any).pricing_type = this.pricing_type();
-        if (this.small_vehicle_price() !== defaults.small_vehicle_price()) (patch as any).small_vehicle_price = this.small_vehicle_price();
-        if (this.standard_price() !== defaults.standard_price()) (patch as any).standard_price = this.standard_price();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new DistanceBracketRuleEntity() as this;
     }
 }
 
-export class PriceRulesEntity {
+export class PriceRulesEntity extends BaseEntity<PriceRulesClientDto> {
     charging_requires_ticket = signal<boolean | undefined>(undefined);
     client = signal<number | null | undefined>(undefined);
     client_charging_price = signal<number | undefined>(undefined);
@@ -589,109 +275,43 @@ export class PriceRulesEntity {
 
     static fromDto(dto: PriceRulesClientDto): PriceRulesEntity {
         const entity = new PriceRulesEntity();
-        entity.charging_requires_ticket.set(dto.charging_requires_ticket);
-        entity.client.set(dto.client);
-        entity.client_charging_price.set(dto.client_charging_price);
-        entity.client_fuel_price.set(dto.client_fuel_price);
+        entity.populateFromDto(dto);
         entity.distance_brackets.set((dto.distance_brackets || []).map(d => DistanceBracketRuleEntity.fromDto(d)));
-        entity.driver_charging_price.set(dto.driver_charging_price);
-        entity.driver_fuel_price.set(dto.driver_fuel_price);
-        entity.express_surcharge_percentage.set(dto.express_surcharge_percentage);
-        entity.ferry_fixed_cost.set(dto.ferry_fixed_cost);
-        entity.id.set(dto.id);
-        entity.is_fuel_included.set(dto.is_fuel_included);
-        entity.stage_discount_percentage.set(dto.stage_discount_percentage);
-        entity.transport.set(dto.transport);
         return entity;
     }
 
-    toDto(): PriceRulesClientDto {
-        return {
-            charging_requires_ticket: this.charging_requires_ticket(),
-            client: this.client(),
-            client_charging_price: this.client_charging_price(),
-            client_fuel_price: this.client_fuel_price(),
-            distance_brackets: this.distance_brackets().map(d => d.toDto()),
-            driver_charging_price: this.driver_charging_price(),
-            driver_fuel_price: this.driver_fuel_price(),
-            express_surcharge_percentage: this.express_surcharge_percentage(),
-            ferry_fixed_cost: this.ferry_fixed_cost(),
-            id: this.id(),
-            is_fuel_included: this.is_fuel_included(),
-            stage_discount_percentage: this.stage_discount_percentage(),
-            transport: this.transport(),
-        };
+    override toDto(): PriceRulesClientDto {
+        const dto = super.toDto();
+        dto.distance_brackets = this.distance_brackets().map(d => d.toDto());
+        return dto;
     }
 
-    copyFromDto(dto: Partial<PriceRulesClientDto>): void {
-        if (dto.charging_requires_ticket != undefined) this.charging_requires_ticket.set(dto.charging_requires_ticket);
-        if (dto.client != undefined) this.client.set(dto.client);
-        if (dto.client_charging_price != undefined) this.client_charging_price.set(dto.client_charging_price);
-        if (dto.client_fuel_price != undefined) this.client_fuel_price.set(dto.client_fuel_price);
-        if (dto.distance_brackets != undefined) this.distance_brackets.set(dto.distance_brackets.map(d => DistanceBracketRuleEntity.fromDto(d)));
-        if (dto.driver_charging_price != undefined) this.driver_charging_price.set(dto.driver_charging_price);
-        if (dto.driver_fuel_price != undefined) this.driver_fuel_price.set(dto.driver_fuel_price);
-        if (dto.express_surcharge_percentage != undefined) this.express_surcharge_percentage.set(dto.express_surcharge_percentage);
-        if (dto.ferry_fixed_cost != undefined) this.ferry_fixed_cost.set(dto.ferry_fixed_cost);
-        if (dto.id != undefined) this.id.set(dto.id);
-        if (dto.is_fuel_included != undefined) this.is_fuel_included.set(dto.is_fuel_included);
-        if (dto.stage_discount_percentage != undefined) this.stage_discount_percentage.set(dto.stage_discount_percentage);
-        if (dto.transport != undefined) this.transport.set(dto.transport);
+    override copyFromDto(dto: Partial<PriceRulesClientDto>): void {
+        super.copyFromDto(dto);
+        if (dto.distance_brackets !== undefined) this.distance_brackets.set(dto.distance_brackets.map(d => DistanceBracketRuleEntity.fromDto(d)));
     }
 
-    toPatch<T>(): Partial<T> {
-        const defaults = new PriceRulesEntity();
-        const patch: Partial<T> = {};
-        if (this.charging_requires_ticket() !== defaults.charging_requires_ticket()) (patch as any).charging_requires_ticket = this.charging_requires_ticket();
-        if (this.client() !== defaults.client()) (patch as any).client = this.client();
-        if (this.client_charging_price() !== defaults.client_charging_price()) (patch as any).client_charging_price = this.client_charging_price();
-        if (this.client_fuel_price() !== defaults.client_fuel_price()) (patch as any).client_fuel_price = this.client_fuel_price();
-        if (JSON.stringify(this.distance_brackets()) !== JSON.stringify(defaults.distance_brackets())) (patch as any).distance_brackets = this.distance_brackets().map(d => d.toDto());
-        if (this.driver_charging_price() !== defaults.driver_charging_price()) (patch as any).driver_charging_price = this.driver_charging_price();
-        if (this.driver_fuel_price() !== defaults.driver_fuel_price()) (patch as any).driver_fuel_price = this.driver_fuel_price();
-        if (this.express_surcharge_percentage() !== defaults.express_surcharge_percentage()) (patch as any).express_surcharge_percentage = this.express_surcharge_percentage();
-        if (this.ferry_fixed_cost() !== defaults.ferry_fixed_cost()) (patch as any).ferry_fixed_cost = this.ferry_fixed_cost();
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.is_fuel_included() !== defaults.is_fuel_included()) (patch as any).is_fuel_included = this.is_fuel_included();
-        if (this.stage_discount_percentage() !== defaults.stage_discount_percentage()) (patch as any).stage_discount_percentage = this.stage_discount_percentage();
-        if (this.transport() !== defaults.transport()) (patch as any).transport = this.transport();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new PriceRulesEntity() as this;
     }
 }
 
-export class ProtocolOptionEntity {
+export class ProtocolOptionEntity extends BaseEntity<ProtocolOptionDto> {
     id = signal<number | undefined>(undefined);
     title = signal<string | undefined>(undefined);
 
     static fromDto(dto: ProtocolOptionDto): ProtocolOptionEntity {
         const entity = new ProtocolOptionEntity();
-        entity.id.set(dto.id);
-        entity.title.set(dto.title);
+        entity.populateFromDto(dto);
         return entity;
     }
 
-    toDto(): ProtocolOptionDto {
-        return {
-            id: this.id(),
-            title: this.title()
-        };
-    }
-
-    copyFromDto(dto: Partial<ProtocolOptionDto>): void {
-        if (dto.id !== undefined) this.id.set(dto.id);
-        if (dto.title !== undefined) this.title.set(dto.title);
-    }
-
-    toPatch<T>(): Partial<T> {
-        const defaults = new ProtocolOptionEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.title() !== defaults.title()) (patch as any).title = this.title();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ProtocolOptionEntity() as this;
     }
 }
 
-export class ProtocolEntity {
+export class ProtocolEntity extends BaseEntity<ProtocolDto> {
     id = signal<number | undefined>(undefined);
     title = signal<string | undefined>(undefined);
     protocol_type = signal<ProtocolType | undefined>(undefined);
@@ -704,98 +324,44 @@ export class ProtocolEntity {
 
     static fromDto(dto: ProtocolDto): ProtocolEntity {
         const entity = new ProtocolEntity();
-        entity.id.set(dto.id);
-        entity.title.set(dto.title);
-        entity.protocol_type.set(dto.protocol_type);
-        entity.direction_type.set(dto.direction_type);
-        entity.transport_principal_types.set(dto.transport_principal_types ?? []);
-        entity.client.set(dto.client);
-        entity.transport.set(dto.transport);
-        entity.is_template.set(dto.is_template);
+        entity.populateFromDto(dto);
         entity.options.set((dto.options || []).map(opt => ProtocolOptionEntity.fromDto(opt)));
         return entity;
     }
 
-    toDto(): ProtocolDto {
-        return {
-            id: this.id(),
-            title: this.title(),
-            protocol_type: this.protocol_type(),
-            direction_type: this.direction_type(),
-            transport_principal_types: this.transport_principal_types(),
-            client: this.client(),
-            transport: this.transport(),
-            is_template: this.is_template(),
-            options: this.options().map(opt => opt.toDto())
-        };
+    override toDto(): ProtocolDto {
+        const dto = super.toDto();
+        dto.options = this.options().map(opt => opt.toDto());
+        return dto;
     }
 
-    copyFromDto(dto: Partial<ProtocolDto>): void {
-        if (dto.id !== undefined) this.id.set(dto.id);
-        if (dto.title !== undefined) this.title.set(dto.title);
-        if (dto.protocol_type !== undefined) this.protocol_type.set(dto.protocol_type);
-        if (dto.direction_type !== undefined) this.direction_type.set(dto.direction_type);
-        if (dto.transport_principal_types !== undefined) this.transport_principal_types.set(dto.transport_principal_types);
-        if (dto.client !== undefined) this.client.set(dto.client);
-        if (dto.transport !== undefined) this.transport.set(dto.transport);
-        if (dto.is_template !== undefined) this.is_template.set(dto.is_template);
+    override copyFromDto(dto: Partial<ProtocolDto>): void {
+        super.copyFromDto(dto);
         if (dto.options !== undefined) this.options.set(dto.options.map(opt => ProtocolOptionEntity.fromDto(opt)));
     }
 
-    toPatch<T>(): Partial<T> {
-        const defaults = new ProtocolEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.title() !== defaults.title()) (patch as any).title = this.title();
-        if (this.protocol_type() !== defaults.protocol_type()) (patch as any).protocol_type = this.protocol_type();
-        if (this.direction_type() !== defaults.direction_type()) (patch as any).direction_type = this.direction_type();
-        if (JSON.stringify(this.transport_principal_types()) !== JSON.stringify(defaults.transport_principal_types())) (patch as any).transport_principal_types = this.transport_principal_types();
-        if (this.client() !== defaults.client()) (patch as any).client = this.client();
-        if (this.transport() !== defaults.transport()) (patch as any).transport = this.transport();
-        if (this.is_template() !== defaults.is_template()) (patch as any).is_template = this.is_template();
-        if (JSON.stringify(this.options()) !== JSON.stringify(defaults.options())) (patch as any).options = this.options().map(opt => opt.toDto());
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ProtocolEntity() as this;
     }
 }
 
-export class ExamOptionEntity {
+export class ExamOptionEntity extends BaseEntity<ExamOption> {
     id = signal<number>(0);
     title = signal<string>("");
     is_correct = signal<boolean>(false);
 
     static fromDto(dto: ExamOption): ExamOptionEntity {
         const entity = new ExamOptionEntity();
-        entity.id.set(dto.id ?? 0);
-        entity.title.set(dto.title ?? "");
-        entity.is_correct.set(dto.is_correct ?? false);
+        entity.populateFromDto(dto);
         return entity;
     }
 
-    toDto(): ExamOption {
-        return {
-            id: this.id(),
-            title: this.title(),
-            is_correct: this.is_correct(),
-        };
-    }
-
-    copyFromDto(dto: Partial<ExamOption>): void {
-        if (dto.id !== undefined) this.id.set(dto.id);
-        if (dto.title !== undefined) this.title.set(dto.title);
-        if (dto.is_correct !== undefined) this.is_correct.set(dto.is_correct);
-    }
-
-    toPatch<T>(): Partial<T> {
-        const defaults = new ExamOptionEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.title() !== defaults.title()) (patch as any).title = this.title();
-        if (this.is_correct() !== defaults.is_correct()) (patch as any).is_correct = this.is_correct();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ExamOptionEntity() as this;
     }
 }
 
-export class ExamQuestionEntity {
+export class ExamQuestionEntity extends BaseEntity<ExamQuestion> {
     id = signal<number>(0);
     title = signal<string>("");
     type = signal<ExamQuestionType>(ExamQuestionType.SINGLE);
@@ -806,53 +372,28 @@ export class ExamQuestionEntity {
 
     static fromDto(dto: ExamQuestion): ExamQuestionEntity {
         const entity = new ExamQuestionEntity();
-        entity.id.set(dto.id ?? 0);
-        entity.title.set(dto.title ?? "");
-        entity.type.set(dto.type ?? ExamQuestionType.SINGLE);
-        entity.required.set(dto.required ?? true);
-        entity.order.set(dto.order ?? 0);
-        entity.requires_manual_review.set(dto.requires_manual_review ?? false);
+        entity.populateFromDto(dto);
         entity.options.set((dto.options || []).map(opt => ExamOptionEntity.fromDto(opt)));
         return entity;
     }
 
-    toDto(): ExamQuestion {
-        return {
-            id: this.id(),
-            title: this.title(),
-            type: this.type(),
-            required: this.required(),
-            order: this.order(),
-            requires_manual_review: this.requires_manual_review(),
-            options: this.options().map(opt => opt.toDto()),
-        };
+    override toDto(): ExamQuestion {
+        const dto = super.toDto();
+        dto.options = this.options().map(opt => opt.toDto());
+        return dto;
     }
 
-    copyFromDto(dto: Partial<ExamQuestion>): void {
-        if (dto.id !== undefined) this.id.set(dto.id);
-        if (dto.title !== undefined) this.title.set(dto.title);
-        if (dto.type !== undefined) this.type.set(dto.type);
-        if (dto.required !== undefined) this.required.set(dto.required);
-        if (dto.order !== undefined) this.order.set(dto.order);
-        if (dto.requires_manual_review !== undefined) this.requires_manual_review.set(dto.requires_manual_review);
+    override copyFromDto(dto: Partial<ExamQuestion>): void {
+        super.copyFromDto(dto);
         if (dto.options !== undefined) this.options.set(dto.options.map(opt => ExamOptionEntity.fromDto(opt)));
     }
 
-    toPatch<T>(): Partial<T> {
-        const defaults = new ExamQuestionEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.title() !== defaults.title()) (patch as any).title = this.title();
-        if (this.type() !== defaults.type()) (patch as any).type = this.type();
-        if (this.required() !== defaults.required()) (patch as any).required = this.required();
-        if (this.order() !== defaults.order()) (patch as any).order = this.order();
-        if (this.requires_manual_review() !== defaults.requires_manual_review()) (patch as any).requires_manual_review = this.requires_manual_review();
-        if (JSON.stringify(this.options()) !== JSON.stringify(defaults.options())) (patch as any).options = this.options().map(opt => opt.toDto());
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ExamQuestionEntity() as this;
     }
 }
 
-export class CertificationExamEntity {
+export class CertificationExamEntity extends BaseEntity<CertificationExam> {
     id = signal<number>(0);
     title = signal<string>("");
     max_tries_per_week = signal<number>(0);
@@ -860,41 +401,28 @@ export class CertificationExamEntity {
 
     static fromDto(dto: CertificationExam): CertificationExamEntity {
         const entity = new CertificationExamEntity();
-        entity.id.set(dto.id ?? 0);
-        entity.title.set(dto.title ?? "");
-        entity.max_tries_per_week.set(dto.max_tries_per_week ?? 0);
+        entity.populateFromDto(dto);
         entity.questions.set((dto.questions || []).map(q => ExamQuestionEntity.fromDto(q)));
         return entity;
     }
 
-    toDto(): CertificationExam {
-        return {
-            id: this.id(),
-            title: this.title(),
-            max_tries_per_week: this.max_tries_per_week(),
-            questions: this.questions().map(q => q.toDto()),
-        };
+    override toDto(): CertificationExam {
+        const dto = super.toDto();
+        dto.questions = this.questions().map(q => q.toDto());
+        return dto;
     }
 
-    copyFromDto(dto: Partial<CertificationExam>): void {
-        if (dto.id !== undefined) this.id.set(dto.id);
-        if (dto.title !== undefined) this.title.set(dto.title);
-        if (dto.max_tries_per_week !== undefined) this.max_tries_per_week.set(dto.max_tries_per_week);
+    override copyFromDto(dto: Partial<CertificationExam>): void {
+        super.copyFromDto(dto);
         if (dto.questions !== undefined) this.questions.set(dto.questions.map(q => ExamQuestionEntity.fromDto(q)));
     }
 
-    toPatch<T>(): Partial<T> {
-        const defaults = new CertificationExamEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.title() !== defaults.title()) (patch as any).title = this.title();
-        if (this.max_tries_per_week() !== defaults.max_tries_per_week()) (patch as any).max_tries_per_week = this.max_tries_per_week();
-        if (JSON.stringify(this.questions()) !== JSON.stringify(defaults.questions())) (patch as any).questions = this.questions().map(q => q.toDto());
-        return patch;
+    protected createDefaultInstance(): this {
+        return new CertificationExamEntity() as this;
     }
 }
 
-export class CertificationEntity {
+export class CertificationEntity extends BaseEntity<CertificationsDto> {
     id = signal<number>(0);
     title = signal<string>("");
     description = signal<string>("");
@@ -904,49 +432,28 @@ export class CertificationEntity {
 
     static fromDto(dto: CertificationsDto): CertificationEntity {
         const entity = new CertificationEntity();
-        entity.id.set(dto.id ?? 0);
-        entity.title.set(dto.title ?? "");
-        entity.description.set(dto.description ?? "");
-        entity.default_max_tries.set(dto.default_max_tries ?? 0);
-        entity.allow_new_drivers.set(dto.allow_new_drivers ?? false);
+        entity.populateFromDto(dto);
         entity.exam.set(CertificationExamEntity.fromDto(dto.exam));
         return entity;
     }
 
-    toDto(): CertificationsDto {
-        return {
-            id: this.id(),
-            title: this.title(),
-            description: this.description(),
-            default_max_tries: this.default_max_tries(),
-            allow_new_drivers: this.allow_new_drivers(),
-            exam: this.exam().toDto(),
-        };
+    override toDto(): CertificationsDto {
+        const dto = super.toDto();
+        dto.exam = this.exam().toDto();
+        return dto;
     }
 
-    copyFromDto(dto: Partial<CertificationsDto>): void {
-        if (dto.id !== undefined) this.id.set(dto.id);
-        if (dto.title !== undefined) this.title.set(dto.title);
-        if (dto.description !== undefined) this.description.set(dto.description);
-        if (dto.default_max_tries !== undefined) this.default_max_tries.set(dto.default_max_tries);
-        if (dto.allow_new_drivers !== undefined) this.allow_new_drivers.set(dto.allow_new_drivers);
+    override copyFromDto(dto: Partial<CertificationsDto>): void {
+        super.copyFromDto(dto);
         if (dto.exam !== undefined) this.exam.set(CertificationExamEntity.fromDto(dto.exam));
     }
 
-    toPatch<T>(): Partial<T> {
-        const defaults = new CertificationEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.title() !== defaults.title()) (patch as any).title = this.title();
-        if (this.description() !== defaults.description()) (patch as any).description = this.description();
-        if (this.default_max_tries() !== defaults.default_max_tries()) (patch as any).default_max_tries = this.default_max_tries();
-        if (this.allow_new_drivers() !== defaults.allow_new_drivers()) (patch as any).allow_new_drivers = this.allow_new_drivers();
-        if (JSON.stringify(this.exam()) !== JSON.stringify(defaults.exam())) (patch as any).exam = this.exam().toDto();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new CertificationEntity() as this;
     }
 }
 
-export class ClientCertificationEntity {
+export class ClientCertificationEntity extends BaseEntity<ClientCertification> {
     id = signal<number>(0);
     title = signal<string>("");
     description = signal<string>("");
@@ -957,53 +464,29 @@ export class ClientCertificationEntity {
 
     static fromDto(dto: ClientCertification): ClientCertificationEntity {
         const entity = new ClientCertificationEntity();
-        entity.id.set(dto.id ?? 0);
-        entity.title.set(dto.title ?? "");
-        entity.description.set(dto.description ?? "");
-        entity.allow_new_drivers.set(dto.allow_new_drivers ?? false);
+        entity.populateFromDto(dto);
         entity.exam.set(CertificationExamEntity.fromDto(dto.exam));
-        entity.client.set(dto.client ?? 0);
-        entity.max_tries_per_week.set(dto.max_tries_per_week ?? 0);
         return entity;
     }
 
-    toDto(): ClientCertification {
+    override toDto(): ClientCertification {
         const dto = new ClientCertification();
-        dto.id = this.id();
-        dto.title = this.title();
-        dto.description = this.description();
-        dto.allow_new_drivers = this.allow_new_drivers();
+        Object.assign(dto, super.toDto());
         dto.exam = this.exam().toDto();
-        dto.client = this.client();
-        dto.max_tries_per_week = this.max_tries_per_week();
         return dto;
     }
 
-    copyFromDto(dto: Partial<ClientCertification>): void {
-        if (dto.id !== undefined) this.id.set(dto.id);
-        if (dto.title !== undefined) this.title.set(dto.title);
-        if (dto.description !== undefined) this.description.set(dto.description);
-        if (dto.allow_new_drivers !== undefined) this.allow_new_drivers.set(dto.allow_new_drivers);
+    override copyFromDto(dto: Partial<ClientCertification>): void {
+        super.copyFromDto(dto);
         if (dto.exam !== undefined) this.exam.set(CertificationExamEntity.fromDto(dto.exam));
-        if (dto.client !== undefined) this.client.set(dto.client);
-        if (dto.max_tries_per_week !== undefined) this.max_tries_per_week.set(dto.max_tries_per_week);
     }
 
-    toPatch<T>(): Partial<T> {
-        const defaults = new ClientCertificationEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (this.title() !== defaults.title()) (patch as any).title = this.title();
-        if (this.description() !== defaults.description()) (patch as any).description = this.description();
-        if (this.allow_new_drivers() !== defaults.allow_new_drivers()) (patch as any).allow_new_drivers = this.allow_new_drivers();
-        if (JSON.stringify(this.exam()) !== JSON.stringify(defaults.exam())) (patch as any).exam = this.exam().toDto();
-        if (this.client() !== defaults.client()) (patch as any).client = this.client();
-        if (this.max_tries_per_week() !== defaults.max_tries_per_week()) (patch as any).max_tries_per_week = this.max_tries_per_week();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ClientCertificationEntity() as this;
     }
 }
 
-export class ClientAdditionalServiceEntity {
+export class ClientAdditionalServiceEntity extends BaseEntity<ClientAdditionalServiceDto> {
     id = signal<number>(0);
     client = signal<ClientsGralEntity | null>(null);
     certification = signal<ClientCertificationEntity | null>(null);
@@ -1026,96 +509,34 @@ export class ClientAdditionalServiceEntity {
 
     static fromDto(dto: ClientAdditionalServiceDto): ClientAdditionalServiceEntity {
         const entity = new ClientAdditionalServiceEntity();
-        entity.id.set(dto.id ?? 0);
-        entity.client.set(dto.client ? ClientsGralEntity.fromDto(dto.client) : null);
-        entity.certification.set(dto.certification ? ClientCertificationEntity.fromDto(dto.certification) : null);
-        entity.state.set(dto.state ?? true);
-        entity.default_selected.set(dto.default_selected ?? false);
-        entity.name.set(dto.name ?? "");
-        entity.description.set(dto.description ?? "");
-        entity.is_appointment_management.set(dto.is_appointment_management ?? false);
-        entity.client_price.set(dto.client_price ?? "0.00");
-        entity.driver_payment.set(dto.driver_payment ?? "0.00");
-        entity.visible_by_driver.set(dto.visible_by_driver ?? true);
-        entity.transport_status.set(dto.transport_status ?? TransportStatus.PENDING);
-        entity.applyment_moment.set(dto.applyment_moment ?? "ALL");
-        entity.requires_certification.set(dto.requires_certification ?? false);
-        entity.requires_image.set(dto.requires_image ?? false);
-        entity.requires_location.set(dto.requires_location ?? false);
-        entity.is_common.set(dto.is_common ?? false);
-        entity.charging_time.set(dto.charging_time ?? 0);
-        entity.legs.set(dto.legs ?? []);
+        entity.populateFromDto(dto);
+        
+        // Conversiones especiales para objetos anidados
+        if (dto.client) {
+            entity.client.set(ClientsGralEntity.fromDto(dto.client));
+        }
+        if (dto.certification) {
+            entity.certification.set(ClientCertificationEntity.fromDto(dto.certification));
+        }
+        
         return entity;
     }
 
-    toDto(): ClientAdditionalServiceDto {
-        const dto = new ClientAdditionalServiceDto();
-        dto.id = this.id();
-        dto.client = this.client() ? this.client()!.toDto() : null;
-        dto.certification = this.certification() ? this.certification()!.toDto() : null;
-        dto.state = this.state();
-        dto.default_selected = this.default_selected();
-        dto.name = this.name();
-        dto.description = this.description();
-        dto.is_appointment_management = this.is_appointment_management();
-        dto.client_price = this.client_price();
-        dto.driver_payment = this.driver_payment();
-        dto.visible_by_driver = this.visible_by_driver();
-        dto.transport_status = this.transport_status();
-        dto.applyment_moment = this.applyment_moment();
-        dto.requires_certification = this.requires_certification();
-        dto.requires_image = this.requires_image();
-        dto.requires_location = this.requires_location();
-        dto.is_common = this.is_common();
-        dto.charging_time = this.charging_time();
-        dto.legs = this.legs();
+    override toDto(): ClientAdditionalServiceDto {
+        const dto = super.toDto();
+        
+        // Conversiones especiales para objetos anidados
+        if (this.client()) {
+            dto.client = this.client()!.toDto();
+        }
+        if (this.certification()) {
+            dto.certification = this.certification()!.toDto();
+        }
+        
         return dto;
     }
 
-    copyFromDto(dto: Partial<ClientAdditionalServiceDto>): void {
-        if (dto.id !== undefined) this.id.set(dto.id);
-        if (dto.client !== undefined) this.client.set(dto.client ? ClientsGralEntity.fromDto(dto.client) : null);
-        if (dto.certification !== undefined) this.certification.set(dto.certification ? ClientCertificationEntity.fromDto(dto.certification) : null);
-        if (dto.state !== undefined) this.state.set(dto.state);
-        if (dto.default_selected !== undefined) this.default_selected.set(dto.default_selected);
-        if (dto.name !== undefined) this.name.set(dto.name);
-        if (dto.description !== undefined) this.description.set(dto.description);
-        if (dto.is_appointment_management !== undefined) this.is_appointment_management.set(dto.is_appointment_management);
-        if (dto.client_price !== undefined) this.client_price.set(dto.client_price);
-        if (dto.driver_payment !== undefined) this.driver_payment.set(dto.driver_payment);
-        if (dto.visible_by_driver !== undefined) this.visible_by_driver.set(dto.visible_by_driver);
-        if (dto.transport_status !== undefined) this.transport_status.set(dto.transport_status);
-        if (dto.applyment_moment !== undefined) this.applyment_moment.set(dto.applyment_moment);
-        if (dto.requires_certification !== undefined) this.requires_certification.set(dto.requires_certification);
-        if (dto.requires_image !== undefined) this.requires_image.set(dto.requires_image);
-        if (dto.requires_location !== undefined) this.requires_location.set(dto.requires_location);
-        if (dto.is_common !== undefined) this.is_common.set(dto.is_common);
-        if (dto.charging_time !== undefined) this.charging_time.set(dto.charging_time);
-        if (dto.legs !== undefined) this.legs.set(dto.legs);
-    }
-
-    toPatch<T>(): Partial<T> {
-        const defaults = new ClientAdditionalServiceEntity();
-        const patch: Partial<T> = {};
-        if (this.id() !== defaults.id()) (patch as any).id = this.id();
-        if (JSON.stringify(this.client()) !== JSON.stringify(defaults.client())) (patch as any).client = this.client() ? this.client()!.toDto() : null;
-        if (JSON.stringify(this.certification()) !== JSON.stringify(defaults.certification())) (patch as any).certification = this.certification() ? this.certification()!.toDto() : null;
-        if (this.state() !== defaults.state()) (patch as any).state = this.state();
-        if (this.default_selected() !== defaults.default_selected()) (patch as any).default_selected = this.default_selected();
-        if (this.name() !== defaults.name()) (patch as any).name = this.name();
-        if (this.description() !== defaults.description()) (patch as any).description = this.description();
-        if (this.is_appointment_management() !== defaults.is_appointment_management()) (patch as any).is_appointment_management = this.is_appointment_management();
-        if (this.client_price() !== defaults.client_price()) (patch as any).client_price = this.client_price();
-        if (this.driver_payment() !== defaults.driver_payment()) (patch as any).driver_payment = this.driver_payment();
-        if (this.visible_by_driver() !== defaults.visible_by_driver()) (patch as any).visible_by_driver = this.visible_by_driver();
-        if (this.transport_status() !== defaults.transport_status()) (patch as any).transport_status = this.transport_status();
-        if (this.applyment_moment() !== defaults.applyment_moment()) (patch as any).applyment_moment = this.applyment_moment();
-        if (this.requires_certification() !== defaults.requires_certification()) (patch as any).requires_certification = this.requires_certification();
-        if (this.requires_image() !== defaults.requires_image()) (patch as any).requires_image = this.requires_image();
-        if (this.requires_location() !== defaults.requires_location()) (patch as any).requires_location = this.requires_location();
-        if (this.is_common() !== defaults.is_common()) (patch as any).is_common = this.is_common();
-        if (this.charging_time() !== defaults.charging_time()) (patch as any).charging_time = this.charging_time();
-        if (JSON.stringify(this.legs()) !== JSON.stringify(defaults.legs())) (patch as any).legs = this.legs();
-        return patch;
+    protected createDefaultInstance(): this {
+        return new ClientAdditionalServiceEntity() as this;
     }
 }

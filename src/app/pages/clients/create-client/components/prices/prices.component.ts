@@ -16,6 +16,7 @@ import { DistanceBracketRuleEntity, PriceRulesEntity } from '@entities/clients.e
 import { Helpers } from '@utils/helpers';
 import { ErrorBase } from '@dtos/errors.dtos';
 import { I18nService } from '@i18n/i18n.service';
+import { DistanceBracketRule } from '@dtos/clients/priceRules.dtos';
 
 @Component({
   selector: 'app-prices',
@@ -71,10 +72,7 @@ export class PricesComponent {
 
 
   constructor() {
-    effect(() => {
-      this.curPrices = PriceRulesEntity.fromDto(this.store.priceRules());
-      this.pricesTableConfig.data.set(this.store.priceRules().distance_brackets || []);
-    });
+    
     this.initTables();  
   }
 
@@ -82,6 +80,8 @@ export class PricesComponent {
     var actions = pricesTableConfig.columns.filter(col => col.key === 'actions')
     actions[0].actionConfig!.actions[0].onClick = this.editBracket;
     actions[0].actionConfig!.actions[1].onClick = this.deleteBracket;
+    this.distance_brackets.set(this.store.priceRules().distance_brackets);
+    this.pricesTableConfig.data = this.distance_brackets;  
   }
   canSave = computed(() => {
     return !(Helpers.isEmptyOrZero(this.curBracket.max_km()) || Helpers.isEmptyOrZero(this.curBracket.standard_price()))
@@ -131,7 +131,7 @@ export class PricesComponent {
   async onSave() {
 
     var cur =       [
-        ...this.curPrices.distance_brackets().filter(db => db.id() !== this.curBracket.id()).map(db => ({min: db.min_km() || 0, max: db.max_km()})),
+        ...this.distance_brackets().filter(db => db.id !== this.curBracket.id()).map(db => ({min: db.min_km || 0, max: db.max_km})),
         {min: this.curBracket.min_km(), max: this.curBracket.max_km()}
       ];
 
@@ -149,8 +149,9 @@ export class PricesComponent {
       this.curPrices.distance_brackets.set([...this.curPrices.distance_brackets().filter(db => db.id() !== this.curBracket.id()), this.curBracket]);
     }
     var dto = this.curPrices.toDto();
-      dto.distance_brackets = dto.distance_brackets.map(db => {
+      dto.distance_brackets = this.distance_brackets().map(db => {
         const {id, ...rest} = db;
+        if(!Helpers.isEmptyOrZero(id)) rest["id"] = id;
         return rest;
       });
         
@@ -160,7 +161,8 @@ export class PricesComponent {
 
           return;
         }
-        this.curBracket = new DistanceBracketRuleEntity();
+        this.curBracket.copyFromDto(new DistanceBracketRule());
+        this.distance_brackets.set(this.store.priceRules().distance_brackets);
         
       } catch (error) {
         console.error('Error al guardar las reglas de precios:', error);        

@@ -67,7 +67,7 @@ export class GeneralTabComponent  implements OnInit{
 
   constructor() { 
     effect(() => {
-      this.client = ClientsGralEntity.fromDto(this.store.client());
+      this.client.copyFromDto(this.store.client());
     });
 
   }

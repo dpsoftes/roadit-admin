@@ -50,8 +50,8 @@ export const ClientStore = signalStore(
   withComputed( (store) => ({
     logoSrc: () => {
       var curImage:any = store.curImage();
-      if(store.curImage() instanceof File ){
-        return URL.createObjectURL(store.curImage()!);
+      if(curImage instanceof File ){
+        return URL.createObjectURL(curImage!);
       }
        if(store.client().logo && store.client().logo!.length > 0){
         let logo = store.client().logo!;

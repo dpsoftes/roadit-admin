@@ -64,7 +64,7 @@ export class ProtocolComponent {
     this.loadTemplates();
     effect(() => {
       var type = this.currentType();
-      this.loadTemplates();
+      this.loadTemplates().then(() => {});
     });
     effect(() => {
       var prots = this.store.protocols();
